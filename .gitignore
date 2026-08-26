@@ -1,0 +1,15 @@
+# Generated/editor state
+.godot/
+*.import
+
+# Dependency/build output
+server/node_modules/
+server/build/
+client/.godot/
+
+# Local inspection/download scratch space
+tmp_colyseus_pkg/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
