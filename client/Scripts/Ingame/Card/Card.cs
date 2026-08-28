@@ -45,6 +45,12 @@ public partial class Card : Control
 	);
 
 	/// <summary>
+	/// Whether the card's stable visual state is face-up. During a flip this
+	/// remains the last completed face until the animation finishes.
+	/// </summary>
+	public bool IsFaceUp => _visual.IsFront;
+
+	/// <summary>
 	/// The position assigned by a hand layout before the selection lift is
 	/// applied. Keeping this separate from <see cref="Position"/> allows the
 	/// layout and selection animations to run at the same time.

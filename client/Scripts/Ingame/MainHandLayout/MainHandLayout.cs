@@ -104,17 +104,36 @@ public partial class MainHandLayout : Control
 	public bool IsLayoutAnimating => _layoutTween is { } tween && tween.IsValid();
 
 	/// <summary>
-	/// The destination used by the next card being collected.
+	/// Returns the target pose for <paramref name="card"/> when it is received
+	/// by this hand. The transform is expressed in canvas coordinates so a
+	/// shared animation layer can consume it even when this layout is rotated,
+	/// scaled, or belongs to a different CanvasLayer.
 	/// </summary>
-	public Vector2 CurrentCollectPosition => GetCurrentCollectPosition();
+	/// <exception cref="ArgumentNullException">
+	/// <paramref name="card"/> is null.
+	/// </exception>
+	/// <exception cref="ArgumentException">
+	/// <paramref name="card"/> has already been freed.
+	/// </exception>
+	public CardPose2D GetCurrentReceivePose(Card card)
+	{
+		ArgumentNullException.ThrowIfNull(card);
+		if (!IsInstanceValid(card))
+			throw new ArgumentException("Card must be a valid Godot instance.", nameof(card));
 
-	/// <summary>
-	/// Alias using the hand's receive terminology. The coordinate is local to
-	/// this layout control, just like <see cref="CurrentCollectPosition"/>.
-	/// </summary>
-	public Vector2 GetCurrentReceivePosition() => GetCurrentCollectPosition();
+		Vector2 targetSize = CalculateReceiveSize(card);
+		Vector2 localPosition = GetCurrentReceiveLocalPosition(
+			targetSize.X,
+			targetSize.Y
+		);
+		Transform2D localTransform = new(0.0f, localPosition);
 
-	public Vector2 CurrentReceivePosition => GetCurrentCollectPosition();
+		return new CardPose2D(
+			GetGlobalTransformWithCanvas() * localTransform,
+			targetSize,
+			IsFaceUp: true
+		);
+	}
 
 	public override void _Ready()
 	{
@@ -198,12 +217,12 @@ public partial class MainHandLayout : Control
 	}
 
 	/// <summary>
-	/// Returns the local position of the rightmost card in the current layout.
-	/// While a layout tween is active, its target snapshot is used so repeated
-	/// card collection does not make the fly-in destination jump every time.
-	/// With an empty hand, the centered position of a card-sized slot is used.
+	/// Returns the local destination used by the next received card. While a
+	/// layout tween is active, its target snapshot keeps this position stable.
 	/// </summary>
-	public Vector2 GetCurrentCollectPosition()
+	private Vector2 GetCurrentReceiveLocalPosition(
+		float emptyCardWidth,
+		float emptyCardHeight)
 	{
 		PruneInvalidCards();
 
@@ -231,12 +250,7 @@ public partial class MainHandLayout : Control
 			return rightmostCard.LayoutPosition;
 		}
 
-		float cardHeight = ResolveLayoutHeight();
-		if (cardHeight <= 0.0f)
-			cardHeight = Card.DefaultHeight;
-
-		float cardWidth = Card.DefaultWidth * cardHeight / Card.DefaultHeight;
-		return CalculateEmptyCollectPosition(cardWidth, cardHeight);
+		return CalculateEmptyCollectPosition(emptyCardWidth, emptyCardHeight);
 	}
 
 	/// <summary>
@@ -271,17 +285,10 @@ public partial class MainHandLayout : Control
 			return;
 		}
 
-		bool hasCurrentLayout = _cards.Count > 0 ||
-			(_layoutTween is { } activeTween &&
-				activeTween.IsValid() &&
-				_activeLayoutPlan is not null &&
-				_activeLayoutPlan.Targets.Count > 0) ||
-			(_pendingLayoutPlan is not null &&
-				_pendingLayoutPlan.Targets.Count > 0);
-
-		Vector2 collectPosition = hasCurrentLayout
-			? GetCurrentCollectPosition()
-			: CalculateEmptyCollectPosition(card.CardWidth, card.CardHeight);
+		Vector2 collectPosition = GetCurrentReceiveLocalPosition(
+			card.CardWidth,
+			card.CardHeight
+		);
 
 		// Register before reparenting so ChildEnteredTree (when this method is
 		// called with a card from another parent) cannot start a tween from the
@@ -781,6 +788,18 @@ public partial class MainHandLayout : Control
 			return Size.Y;
 
 		return CustomMinimumSize.Y;
+	}
+
+	private Vector2 CalculateReceiveSize(Card card)
+	{
+		float cardWidth = card.CardWidth;
+		float cardHeight = card.CardHeight;
+		float layoutHeight = ResolveLayoutHeight();
+
+		if (layoutHeight <= 0.0f || cardHeight <= 0.0f)
+			return new Vector2(cardWidth, cardHeight);
+
+		return new Vector2(cardWidth * layoutHeight / cardHeight, layoutHeight);
 	}
 
 	private void ResizeCardToLayoutHeight(Card card)
