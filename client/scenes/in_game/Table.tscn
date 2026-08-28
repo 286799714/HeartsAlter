@@ -70,7 +70,6 @@ rotation = 3.1415927
 pivot_offset_ratio = Vector2(0.5, 0)
 
 [node name="AnimationLayer" parent="." unique_id=1574247879 instance=ExtResource("4_animation")]
-visible = false
 layout_mode = 1
 
 [node name="DrawCardButton" type="Button" parent="." unique_id=241289012]
