@@ -181,8 +181,9 @@ public partial class OtherHandLayout : Control
 	}
 
 	/// <summary>
-	/// Reparents <paramref name="card"/> into this layout, places it at the
-	/// current collection destination, and queues a new hand layout.
+	/// Reparents <paramref name="card"/> into this layout, preserves its current
+	/// visual position as the layout animation's start, and queues a new hand
+	/// layout.
 	/// </summary>
 	public void ReceiveCard(Card card)
 	{
@@ -215,14 +216,19 @@ public partial class OtherHandLayout : Control
 			return;
 		}
 
-		Vector2 collectPosition = GetCurrentReceiveLocalPosition(
-			card.CardWidth,
-			card.CardHeight
-		);
+		bool hasIncomingCanvasPosition = card.IsInsideTree();
+		Vector2 incomingCanvasPosition = hasIncomingCanvasPosition
+			? card.GetGlobalTransformWithCanvas().Origin
+			: Vector2.Zero;
+		Vector2 fallbackPosition = hasIncomingCanvasPosition
+			? Vector2.Zero
+			: GetCurrentReceiveLocalPosition(card.CardWidth, card.CardHeight);
 
 		// Register before reparenting so ChildEnteredTree (when this method is
 		// called with a card from another parent) cannot start a tween from the
-		// card's old position. The final collection position is assigned below.
+		// card's old position. The incoming canvas position is snapshotted before
+		// reparenting and converted into this layout's coordinates below, so a
+		// card arriving from an overlapping flight never jumps to a stale slot.
 		if (!_cards.Contains(card))
 			RegisterCard(card, recalculate: false);
 
@@ -234,10 +240,16 @@ public partial class OtherHandLayout : Control
 				AddChild(card);
 		}
 
-		// Incoming cards are always unlifted at the collection point.
+		// Incoming cards are always unlifted at their current visual position.
+		// RecalculateLayout then interpolates that position to the final slot,
+		// avoiding a snap when concurrent flights share one receive pose.
 		NormalizeCardAnchors(card);
 		card.SetSelectionLift(0.0f);
-		card.SetLayoutPosition(collectPosition);
+		card.SetLayoutPosition(
+			hasIncomingCanvasPosition
+				? CanvasToLocalPosition(incomingCanvasPosition)
+				: fallbackPosition
+		);
 
 		UpdateZIndices();
 		RecalculateLayout();
@@ -515,6 +527,12 @@ public partial class OtherHandLayout : Control
 
 		return false;
 	}
+
+	private Vector2 CanvasToLocalPosition(Vector2 canvasPosition)
+	{
+		return GetGlobalTransformWithCanvas().AffineInverse() * canvasPosition;
+	}
+
 	private static void NormalizeCardAnchors(Card card)
 	{
 		// Card.tscn is also useful as a standalone bottom-centred card. Once it

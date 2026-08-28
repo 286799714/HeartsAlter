@@ -254,8 +254,9 @@ public partial class MainHandLayout : Control
 	}
 
 	/// <summary>
-	/// Reparents <paramref name="card"/> into this layout, places it at the
-	/// current collection destination, and queues a new hand layout.
+	/// Reparents <paramref name="card"/> into this layout, preserves its current
+	/// visual position as the layout animation's start, and queues a new hand
+	/// layout.
 	/// </summary>
 	public void ReceiveCard(Card card)
 	{
@@ -285,14 +286,19 @@ public partial class MainHandLayout : Control
 			return;
 		}
 
-		Vector2 collectPosition = GetCurrentReceiveLocalPosition(
-			card.CardWidth,
-			card.CardHeight
-		);
+		bool hasIncomingCanvasPosition = card.IsInsideTree();
+		Vector2 incomingCanvasPosition = hasIncomingCanvasPosition
+			? card.GetGlobalTransformWithCanvas().Origin
+			: Vector2.Zero;
+		Vector2 fallbackPosition = hasIncomingCanvasPosition
+			? Vector2.Zero
+			: GetCurrentReceiveLocalPosition(card.CardWidth, card.CardHeight);
 
 		// Register before reparenting so ChildEnteredTree (when this method is
 		// called with a card from another parent) cannot start a tween from the
-		// card's old position. The final collection position is assigned below.
+		// card's old position. The incoming canvas position is snapshotted before
+		// reparenting and converted into this layout's coordinates below, so a
+		// card arriving from an overlapping flight never jumps to a stale slot.
 		if (!_cards.Contains(card))
 			RegisterCard(card, recalculate: false);
 
@@ -304,11 +310,18 @@ public partial class MainHandLayout : Control
 				AddChild(card);
 		}
 
-		// An incoming card always starts unselected at the collection point.
+		// An incoming card always starts unselected at its current visual position.
+		// RecalculateLayout then interpolates that position to the card's final
+		// slot. This is important when multiple flights share one receive pose:
+		// the later card must not snap to the earlier card before the reflow.
 		NormalizeCardAnchors(card);
 		CancelSelectionTween(card);
 		card.SetSelectionLift(0.0f);
-		card.SetLayoutPosition(collectPosition);
+		card.SetLayoutPosition(
+			hasIncomingCanvasPosition
+				? CanvasToLocalPosition(incomingCanvasPosition)
+				: fallbackPosition
+		);
 
 		UpdateZIndices();
 		RecalculateLayout();
@@ -705,6 +718,11 @@ public partial class MainHandLayout : Control
 		}
 
 		return false;
+	}
+
+	private Vector2 CanvasToLocalPosition(Vector2 canvasPosition)
+	{
+		return GetGlobalTransformWithCanvas().AffineInverse() * canvasPosition;
 	}
 
 	private static int GetSuitOrder(PokerSuit suit)
