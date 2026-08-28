@@ -14,9 +14,17 @@ import { MyRoomState, Player, TrickCard } from "./schema/MyRoomState.js";
 
 /** How long a connected or disconnected seat has to act before the server plays for it. */
 export const TURN_DURATION = 15_000;
+/** How quickly a synthetic demo seat answers after it receives the turn. */
+export const BOT_TURN_DURATION = 600;
 export const DEFAULT_ANTE = 100;
 export const DEFAULT_STARTING_CHIPS = 1_000;
 export const MAX_PLAYERS = 4;
+/**
+ * A join may resolve on a client before its message handlers are installed.
+ * Re-sending the private hand on the next room tick closes that small race;
+ * `request_hand` remains available for explicit refreshes and reconnects.
+ */
+export const HAND_RESEND_DELAY = 100;
 /**
  * Chip fields in the public schema are signed int32 values and the pot is the
  * sum of all four stakes.  Capping a per-seat balance/ante at this value keeps
@@ -38,9 +46,12 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
   state = new MyRoomState();
 
   private readonly hands = new Map<string, Card[]>();
+  private readonly handResendTimers = new Set<Delayed>();
+  private readonly botPlayerIds = new Set<string>();
   private turnTimeout?: Delayed;
   private ante = DEFAULT_ANTE;
   private startingChips = DEFAULT_STARTING_CHIPS;
+  private botsEnabled = false;
 
   messages = {
     /** A player submits the id of one card from their private hand. */
@@ -90,8 +101,15 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       this.readChipAmount(safeOptions.startingChips, DEFAULT_STARTING_CHIPS),
       this.ante,
     );
+    this.botsEnabled = safeOptions.bots === true;
+    // A demo room has one real client and three synthetic seats.  Limiting
+    // matchmaking to one connection makes the room's intent explicit and
+    // prevents a second real client from racing the synthetic seats.
+    this.maxClients = this.botsEnabled ? 1 : MAX_PLAYERS;
     this.state.ante = this.ante;
-    this.state.message = "等待四名玩家加入";
+    this.state.message = this.botsEnabled
+      ? "等待一名玩家加入（机器人演示）"
+      : "等待四名玩家加入";
   }
 
   onJoin(client: Client, options: Record<string, unknown> = {}) {
@@ -110,6 +128,7 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     this.state.playerOrder.push(client.sessionId);
     this.hands.set(client.sessionId, []);
     this.sendHand(client.sessionId);
+    this.scheduleHandResend(client.sessionId);
 
     this.state.message = `${this.state.players.size}/${MAX_PLAYERS} 名玩家已就位`;
     this.broadcast("player_joined", {
@@ -117,6 +136,11 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       seat: player.seat,
       name: player.name,
     });
+
+    if (this.botsEnabled && this.state.players.size === 1) {
+      this.addDemoBots();
+      this.state.message = "演示模式：1 名玩家与 3 个机器人已就位";
+    }
 
     if (this.state.players.size === MAX_PLAYERS) {
       // A full room is deliberately locked before dealing, so a fifth client
@@ -148,7 +172,9 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
           remaining.seat = seat;
         }
       });
-      this.state.message = `${this.state.players.size}/${MAX_PLAYERS} 名玩家已就位`;
+      this.state.message = this.botsEnabled
+        ? "等待一名玩家加入（机器人演示）"
+        : `${this.state.players.size}/${MAX_PLAYERS} 名玩家已就位`;
       this.broadcast("player_left", { playerId: client.sessionId });
       return;
     }
@@ -186,7 +212,12 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
 
   onDispose() {
     this.turnTimeout?.clear();
+    for (const timer of this.handResendTimers) {
+      timer.clear();
+    }
+    this.handResendTimers.clear();
     this.hands.clear();
+    this.botPlayerIds.clear();
   }
 
   private startRound(): boolean {
@@ -242,11 +273,16 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       if (player) {
         player.handCount = hand.length;
       }
-      this.sendHand(playerId);
+      if (!this.isBotPlayer(playerId)) {
+        this.sendHand(playerId);
+        this.scheduleHandResend(playerId);
+      }
     });
 
     const starter = this.findTwoOfClubsOwner();
-    this.state.message = "已发牌，梅花 2 先出";
+    this.state.message = this.botsEnabled
+      ? "演示模式：已发牌，梅花 2 先出"
+      : "已发牌，梅花 2 先出";
     this.broadcast("round_started", {
       roundNumber: this.state.roundNumber,
       ante: this.ante,
@@ -320,6 +356,7 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     this.broadcast("card_played", {
       playerId,
       cardId: card.id,
+      roundNumber: this.state.roundNumber,
       trickIndex: this.state.trick.length - 1,
     });
 
@@ -419,12 +456,14 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     }
     this.state.currentTurn = playerId;
     this.state.turnCount += 1;
-    this.state.turnDeadline = this.clock.currentTime + TURN_DURATION;
-    this.turnTimeout = this.clock.setTimeout(() => this.autoPlayCurrentTurn(), TURN_DURATION);
+    const turnDuration = this.isBotPlayer(playerId) ? BOT_TURN_DURATION : TURN_DURATION;
+    this.state.turnDeadline = this.clock.currentTime + turnDuration;
+    this.turnTimeout = this.clock.setTimeout(() => this.autoPlayCurrentTurn(), turnDuration);
     this.broadcast("turn_started", {
       playerId,
       deadline: this.state.turnDeadline,
       trickNumber: this.state.trickNumber,
+      automated: this.isBotPlayer(playerId),
     });
   }
 
@@ -452,8 +491,51 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       const rankDifference = rankValue(left) - rankValue(right);
       return rankDifference !== 0 ? rankDifference : left.id.localeCompare(right.id);
     })[0];
-    this.broadcast("auto_play", { playerId, cardId: selected.id });
+    this.broadcast("auto_play", {
+      playerId,
+      cardId: selected.id,
+      automated: this.isBotPlayer(playerId),
+    });
     this.playCard(playerId, selected.id);
+  }
+
+  /** Add the three non-network seats used by the single-client demo room. */
+  private addDemoBots() {
+    while (this.state.players.size < MAX_PLAYERS) {
+      const seat = this.state.players.size;
+      const playerId = this.createBotId(seat);
+      const player = new Player();
+      player.name = `机器人 ${seat + 1}`;
+      player.seat = seat;
+      player.chips = this.startingChips;
+      player.connected = true;
+      player.isTreating = false;
+      this.state.players.set(playerId, player);
+      this.state.playerOrder.push(playerId);
+      this.hands.set(playerId, []);
+      this.botPlayerIds.add(playerId);
+      this.broadcast("player_joined", {
+        playerId,
+        seat,
+        name: player.name,
+        automated: true,
+      });
+    }
+  }
+
+  private createBotId(seat: number): string {
+    const baseId = `bot-${seat + 1}`;
+    let playerId = baseId;
+    let suffix = 2;
+    while (this.state.players.has(playerId)) {
+      playerId = `${baseId}-${suffix}`;
+      suffix += 1;
+    }
+    return playerId;
+  }
+
+  private isBotPlayer(playerId: string): boolean {
+    return this.botPlayerIds.has(playerId);
   }
 
   private nextSeat(playerId: string): string {
@@ -474,6 +556,9 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
   }
 
   private sendHand(playerId: string) {
+    if (this.isBotPlayer(playerId)) {
+      return;
+    }
     const client = this.clients.find((candidate) => candidate.sessionId === playerId);
     if (!client) {
       return;
@@ -482,6 +567,19 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       roundNumber: this.state.roundNumber,
       cards: (this.hands.get(playerId) ?? []).map((card) => card.id),
     });
+  }
+
+  private scheduleHandResend(playerId: string) {
+    if (this.isBotPlayer(playerId)) {
+      return;
+    }
+    const timer = this.clock.setTimeout(() => {
+      this.handResendTimers.delete(timer);
+      // The seat may have left before the deferred delivery. `sendHand`
+      // safely no-ops when there is no active client for the session.
+      this.sendHand(playerId);
+    }, HAND_RESEND_DELAY);
+    this.handResendTimers.add(timer);
   }
 
   private sendError(client: Client, reason: string) {

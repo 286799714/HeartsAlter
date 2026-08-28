@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bwmamljc0p248"]
+
+[node name="OtherHandLayout" type="Control" unique_id=1103025311]
+layout_mode = 3
+anchors_preset = 0

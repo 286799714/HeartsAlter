@@ -48,6 +48,74 @@ describe("authoritative Hearts room", () => {
     assert.ok(clients.some((client) => client.sessionId === room.state.currentTurn));
   });
 
+  it("fills a bot demo room from one client and lets a bot take a turn", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { bots: true });
+    const client = await colyseus.connectTo(room, { name: "演示玩家" });
+
+    assert.equal(room.maxClients, 1);
+    assert.equal(room.state.phase, "playing");
+    assert.equal(room.state.players.size, MAX_PLAYERS);
+    assert.equal(room.state.playerOrder.length, MAX_PLAYERS);
+    assert.equal(room.state.pot, DEFAULT_ANTE * MAX_PLAYERS);
+
+    const botIds = [...room.state.players.entries()]
+      .filter(([, player]) => player.name.startsWith("机器人"))
+      .map(([playerId]) => playerId);
+    assert.equal(botIds.length, MAX_PLAYERS - 1);
+    assert.ok(botIds.every((playerId) => playerId.startsWith("bot-")));
+    assert.ok([...room.state.players.values()].every(
+      (player) => player.handCount === 13 && player.stake === DEFAULT_ANTE,
+    ));
+
+    // Install the play listener before requesting the hand: a bot may already
+    // own the opening turn, and its short timer should not race the assertion.
+    const firstPlayMessage = client.waitForMessage("card_played", 5_000);
+    const handMessage = client.waitForMessage("hand");
+    client.send("request_hand");
+    const handPayload = await handMessage;
+    assert.equal(handPayload.cards.length, 13);
+
+    // If the human seat owns Club2, play it once so the following seat (always
+    // a synthetic seat in this room) can demonstrate the automatic turn.
+    if (room.state.currentTurn === client.sessionId) {
+      assert.ok(handPayload.cards.includes("Club2"));
+      client.send("play", { cardId: "Club2" });
+    }
+
+    const firstPlay = await firstPlayMessage;
+    let botPlay = firstPlay;
+    if (firstPlay.playerId === client.sessionId) {
+      botPlay = await client.waitForMessage("card_played", 5_000);
+    }
+    assert.ok(botIds.includes(botPlay.playerId));
+    assert.equal(botPlay.roundNumber, room.state.roundNumber);
+    assert.ok(typeof botPlay.cardId === "string" && botPlay.cardId.length > 0);
+  });
+
+  it("tags private hand and public play messages with the active round", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", {});
+    const clients: any[] = [];
+    for (let index = 0; index < MAX_PLAYERS; index += 1) {
+      clients.push(await colyseus.connectTo(room));
+    }
+
+    const expectedRound = room.state.roundNumber;
+    const handMessage = clients[0].waitForMessage("hand");
+    clients[0].send("request_hand");
+    const handPayload = await handMessage;
+    assert.equal(handPayload.roundNumber, expectedRound);
+    assert.equal(handPayload.cards.length, 13);
+
+    const starter = clients.find((client) => client.sessionId === room.state.currentTurn);
+    assert.ok(starter);
+    const playMessage = clients[0].waitForMessage("card_played");
+    starter!.send("play", { cardId: "Club2" });
+    const playPayload = await playMessage;
+    assert.equal(playPayload.roundNumber, expectedRound);
+    assert.equal(playPayload.playerId, starter!.sessionId);
+    assert.equal(playPayload.cardId, "Club2");
+  });
+
   it("normalizes untrusted chip options to schema-safe values", async () => {
     const oversized = await colyseus.createRoom<MyRoomState>("hearts", {
       ante: Number.MAX_SAFE_INTEGER,
@@ -182,5 +250,21 @@ describe("authoritative Hearts room", () => {
     assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.score, 0), 19);
     assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.payout, 0), 400);
     assert.equal([...room.state.players.values()].filter((player) => player.isTreating).length >= 1, true);
+
+    const finishedRound = room.state.roundNumber;
+    const roundStartedMessage = clients[0].waitForMessage("round_started");
+    clients[0].send("restart");
+    const roundStartedPayload = await roundStartedMessage;
+    assert.equal(roundStartedPayload.roundNumber, finishedRound + 1);
+    assert.equal(room.state.roundNumber, finishedRound + 1);
+    assert.equal(room.state.phase, "playing");
+    assert.equal(room.state.pot, 400);
+    assert.ok([...room.state.players.values()].every((player) => player.handCount === 13));
+
+    const restartedHandMessage = clients[0].waitForMessage("hand");
+    clients[0].send("request_hand");
+    const restartedHandPayload = await restartedHandMessage;
+    assert.equal(restartedHandPayload.roundNumber, finishedRound + 1);
+    assert.equal(restartedHandPayload.cards.length, 13);
   });
 });

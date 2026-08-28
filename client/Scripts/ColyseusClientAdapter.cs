@@ -1,11 +1,12 @@
-using Colyseus;
-using HeartsAlter.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
+using Colyseus;
+using HeartsAlter.Scripts.Generated;
 
-namespace HeartsAlter;
+namespace HeartsAlter.Scripts;
 
 /// <summary>
 /// Thin network boundary for the Godot scene.
@@ -20,13 +21,22 @@ public sealed class ColyseusClientAdapter
 {
     public const string DefaultEndpoint = "ws://127.0.0.1:2567";
     public const string DefaultRoomName = "hearts";
+    public const bool DefaultDemoBots = true;
 
     private Client _client;
     private Room<MyRoomState> _room;
 
     public event Action<MyRoomState, bool> StateChanged;
-    public event Action<IReadOnlyList<string>> HandReceived;
-    public event Action<string, string> CardPlayed;
+    /// <summary>
+    /// Private hand plus the authoritative round number that produced it.
+    /// A negative round means a legacy server omitted the field.
+    /// </summary>
+    public event Action<IReadOnlyList<string>, int> HandReceived;
+    /// <summary>
+    /// Public play notification plus its authoritative round number.
+    /// A negative round means a legacy server omitted the field.
+    /// </summary>
+    public event Action<string, string, int> CardPlayed;
     public event Action<string> ServerMessage;
     public event Action<string> InvalidPlay;
     public event Action<int, string> Error;
@@ -37,15 +47,19 @@ public sealed class ColyseusClientAdapter
     public MyRoomState State => _room?.State;
 
     /// <summary>
-    /// Joins or creates the authoritative four-player room.  The hand handler
-    /// is registered before requesting the private hand again; this covers the
-    /// server's immediate onJoin hand message and avoids a race on reconnect.
+    /// Joins or creates the authoritative four-player room.  The Godot demo
+    /// enables three server-side bot seats by default, so one client can start
+    /// a complete round; pass <c>false</c> for the regular four-human room.
+    /// The hand handler is registered before requesting the private hand again;
+    /// this covers the server's immediate onJoin hand message and avoids a race
+    /// on reconnect.
     /// </summary>
     public async Task<bool> ConnectAsync(
         string endpoint = DefaultEndpoint,
         string roomName = DefaultRoomName,
         string playerName = "玩家 1",
-        int ante = 100)
+        int ante = 100,
+        bool bots = DefaultDemoBots)
     {
         if (IsConnected)
         {
@@ -58,7 +72,8 @@ public sealed class ColyseusClientAdapter
             var options = new Dictionary<string, object>
             {
                 ["name"] = string.IsNullOrWhiteSpace(playerName) ? "玩家 1" : playerName,
-                ["ante"] = ante
+                ["ante"] = ante,
+                ["bots"] = bots
             };
 
             _room = await _client.JoinOrCreate<MyRoomState>(roomName, options);
@@ -153,6 +168,15 @@ public sealed class ColyseusClientAdapter
 
         room.OnMessage<Dictionary<string, object>>("hand", OnHandMessage);
         room.OnMessage<Dictionary<string, object>>("card_played", OnCardPlayedMessage);
+        // Register every server message type, including informational events
+        // that do not carry a dedicated client-side event.  The Colyseus SDK
+        // logs a warning for unregistered messages; keeping these on the same
+        // adapter boundary makes a live match quiet and forwards any optional
+        // `message` field to the status label.
+        room.OnMessage<Dictionary<string, object>>("player_joined", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("player_left", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("player_disconnected", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("turn_started", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("round_started", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("round_finished", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("trick_resolved", OnInformationalMessage);
@@ -179,7 +203,8 @@ public sealed class ColyseusClientAdapter
             }
         }
 
-        HandReceived?.Invoke(cards);
+        var roundNumber = ReadInt(payload, "roundNumber", -1);
+        HandReceived?.Invoke(cards, roundNumber);
         ServerMessage?.Invoke($"收到私有手牌：{cards.Count} 张");
     }
 
@@ -189,7 +214,8 @@ public sealed class ColyseusClientAdapter
         var cardId = ReadString(payload, "cardId");
         if (!string.IsNullOrEmpty(cardId))
         {
-            CardPlayed?.Invoke(playerId, cardId);
+            var roundNumber = ReadInt(payload, "roundNumber", -1);
+            CardPlayed?.Invoke(playerId, cardId, roundNumber);
         }
     }
 
@@ -238,5 +264,71 @@ public sealed class ColyseusClientAdapter
         }
 
         return string.Empty;
+    }
+
+    /// <summary>
+    /// Colyseus payload numbers can be materialized as any primitive numeric
+    /// CLR type depending on the JSON decoder and platform.  Normalize them at
+    /// the network boundary so presentation code never has to cast blindly.
+    /// </summary>
+    private static int ReadInt(Dictionary<string, object> payload, string key, int fallback)
+    {
+        if (payload == null || !payload.TryGetValue(key, out var value) || value == null)
+        {
+            return fallback;
+        }
+
+        long integer;
+        switch (value)
+        {
+            case byte number:
+                integer = number;
+                break;
+            case sbyte number:
+                integer = number;
+                break;
+            case short number:
+                integer = number;
+                break;
+            case ushort number:
+                integer = number;
+                break;
+            case int number:
+                integer = number;
+                break;
+            case uint number when number <= int.MaxValue:
+                integer = number;
+                break;
+            case long number:
+                integer = number;
+                break;
+            case ulong number when number <= int.MaxValue:
+                integer = (long)number;
+                break;
+            case float number when !float.IsNaN(number) && !float.IsInfinity(number):
+                return number >= int.MinValue && number <= int.MaxValue
+                    ? (int)Math.Truncate(number)
+                    : fallback;
+            case double number when !double.IsNaN(number) && !double.IsInfinity(number):
+                return number >= int.MinValue && number <= int.MaxValue
+                    ? (int)Math.Truncate(number)
+                    : fallback;
+            case decimal number:
+                return number >= int.MinValue && number <= int.MaxValue
+                    ? decimal.ToInt32(decimal.Truncate(number))
+                    : fallback;
+            case string text when int.TryParse(
+                text,
+                NumberStyles.Integer,
+                CultureInfo.InvariantCulture,
+                out var parsed):
+                return parsed;
+            default:
+                return fallback;
+        }
+
+        return integer >= int.MinValue && integer <= int.MaxValue
+            ? (int)integer
+            : fallback;
     }
 }

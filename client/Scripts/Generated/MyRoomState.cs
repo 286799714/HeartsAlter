@@ -10,7 +10,7 @@ using Colyseus.Schema;
 using UnityEngine.Scripting;
 #endif
 
-namespace HeartsAlter.Protocol {
+namespace HeartsAlter.Scripts.Generated {
 	public partial class MyRoomState : Schema {
 #if UNITY_5_3_OR_NEWER
 [Preserve]

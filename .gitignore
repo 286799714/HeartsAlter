@@ -1,15 +1,29 @@
-# Generated/editor state
-.godot/
-*.import
+# IDE/user-local state
+.idea/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Dependency/build output
-server/node_modules/
-server/build/
-client/.godot/
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Checked-in non-secret server defaults
+!server/.env.development
+!server/.env.production
+
+# Logs
+*.log
+npm-debug.log*
 
 # Local inspection/download scratch space
 tmp_colyseus_pkg/
 
-# OS/editor noise
+# OS noise
 .DS_Store
 Thumbs.db
+Desktop.ini

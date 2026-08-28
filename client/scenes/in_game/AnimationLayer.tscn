@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cowdm8l8xfy8i"]
+
+[node name="AnimationLayer" type="Control" unique_id=1023855864]
+layout_mode = 3
+anchors_preset = 0
