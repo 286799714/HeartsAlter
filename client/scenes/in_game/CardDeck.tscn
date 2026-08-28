@@ -15,46 +15,44 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("1_m27ya")
 
-[node name="Thickness" type="Control" parent="." unique_id=718901461]
+[node name="Thickness" type="Control" parent="." unique_id=718901461 node_paths=PackedStringArray("_layers", "_topCard")]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2_piyeu")
+_layers = [NodePath("../Layer"), NodePath("../Layer2"), NodePath("../Layer3"), NodePath("../Layer4"), NodePath("../Layer5")]
+_topCard = NodePath("../TopCard")
 
-[node name="Layer" parent="Thickness" unique_id=1017717030 instance=ExtResource("3_7cnn2")]
+[node name="Layer" parent="." unique_id=1017717030 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
-offset_left = -80.0
-offset_top = -207.0
-offset_right = 40.0
-offset_bottom = -40.0
 
-[node name="Layer2" parent="Thickness" unique_id=1661670390 instance=ExtResource("3_7cnn2")]
+[node name="Layer2" parent="." unique_id=1661670390 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
-offset_left = -82.0
-offset_top = -209.0
-offset_right = 38.0
-offset_bottom = -42.0
+offset_left = -62.0
+offset_top = -169.0
+offset_right = 58.0
+offset_bottom = -2.0
 
-[node name="Layer3" parent="Thickness" unique_id=660771755 instance=ExtResource("3_7cnn2")]
+[node name="Layer3" parent="." unique_id=660771755 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
-offset_left = -84.0
-offset_top = -211.0
-offset_right = 36.0
-offset_bottom = -44.0
+offset_left = -64.0
+offset_top = -171.0
+offset_right = 56.0
+offset_bottom = -4.0
 
-[node name="Layer4" parent="Thickness" unique_id=913505555 instance=ExtResource("3_7cnn2")]
+[node name="Layer4" parent="." unique_id=913505555 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
-offset_left = -86.0
-offset_top = -213.0
-offset_right = 34.0
-offset_bottom = -46.0
+offset_left = -66.0
+offset_top = -173.0
+offset_right = 54.0
+offset_bottom = -6.0
 
-[node name="Layer5" parent="Thickness" unique_id=1829120295 instance=ExtResource("3_7cnn2")]
+[node name="Layer5" parent="." unique_id=1829120295 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
-offset_left = -88.0
-offset_top = -215.0
-offset_right = 32.0
-offset_bottom = -48.0
+offset_left = -68.0
+offset_top = -175.0
+offset_right = 52.0
+offset_bottom = -8.0
 
 [node name="TopCard" parent="." unique_id=48024929 instance=ExtResource("3_7cnn2")]
 layout_mode = 1
