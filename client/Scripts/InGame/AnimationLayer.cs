@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using HeartsAlter.Scripts.InGame.Card;
 using CardPose2D = HeartsAlter.Scripts.InGame.Card.CardPose2D;
-using PlayingCard = HeartsAlter.Scripts.InGame.Card.Card;
 
-namespace HeartsAlter.Scripts.InGame.AnimationLayer;
+namespace HeartsAlter.Scripts.InGame;
 
 /// <summary>
 /// Shared overlay for transient card animations.
@@ -36,11 +36,11 @@ public partial class AnimationLayer : Control
 
 	private sealed class FlightState
 	{
-		public PlayingCard Card = null!;
+		public CardControl Card = null!;
 		public Node2D Carrier = null!;
 		public Tween FlightTween = null!;
-		public PlayingCard.FlipCompletedEventHandler FlipHandler = null!;
-		public Action<PlayingCard> Completion = null!;
+		public CardControl.FlipCompletedEventHandler FlipHandler = null!;
+		public Action<CardControl> Completion = null!;
 		public bool FlightFinished;
 		public bool FlipFinished;
 	}
@@ -51,15 +51,15 @@ public partial class AnimationLayer : Control
 	/// First active card, retained as a convenience for single-card callers.
 	/// Use <see cref="ActiveCards"/> when several cards are flying.
 	/// </summary>
-	public PlayingCard ActiveCard =>
+	public CardControl ActiveCard =>
 		_flights.Count > 0 ? _flights[0].Card : null!;
 
 	/// <summary>Snapshot of all cards currently owned by this layer.</summary>
-	public IReadOnlyList<PlayingCard> ActiveCards
+	public IReadOnlyList<CardControl> ActiveCards
 	{
 		get
 		{
-			List<PlayingCard> cards = new();
+			List<CardControl> cards = new();
 			foreach (FlightState state in _flights)
 			{
 				if (state.Card is not null &&
@@ -91,14 +91,14 @@ public partial class AnimationLayer : Control
 	/// <paramref name="targetPose"/>. The card must already be a child of this
 	/// layer; the method then moves it under a private carrier. The completion
 	/// callback runs after both the flight and an optional face flip finish, so
-	/// callers can safely call <see cref="MainHandLayout.ReceiveCard"/> there.
+	/// callers can safely call <see cref="Ingame.MainHandLayout.MainHandLayout.ReceiveCard"/> there.
 	/// </summary>
 	/// <returns>False when the layer/card is not ready or the card is busy.</returns>
 	public bool PlayCardToPose(
-		PlayingCard card,
+		CardControl card,
 		CardPose2D sourcePose,
 		CardPose2D targetPose,
-		Action<PlayingCard> completed = null)
+		Action<CardControl> completed = null)
 	{
 		if (card is null ||
 			!GodotObject.IsInstanceValid(card) ||
@@ -227,7 +227,7 @@ public partial class AnimationLayer : Control
 	}
 
 	/// <summary>Cancels only the specified card's flight.</summary>
-	public void CancelAnimation(PlayingCard card, bool freeCard = true)
+	public void CancelAnimation(CardControl card, bool freeCard = true)
 	{
 		FlightState state = FindFlight(card);
 		if (state is null)
@@ -239,7 +239,7 @@ public partial class AnimationLayer : Control
 
 	private void StartFlip(FlightState state, bool toFront)
 	{
-		PlayingCard card = state.Card;
+		CardControl card = state.Card;
 		if (!GodotObject.IsInstanceValid(card))
 		{
 			state.FlipFinished = true;
@@ -303,7 +303,7 @@ public partial class AnimationLayer : Control
 			return;
 		}
 
-		PlayingCard card = state.Card;
+		CardControl card = state.Card;
 		if (!GodotObject.IsInstanceValid(card))
 		{
 			CancelState(state, freeCard: false);
@@ -313,7 +313,7 @@ public partial class AnimationLayer : Control
 
 		DetachFlipListener(state);
 		_flights.Remove(state);
-		Action<PlayingCard> callback = state.Completion;
+		Action<CardControl> callback = state.Completion;
 		state.Completion = null;
 		state.FlightTween = null;
 
@@ -371,7 +371,7 @@ public partial class AnimationLayer : Control
 
 	private void DetachFlipListener(FlightState state)
 	{
-		PlayingCard card = state.Card;
+		CardControl card = state.Card;
 		if (state.FlipHandler is null ||
 			card is null ||
 			!GodotObject.IsInstanceValid(card))
@@ -384,7 +384,7 @@ public partial class AnimationLayer : Control
 		state.FlipHandler = null;
 	}
 
-	private FlightState FindFlight(PlayingCard card)
+	private FlightState FindFlight(CardControl card)
 	{
 		if (card is null)
 			return null!;
@@ -414,7 +414,7 @@ public partial class AnimationLayer : Control
 
 	private static void ApplyPose(
 		Node2D carrier,
-		PlayingCard card,
+		CardControl card,
 		Transform2D localTransform,
 		Vector2 size)
 	{

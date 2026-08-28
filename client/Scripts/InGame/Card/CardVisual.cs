@@ -18,7 +18,7 @@ public partial class CardVisual : Control
 	[Signal]
 	public delegate void FlipCompletedEventHandler();
 	
-	private Card _card = null!;
+	private CardControl _card = null!;
 	private bool _isBound;
     private CardData Data => _card.Data;
 	
@@ -338,7 +338,7 @@ public partial class CardVisual : Control
         );
     }
 	
-	public void Bind(Card card)
+	public void Bind(CardControl card)
 	{
 		ArgumentNullException.ThrowIfNull(card);
 		_card = card;

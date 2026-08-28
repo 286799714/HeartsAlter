@@ -1,14 +1,13 @@
 using System;
 using Godot;
 using HeartsAlter.Scripts.InGame.Card;
-using PlayingCard = HeartsAlter.Scripts.InGame.Card.Card;
 
-namespace HeartsAlter.Scripts.InGame.CardDeck;
+namespace HeartsAlter.Scripts.InGame;
 
 public partial class CardDeck : Control
 {
     [Export] private Godot.Collections.Array<Control> _layers = [];
-    [Export] private PlayingCard _topCard = null!;
+    [Export] private CardControl _topCard = null!;
 
     public int MaxCardCount { get; private set; } = 1;
 	
@@ -31,13 +30,13 @@ public partial class CardDeck : Control
     /// assign its <see cref="CardData"/>, and then hand it to a destination
     /// layout after the flight tween completes.
     /// </summary>
-    public PlayingCard DuplicateTopCard()
+    public CardControl DuplicateTopCard()
     {
         if (!IsInstanceValid(_topCard))
             return null!;
 
         Node duplicateNode = _topCard.Duplicate();
-        if (duplicateNode is not PlayingCard duplicate)
+        if (duplicateNode is not CardControl duplicate)
         {
             duplicateNode.QueueFree();
             return null!;
@@ -52,7 +51,7 @@ public partial class CardDeck : Control
     /// Try-pattern variant of <see cref="DuplicateTopCard"/> for callers that
     /// want to handle an incompletely configured deck without exceptions.
     /// </summary>
-    public bool TryDuplicateTopCard(out PlayingCard duplicate)
+    public bool TryDuplicateTopCard(out CardControl duplicate)
     {
         duplicate = DuplicateTopCard();
         return duplicate is not null && IsInstanceValid(duplicate);

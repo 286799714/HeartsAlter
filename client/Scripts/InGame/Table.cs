@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Godot;
 using CardPose2D = HeartsAlter.Scripts.InGame.Card.CardPose2D;
 using CardData = HeartsAlter.Scripts.InGame.Card.CardData;
-using PlayingCard = HeartsAlter.Scripts.InGame.Card.Card;
+using PlayingCard = HeartsAlter.Scripts.InGame.Card.CardControl;
 using PokerRank = HeartsAlter.Scripts.InGame.Card.PokerRank;
 using PokerSuit = HeartsAlter.Scripts.InGame.Card.PokerSuit;
-using HeartsAlter.Scripts.InGame.CardDeck;
-using HeartsAlter.Scripts.InGame.AnimationLayer;
+
+namespace HeartsAlter.Scripts.InGame;
 
 /// <summary>
 /// Small offline table controller used by the scene preview.  It coordinates
@@ -243,41 +243,41 @@ public partial class Table : Control
 	private bool CanDraw()
 	{
 		return _cardDeck is not null &&
-			GodotObject.IsInstanceValid(_cardDeck) &&
-			_handLayouts.Count > 0 &&
-			_animationLayer is not null &&
-			GodotObject.IsInstanceValid(_animationLayer) &&
-			_animationLayer.IsInsideTree() &&
-			_cardDeck.CardCount > 0;
+			   GodotObject.IsInstanceValid(_cardDeck) &&
+			   _handLayouts.Count > 0 &&
+			   _animationLayer is not null &&
+			   GodotObject.IsInstanceValid(_animationLayer) &&
+			   _animationLayer.IsInsideTree() &&
+			   _cardDeck.CardCount > 0;
 	}
 
 	private bool IsDrawKey(InputEventKey keyEvent)
 	{
 		return keyEvent.Keycode == DrawKey ||
-			keyEvent.PhysicalKeycode == DrawKey;
+			   keyEvent.PhysicalKeycode == DrawKey;
 	}
 
 	private void ResolveSceneReferences()
 	{
-		if (_cardDeck is null || !GodotObject.IsInstanceValid(_cardDeck))
+		if (_cardDeck is null || !IsInstanceValid(_cardDeck))
 			_cardDeck = GetNodeOrNull<CardDeck>("CardDeck");
 
-		if (_mainHandLayout is null || !GodotObject.IsInstanceValid(_mainHandLayout))
+		if (_mainHandLayout is null || !IsInstanceValid(_mainHandLayout))
 			_mainHandLayout = GetNodeOrNull<MainHandLayout>("MainHandLayout");
 
-		if (_otherHandLayout is null || !GodotObject.IsInstanceValid(_otherHandLayout))
+		if (_otherHandLayout is null || !IsInstanceValid(_otherHandLayout))
 			_otherHandLayout = GetNodeOrNull<OtherHandLayout>("OtherHandLayout");
 
-		if (_otherHandLayout2 is null || !GodotObject.IsInstanceValid(_otherHandLayout2))
+		if (_otherHandLayout2 is null || !IsInstanceValid(_otherHandLayout2))
 			_otherHandLayout2 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout2");
 
-		if (_otherHandLayout3 is null || !GodotObject.IsInstanceValid(_otherHandLayout3))
+		if (_otherHandLayout3 is null || !IsInstanceValid(_otherHandLayout3))
 			_otherHandLayout3 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout3");
+		
+		if (_animationLayer is null || !IsInstanceValid(_animationLayer))
+				_animationLayer = GetNodeOrNull<AnimationLayer>("AnimationLayer");
 
-		if (_animationLayer is null || !GodotObject.IsInstanceValid(_animationLayer))
-			_animationLayer = GetNodeOrNull<AnimationLayer>("AnimationLayer");
-
-		if (_drawCardButton is null || !GodotObject.IsInstanceValid(_drawCardButton))
+		if (_drawCardButton is null || !IsInstanceValid(_drawCardButton))
 			_drawCardButton = GetNodeOrNull<Button>("DrawCardButton");
 
 		_handLayouts.Clear();
@@ -324,8 +324,8 @@ public partial class Table : Control
 	private static bool IsValidHandLayout(Control handLayout)
 	{
 		return handLayout is MainHandLayout or OtherHandLayout &&
-			GodotObject.IsInstanceValid(handLayout) &&
-			handLayout.IsInsideTree();
+			   GodotObject.IsInstanceValid(handLayout) &&
+			   handLayout.IsInsideTree();
 	}
 
 	private static CardPose2D GetCurrentReceivePose(Control handLayout, PlayingCard card)

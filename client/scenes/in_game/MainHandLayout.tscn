@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bg6tvprpjlpck"]
 
-[ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/Ingame/MainHandLayout/MainHandLayout.cs" id="1_layout"]
+[ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/InGame/MainHandLayout/MainHandLayout.cs" id="1_layout"]
 
 [node name="MainHandLayout" type="Control" unique_id=1689990100]
 layout_mode = 3

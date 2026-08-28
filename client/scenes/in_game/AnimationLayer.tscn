@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cowdm8l8xfy8i"]
+[gd_scene format=3 uid="uid://cowdm8l8xfy8i"]
 
-[ext_resource type="Script" uid="uid://c8xan1m8layer" path="res://Scripts/Ingame/AnimationLayer/AnimationLayer.cs" id="1_animation"]
+[ext_resource type="Script" uid="uid://c8xan1m8layer" path="res://Scripts/InGame/AnimationLayer/AnimationLayer.cs" id="1_animation"]
 
 [node name="AnimationLayer" type="Control" unique_id=1023855864]
 layout_mode = 3

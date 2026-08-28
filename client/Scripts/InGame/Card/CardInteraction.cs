@@ -5,7 +5,7 @@ namespace HeartsAlter.Scripts.InGame.Card;
 
 public partial class CardInteraction : Control
 {
-	private Card _card = null!;
+	private CardControl _card = null!;
 
 	/// <summary>
 	/// Raised after a primary-button click is released over this card.
@@ -15,7 +15,7 @@ public partial class CardInteraction : Control
 	[Signal]
 	public delegate void ClickedEventHandler();
 	
-	public void Bind(Card card)
+	public void Bind(CardControl card)
 	{
 		ArgumentNullException.ThrowIfNull(card);
 		_card = card;

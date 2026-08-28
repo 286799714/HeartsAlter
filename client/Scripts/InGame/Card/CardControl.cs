@@ -3,7 +3,7 @@ using Godot;
 
 namespace HeartsAlter.Scripts.InGame.Card;
 
-public partial class Card : Control
+public partial class CardControl : Control
 {
 	public const float DefaultWidth = 120.0f;
 	public const float DefaultHeight = 167.0f;
@@ -75,7 +75,7 @@ public partial class Card : Control
 
 	/// <summary>
 	/// Public access to the interaction child for callers that need to inspect
-	/// or configure it. Clicks are normally consumed through <see cref="Clicked"/>.
+	/// or configure it. Clicks are normally consumed through <see cref="CardControl.Clicked"/>.
 	/// </summary>
 	public CardInteraction Interaction => _cardInteraction;
 
