@@ -1,12 +1,14 @@
 using System;
 using Godot;
+using HeartsAlter.Scripts.InGame.Card;
+using PlayingCard = HeartsAlter.Scripts.InGame.Card.Card;
 
 namespace HeartsAlter.Scripts.InGame.CardDeck;
 
 public partial class CardDeck : Control
 {
     [Export] private Godot.Collections.Array<Control> _layers = [];
-    [Export] private Control _topCard = null!;
+    [Export] private PlayingCard _topCard = null!;
 
     public int MaxCardCount { get; private set; } = 1;
 	
@@ -18,19 +20,34 @@ public partial class CardDeck : Control
     }
 
     /// <summary>
-    /// 获取当前牌堆顶的牌的 Global Transform
+    /// 获取当前牌堆顶的牌在画布坐标系中的姿态。
     /// </summary>
-    /// <param name="topTransform"> 牌堆顶的牌的 Global Transform </param>
+    /// <param name="topPose">牌堆顶的牌的画布变换、尺寸和正反面。</param>
     /// <returns> 如果牌堆顶没牌，返回 false </returns>
-    public bool TryGetTopTransform(out Transform2D topTransform)
+    /// <exception cref="InvalidOperationException">
+    /// 牌堆场景没有配置厚度层或顶牌。
+    /// </exception>
+    public bool TryGetTopPose(out CardPose2D topPose)
     {
         int index = GetTopLayerIndex();
         if (index == -1)
         {
-            topTransform = default;
+            topPose = default;
             return false;
         }
-        topTransform = _layers[index].GetGlobalTransform();
+
+        if (!IsInstanceValid(_topCard))
+        {
+            throw new InvalidOperationException(
+                "A valid top card must be assigned before querying its pose."
+            );
+        }
+
+        topPose = new CardPose2D(
+            _topCard.GetGlobalTransformWithCanvas(),
+            new Vector2(_topCard.CardWidth, _topCard.CardHeight),
+            _topCard.IsFaceUp
+        );
         return true;
     }
 
