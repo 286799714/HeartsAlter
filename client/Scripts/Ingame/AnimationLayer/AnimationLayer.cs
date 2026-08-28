@@ -12,9 +12,9 @@ namespace HeartsAlter.Scripts.InGame.AnimationLayer;
 /// A pose is expressed in canvas coordinates. Every flight converts its two
 /// poses into this layer's local coordinate system and animates a small Node2D
 /// carrier. The carrier keeps the complete Transform2D (including rotation and
-/// scale) while the Card itself remains an ordinary, top-left anchored
-/// Control. Multiple carriers are independent, so rapid draw requests can be
-/// shown at the same time.
+/// scale), with its origin aligned to the card center while the Card itself
+/// remains an ordinary, top-left anchored Control. Multiple carriers are
+/// independent, so rapid draw requests can be shown at the same time.
 /// </summary>
 public partial class AnimationLayer : Control
 {
@@ -111,12 +111,24 @@ public partial class AnimationLayer : Control
 			return false;
 		}
 
-		Transform2D sourceTransform = CanvasToLocal(sourcePose.CanvasTransform);
-		Transform2D targetTransform = CanvasToLocal(targetPose.CanvasTransform);
+		// CardPose2D stores the card's top-left transform. Convert both poses to
+		// center transforms before interpolation so a rotation follows the card
+		// center instead of making the center orbit around a corner when the
+		// source and destination orientations differ.
+		Transform2D sourceTransform = ToCenterTransform(
+			CanvasToLocal(sourcePose.CanvasTransform),
+			sourcePose.Size
+		);
+		Transform2D targetTransform = ToCenterTransform(
+			CanvasToLocal(targetPose.CanvasTransform),
+			targetPose.Size
+		);
 
 		// A Control's Transform2D setter is not exposed by GodotSharp. Normalize
 		// the card and animate a Node2D carrier instead, preserving the complete
-		// matrix even when the source/target controls are rotated or scaled.
+		// matrix even when the source/target controls are rotated or scaled. The
+		// carrier's origin is aligned to the card center, so rotation never pivots
+		// around the card's top-left corner.
 		card.SetAnchorsPreset(LayoutPreset.TopLeft, keepOffsets: true);
 		card.Position = Vector2.Zero;
 		card.Rotation = 0.0f;
@@ -413,7 +425,19 @@ public partial class AnimationLayer : Control
 			return;
 		}
 
+		// The incoming transform describes the card center. Keep the Card's local
+		// origin at its top-left by offsetting it from the carrier; recompute this
+		// offset on every frame because the flight may also interpolate its size.
 		card.Size = size;
+		Vector2 halfSize = size * 0.5f;
+		card.Position = -halfSize;
 		carrier.Transform = localTransform;
+	}
+
+	private static Transform2D ToCenterTransform(
+		Transform2D topLeftTransform,
+		Vector2 size)
+	{
+		return topLeftTransform * new Transform2D(0.0f, size * 0.5f);
 	}
 }
