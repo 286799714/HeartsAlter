@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cj4j3imhm0qt2"]
 
-[ext_resource type="Script" uid="uid://biqthl1ucn8e1" path="res://Scripts/Ingame/Card/Card.cs" id="1_t6800"]
-[ext_resource type="Script" uid="uid://byybyo3ducj3p" path="res://Scripts/Ingame/Card/CardVisual.cs" id="2_0306u"]
+[ext_resource type="Script" uid="uid://biqthl1ucn8e1" path="res://Scripts/InGame/Card/Card.cs" id="1_t6800"]
+[ext_resource type="Script" uid="uid://byybyo3ducj3p" path="res://Scripts/InGame/Card/CardVisual.cs" id="2_0306u"]
 [ext_resource type="Resource" uid="uid://67ui1ybayqnh" path="res://assets/resources/StandardCardResource.tres" id="3_hi7ln"]
-[ext_resource type="Script" uid="uid://b7q4tf2y3ta0v" path="res://Scripts/Ingame/Card/CardInteraction.cs" id="4_hi7ln"]
+[ext_resource type="Script" uid="uid://b7q4tf2y3ta0v" path="res://Scripts/InGame/Card/CardInteraction.cs" id="4_hi7ln"]
 [ext_resource type="Texture2D" uid="uid://cq4rxdyd0nbe6" path="res://assets/textures/cards/Club2.png" id="4_o6jgq"]
 [ext_resource type="Shader" uid="uid://cqm6x7aruqur1" path="res://assets/shaders/3DPerspectiveFor2D.gdshader" id="4_orrj4"]
 [ext_resource type="Texture2D" uid="uid://b2hro2xdjimer" path="res://assets/textures/cards/Background.png" id="5_orrj4"]
@@ -27,8 +27,6 @@ shader_parameter/rect_size = Vector2(100, 140)
 shader_parameter/inset = 0.0
 
 [node name="Card" type="Control" unique_id=1017717030 node_paths=PackedStringArray("_visual", "_cardInteraction")]
-custom_minimum_size = Vector2(120, 167)
-custom_maximum_size = Vector2(180, 250.5)
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
