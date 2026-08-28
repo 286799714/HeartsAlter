@@ -19,6 +19,7 @@ public partial class CardVisual : Control
 	public delegate void FlipCompletedEventHandler();
 	
 	private Card _card = null!;
+	private bool _isBound;
     private CardData Data => _card.Data;
 	
 	public bool IsFront { get; private set; }
@@ -64,14 +65,23 @@ public partial class CardVisual : Control
         Resized += SyncShaderRectSize;
 
         SyncShaderRectSize();
+        if (_hasSetup && _isBound)
+            ApplySetup();
+        else
+            SetFace(false);
     }
 
     public void Setup(bool startFaceUp = false)
     {
-        if (!IsNodeReady()) return;
-        
         _initialFace = startFaceUp;
-            
+        _hasSetup = true;
+
+        if (_isBound && IsNodeReady())
+            ApplySetup();
+    }
+
+    private void ApplySetup()
+    {
         _front.Texture = _resource.GetFront(Data.Suit, Data.Rank);
 
         _back.Texture ??= _resource.GetBack();
@@ -332,12 +342,16 @@ public partial class CardVisual : Control
 	{
 		ArgumentNullException.ThrowIfNull(card);
 		_card = card;
+		_isBound = true;
+
+		// Setup may intentionally be called before the card is added to the
+		// scene tree. In that case CardVisual._Ready had to defer loading the
+		// texture until its owner was bound; apply it now that both conditions
+		// are satisfied.
+		if (_hasSetup && IsNodeReady())
+			ApplySetup();
 	}
 
-	public override void _Process(double delta)
-	{
-	}
-    
     public void Release()
     {
         if (_activeFlipTween is { } flip &&

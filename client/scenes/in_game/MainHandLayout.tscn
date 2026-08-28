@@ -1,11 +1,25 @@
 [gd_scene format=3 uid="uid://bg6tvprpjlpck"]
 
+[ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/Ingame/MainHandLayout/MainHandLayout.cs" id="1_layout"]
+
 [node name="MainHandLayout" type="Control" unique_id=1689990100]
 layout_mode = 3
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -190.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_layout")
+MaxSpacing = 42.0
+MinSpacing = 0.0
+LayoutWidth = 0.0
+LayoutTweenDuration = 0.24
+SelectedLift = 32.0
+SelectionTweenDuration = 0.16
+LayoutTransition = 1
+LayoutEase = 2
+SelectionTransition = 1
+SelectionEase = 2

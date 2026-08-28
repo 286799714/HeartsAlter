@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CardResource" format=3 uid="uid://67ui1ybayqnh"]
 
 [ext_resource type="Texture2D" uid="uid://b2hro2xdjimer" path="res://assets/textures/cards/Background.png" id="1_jjkh7"]
-[ext_resource type="Script" uid="uid://bt88sr8vetqux" path="res://Scripts/InGame/Card/CardResource.cs" id="1_yltlw"]
+[ext_resource type="Script" uid="uid://bt88sr8vetqux" path="res://Scripts/Ingame/Card/CardResource.cs" id="1_yltlw"]
 [ext_resource type="Texture2D" uid="uid://dw25tj12rvhq5" path="res://assets/textures/cards/Spade2.png" id="2_swrro"]
 [ext_resource type="Texture2D" uid="uid://d3o66a0ee04p8" path="res://assets/textures/cards/Spade3.png" id="3_lt2dt"]
 [ext_resource type="Texture2D" uid="uid://daq7h87es5spn" path="res://assets/textures/cards/Spade4.png" id="4_fwd6i"]

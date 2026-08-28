@@ -6,20 +6,19 @@ namespace HeartsAlter.Scripts.InGame.Card;
 public partial class CardInteraction : Control
 {
 	private Card _card = null!;
-	
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
+
+	/// <summary>
+	/// Raised after a primary-button click is released over this card.
+	/// Selection belongs to the owning hand layout; this layer only reports
+	/// the interaction and deliberately does not mutate the card face.
+	/// </summary>
+	[Signal]
+	public delegate void ClickedEventHandler();
 	
 	public void Bind(Card card)
 	{
 		ArgumentNullException.ThrowIfNull(card);
 		_card = card;
-	}
-	
-	public override void _Process(double delta)
-	{
 	}
 	
 	public override void _GuiInput(InputEvent @event)
@@ -29,8 +28,11 @@ public partial class CardInteraction : Control
 			    ButtonIndex: MouseButton.Left,
 			    Pressed: false
 		    }) return;
+
+		if (_card is null || !IsInstanceValid(_card))
+			return;
 		
-		_card._visual.ToggleFace();
+		EmitSignal(SignalName.Clicked);
 		AcceptEvent();
 	}
 }
