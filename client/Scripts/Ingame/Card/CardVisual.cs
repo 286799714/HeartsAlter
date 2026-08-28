@@ -58,43 +58,27 @@ public partial class CardVisual : Control
         _back.StretchMode =
             TextureRect.StretchModeEnum.Scale;
 
-        // 输入由 PokerCard 自己处理。
         _front.MouseFilter = MouseFilterEnum.Ignore;
         _back.MouseFilter = MouseFilterEnum.Ignore;
 
         Resized += SyncShaderRectSize;
 
         SyncShaderRectSize();
-
-        if (_hasSetup)
-            ApplySetup();
-        else
-            SetFace(false);
     }
 
-
-    /// <summary>
-    /// 可以在 AddChild 前或后调用。
-    /// </summary>
     public void Setup(bool startFaceUp = false)
     {
+        if (!IsNodeReady()) return;
+        
         _initialFace = startFaceUp;
-        _hasSetup = true;
-
-        if (IsNodeReady())
-            ApplySetup();
-    }
-
-    private void ApplySetup()
-    {
+            
         _front.Texture = _resource.GetFront(Data.Suit, Data.Rank);
 
-        _back.Texture = _resource.GetBack();
+        _back.Texture ??= _resource.GetBack();
 
         SetFace(_initialFace);
     }
-
-
+    
     // ============================================================
     // Material
     // ============================================================

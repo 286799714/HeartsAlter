@@ -23,7 +23,7 @@ public partial class Card : Control
 	public void Setup(CardData data)
 	{
 		Data = data;
-		_visual.Setup();
+		_visual.Setup(_visual.IsFront);
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://bg6tvprpjlpck"]
 
-[ext_resource type="PackedScene" uid="uid://cj4j3imhm0qt2" path="res://scenes/in_game/Card.tscn" id="1_hjqsi"]
-
 [node name="MainHandLayout" type="Control" unique_id=1689990100]
 layout_mode = 3
 anchors_preset = 7
@@ -11,10 +9,3 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="Card" parent="." unique_id=1017717030 instance=ExtResource("1_hjqsi")]
-layout_mode = 1
-offset_left = -62.0
-offset_top = -168.0
-offset_right = 58.0
-offset_bottom = -1.0
