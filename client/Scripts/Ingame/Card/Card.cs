@@ -5,6 +5,9 @@ namespace HeartsAlter.Scripts.InGame.Card;
 
 public partial class Card : Control
 {
+	public const float DefaultWidth = 120.0f;
+	public const float DefaultHeight = 167.0f;
+
 	[Export]
 	internal CardVisual _visual;
 
@@ -20,6 +23,26 @@ public partial class Card : Control
 	public delegate void ClickedEventHandler();
 	
 	public CardData Data { get; private set; }
+
+	/// <summary>
+	/// Current untransformed width of the card. Hand layouts use this interface
+	/// instead of depending on the authored scene offsets.
+	/// </summary>
+	public float CardWidth => ResolveDimension(
+		Size.X,
+		CustomMinimumSize.X,
+		DefaultWidth
+	);
+
+	/// <summary>
+	/// Current untransformed height (the portrait card's long side). The value
+	/// excludes <see cref="CanvasItem.Scale"/>.
+	/// </summary>
+	public float CardHeight => ResolveDimension(
+		Size.Y,
+		CustomMinimumSize.Y,
+		DefaultHeight
+	);
 
 	/// <summary>
 	/// The position assigned by a hand layout before the selection lift is
@@ -70,6 +93,28 @@ public partial class Card : Control
 	}
 
 	/// <summary>
+	/// Resizes the card proportionally so its long side equals
+	/// <paramref name="targetHeight"/>. Non-positive or non-finite targets are
+	/// ignored, leaving the current dimensions unchanged.
+	/// </summary>
+	public void ResizeToHeight(float targetHeight)
+	{
+		if (!float.IsFinite(targetHeight) || targetHeight <= 0.0f)
+			return;
+
+		float currentHeight = CardHeight;
+		if (currentHeight <= 0.0f)
+			return;
+		if (Mathf.IsEqualApprox(currentHeight, targetHeight))
+			return;
+
+		float aspectRatio = CardWidth / currentHeight;
+		Vector2 targetSize = new(targetHeight * aspectRatio, targetHeight);
+		RelaxSizeConstraintsFor(targetSize);
+		Size = targetSize;
+	}
+
+	/// <summary>
 	/// Assigns the card's unlifted layout position and immediately applies the
 	/// current selection lift to the actual Control position.
 	/// </summary>
@@ -107,6 +152,33 @@ public partial class Card : Control
 	private void ForwardInteractionClick()
 	{
 		EmitSignal(SignalName.Clicked);
+	}
+
+	private static float ResolveDimension(
+		float size,
+		float minimumSize,
+		float fallback)
+	{
+		if (size > 0.0f)
+			return size;
+		if (minimumSize > 0.0f)
+			return minimumSize;
+		return fallback;
+	}
+
+	private void RelaxSizeConstraintsFor(Vector2 targetSize)
+	{
+		Vector2 minimumSize = CustomMinimumSize;
+		minimumSize.X = Mathf.Min(minimumSize.X, targetSize.X);
+		minimumSize.Y = Mathf.Min(minimumSize.Y, targetSize.Y);
+		CustomMinimumSize = minimumSize;
+
+		Vector2 maximumSize = CustomMaximumSize;
+		if (maximumSize.X > 0.0f)
+			maximumSize.X = Mathf.Max(maximumSize.X, targetSize.X);
+		if (maximumSize.Y > 0.0f)
+			maximumSize.Y = Mathf.Max(maximumSize.Y, targetSize.Y);
+		CustomMaximumSize = maximumSize;
 	}
 
 }

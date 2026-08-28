@@ -12,6 +12,9 @@ public partial class Main : Control
 	[Export]
 	private Button _addCardButton = null!;
 
+	[Export]
+	private Button _arrangeHandButton = null!;
+
 	private readonly RandomNumberGenerator _random = new();
 	
 	public override void _Ready()
@@ -24,16 +27,31 @@ public partial class Main : Control
 			_mainHandLayout = GetNodeOrNull<MainHandLayout>("MainHandLayout");
 		if (_addCardButton is null || !GodotObject.IsInstanceValid(_addCardButton))
 			_addCardButton = GetNodeOrNull<Button>("AddCardButton");
+		if (_arrangeHandButton is null || !GodotObject.IsInstanceValid(_arrangeHandButton))
+			_arrangeHandButton = GetNodeOrNull<Button>("ArrangeHandButton");
 
 		_random.Randomize();
 		if (_addCardButton is not null && GodotObject.IsInstanceValid(_addCardButton))
 			_addCardButton.Pressed += AddRandomCard;
+		if (_arrangeHandButton is not null && GodotObject.IsInstanceValid(_arrangeHandButton))
+			_arrangeHandButton.Pressed += ArrangeHand;
 	}
 
 	public override void _ExitTree()
 	{
 		if (_addCardButton is not null && GodotObject.IsInstanceValid(_addCardButton))
 			_addCardButton.Pressed -= AddRandomCard;
+		if (_arrangeHandButton is not null && GodotObject.IsInstanceValid(_arrangeHandButton))
+			_arrangeHandButton.Pressed -= ArrangeHand;
+	}
+
+	private void ArrangeHand()
+	{
+		if (_mainHandLayout is not null &&
+			GodotObject.IsInstanceValid(_mainHandLayout))
+		{
+			_mainHandLayout.ArrangeHand();
+		}
 	}
 	
 	private void AddRandomCard()

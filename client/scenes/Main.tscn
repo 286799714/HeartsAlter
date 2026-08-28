@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cj4j3imhm0qt2" path="res://scenes/in_game/Card.tscn" id="2_card"]
 [ext_resource type="PackedScene" uid="uid://bg6tvprpjlpck" path="res://scenes/in_game/MainHandLayout.tscn" id="3_hand"]
 
-[node name="Main" type="Control" unique_id=877354070 node_paths=PackedStringArray("_mainHandLayout", "_addCardButton")]
+[node name="Main" type="Control" unique_id=877354070 node_paths=PackedStringArray("_mainHandLayout", "_addCardButton", "_arrangeHandButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +16,7 @@ script = ExtResource("1_main")
 _cardScene = ExtResource("2_card")
 _mainHandLayout = NodePath("MainHandLayout")
 _addCardButton = NodePath("AddCardButton")
+_arrangeHandButton = NodePath("ArrangeHandButton")
 
 [node name="MainHandLayout" parent="." unique_id=1689990100 instance=ExtResource("3_hand")]
 layout_mode = 1
@@ -39,3 +40,15 @@ offset_right = -24.0
 offset_bottom = 64.0
 grow_horizontal = 0
 text = "加牌"
+
+[node name="ArrangeHandButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -248.0
+offset_top = 24.0
+offset_right = -136.0
+offset_bottom = 64.0
+grow_horizontal = 0
+text = "整理手牌"

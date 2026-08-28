@@ -1,22 +1,25 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HeartsAlter.Scripts.InGame.Card;
 
 /// <summary>
 /// Presents the local player's cards as an overlapping, centered hand.
 ///
-/// Layout calculation is deliberately separated from animation. A running
-/// layout tween is never interrupted: the newest calculation is retained as a
-/// pending target and starts only after the current tween reaches its target.
-/// Card selection uses a second, per-card tween and therefore can be reversed
-/// from its current position at any time.
+/// Layout calculation is deliberately separated from animation. Position
+/// plans run serially: a running layout tween is never interrupted, and only
+/// the newest pending plan is retained. Card selection runs in an independent
+/// per-card lane and can therefore be reversed at any time.
 /// </summary>
 public partial class MainHandLayout : Control
 {
-	private const float DefaultCardWidth = 120.0f;
-	private const float DefaultCardHeight = 167.0f;
 	private const float DefaultLayoutWidth = 1000.0f;
+
+	private sealed record LayoutPlan(
+		IReadOnlyList<Card> Order,
+		IReadOnlyDictionary<Card, Vector2> Targets
+	);
 
 	/// <summary>
 	/// Maximum horizontal distance between adjacent card origins. Because
@@ -73,19 +76,20 @@ public partial class MainHandLayout : Control
 	private readonly Dictionary<Card, Card.ClickedEventHandler> _clickHandlers = new();
 	private readonly Dictionary<Card, Tween> _selectionTweens = new();
 
-	// The active layout tween owns these two snapshots. They must not be
-	// replaced while the tween is running, since they define its end state and
-	// the collection position promised to callers.
+	// The active layout tween owns these snapshots. They must not be replaced
+	// while it is running, since they define its end state and the collection
+	// position promised to callers.
 	private readonly Dictionary<Card, Vector2> _activeLayoutStarts = new();
-	private readonly Dictionary<Card, Vector2> _activeLayoutTargets = new();
-	private Dictionary<Card, Vector2> _queuedLayoutTargets;
+	private LayoutPlan _activeLayoutPlan;
+	private LayoutPlan _pendingLayoutPlan;
 	private Tween _layoutTween;
 
 	private Card _selectedCard;
 
 	/// <summary>
-	/// Cards currently managed by this hand, in draw/order (left-to-right)
-	/// order. The returned view is read-only to callers.
+	/// Cards currently managed by this hand in logical left-to-right order. The
+	/// returned view is read-only; arranging the hand updates this order before
+	/// its position animation finishes.
 	/// </summary>
 	public IReadOnlyList<Card> Cards => _cards;
 
@@ -152,6 +156,9 @@ public partial class MainHandLayout : Control
 
 		_selectionTweens.Clear();
 		_clickHandlers.Clear();
+		_activeLayoutStarts.Clear();
+		_activeLayoutPlan = null;
+		_pendingLayoutPlan = null;
 	}
 
 	/// <summary>
@@ -162,19 +169,32 @@ public partial class MainHandLayout : Control
 	public void RecalculateLayout()
 	{
 		PruneInvalidCards();
+		SubmitLayoutPlan(CreateLayoutPlan(_cards));
+	}
 
-		Dictionary<Card, Vector2> targets = CalculateLayoutTargets();
+	/// <summary>
+	/// Sorts the hand from left to right by suit (Club, Diamond, Heart, Spade),
+	/// then by ascending rank within each suit, and animates every card to the
+	/// target calculated from that complete order. Equal keys retain their
+	/// current relative order.
+	/// </summary>
+	public void ArrangeHand()
+	{
+		PruneInvalidCards();
 
-		if (_layoutTween is { } activeTween && activeTween.IsValid())
-		{
-			// Do not mutate _activeLayoutTargets. GetCurrentCollectPosition()
-			// intentionally reports that snapshot until this tween completes.
-			_queuedLayoutTargets = targets;
-			return;
-		}
+		Card[] arrangedOrder = _cards
+			.OrderBy(card => GetSuitOrder(card.Data.Suit))
+			.ThenBy(card => GetRankOrder(card.Data.Rank))
+			.ToArray();
 
-		_layoutTween = null;
-		StartLayoutTween(targets);
+		// Build the complete plan snapshot before publishing the logical order
+		// or starting its position animation.
+		LayoutPlan plan = CreateLayoutPlan(arrangedOrder);
+
+		_cards.Clear();
+		_cards.AddRange(arrangedOrder);
+		UpdateZIndices();
+		SubmitLayoutPlan(plan);
 	}
 
 	/// <summary>
@@ -189,14 +209,14 @@ public partial class MainHandLayout : Control
 
 		if (_layoutTween is { } activeTween && activeTween.IsValid())
 		{
-			if (TryGetRightmost(_activeLayoutTargets, out Vector2 activePosition))
+			if (TryGetRightmost(_activeLayoutPlan, out Vector2 activePosition))
 				return activePosition;
 		}
 
-		if (_queuedLayoutTargets is not null &&
-			TryGetRightmost(_queuedLayoutTargets, out Vector2 queuedPosition))
+		if (_pendingLayoutPlan is not null &&
+			TryGetRightmost(_pendingLayoutPlan, out Vector2 pendingPosition))
 		{
-			return queuedPosition;
+			return pendingPosition;
 		}
 
 		if (_cards.Count > 0)
@@ -211,7 +231,12 @@ public partial class MainHandLayout : Control
 			return rightmostCard.LayoutPosition;
 		}
 
-		return CalculateEmptyCollectPosition(DefaultCardWidth, DefaultCardHeight);
+		float cardHeight = ResolveLayoutHeight();
+		if (cardHeight <= 0.0f)
+			cardHeight = Card.DefaultHeight;
+
+		float cardWidth = Card.DefaultWidth * cardHeight / Card.DefaultHeight;
+		return CalculateEmptyCollectPosition(cardWidth, cardHeight);
 	}
 
 	/// <summary>
@@ -225,6 +250,7 @@ public partial class MainHandLayout : Control
 			return;
 
 		PruneInvalidCards();
+		ResizeCardToLayoutHeight(card);
 
 		// Receiving the same instance twice should not teleport a card that may
 		// currently be moving. It is already part of the hand, so only ensure its
@@ -248,12 +274,14 @@ public partial class MainHandLayout : Control
 		bool hasCurrentLayout = _cards.Count > 0 ||
 			(_layoutTween is { } activeTween &&
 				activeTween.IsValid() &&
-				_activeLayoutTargets.Count > 0) ||
-			(_queuedLayoutTargets is not null && _queuedLayoutTargets.Count > 0);
+				_activeLayoutPlan is not null &&
+				_activeLayoutPlan.Targets.Count > 0) ||
+			(_pendingLayoutPlan is not null &&
+				_pendingLayoutPlan.Targets.Count > 0);
 
 		Vector2 collectPosition = hasCurrentLayout
 			? GetCurrentCollectPosition()
-			: CalculateEmptyCollectPosition(GetCardWidth(card), GetCardHeight(card));
+			: CalculateEmptyCollectPosition(card.CardWidth, card.CardHeight);
 
 		// Register before reparenting so ChildEnteredTree (when this method is
 		// called with a card from another parent) cannot start a tween from the
@@ -434,18 +462,29 @@ public partial class MainHandLayout : Control
 		_selectionTweens.Remove(card);
 	}
 
-	private Dictionary<Card, Vector2> CalculateLayoutTargets()
+	private LayoutPlan CreateLayoutPlan(IReadOnlyList<Card> order)
+	{
+		Card[] orderSnapshot = order.ToArray();
+		return new LayoutPlan(
+			orderSnapshot,
+			CalculateLayoutTargets(orderSnapshot)
+		);
+	}
+
+	private Dictionary<Card, Vector2> CalculateLayoutTargets(
+		IReadOnlyList<Card> order)
 	{
 		Dictionary<Card, Vector2> targets = new();
-		if (_cards.Count == 0)
+		if (order.Count == 0)
 			return targets;
 
 		float cardWidth = 0.0f;
 		float cardHeight = 0.0f;
-		foreach (Card card in _cards)
+		foreach (Card card in order)
 		{
-			cardWidth = Mathf.Max(cardWidth, GetCardWidth(card));
-			cardHeight = Mathf.Max(cardHeight, GetCardHeight(card));
+			ResizeCardToLayoutHeight(card);
+			cardWidth = Mathf.Max(cardWidth, card.CardWidth);
+			cardHeight = Mathf.Max(cardHeight, card.CardHeight);
 		}
 
 		float layoutWidth = ResolveLayoutWidth();
@@ -454,11 +493,11 @@ public partial class MainHandLayout : Control
 		float minSpacing = Mathf.Min(maxSpacing, Mathf.Max(0.0f, MinSpacing));
 
 		float spacing = 0.0f;
-		if (_cards.Count > 1)
+		if (order.Count > 1)
 		{
 			// Overlap means card width is counted once in the envelope, not once
 			// per card. This is the key fit rule for a fan-like hand.
-			float fittingSpacing = (layoutWidth - cardWidth) / (_cards.Count - 1);
+			float fittingSpacing = (layoutWidth - cardWidth) / (order.Count - 1);
 			fittingSpacing = Mathf.Max(0.0f, fittingSpacing);
 			spacing = Mathf.Min(maxSpacing, fittingSpacing);
 
@@ -467,42 +506,59 @@ public partial class MainHandLayout : Control
 				spacing = Mathf.Max(spacing, minSpacing);
 		}
 
-		float occupiedWidth = cardWidth + spacing * Mathf.Max(0, _cards.Count - 1);
+		float occupiedWidth = cardWidth + spacing * Mathf.Max(0, order.Count - 1);
 		float originX = ResolveLayoutOriginX(layoutWidth);
 		float firstX = originX + (layoutWidth - occupiedWidth) * 0.5f;
 		float baselineY = ResolveBaselineY(cardHeight);
 
-		for (int i = 0; i < _cards.Count; i++)
-			targets[_cards[i]] = new Vector2(firstX + spacing * i, baselineY);
+		for (int i = 0; i < order.Count; i++)
+			targets[order[i]] = new Vector2(firstX + spacing * i, baselineY);
 
 		return targets;
 	}
 
-	private void StartLayoutTween(Dictionary<Card, Vector2> targets)
+	private void SubmitLayoutPlan(LayoutPlan plan)
+	{
+		if (_layoutTween is { } activeTween && activeTween.IsValid())
+		{
+			// Reflow requests are latest-wins. Keeping only one pending snapshot
+			// avoids replaying stale intermediate layouts after rapid receives or
+			// viewport resizes.
+			_pendingLayoutPlan = plan;
+			return;
+		}
+
+		_layoutTween = null;
+		_activeLayoutPlan = null;
+		StartLayoutTween(plan);
+	}
+
+	private void StartLayoutTween(LayoutPlan plan)
 	{
 		_activeLayoutStarts.Clear();
-		_activeLayoutTargets.Clear();
+		_activeLayoutPlan = plan;
 
-		foreach (KeyValuePair<Card, Vector2> pair in targets)
+		foreach (KeyValuePair<Card, Vector2> pair in plan.Targets)
 		{
-			if (!IsInstanceValid(pair.Key))
+			if (!IsInstanceValid(pair.Key) || pair.Key.GetParent() != this)
 				continue;
 
 			_activeLayoutStarts[pair.Key] = pair.Key.LayoutPosition;
-			_activeLayoutTargets[pair.Key] = pair.Value;
 		}
 
-		if (_activeLayoutTargets.Count == 0)
+		if (_activeLayoutStarts.Count == 0)
 		{
 			_layoutTween = null;
-			StartQueuedLayoutIfAny();
+			_activeLayoutPlan = null;
+			StartPendingLayoutIfAny();
 			return;
 		}
 
 		bool hasMotion = false;
-		foreach (KeyValuePair<Card, Vector2> pair in _activeLayoutTargets)
+		foreach (KeyValuePair<Card, Vector2> pair in _activeLayoutStarts)
 		{
-			if (pair.Key.LayoutPosition.DistanceTo(pair.Value) > 0.01f)
+			if (plan.Targets.TryGetValue(pair.Key, out Vector2 target) &&
+				pair.Value.DistanceTo(target) > 0.01f)
 			{
 				hasMotion = true;
 				break;
@@ -511,13 +567,12 @@ public partial class MainHandLayout : Control
 
 		if (!hasMotion || LayoutTweenDuration <= 0.0f || !IsInsideTree())
 		{
-			foreach (KeyValuePair<Card, Vector2> pair in _activeLayoutTargets)
-				pair.Key.SetLayoutPosition(pair.Value);
+			ApplyLayoutTargets(plan);
 
 			_activeLayoutStarts.Clear();
-			_activeLayoutTargets.Clear();
+			_activeLayoutPlan = null;
 			_layoutTween = null;
-			StartQueuedLayoutIfAny();
+			StartPendingLayoutIfAny();
 			return;
 		}
 
@@ -527,7 +582,7 @@ public partial class MainHandLayout : Control
 		tween.TweenMethod(
 			Callable.From<float>(progress =>
 			{
-				foreach (KeyValuePair<Card, Vector2> pair in _activeLayoutTargets)
+				foreach (KeyValuePair<Card, Vector2> pair in plan.Targets)
 				{
 					Card card = pair.Key;
 					if (!IsInstanceValid(card) ||
@@ -545,33 +600,39 @@ public partial class MainHandLayout : Control
 		.SetTrans(LayoutTransition)
 		.SetEase(LayoutEase);
 
-		tween.TweenCallback(Callable.From(() => CompleteLayoutTween(tween)));
+		tween.TweenCallback(Callable.From(() => CompleteLayoutTween(tween, plan)));
 	}
 
-	private void CompleteLayoutTween(Tween completedTween)
+	private void CompleteLayoutTween(Tween completedTween, LayoutPlan completedPlan)
 	{
-		if (!ReferenceEquals(_layoutTween, completedTween))
+		if (!ReferenceEquals(_layoutTween, completedTween) ||
+			!ReferenceEquals(_activeLayoutPlan, completedPlan))
 			return;
 
-		foreach (KeyValuePair<Card, Vector2> pair in _activeLayoutTargets)
+		ApplyLayoutTargets(completedPlan);
+
+		_layoutTween = null;
+		_activeLayoutStarts.Clear();
+		_activeLayoutPlan = null;
+		StartPendingLayoutIfAny();
+	}
+
+	private void ApplyLayoutTargets(LayoutPlan plan)
+	{
+		foreach (KeyValuePair<Card, Vector2> pair in plan.Targets)
 		{
 			if (IsInstanceValid(pair.Key) && pair.Key.GetParent() == this)
 				pair.Key.SetLayoutPosition(pair.Value);
 		}
-
-		_layoutTween = null;
-		_activeLayoutStarts.Clear();
-		_activeLayoutTargets.Clear();
-		StartQueuedLayoutIfAny();
 	}
 
-	private void StartQueuedLayoutIfAny()
+	private void StartPendingLayoutIfAny()
 	{
-		if (_queuedLayoutTargets is null)
+		if (_pendingLayoutPlan is null)
 			return;
 
-		Dictionary<Card, Vector2> next = _queuedLayoutTargets;
-		_queuedLayoutTargets = null;
+		LayoutPlan next = _pendingLayoutPlan;
+		_pendingLayoutPlan = null;
 		StartLayoutTween(next);
 	}
 
@@ -616,24 +677,46 @@ public partial class MainHandLayout : Control
 	}
 
 	private bool TryGetRightmost(
-		Dictionary<Card, Vector2> positions,
+		LayoutPlan plan,
 		out Vector2 rightmost)
 	{
 		rightmost = Vector2.Zero;
+		if (plan is null)
+			return false;
 
-		// Use hand order rather than dictionary enumeration so a fully
-		// overlapped hand (spacing == 0) still chooses the last/rightmost card
+		// Use the plan's order rather than the latest logical hand order so a
+		// running animation keeps a stable collection destination. A fully
+		// overlapped hand (spacing == 0) also chooses its last card
 		// deterministically.
-		for (int i = _cards.Count - 1; i >= 0; i--)
+		for (int i = plan.Order.Count - 1; i >= 0; i--)
 		{
-			Card card = _cards[i];
+			Card card = plan.Order[i];
 			if (IsInstanceValid(card) &&
 				card.GetParent() == this &&
-				positions.TryGetValue(card, out rightmost))
+				plan.Targets.TryGetValue(card, out rightmost))
 				return true;
 		}
 
 		return false;
+	}
+
+	private static int GetSuitOrder(PokerSuit suit)
+	{
+		return suit switch
+		{
+			PokerSuit.Club => 0,
+			PokerSuit.Diamond => 1,
+			PokerSuit.Heart => 2,
+			PokerSuit.Spade => 3,
+			_ => int.MaxValue
+		};
+	}
+
+	private static int GetRankOrder(PokerRank rank)
+	{
+		return rank is >= PokerRank.Two and <= PokerRank.Ace
+			? (int)rank
+			: int.MaxValue;
 	}
 
 	private static void NormalizeCardAnchors(Card card)
@@ -692,19 +775,18 @@ public partial class MainHandLayout : Control
 		return new Vector2(x, ResolveBaselineY(cardHeight));
 	}
 
-	private static float GetCardWidth(Card card)
+	private float ResolveLayoutHeight()
 	{
-		float width = card.Size.X;
-		if (width <= 0.0f)
-			width = card.CustomMinimumSize.X;
-		return width > 0.0f ? width : DefaultCardWidth;
+		if (Size.Y > 0.0f)
+			return Size.Y;
+
+		return CustomMinimumSize.Y;
 	}
 
-	private static float GetCardHeight(Card card)
+	private void ResizeCardToLayoutHeight(Card card)
 	{
-		float height = card.Size.Y;
-		if (height <= 0.0f)
-			height = card.CustomMinimumSize.Y;
-		return height > 0.0f ? height : DefaultCardHeight;
+		float layoutHeight = ResolveLayoutHeight();
+		if (layoutHeight > 0.0f)
+			card.ResizeToHeight(layoutHeight);
 	}
 }
