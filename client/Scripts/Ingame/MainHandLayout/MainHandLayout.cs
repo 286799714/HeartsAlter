@@ -173,7 +173,7 @@ public partial class MainHandLayout : Control
 	}
 
 	/// <summary>
-	/// Sorts the hand from left to right by suit (Club, Diamond, Heart, Spade),
+	/// Sorts the hand from left to right by suit (Club, Diamond, Spade, Heart),
 	/// then by ascending rank within each suit, and animates every card to the
 	/// target calculated from that complete order. Equal keys retain their
 	/// current relative order.
@@ -706,8 +706,8 @@ public partial class MainHandLayout : Control
 		{
 			PokerSuit.Club => 0,
 			PokerSuit.Diamond => 1,
-			PokerSuit.Heart => 2,
-			PokerSuit.Spade => 3,
+			PokerSuit.Spade => 2,
+			PokerSuit.Heart => 3,
 			_ => int.MaxValue
 		};
 	}
