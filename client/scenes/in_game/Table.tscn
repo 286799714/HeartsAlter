@@ -1,5 +1,72 @@
-[gd_scene format=3 uid="uid://c2hddsv6ha3gi"]
+[gd_scene load_steps=5 format=3 uid="uid://c2hddsv6ha3gi"]
 
-[node name="Table" type="Control" unique_id=1748159373]
+[ext_resource type="Script" uid="uid://dtab1econtr0l" path="res://Scripts/Ingame/Table/Table.cs" id="1_table"]
+[ext_resource type="PackedScene" uid="uid://dfccqip2lq1qv" path="res://scenes/in_game/CardDeck.tscn" id="2_deck"]
+[ext_resource type="PackedScene" uid="uid://bg6tvprpjlpck" path="res://scenes/in_game/MainHandLayout.tscn" id="3_hand"]
+[ext_resource type="PackedScene" uid="uid://cowdm8l8xfy8i" path="res://scenes/in_game/AnimationLayer.tscn" id="4_animation"]
+
+[node name="Table" type="Control" unique_id=1748159373 node_paths=PackedStringArray("_cardDeck", "_mainHandLayout", "_animationLayer", "_drawCardButton")]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_table")
+_cardDeck = NodePath("CardDeck")
+_mainHandLayout = NodePath("MainHandLayout")
+_animationLayer = NodePath("AnimationLayer")
+_drawCardButton = NodePath("DrawCardButton")
+StartingDeckCount = 52
+StartingDeckCapacity = 52
+
+[node name="CardDeck" parent="." instance=ExtResource("2_deck")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -75.5
+offset_right = 68.0
+offset_bottom = 91.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainHandLayout" parent="." instance=ExtResource("3_hand")]
+layout_mode = 1
+anchors_preset = 12
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -214.0
+offset_right = -32.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AnimationLayer" parent="." instance=ExtResource("4_animation")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+z_index = 100
+
+[node name="DrawCardButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -196.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = 78.0
+grow_horizontal = 0
+text = "抽牌 (Space)"
+tooltip_text = "从牌堆抽一张牌；飞行中再次按下也会同时发牌"

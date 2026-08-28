@@ -21,6 +21,13 @@ public partial class Card : Control
 	/// </summary>
 	[Signal]
 	public delegate void ClickedEventHandler();
+
+	/// <summary>
+	/// Emitted after this card finishes a requested face flip. Animation
+	/// systems can coordinate with the card without depending on CardVisual.
+	/// </summary>
+	[Signal]
+	public delegate void FlipCompletedEventHandler();
 	
 	public CardData Data { get; private set; }
 
@@ -48,7 +55,10 @@ public partial class Card : Control
 	/// Whether the card's stable visual state is face-up. During a flip this
 	/// remains the last completed face until the animation finishes.
 	/// </summary>
-	public bool IsFaceUp => _visual.IsFront;
+	public bool IsFaceUp =>
+		_visual is not null &&
+		GodotObject.IsInstanceValid(_visual) &&
+		_visual.IsFront;
 
 	/// <summary>
 	/// The position assigned by a hand layout before the selection lift is
@@ -69,7 +79,16 @@ public partial class Card : Control
 	/// </summary>
 	public CardInteraction Interaction => _cardInteraction;
 
+	/// <summary>
+	/// Whether a flip tween is currently running on this card.
+	/// </summary>
+	public bool IsFlipping =>
+		_visual is not null &&
+		GodotObject.IsInstanceValid(_visual) &&
+		_visual.IsFlipping;
+
 	private bool _interactionForwardingBound;
+	private bool _flipForwardingBound;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -85,17 +104,67 @@ public partial class Card : Control
 			_cardInteraction.Clicked += ForwardInteractionClick;
 			_interactionForwardingBound = true;
 		}
+		if (!_flipForwardingBound)
+		{
+			_visual.FlipCompleted += ForwardFlipCompleted;
+			_flipForwardingBound = true;
+		}
 	}
 
 	public void Setup(CardData data)
 	{
-		Setup(data, _visual.IsFront);
+		Setup(data, IsFaceUp);
 	}
 
 	public void Setup(CardData data, bool startFaceUp)
 	{
 		Data = data;
 		_visual.Setup(startFaceUp);
+	}
+
+	/// <summary>
+	/// Starts a face flip through the card's visual facade.  Animation layers
+	/// use this method rather than reaching into the visual child directly.
+	/// The method is safe to call before the card has entered the scene tree; in
+	/// that case it simply leaves the authored face unchanged.
+	/// </summary>
+	public void PlayFlip(
+		bool toFront,
+		double duration = 0.3,
+		bool reverse = false,
+		Tween.TransitionType transitionType = Tween.TransitionType.Cubic,
+		Tween.EaseType easeType = Tween.EaseType.Out)
+	{
+		if (_visual is null || !GodotObject.IsInstanceValid(_visual))
+			return;
+
+		_visual.PlayFlip(toFront, duration, reverse, transitionType, easeType);
+	}
+
+	/// <summary>
+	/// Toggles the stable face through the card's visual facade.
+	/// </summary>
+	public void ToggleFace(
+		double duration = 0.3,
+		bool reverse = false,
+		Tween.TransitionType transitionType = Tween.TransitionType.Cubic,
+		Tween.EaseType easeType = Tween.EaseType.Out)
+	{
+		if (_visual is null || !GodotObject.IsInstanceValid(_visual))
+			return;
+
+		_visual.ToggleFace(duration, reverse, transitionType, easeType);
+	}
+
+	/// <summary>
+	/// Immediately sets the stable face without playing a tween.
+	/// </summary>
+	public void SetFace(bool front)
+	{
+		if (_visual is null || !GodotObject.IsInstanceValid(_visual))
+			return;
+
+		_visual.SetFace(front);
 	}
 
 	/// <summary>
@@ -158,6 +227,11 @@ public partial class Card : Control
 	private void ForwardInteractionClick()
 	{
 		EmitSignal(SignalName.Clicked);
+	}
+
+	private void ForwardFlipCompleted()
+	{
+		EmitSignal(SignalName.FlipCompleted);
 	}
 
 	private static float ResolveDimension(

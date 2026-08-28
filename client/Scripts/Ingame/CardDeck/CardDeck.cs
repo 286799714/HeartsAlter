@@ -17,6 +17,45 @@ public partial class CardDeck : Control
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        // A deck scene can be previewed on its own.  Refreshing here keeps the
+        // visual state consistent with CardCount (which starts at zero), while
+        // callers such as Table can opt into a non-empty deck immediately
+        // afterwards via ChangeCardCount.
+        if (_layers.Count > 0 && IsInstanceValid(_topCard))
+            RefreshLayers();
+    }
+
+    /// <summary>
+    /// Creates a detached copy of the authored top card.  The copy is not
+    /// added to the deck; callers normally add it to a shared animation layer,
+    /// assign its <see cref="CardData"/>, and then hand it to a destination
+    /// layout after the flight tween completes.
+    /// </summary>
+    public PlayingCard DuplicateTopCard()
+    {
+        if (!IsInstanceValid(_topCard))
+            return null!;
+
+        Node duplicateNode = _topCard.Duplicate();
+        if (duplicateNode is not PlayingCard duplicate)
+        {
+            duplicateNode.QueueFree();
+            return null!;
+        }
+
+        duplicate.Name = $"{_topCard.Name}_Copy";
+        duplicate.Visible = true;
+        return duplicate;
+    }
+
+    /// <summary>
+    /// Try-pattern variant of <see cref="DuplicateTopCard"/> for callers that
+    /// want to handle an incompletely configured deck without exceptions.
+    /// </summary>
+    public bool TryDuplicateTopCard(out PlayingCard duplicate)
+    {
+        duplicate = DuplicateTopCard();
+        return duplicate is not null && IsInstanceValid(duplicate);
     }
 
     /// <summary>
