@@ -428,7 +428,7 @@ public partial class AnimationLayer : Control
 		// The incoming transform describes the card center. Keep the Card's local
 		// origin at its top-left by offsetting it from the carrier; recompute this
 		// offset on every frame because the flight may also interpolate its size.
-		card.Size = size;
+		card.ResizeToSize(size);
 		Vector2 halfSize = size * 0.5f;
 		card.Position = -halfSize;
 		carrier.Transform = localTransform;

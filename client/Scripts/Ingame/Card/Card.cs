@@ -168,6 +168,27 @@ public partial class Card : Control
 	}
 
 	/// <summary>
+	/// Resizes the card to an explicit untransformed size. The authored minimum
+	/// and maximum describe the standalone card, but hand layouts and transient
+	/// animations may intentionally request sizes outside that range. Expand the
+	/// constraints before assigning <see cref="Control.Size"/> so Godot does not
+	/// clamp the requested value.
+	/// </summary>
+	public void ResizeToSize(Vector2 targetSize)
+	{
+		if (!float.IsFinite(targetSize.X) ||
+			!float.IsFinite(targetSize.Y) ||
+			targetSize.X <= 0.0f ||
+			targetSize.Y <= 0.0f)
+		{
+			return;
+		}
+
+		RelaxSizeConstraintsFor(targetSize);
+		Size = targetSize;
+	}
+
+	/// <summary>
 	/// Resizes the card proportionally so its long side equals
 	/// <paramref name="targetHeight"/>. Non-positive or non-finite targets are
 	/// ignored, leaving the current dimensions unchanged.
@@ -185,8 +206,7 @@ public partial class Card : Control
 
 		float aspectRatio = CardWidth / currentHeight;
 		Vector2 targetSize = new(targetHeight * aspectRatio, targetHeight);
-		RelaxSizeConstraintsFor(targetSize);
-		Size = targetSize;
+		ResizeToSize(targetSize);
 	}
 
 	/// <summary>
@@ -254,9 +274,11 @@ public partial class Card : Control
 		CustomMinimumSize = minimumSize;
 
 		Vector2 maximumSize = CustomMaximumSize;
-		if (maximumSize.X > 0.0f)
+		// Godot treats a non-negative custom maximum as a real upper bound;
+		// negative values (normally -1) mean that the axis is unbounded.
+		if (maximumSize.X >= 0.0f)
 			maximumSize.X = Mathf.Max(maximumSize.X, targetSize.X);
-		if (maximumSize.Y > 0.0f)
+		if (maximumSize.Y >= 0.0f)
 			maximumSize.Y = Mathf.Max(maximumSize.Y, targetSize.Y);
 		CustomMaximumSize = maximumSize;
 	}
