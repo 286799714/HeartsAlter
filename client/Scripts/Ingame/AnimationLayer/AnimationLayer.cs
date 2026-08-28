@@ -121,6 +121,12 @@ public partial class AnimationLayer : Control
 		card.Position = Vector2.Zero;
 		card.Rotation = 0.0f;
 		card.Scale = Vector2.One;
+		// A duplicated Card may enter this layer with a scene/parent-derived
+		// LayoutPosition. Reset both the logical layout state and the rendered
+		// position before attaching it to the flight carrier; otherwise the
+		// selection helper below reapplies that stale offset and moves the card
+		// away from the carrier (often completely off-canvas).
+		card.SetLayoutPosition(Vector2.Zero);
 		card.SetSelectionLift(0.0f);
 
 		Node2D carrier = new()
