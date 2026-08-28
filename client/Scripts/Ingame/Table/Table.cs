@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using CardPose2D = HeartsAlter.Scripts.InGame.Card.CardPose2D;
 using CardData = HeartsAlter.Scripts.InGame.Card.CardData;
@@ -20,6 +21,15 @@ public partial class Table : Control
 
 	[Export]
 	private MainHandLayout _mainHandLayout = null!;
+
+	[Export]
+	private OtherHandLayout _otherHandLayout = null!;
+
+	[Export]
+	private OtherHandLayout _otherHandLayout2 = null!;
+
+	[Export]
+	private OtherHandLayout _otherHandLayout3 = null!;
 
 	[Export]
 	private AnimationLayer _animationLayer = null!;
@@ -47,7 +57,9 @@ public partial class Table : Control
 	public Key DrawKey = Key.Space;
 
 	private readonly RandomNumberGenerator _random = new();
+	private readonly List<Control> _handLayouts = new();
 	private int _drawsInFlight;
+	private int _nextHandIndex;
 
 	/// <summary>
 	/// The deck count at the last frame.  Exposing it makes the preview easy to
@@ -71,6 +83,7 @@ public partial class Table : Control
 	public override void _Ready()
 	{
 		ResolveSceneReferences();
+		_nextHandIndex = 0;
 		_random.Randomize();
 		InitializeDeck();
 
@@ -92,6 +105,8 @@ public partial class Table : Control
 		}
 
 		_drawsInFlight = 0;
+		_nextHandIndex = 0;
+		_handLayouts.Clear();
 	}
 
 	/// <summary>
@@ -129,6 +144,9 @@ public partial class Table : Control
 		if (!CanDraw())
 			return false;
 
+		if (!TryGetNextHand(out Control destination, out int destinationIndex))
+			return false;
+
 		if (!_cardDeck.TryGetTopPose(out CardPose2D sourcePose))
 			return false;
 
@@ -158,7 +176,7 @@ public partial class Table : Control
 		CardPose2D receivePose;
 		try
 		{
-			receivePose = _mainHandLayout.GetCurrentReceivePose(card);
+			receivePose = GetCurrentReceivePose(destination, card);
 		}
 		catch (Exception exception)
 		{
@@ -172,7 +190,7 @@ public partial class Table : Control
 			card,
 			sourcePose,
 			receivePose,
-			HandleCardAnimationCompleted
+			drawnCard => HandleCardAnimationCompleted(destination, drawnCard)
 		);
 
 		if (!started)
@@ -184,6 +202,11 @@ public partial class Table : Control
 			return false;
 		}
 
+		// Reserve the next seat only after the animation layer accepts this draw.
+		// The selected destination is captured by the completion callback above,
+		// so overlapping flights cannot be redirected by a later button press.
+		_nextHandIndex = (destinationIndex + 1) % _handLayouts.Count;
+
 		// Consume the deck slot once the animation has been accepted.  Capturing
 		// sourcePose first keeps the card flying from the old top position even
 		// when this draw empties the deck and hides its authored top card.
@@ -194,15 +217,14 @@ public partial class Table : Control
 
 	private void HandleDrawButtonPressed() => TryDrawCard();
 
-	private void HandleCardAnimationCompleted(PlayingCard card)
+	private void HandleCardAnimationCompleted(Control destination, PlayingCard card)
 	{
 		try
 		{
 			if (GodotObject.IsInstanceValid(card) &&
-				_mainHandLayout is not null &&
-				GodotObject.IsInstanceValid(_mainHandLayout))
+				IsValidHandLayout(destination))
 			{
-				_mainHandLayout.ReceiveCard(card);
+				ReceiveCard(destination, card);
 			}
 			else if (GodotObject.IsInstanceValid(card))
 			{
@@ -222,8 +244,7 @@ public partial class Table : Control
 	{
 		return _cardDeck is not null &&
 			GodotObject.IsInstanceValid(_cardDeck) &&
-			_mainHandLayout is not null &&
-			GodotObject.IsInstanceValid(_mainHandLayout) &&
+			_handLayouts.Count > 0 &&
 			_animationLayer is not null &&
 			GodotObject.IsInstanceValid(_animationLayer) &&
 			_animationLayer.IsInsideTree() &&
@@ -244,11 +265,92 @@ public partial class Table : Control
 		if (_mainHandLayout is null || !GodotObject.IsInstanceValid(_mainHandLayout))
 			_mainHandLayout = GetNodeOrNull<MainHandLayout>("MainHandLayout");
 
+		if (_otherHandLayout is null || !GodotObject.IsInstanceValid(_otherHandLayout))
+			_otherHandLayout = GetNodeOrNull<OtherHandLayout>("OtherHandLayout");
+
+		if (_otherHandLayout2 is null || !GodotObject.IsInstanceValid(_otherHandLayout2))
+			_otherHandLayout2 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout2");
+
+		if (_otherHandLayout3 is null || !GodotObject.IsInstanceValid(_otherHandLayout3))
+			_otherHandLayout3 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout3");
+
 		if (_animationLayer is null || !GodotObject.IsInstanceValid(_animationLayer))
 			_animationLayer = GetNodeOrNull<AnimationLayer>("AnimationLayer");
 
 		if (_drawCardButton is null || !GodotObject.IsInstanceValid(_drawCardButton))
 			_drawCardButton = GetNodeOrNull<Button>("DrawCardButton");
+
+		_handLayouts.Clear();
+		AddHandLayout(_mainHandLayout);
+		AddHandLayout(_otherHandLayout);
+		AddHandLayout(_otherHandLayout2);
+		AddHandLayout(_otherHandLayout3);
+	}
+
+	private void AddHandLayout(Control handLayout)
+	{
+		if (IsValidHandLayout(handLayout) && !_handLayouts.Contains(handLayout))
+			_handLayouts.Add(handLayout);
+	}
+
+	private bool TryGetNextHand(out Control destination, out int destinationIndex)
+	{
+		destination = null!;
+		destinationIndex = -1;
+
+		int handCount = _handLayouts.Count;
+		if (handCount == 0)
+			return false;
+
+		int startIndex = _nextHandIndex % handCount;
+		if (startIndex < 0)
+			startIndex += handCount;
+
+		for (int offset = 0; offset < handCount; offset++)
+		{
+			int index = (startIndex + offset) % handCount;
+			Control candidate = _handLayouts[index];
+			if (!IsValidHandLayout(candidate))
+				continue;
+
+			destination = candidate;
+			destinationIndex = index;
+			return true;
+		}
+
+		return false;
+	}
+
+	private static bool IsValidHandLayout(Control handLayout)
+	{
+		return handLayout is MainHandLayout or OtherHandLayout &&
+			GodotObject.IsInstanceValid(handLayout) &&
+			handLayout.IsInsideTree();
+	}
+
+	private static CardPose2D GetCurrentReceivePose(Control handLayout, PlayingCard card)
+	{
+		return handLayout switch
+		{
+			MainHandLayout mainHand => mainHand.GetCurrentReceivePose(card),
+			OtherHandLayout otherHand => otherHand.GetCurrentReceivePose(card),
+			_ => throw new InvalidOperationException("Unsupported hand layout type.")
+		};
+	}
+
+	private static void ReceiveCard(Control handLayout, PlayingCard card)
+	{
+		switch (handLayout)
+		{
+			case MainHandLayout mainHand:
+				mainHand.ReceiveCard(card);
+				break;
+			case OtherHandLayout otherHand:
+				otherHand.ReceiveCard(card);
+				break;
+			default:
+				throw new InvalidOperationException("Unsupported hand layout type.");
+		}
 	}
 
 	private void InitializeDeck()
