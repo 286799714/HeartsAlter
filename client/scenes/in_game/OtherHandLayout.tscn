@@ -1,5 +1,21 @@
 [gd_scene format=3 uid="uid://bwmamljc0p248"]
 
+[ext_resource type="Script" uid="uid://ikpj8822rfb4" path="res://Scripts/Ingame/OtherHandLayout/OtherHandLayout.cs" id="1_layout"]
+
 [node name="OtherHandLayout" type="Control" unique_id=1103025311]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -190.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_layout")
+MaxSpacing = 42.0
+MinSpacing = 0.0
+LayoutWidth = 0.0
+LayoutTweenDuration = 0.24
+LayoutTransition = 1
+LayoutEase = 2
