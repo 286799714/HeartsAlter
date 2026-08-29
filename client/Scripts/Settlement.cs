@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 using HeartsAlter.Scripts.Generated;
 
@@ -11,7 +12,9 @@ public partial class Settlement : Control
 	private VBoxContainer _rows;
 	private Label _status;
 	private Button _nextButton;
+	private Button _backButton;
 	private bool _transitioning;
+	private bool _returningToLobby;
 
 	public override void _Ready()
 	{
@@ -25,6 +28,7 @@ public partial class Settlement : Control
 		_adapter.StateChanged += HandleStateChanged;
 		_adapter.ServerMessage += HandleServerMessage;
 		_adapter.InvalidPlay += HandleServerMessage;
+		_adapter.Left += HandleRoomLeft;
 		HandleStateChanged(_adapter.State, true);
 	}
 
@@ -34,6 +38,7 @@ public partial class Settlement : Control
 		_adapter.StateChanged -= HandleStateChanged;
 		_adapter.ServerMessage -= HandleServerMessage;
 		_adapter.InvalidPlay -= HandleServerMessage;
+		_adapter.Left -= HandleRoomLeft;
 		if (!_transitioning) _ = _adapter.DisconnectAsync();
 	}
 
@@ -55,6 +60,7 @@ public partial class Settlement : Control
 		Player local = state.players.TryGetValue(_adapter.SessionId, out var current) ? current : null;
 		_nextButton.Disabled = local is null || local.nextRoundReady;
 		_nextButton.Text = local?.nextRoundReady == true ? "已同意下一局" : "下一局";
+		_backButton.Text = local?.isHost == true ? "解散房间并返回大厅" : "返回大厅";
 		var orderedPlayers = new List<Player>();
 		foreach (string playerId in state.players.Keys)
 			orderedPlayers.Add(state.players[playerId]);
@@ -86,6 +92,38 @@ public partial class Settlement : Control
 
 	private void AgreeNextRound() => _ = _adapter?.NextRoundAsync();
 
+	private void HandleRoomLeft(int code)
+	{
+		TransitionToLobby();
+	}
+
+	private async Task ReturnToLobbyAsync()
+	{
+		if (_returningToLobby || _adapter is null) return;
+		_returningToLobby = true;
+		_backButton.Disabled = true;
+		Player local = _adapter.State?.players.TryGetValue(_adapter.SessionId, out var current) == true ? current : null;
+		if (local?.isHost == true)
+		{
+			_status.Text = "正在解散房间…";
+			await _adapter.DisbandRoomAsync();
+		}
+		else
+		{
+			_status.Text = "正在离开房间…";
+		}
+		await _adapter.DisconnectAsync();
+		TransitionToLobby();
+	}
+
+	private void TransitionToLobby()
+	{
+		if (_transitioning || !IsInsideTree()) return;
+		_transitioning = true;
+		GameSession.GameAdapter = null;
+		GetTree().ChangeSceneToFile("res://scenes/Lobby.tscn");
+	}
+
 	private void Transition(string scene)
 	{
 		if (_transitioning) return;
@@ -116,6 +154,11 @@ public partial class Settlement : Control
 		column.AddChild(_rows);
 		_nextButton = new Button { Text = "下一局" };
 		_nextButton.Pressed += AgreeNextRound;
-		column.AddChild(_nextButton);
+		var actions = new HBoxContainer();
+		actions.AddChild(_nextButton);
+		_backButton = new Button { Text = "返回大厅" };
+		_backButton.Pressed += () => _ = ReturnToLobbyAsync();
+		actions.AddChild(_backButton);
+		column.AddChild(actions);
 	}
 }

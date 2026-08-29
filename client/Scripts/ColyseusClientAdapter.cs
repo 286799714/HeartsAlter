@@ -162,6 +162,11 @@ public sealed class ColyseusClientAdapter
         return _room == null ? Task.CompletedTask : _room.Send("start_game");
     }
 
+    public Task DisbandRoomAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("disband_room");
+    }
+
     public Task TableReadyAsync()
     {
         return _room == null ? Task.CompletedTask : _room.Send("table_ready");

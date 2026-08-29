@@ -109,6 +109,9 @@ public partial class Table : Control
 	private bool _networkTableReadySent;
 	private bool _networkDealReadySent;
 	private bool _networkTransitioning;
+	private bool _networkSettlementScheduled;
+	private bool _networkFinalTrickReceived;
+	private const double FinalSettlementDelaySeconds = 1.0;
 	private const double NetworkPlayRequestIntervalMsec = 100.0;
 	private double _lastNetworkPlaySentMsec = double.NegativeInfinity;
 	private ushort _networkScoreRound = ushort.MaxValue;
@@ -246,7 +249,7 @@ public partial class Table : Control
 		}
 		if (state.phase == "finished")
 		{
-			TransitionNetworkScene("res://scenes/Settlement.tscn");
+			RequestNetworkSettlementTransition();
 			return;
 		}
 		var players = new Player[PlayerCount];
@@ -430,6 +433,8 @@ public partial class Table : Control
 
 	private void HandleNetworkTrickResolved(string winnerId, int points, int trickNumber)
 	{
+		if (trickNumber >= 13)
+			_networkFinalTrickReceived = true;
 		if (_networkAdapter?.State is not MyRoomState state ||
 			!state.players.TryGetValue(winnerId, out Player winner)) return;
 		int seat = (winner.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
@@ -438,7 +443,34 @@ public partial class Table : Control
 
 	private void HandleNetworkRoundFinished()
 	{
+		// The phase patch is the authoritative trigger. The message can arrive
+		// one dispatch tick before that patch, so do not schedule a one-shot
+		// transition against the stale `playing` state here.
 		if (_networkAdapter?.State?.phase == "finished")
+			RequestNetworkSettlementTransition();
+	}
+
+	private void RequestNetworkSettlementTransition()
+	{
+		if (_networkSettlementScheduled) return;
+		_networkSettlementScheduled = true;
+		_ = TransitionToSettlementAfterFinalTrickAsync();
+	}
+
+	private async Task TransitionToSettlementAfterFinalTrickAsync()
+	{
+		// State patches and room messages are delivered on separate client lanes.
+		// Wait briefly for the final trick_resolved message to start collection
+		// before we inspect IsCollectingTrick.
+		int dispatchFrames = 0;
+		while (IsInsideTree() && !_networkFinalTrickReceived && dispatchFrames++ < 120)
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		while (IsInsideTree() && IsCollectingTrick)
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		if (!IsInsideTree() || _networkAdapter?.State?.phase != "finished") return;
+		SceneTreeTimer timer = GetTree().CreateTimer(FinalSettlementDelaySeconds);
+		await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
+		if (IsInsideTree() && _networkAdapter?.State?.phase == "finished")
 			TransitionNetworkScene("res://scenes/Settlement.tscn");
 	}
 

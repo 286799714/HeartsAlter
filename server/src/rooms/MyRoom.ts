@@ -108,6 +108,15 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       this.messages.add_bot(client);
     },
 
+    /** The owner can dissolve the room from the settlement screen. */
+    disband_room: (client: Client) => {
+      if (client.sessionId !== this.state.hostId) {
+        this.sendError(client, "只有房主可以解散房间");
+        return;
+      }
+      void this.disconnect().catch(() => {});
+    },
+
     /** Start only after every occupied seat is ready. */
     start_game: (client: Client) => {
       if (this.state.phase !== "waiting" || client.sessionId !== this.state.hostId) {
