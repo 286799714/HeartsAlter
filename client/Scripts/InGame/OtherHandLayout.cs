@@ -347,6 +347,10 @@ public partial class OtherHandLayout : Control
 
 		PruneInvalidCards();
 		ResizeCardToLayoutHeight(card);
+		// A card can arrive from MainHandLayout after the submit lock, where all
+		// local cards are intentionally dimmed. Remote hands have no legal-card
+		// dimming state, so restore the normal presentation on receipt.
+		card.Modulate = Colors.White;
 
 		// Receiving the same instance twice should not teleport a card that may
 		// currently be moving. It is already part of the hand, so only ensure its
@@ -425,6 +429,7 @@ public partial class OtherHandLayout : Control
 			return;
 
 		_cards.Add(card);
+		card.Modulate = Colors.White;
 
 		// Capture the position before changing the card's standalone anchors. The
 		// helper preserves the visible position, but this also makes authored

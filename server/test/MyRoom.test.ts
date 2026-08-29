@@ -7,6 +7,7 @@ import {
   DEFAULT_STARTING_CHIPS,
   MAX_CHIPS_PER_PLAYER,
   MAX_PLAYERS,
+  PASSING_BOT_DELAY,
 } from "../src/rooms/MyRoom.js";
 import { MyRoomState } from "../src/rooms/schema/MyRoomState.js";
 import {
@@ -124,7 +125,12 @@ describe("authoritative Hearts room", () => {
     // Install the play listener before requesting the hand: a bot may already
     // own the opening turn, and its short timer should not race the assertion.
     const firstPlayMessage = client.waitForMessage("card_played", 5_000);
+    const turnStartedMessage = client.waitForMessage("turn_started", 5_000);
     await completePassing(room, [client]);
+    const turnStarted = await turnStartedMessage;
+    if (botIds.includes(turnStarted.playerId)) {
+      assert.equal(turnStarted.delay, PASSING_BOT_DELAY);
+    }
     const handMessage = client.waitForMessage("hand");
     client.send("request_hand");
     const handPayload = await handMessage;

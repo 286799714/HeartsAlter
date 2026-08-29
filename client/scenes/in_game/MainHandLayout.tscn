@@ -2,6 +2,31 @@
 
 [ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/InGame/MainHandLayout.cs" id="1_layout"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pass_normal"]
+bg_color = Color(0.101960786, 0.67058825, 0.7882353, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.08, 0, 0.04, 0.45)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pass_pressed"]
+bg_color = Color(0.05317152, 0.44504842, 0.5261263, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pass_hover"]
+bg_color = Color(0.15451749, 0.9135441, 1.070584, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.08, 0, 0.04, 0.55)
+shadow_size = 10
+
 [node name="MainHandLayout" type="Control" unique_id=1689990100 node_paths=PackedStringArray("_ruleHintLabel", "_passButton")]
 layout_mode = 3
 anchors_preset = 12
@@ -31,19 +56,48 @@ horizontal_alignment = 1
 visible = false
 z_index = 50
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.0
-offset_left = -72.0
-offset_top = -88.0
-offset_right = 72.0
-offset_bottom = -44.0
+offset_left = -64.0
+offset_top = -100.0
+offset_right = 64.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_default_cursor_shape = 2
 focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_pass_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pass_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pass_hover")
+
+[node name="Icon" type="Label" parent="PassButton" unique_id=932832323]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 31
+text = "←"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Caption" type="Label" parent="PassButton" unique_id=1258205970]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
 text = "传牌"
+horizontal_alignment = 1
+vertical_alignment = 1

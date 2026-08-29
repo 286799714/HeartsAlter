@@ -80,6 +80,9 @@ public partial class MainHandLayout : Control
 	[Export]
 	private Button _passButton;
 
+	private Label _passButtonIcon;
+	private Label _passButtonCaption;
+
 	private readonly List<CardControl> _cards = new();
 	private readonly Dictionary<CardControl, CardControl.ClickedEventHandler> _clickHandlers = new();
 	private readonly Dictionary<CardControl, Tween> _selectionTweens = new();
@@ -105,9 +108,6 @@ public partial class MainHandLayout : Control
 
 	[Export(PropertyHint.Range, "1,13,1,or_greater")]
 	public int PassCardCount = 3;
-
-	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
-	public float PassButtonPulseDuration = 0.8f;
 
 	/// <summary>
 	/// Emitted when the player clicks the already-selected card. The request is
@@ -193,6 +193,8 @@ public partial class MainHandLayout : Control
 			_ruleHintLabel = GetNodeOrNull<Label>("RuleHint");
 		if (_passButton is null || !IsInstanceValid(_passButton))
 			_passButton = GetNodeOrNull<Button>("PassButton");
+		_passButtonIcon = GetNodeOrNull<Label>("PassButton/Icon");
+		_passButtonCaption = GetNodeOrNull<Label>("PassButton/Caption");
 		if (_passButton is not null && IsInstanceValid(_passButton))
 			_passButton.Pressed += HandlePassButtonPressed;
 		// MainHandLayout.tscn intentionally contains no sample card, but
@@ -253,13 +255,26 @@ public partial class MainHandLayout : Control
 	/// </summary>
 	public override void _Input(InputEvent @event)
 	{
-		if (!_selectionEnabled ||
-			(_selectedCard is null && !_passSelectionMode) ||
-			_passSelectionMode ||
-			!TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
+		if (!TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
 		{
 			return;
 		}
+
+		if (_passSelectionMode)
+		{
+			if (!_selectionEnabled || _passSelectionLocked)
+				return;
+			CardControl passCard = GetTopmostCardAtCanvasPoint(canvasPosition);
+			if (passCard is not null)
+			{
+				TogglePassCardSelection(passCard);
+				GetViewport().SetInputAsHandled();
+			}
+			return;
+		}
+
+		if (!_selectionEnabled || _selectedCard is null)
+			return;
 
 		if (GetTopmostCardAtCanvasPoint(canvasPosition) is null)
 			ClearSelection();
@@ -726,19 +741,7 @@ public partial class MainHandLayout : Control
 		{
 			if (_passSelectionLocked)
 				return;
-			if (_passSelectedCards.Contains(card))
-			{
-				_passSelectedCards.Remove(card);
-				AnimateSelection(card, selected: false);
-			}
-			else if (_passSelectedCards.Count < Math.Max(1, PassCardCount))
-			{
-				_passSelectedCards.Add(card);
-				AnimateSelection(card, selected: true);
-			}
-			UpdatePassButton();
-			foreach (CardControl candidate in _cards)
-				ApplyInteractionState(candidate);
+			TogglePassCardSelection(card);
 			return;
 		}
 
@@ -768,11 +771,20 @@ public partial class MainHandLayout : Control
 		card.Modulate = playable
 			? Colors.White
 			: new Color(0.45f, 0.45f, 0.45f, 1.0f);
+		// CardControl itself defaults to MouseFilter.Stop. Setting only the
+		// interaction child to Ignore still leaves the root Control as an
+		// invisible blocker over cards underneath it, especially after the pass
+		// limit dims the unselected cards. Keep the root and child hit filters in
+		// sync so a click can reach the selected card below.
+		card.MouseFilter = _selectionEnabled && passSelectable
+			? MouseFilterEnum.Stop
+			: MouseFilterEnum.Ignore;
 		if (card.Interaction is null || !IsInstanceValid(card.Interaction))
 			return;
 
-		// Legal-card state only affects visual feedback. Every card must remain
-		// selectable so overlapping cards can be inspected before committing.
+		// Legal-card state only affects visual feedback during ordinary play. Pass
+		// mode additionally disables the dimmed cards once the three-card limit is
+		// reached so overlapping clicks can fall through to selected cards.
 		card.Interaction.MouseFilter = _selectionEnabled && passSelectable
 			? MouseFilterEnum.Stop
 			: MouseFilterEnum.Ignore;
@@ -781,6 +793,26 @@ public partial class MainHandLayout : Control
 	private void HandlePassButtonPressed()
 	{
 		SubmitPassSelection();
+	}
+
+	private void TogglePassCardSelection(CardControl card)
+	{
+		if (card is null || !IsInstanceValid(card) || !_cards.Contains(card) ||
+			_passSelectionLocked)
+			return;
+		if (_passSelectedCards.Contains(card))
+		{
+			_passSelectedCards.Remove(card);
+			AnimateSelection(card, selected: false);
+		}
+		else if (_passSelectedCards.Count < Math.Max(1, PassCardCount))
+		{
+			_passSelectedCards.Add(card);
+			AnimateSelection(card, selected: true);
+		}
+		UpdatePassButton();
+		foreach (CardControl candidate in _cards)
+			ApplyInteractionState(candidate);
 	}
 
 	private void UpdatePassButton()
@@ -800,26 +832,80 @@ public partial class MainHandLayout : Control
 	private void StartPassButtonAnimation()
 	{
 		if (_passButton is null || !IsInstanceValid(_passButton) ||
-			!_passButton.Visible || PassButtonPulseDuration <= 0.0f ||
+			!_passButton.Visible ||
 			!IsInsideTree())
 			return;
 		StopPassButtonAnimation();
+		_passButton.Text = string.Empty;
 		_passButton.PivotOffset = _passButton.Size * 0.5f;
-		_passButton.Scale = Vector2.One;
+		// Keep the authored center anchor and morph only through scale. Mutating
+		// both Size and Position on an anchored Control makes the button drift
+		// left on some viewport/layout updates.
+		SetPassButtonScale(new Vector2(0.28f, 1.0f));
+		if (_passButtonIcon is not null && IsInstanceValid(_passButtonIcon))
+		{
+			_passButtonIcon.Visible = true;
+			_passButtonIcon.Modulate = Colors.White;
+		}
+		if (_passButtonCaption is not null && IsInstanceValid(_passButtonCaption))
+		{
+			_passButtonCaption.Visible = true;
+			_passButtonCaption.Modulate = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+		}
+
 		_passButtonTween = _passButton.CreateTween();
-		_passButtonTween.SetLoops();
-		_passButtonTween.TweenProperty(
-			_passButton,
-			"scale",
-			new Vector2(1.08f, 1.08f),
-			PassButtonPulseDuration * 0.5f
+		_passButtonTween.TweenMethod(
+			Callable.From<float>(progress => SetPassButtonScale(
+				new Vector2(0.28f, 1.0f).Lerp(new Vector2(0.32f, 1.08f), progress)
+			)),
+			0.0f,
+			1.0f,
+			0.22f
+		).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+		_passButtonTween.TweenInterval(0.18f);
+		_passButtonTween.SetParallel(true);
+		_passButtonTween.TweenMethod(
+			Callable.From<float>(progress => SetPassButtonScale(
+				new Vector2(0.32f, 1.08f).Lerp(Vector2.One, progress)
+			)),
+			0.0f,
+			1.0f,
+			0.34f
 		).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
-		_passButtonTween.TweenProperty(
-			_passButton,
-			"scale",
-			Vector2.One,
-			PassButtonPulseDuration * 0.5f
-		).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+		if (_passButtonIcon is not null && IsInstanceValid(_passButtonIcon))
+		{
+			_passButtonTween.TweenProperty(
+				_passButtonIcon,
+				"modulate:a",
+				0.0f,
+				0.22f
+			).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+		}
+		if (_passButtonCaption is not null && IsInstanceValid(_passButtonCaption))
+		{
+			_passButtonTween.TweenProperty(
+				_passButtonCaption,
+				"modulate:a",
+				1.0f,
+				0.22f
+			).SetDelay(0.12f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+		}
+		_passButtonTween.SetParallel(false);
+	}
+
+	private void SetPassButtonScale(Vector2 scale)
+	{
+		if (_passButton is null || !IsInstanceValid(_passButton))
+			return;
+		_passButton.Scale = scale;
+		if (_passButtonIcon is not null && IsInstanceValid(_passButtonIcon))
+		{
+			_passButtonIcon.PivotOffset = _passButtonIcon.Size * 0.5f;
+			_passButtonIcon.Scale = new Vector2(
+				1.0f / Mathf.Max(0.01f, scale.X),
+				1.0f
+			);
+		}
 	}
 
 	private void StopPassButtonAnimation()
@@ -828,7 +914,20 @@ public partial class MainHandLayout : Control
 			tween.Kill();
 		_passButtonTween = null;
 		if (_passButton is not null && IsInstanceValid(_passButton))
-			_passButton.Scale = Vector2.One;
+		{
+			SetPassButtonScale(Vector2.One);
+			_passButton.Text = string.Empty;
+		}
+		if (_passButtonIcon is not null && IsInstanceValid(_passButtonIcon))
+		{
+			_passButtonIcon.Visible = false;
+			_passButtonIcon.Modulate = Colors.White;
+		}
+		if (_passButtonCaption is not null && IsInstanceValid(_passButtonCaption))
+		{
+			_passButtonCaption.Visible = false;
+			_passButtonCaption.Modulate = Colors.White;
+		}
 	}
 
 	private void ClearPassSelectionInternal()
@@ -880,6 +979,16 @@ public partial class MainHandLayout : Control
 			if (!IsInstanceValid(candidate) ||
 				candidate.GetParent() != this ||
 				!candidate.Visible)
+			{
+				continue;
+			}
+			// In pass mode, once three cards are selected the remaining cards are
+			// dimmed and have MouseFilter.Ignore. Skip them here as well; otherwise
+			// this manual topmost-card lookup could still swallow a click intended
+			// to cancel a selected card underneath an overlapping grey card.
+			if (_passSelectionMode && !_passSelectionLocked &&
+				_passSelectedCards.Count >= Math.Max(1, PassCardCount) &&
+				!_passSelectedCards.Contains(candidate))
 			{
 				continue;
 			}

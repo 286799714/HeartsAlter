@@ -20,6 +20,8 @@ export const PHASE_READY_DURATION = 30_000;
 export const BOT_TURN_DURATION = 600;
 /** Extra pause after a trick is collected before a bot starts the next one. */
 export const BOT_TRICK_DELAY = 1_000;
+/** Grace period after the pass animation before a bot's opening turn starts. */
+export const PASSING_BOT_DELAY = 1_200;
 /** Maximum wait for all four players to choose their three passing cards. */
 export const PASSING_DURATION = 30_000;
 export const PASS_CARD_COUNT = 3;
@@ -695,7 +697,11 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       : "传牌完成，梅花 2 先出";
     this.publishRoomMetadata();
     this.broadcast("passing_completed", { roundNumber: this.state.roundNumber });
-    this.setTurn(this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "");
+    const starter = this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "";
+    // Clients need time to finish all twelve pass flights and settle their
+    // hand layouts before a synthetic starter begins its short turn timer.
+    const openingDelay = this.isBotPlayer(starter) ? PASSING_BOT_DELAY : 0;
+    this.setTurn(starter, openingDelay);
   }
 
   private completeMissingPassingSelections() {
