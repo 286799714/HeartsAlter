@@ -417,6 +417,9 @@ public partial class Table : Control
 		}
 		if (state.trick.Count == 0 && !state.heartsBroken)
 		{
+			// Hearts-breaking only applies to a new lead. A player who is void in
+			// the lead suit reaches the earlier follow-suit branch with no matches,
+			// so hearts (and Q♠) remain legal discards.
 			List<CardData> nonHearts = legal.FindAll(card => card.Suit != PokerSuit.Heart);
 			if (nonHearts.Count > 0) return nonHearts;
 		}

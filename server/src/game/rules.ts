@@ -273,7 +273,8 @@ export function getLegalCards(
 
   // Hearts may not be led until broken, unless the hand has no alternative
   // suit. This only constrains the lead; a player must still follow a heart
-  // lead when they have one.
+  // lead when they have one. Q♠ is not a heart and is never affected by this
+  // flag (its six points are handled independently by isPointCard).
   if (isLeading && !heartsBroken && hand.some((card) => card.suit !== "hearts")) {
     legal = legal.filter((card) => card.suit !== "hearts");
   }

@@ -94,6 +94,22 @@ describe("Hearts rules", () => {
     );
   });
 
+  it("allows a heart discard when void in the lead suit and keeps Q♠ independent", () => {
+    const hand = [card("Heart2"), card("SpadeQ"), card("Diamond3")];
+    const trick = [card("ClubA")];
+    const legal = getLegalCards(hand, trick, {
+      firstTrick: false,
+      heartsBroken: false,
+    });
+    assert.deepEqual(legal.map((item) => item.id), ["Heart2", "SpadeQ", "Diamond3"]);
+    assert.equal(isLegalPlay(hand, card("Heart2"), trick, { heartsBroken: false }), true);
+    assert.equal(isLegalPlay(hand, card("SpadeQ"), trick, { heartsBroken: false }), true);
+    assert.deepEqual(
+      getLegalCards(hand, [], { firstTrick: false, heartsBroken: false }).map((item) => item.id),
+      ["SpadeQ", "Diamond3"],
+    );
+  });
+
   it("keeps point cards out of the first trick when a safe discard exists", () => {
     const hand = [card("Club3"), card("Heart2"), card("SpadeQ")];
     const legal = getLegalCards(hand, [card("Diamond10")], {
