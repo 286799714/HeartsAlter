@@ -9,7 +9,7 @@ corner_radius_top_right = 9
 corner_radius_bottom_right = 9
 corner_radius_bottom_left = 9
 
-[node name="MainPlayerInfo" type="Control" unique_id=1444400152 node_paths=PackedStringArray("_playerIdLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker")]
+[node name="MainPlayerInfo" type="Control" unique_id=1444400152 node_paths=PackedStringArray("_playerIdLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker", "_turnStatusLabel", "_turnCountdownLabel")]
 custom_minimum_size = Vector2(360, 50)
 layout_mode = 3
 anchors_preset = 0
@@ -24,6 +24,8 @@ _chipCountLabel = NodePath("Padding/Row/ChipCountLabel")
 _scoreValueLabel = NodePath("Padding/Row/ScoreGroup/ScoreBadge/ScorePadding/ScoreValueLabel")
 _scoreDeltaLabel = NodePath("Padding/Row/ScoreGroup/ScoreDeltaLabel")
 _collectPoseMarker = NodePath("CollectPoseMarker")
+_turnStatusLabel = NodePath("Padding/Row/TurnStatusLabel")
+_turnCountdownLabel = NodePath("Padding/Row/TurnCountdownLabel")
 
 [node name="Padding" type="MarginContainer" parent="." unique_id=1629017490]
 layout_mode = 0

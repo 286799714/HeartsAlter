@@ -17,6 +17,8 @@ export const TURN_DURATION = 15_000;
 export const PHASE_READY_DURATION = 30_000;
 /** How quickly a synthetic demo seat answers after it receives the turn. */
 export const BOT_TURN_DURATION = 600;
+/** Extra pause after a trick is collected before a bot starts the next one. */
+export const BOT_TRICK_DELAY = 1_000;
 export const DEFAULT_ANTE = 100;
 export const DEFAULT_STARTING_CHIPS = 1_000;
 export const MAX_PLAYERS = 4;
@@ -691,7 +693,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       this.finishRound();
       return;
     }
-    this.setTurn(winnerId);
+    this.setTurn(winnerId, this.isBotPlayer(winnerId) ? BOT_TRICK_DELAY : 0);
   }
 
   private finishRound() {
@@ -732,7 +734,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   }
 
   /** Hand the turn to a seat and arm a server-side deadline. */
-  private setTurn(playerId: string) {
+  private setTurn(playerId: string, initialDelay = 0) {
     this.turnTimeout?.clear();
     if (this.state.phase !== "playing" || !playerId) {
       this.state.currentTurn = "";
@@ -747,12 +749,17 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     const turnDuration = this.isBotPlayer(playerId)
       ? BOT_TURN_DURATION : TURN_DURATION;
     this.state.turnDuration = turnDuration;
-    this.state.turnDeadline = this.clock.currentTime + turnDuration;
-    this.turnTimeout = this.clock.setTimeout(() => this.autoPlayCurrentTurn(), turnDuration);
+    const safeDelay = Math.max(0, Math.trunc(initialDelay));
+    this.state.turnDeadline = this.clock.currentTime + safeDelay + turnDuration;
+    this.turnTimeout = this.clock.setTimeout(
+      () => this.autoPlayCurrentTurn(),
+      safeDelay + turnDuration,
+    );
     this.broadcast("turn_started", {
       playerId,
       deadline: this.state.turnDeadline,
       duration: turnDuration,
+      delay: safeDelay,
       trickNumber: this.state.trickNumber,
       automated: this.isBotPlayer(playerId),
     });
