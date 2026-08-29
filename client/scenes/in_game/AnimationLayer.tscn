@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://cowdm8l8xfy8i"]
 
-[ext_resource type="Script" uid="uid://c8xan1m8layer" path="res://Scripts/InGame/AnimationLayer/AnimationLayer.cs" id="1_animation"]
+[ext_resource type="Script" uid="uid://c8xan1m8layer" path="res://Scripts/InGame/AnimationLayer.cs" id="1_animation"]
 
 [node name="AnimationLayer" type="Control" unique_id=1023855864]
+z_index = 100
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,5 +11,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-z_index = 100
 script = ExtResource("1_animation")
+DrawFlightDuration = 0.5
+DrawFlipDuration = 0.35
+DrawFlipTransition = 2
+DrawFlipEase = 1
+PlayFlightDuration = 0.45
+PlayFlightTransition = 2
+PlayFlightEase = 1
+PlayClockwiseTurns = 1
+PlayFlipDuration = 0.15
+PlayFlipTransition = 2
+PlayFlipEase = 1
+CollectFlightDuration = 0.5
+CollectFlightTransition = 2
+CollectFlightEase = 1
+CollectFlipDuration = 0.2
+CollectFlipTransition = 2
+CollectFlipEase = 1

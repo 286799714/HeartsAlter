@@ -20,7 +20,7 @@ public partial class CardControl : Control
 	/// about the visual/interaction child nodes.
 	/// </summary>
 	[Signal]
-	public delegate void ClickedEventHandler();
+	public delegate void ClickedEventHandler(Vector2 canvasPosition);
 
 	/// <summary>
 	/// Emitted after this card finishes a requested face flip. Animation
@@ -244,9 +244,9 @@ public partial class CardControl : Control
 		Position = LayoutPosition + new Vector2(0.0f, -SelectionLift);
 	}
 
-	private void ForwardInteractionClick()
+	private void ForwardInteractionClick(Vector2 canvasPosition)
 	{
-		EmitSignal(SignalName.Clicked);
+		EmitSignal(SignalName.Clicked, canvasPosition);
 	}
 
 	private void ForwardFlipCompleted()

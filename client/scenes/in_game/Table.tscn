@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://c2hddsv6ha3gi"]
 
-[ext_resource type="Script" uid="uid://dtab1econtr0l" path="res://Scripts/InGame/Table/Table.cs" id="1_table"]
+[ext_resource type="Script" uid="uid://dtab1econtr0l" path="res://Scripts/InGame/Table.cs" id="1_table"]
 [ext_resource type="PackedScene" uid="uid://dfccqip2lq1qv" path="res://scenes/in_game/CardDeck.tscn" id="2_deck"]
 [ext_resource type="PackedScene" uid="uid://bg6tvprpjlpck" path="res://scenes/in_game/MainHandLayout.tscn" id="3_hand"]
 [ext_resource type="PackedScene" uid="uid://cowdm8l8xfy8i" path="res://scenes/in_game/AnimationLayer.tscn" id="4_animation"]
 [ext_resource type="PackedScene" uid="uid://bwmamljc0p248" path="res://scenes/in_game/OtherHandLayout.tscn" id="4_mshro"]
+[ext_resource type="PackedScene" uid="uid://dfyheemovxqsq" path="res://scenes/in_game/PlayerInfo.tscn" id="5_g6j7s"]
+[ext_resource type="PackedScene" path="res://scenes/in_game/PlayerInfoHorizontal.tscn" id="6_player_info_horizontal"]
+[ext_resource type="PackedScene" uid="uid://cubo7i4op1dv" path="res://scenes/in_game/PlayArea.tscn" id="7_play_area"]
+[ext_resource type="PackedScene" uid="uid://pttp8k537qw4" path="res://scenes/in_game/MainPlayerInfo.tscn" id="8_main_player_info"]
 
-[node name="Table" type="Control" unique_id=1748159373 node_paths=PackedStringArray("_cardDeck", "_mainHandLayout", "_animationLayer", "_drawCardButton")]
+[node name="Table" type="Control" unique_id=1748159373 node_paths=PackedStringArray("_cardDeck", "_mainHandLayout", "_otherHandLayout", "_otherHandLayout2", "_otherHandLayout3", "_animationLayer", "_mainPlayArea", "_leftPlayArea", "_oppositePlayArea", "_rightPlayArea", "_mainPlayerInfo", "_nextPlayerInfo", "_oppositePlayerInfo", "_previousPlayerInfo")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,77 +20,194 @@ grow_vertical = 2
 script = ExtResource("1_table")
 _cardDeck = NodePath("CardDeck")
 _mainHandLayout = NodePath("MainHandLayout")
+_otherHandLayout = NodePath("OtherHandLayout")
+_otherHandLayout2 = NodePath("OtherHandLayout2")
+_otherHandLayout3 = NodePath("OtherHandLayout3")
 _animationLayer = NodePath("AnimationLayer")
-_drawCardButton = NodePath("DrawCardButton")
+_mainPlayArea = NodePath("MainPlayArea")
+_leftPlayArea = NodePath("LeftPlayArea")
+_oppositePlayArea = NodePath("OppositePlayArea")
+_rightPlayArea = NodePath("RightPlayArea")
+_mainPlayerInfo = NodePath("MainPlayerInfo")
+_nextPlayerInfo = NodePath("PlayerInfo")
+_oppositePlayerInfo = NodePath("PlayerInfo2")
+_previousPlayerInfo = NodePath("PlayerInfo3")
+TrickCollectDelay = 0.3
 
 [node name="CardDeck" parent="." unique_id=2072646441 instance=ExtResource("2_deck")]
 layout_mode = 1
 anchors_preset = 8
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -52.0
-offset_top = -118.5
-offset_right = 68.0
-offset_bottom = 48.5
+offset_left = 456.0
+offset_top = -339.0
+offset_right = 576.0
+offset_bottom = -172.0
 grow_vertical = 2
 
 [node name="MainHandLayout" parent="." unique_id=1404605166 instance=ExtResource("3_hand")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.15
-anchor_right = 0.85
-offset_top = -214.0
-offset_bottom = -24.0
+anchor_left = 0.25
+anchor_top = 0.68
+anchor_right = 0.75
+anchor_bottom = 0.88
+offset_top = 0.0
+
+[node name="MainPlayerInfo" parent="." unique_id=2094963940 instance=ExtResource("8_main_player_info")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.29
+anchor_top = 1.0
+anchor_right = 0.71
+anchor_bottom = 1.0
+offset_top = -58.0
+offset_right = 0.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlayerInfo" parent="." unique_id=959319698 instance=ExtResource("5_g6j7s")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -116.0
+offset_right = 192.0
+offset_bottom = 116.0
+grow_vertical = 2
+
+[node name="PlayerInfo2" parent="." unique_id=1370923412 instance=ExtResource("6_player_info_horizontal")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -419.0
+offset_top = 15.0
+offset_right = -147.0
+offset_bottom = 131.0
+grow_horizontal = 2
+
+[node name="PlayerInfo3" parent="." unique_id=1903632260 instance=ExtResource("5_g6j7s")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -116.0
+offset_right = -24.0
+offset_bottom = 116.0
+grow_horizontal = 0
+grow_vertical = 2
 
 [node name="OtherHandLayout" parent="." unique_id=1103025311 instance=ExtResource("4_mshro")]
 layout_mode = 1
-anchors_preset = 9
-anchor_top = 0.0
+anchors_preset = -1
+anchor_top = 0.5
 anchor_right = 0.0
-offset_left = -14.0
-offset_top = 288.0
-offset_right = 356.0
-offset_bottom = -327.0
+anchor_bottom = 0.5
+offset_left = 71.5
+offset_top = -52.5
+offset_right = 441.5
+offset_bottom = 52.5
 grow_horizontal = 1
 grow_vertical = 2
 rotation = 1.5707964
-pivot_offset_ratio = Vector2(0.5, 0)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="OtherHandLayout2" parent="." unique_id=1351662359 instance=ExtResource("4_mshro")]
+[node name="OtherHandLayout2" parent="." unique_id=686643706 instance=ExtResource("4_mshro")]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = -1
+anchor_left = 0.5
 anchor_top = 0.0
-offset_left = -367.0
-offset_top = 288.0
-offset_right = 3.0
-offset_bottom = -327.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = -172.0
+offset_top = 25.0
+offset_right = 198.0
+offset_bottom = 130.0
+grow_vertical = 1
+rotation = 3.1415927
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="OtherHandLayout3" parent="." unique_id=1351662359 instance=ExtResource("4_mshro")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -441.5
+offset_top = -52.5
+offset_right = -71.5
+offset_bottom = 52.5
 grow_horizontal = 0
 grow_vertical = 2
 rotation = -1.5707964
-pivot_offset_ratio = Vector2(0.5, 0)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="OtherHandLayout3" parent="." unique_id=686643706 instance=ExtResource("4_mshro")]
+[node name="MainPlayArea" parent="." unique_id=1474710837 instance=ExtResource("7_play_area")]
 layout_mode = 1
-offset_left = 457.0
-offset_top = -574.0
-offset_right = -453.0
-offset_bottom = -469.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -13.5
+offset_right = 46.0
+offset_bottom = 114.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="LeftPlayArea" parent="." unique_id=427039902 instance=ExtResource("7_play_area")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.0
+offset_top = -105.999985
+offset_right = -63.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="OppositePlayArea" parent="." unique_id=1096746104 instance=ExtResource("7_play_area")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -198.49998
+offset_right = 46.0
+offset_bottom = -70.5
+grow_horizontal = 2
+grow_vertical = 2
 rotation = 3.1415927
-pivot_offset_ratio = Vector2(0.5, 0)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="RightPlayArea" parent="." unique_id=1341435489 instance=ExtResource("7_play_area")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 63.0
+offset_top = -105.999985
+offset_right = 155.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="AnimationLayer" parent="." unique_id=1574247879 instance=ExtResource("4_animation")]
 layout_mode = 1
-
-[node name="DrawCardButton" type="Button" parent="." unique_id=241289012]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -196.0
-offset_top = 32.0
-offset_right = -32.0
-offset_bottom = 78.0
-grow_horizontal = 0
-tooltip_text = "从牌堆抽一张牌；飞行中再次按下也会同时发牌"
-text = "抽牌 (Space)"

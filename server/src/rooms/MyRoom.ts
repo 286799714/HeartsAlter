@@ -4,7 +4,6 @@ import {
   dealShuffledHands,
   determineTrickWinner,
   getLegalCards,
-  rankValue,
   scoreCards,
   settlePot,
   type Card,
@@ -14,6 +13,8 @@ import { MyRoomState, Player, TrickCard } from "./schema/MyRoomState.js";
 
 /** How long a connected or disconnected seat has to act before the server plays for it. */
 export const TURN_DURATION = 15_000;
+/** Maximum wait for a table/deal/next-round handshake. */
+export const PHASE_READY_DURATION = 30_000;
 /** How quickly a synthetic demo seat answers after it receives the turn. */
 export const BOT_TURN_DURATION = 600;
 export const DEFAULT_ANTE = 100;
@@ -32,7 +33,12 @@ export const HAND_RESEND_DELAY = 100;
  */
 export const MAX_CHIPS_PER_PLAYER = Math.floor(2_147_483_647 / MAX_PLAYERS);
 
-type PlayMessage = { cardId?: unknown } | string | undefined;
+type PlayMessage = {
+  cardId?: unknown;
+  cardIndex?: unknown;
+  suit?: unknown;
+  rank?: unknown;
+} | string | undefined;
 
 /**
  * Colyseus adapter for the server-authoritative Hearts Alter round.
@@ -41,7 +47,17 @@ type PlayMessage = { cardId?: unknown } | string | undefined;
  * player receives only their own hand through a private message, while all
  * public trick and scoreboard data remains in `MyRoomState`.
  */
-export class MyRoom extends Room<{ state: MyRoomState }> {
+export interface MyRoomMetadata {
+  displayName: string;
+  phase: string;
+  playerCount: number;
+  maxPlayers: number;
+  readyCount: number;
+  bots: boolean;
+  hostName: string;
+}
+
+export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata }> {
   maxClients = MAX_PLAYERS;
   state = new MyRoomState();
 
@@ -52,8 +68,103 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
   private ante = DEFAULT_ANTE;
   private startingChips = DEFAULT_STARTING_CHIPS;
   private botsEnabled = false;
+  private displayName = "房间";
+  private lobbyManaged = false;
+  private starting = false;
+  private phaseTimeout?: Delayed;
 
   messages = {
+    /** Toggle the ready flag. The host and bots are always ready. */
+    ready: (client: Client, message: { ready?: unknown } | undefined) => {
+      const player = this.state.players.get(client.sessionId);
+      if (!player || this.state.phase !== "waiting" || player.isHost || player.isBot) {
+        return;
+      }
+      player.ready = message?.ready !== false;
+      this.state.message = player.ready ? `${player.name} 已准备` : `${player.name} 取消准备`;
+      this.publishRoomMetadata();
+    },
+    toggle_ready: (client: Client, message: { ready?: unknown } | undefined) => {
+      this.messages.ready(client, message);
+    },
+
+    /** The owner adds one synthetic seat to an empty slot. */
+    add_bot: (client: Client) => {
+      if (this.state.phase !== "waiting" || client.sessionId !== this.state.hostId) {
+        this.sendError(client, "只有房主可以添加机器人");
+        return;
+      }
+      if (this.state.players.size >= MAX_PLAYERS) {
+        this.sendError(client, "房间没有空席位");
+        return;
+      }
+      this.addBot();
+      this.state.message = "已添加机器人（机器人自动准备）";
+      this.publishRoomMetadata();
+    },
+    add_robot: (client: Client) => {
+      this.messages.add_bot(client);
+    },
+
+    /** Start only after every occupied seat is ready. */
+    start_game: (client: Client) => {
+      if (this.state.phase !== "waiting" || client.sessionId !== this.state.hostId) {
+        this.sendError(client, "只有房主可以开始游戏");
+        return;
+      }
+      if (this.state.players.size !== MAX_PLAYERS) {
+        this.sendError(client, `需要 ${MAX_PLAYERS} 个席位才能开始`);
+        return;
+      }
+      if ([...this.state.players.values()].some((player) => !player.ready)) {
+        this.sendError(client, "仍有玩家未准备");
+        return;
+      }
+      if (this.starting) return;
+      this.starting = true;
+      void this.lock().then(() => {
+        this.starting = false;
+        if (this.lobbyManaged) this.enterTableReady();
+        else this.startRound();
+      }).catch(() => {
+        this.starting = false;
+        this.sendError(client, "开始游戏失败，请稍后重试");
+      });
+    },
+    start: (client: Client) => {
+      this.messages.start_game(client);
+    },
+
+    /** The table scene has finished constructing its four seat widgets. */
+    table_ready: (client: Client) => {
+      const player = this.state.players.get(client.sessionId);
+      if (!player || this.state.phase !== "table_ready") return;
+      player.tableReady = true;
+      if (this.allRealPlayersHave((candidate) => candidate.tableReady)) {
+        this.startManagedDeal();
+      }
+    },
+
+    /** The local deal animation has completed. */
+    deal_ready: (client: Client) => {
+      const player = this.state.players.get(client.sessionId);
+      if (!player || this.state.phase !== "dealing") return;
+      player.dealReady = true;
+      if (this.allRealPlayersHave((candidate) => candidate.dealReady)) {
+        this.beginPlayingAfterDeal();
+      }
+    },
+
+    /** Every player explicitly agrees to proceed to another round. */
+    next_round: (client: Client) => {
+      const player = this.state.players.get(client.sessionId);
+      if (!player || this.state.phase !== "finished") return;
+      player.nextRoundReady = true;
+      if (this.allRealPlayersHave((candidate) => candidate.nextRoundReady)) {
+        this.enterTableReady();
+      }
+    },
+
     /** A player submits the id of one card from their private hand. */
     play: (client: Client, message: PlayMessage) => {
       const cardId = this.readCardId(message);
@@ -61,7 +172,11 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
         this.sendError(client, "请选择一张牌");
         return;
       }
-      this.playCard(client.sessionId, cardId, client);
+      if (!this.isCardDescriptorConsistent(message, cardId)) {
+        this.sendError(client, "牌面信息与牌 ID 不一致");
+        return;
+      }
+      this.playCard(client.sessionId, cardId, client, this.readCardIndex(message));
     },
 
     /** Re-send the private hand after a reconnect or an explicit refresh. */
@@ -77,6 +192,10 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       }
       if (!this.state.players.has(client.sessionId)) {
         this.sendError(client, "你不在本局座位中");
+        return;
+      }
+      if (this.lobbyManaged) {
+        this.messages.next_round(client);
         return;
       }
       const cannotAnte = this.state.playerOrder.find((playerId) => {
@@ -102,6 +221,9 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       this.ante,
     );
     this.botsEnabled = safeOptions.bots === true;
+    this.lobbyManaged = safeOptions.lobbyManaged === true;
+    this.state.lobbyManaged = this.lobbyManaged;
+    this.displayName = this.readRoomName(safeOptions.roomName);
     // A demo room has one real client and three synthetic seats.  Limiting
     // matchmaking to one connection makes the room's intent explicit and
     // prevents a second real client from racing the synthetic seats.
@@ -110,6 +232,7 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     this.state.message = this.botsEnabled
       ? "等待一名玩家加入（机器人演示）"
       : "等待四名玩家加入";
+    this.publishRoomMetadata();
   }
 
   onJoin(client: Client, options: Record<string, unknown> = {}) {
@@ -124,6 +247,12 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     player.chips = this.startingChips;
     player.connected = true;
     player.isTreating = false;
+    player.ready = this.state.players.size === 0;
+    player.isHost = this.state.players.size === 0;
+    player.isBot = false;
+    if (player.isHost) {
+      this.state.hostId = client.sessionId;
+    }
     this.state.players.set(client.sessionId, player);
     this.state.playerOrder.push(client.sessionId);
     this.hands.set(client.sessionId, []);
@@ -142,7 +271,8 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       this.state.message = "演示模式：1 名玩家与 3 个机器人已就位";
     }
 
-    if (this.state.players.size === MAX_PLAYERS) {
+    this.publishRoomMetadata();
+    if (!this.lobbyManaged && this.state.players.size === MAX_PLAYERS) {
       // A full room is deliberately locked before dealing, so a fifth client
       // can never observe a partially started round.
       void this.lock();
@@ -175,7 +305,19 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       this.state.message = this.botsEnabled
         ? "等待一名玩家加入（机器人演示）"
         : `${this.state.players.size}/${MAX_PLAYERS} 名玩家已就位`;
+      if (client.sessionId === this.state.hostId) {
+        const nextHostId = this.state.playerOrder.find((playerId) => !this.isBotPlayer(playerId));
+        this.state.hostId = nextHostId ?? this.state.playerOrder[0] ?? "";
+        this.state.playerOrder.forEach((playerId) => {
+          const remaining = this.state.players.get(playerId);
+          if (remaining) {
+            remaining.isHost = playerId === this.state.hostId;
+            if (remaining.isHost) remaining.ready = true;
+          }
+        });
+      }
       this.broadcast("player_left", { playerId: client.sessionId });
+      this.publishRoomMetadata();
       return;
     }
 
@@ -212,6 +354,7 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
 
   onDispose() {
     this.turnTimeout?.clear();
+    this.phaseTimeout?.clear();
     for (const timer of this.handResendTimers) {
       timer.clear();
     }
@@ -224,6 +367,11 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     if (this.state.players.size !== MAX_PLAYERS) {
       return false;
     }
+    if (this.lobbyManaged && [...this.state.players.values()].some((player) => !player.ready)) {
+      this.state.message = "仍有玩家未准备，无法开始游戏";
+      void this.unlock().catch(() => {});
+      return false;
+    }
     const cannotAnte = this.state.playerOrder.find((playerId) => {
       const player = this.state.players.get(playerId);
       return player !== undefined && player.chips < this.ante;
@@ -233,12 +381,61 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       return false;
     }
 
+    return this.dealRound(false);
+  }
+
+  /** Enter the table handshake after the host starts a lobby-managed room. */
+  private enterTableReady() {
+    this.phaseTimeout?.clear();
     this.turnTimeout?.clear();
     this.hands.clear();
-    this.state.roundNumber += 1;
-    this.state.phase = "playing";
+    this.state.phase = "table_ready";
+    this.state.phaseDeadline = this.clock.currentTime + PHASE_READY_DURATION;
     this.state.currentTurn = "";
     this.state.turnDeadline = 0;
+    this.state.trick.clear();
+    this.state.lastTrick.clear();
+    this.state.lastTrickWinner = "";
+    this.state.lastTrickPoints = 0;
+    this.state.leadSuit = "";
+    this.state.heartsBroken = false;
+    this.state.trickNumber = 0;
+    this.state.pot = 0;
+    for (const [playerId, player] of this.state.players.entries()) {
+      player.tableReady = this.isBotPlayer(playerId);
+      player.dealReady = false;
+      player.nextRoundReady = false;
+    }
+    this.state.message = "牌桌初始化中，等待所有玩家就绪";
+    this.publishRoomMetadata();
+    this.armPhaseTimeout("table_ready");
+  }
+
+  private startManagedDeal(): boolean {
+    return this.dealRound(true);
+  }
+
+  /** Deal once the table handshake has completed. */
+  private dealRound(waitForDealReady: boolean): boolean {
+    if (this.state.players.size !== MAX_PLAYERS) return false;
+    const cannotAnte = this.state.playerOrder.find((playerId) => {
+      const player = this.state.players.get(playerId);
+      return player !== undefined && player.chips < this.ante;
+    });
+    if (cannotAnte) {
+      this.returnToWaiting("有玩家筹码不足，无法开始新一局");
+      return false;
+    }
+    this.turnTimeout?.clear();
+    this.phaseTimeout?.clear();
+    this.hands.clear();
+    this.state.roundNumber += 1;
+    this.state.phase = waitForDealReady ? "dealing" : "playing";
+    this.state.currentTurn = "";
+    this.state.turnDeadline = 0;
+    this.state.phaseDeadline = waitForDealReady
+      ? this.clock.currentTime + PHASE_READY_DURATION
+      : 0;
     this.state.turnCount = 0;
     this.state.trickNumber = 0;
     this.state.leadSuit = "";
@@ -262,6 +459,9 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       player.tricksWon = 0;
       player.payout = 0;
       player.isTreating = false;
+      player.tableReady = false;
+      player.dealReady = !waitForDealReady || this.isBotPlayer(playerId);
+      player.nextRoundReady = false;
       this.state.pot += this.ante;
     }
 
@@ -283,17 +483,90 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     this.state.message = this.botsEnabled
       ? "演示模式：已发牌，梅花 2 先出"
       : "已发牌，梅花 2 先出";
+    this.publishRoomMetadata();
     this.broadcast("round_started", {
       roundNumber: this.state.roundNumber,
       ante: this.ante,
       pot: this.state.pot,
       cards: 52,
     });
-    this.setTurn(starter ?? this.state.playerOrder[0] ?? "");
+    if (waitForDealReady) {
+      this.broadcast("deal_started", {
+        roundNumber: this.state.roundNumber,
+        deadline: this.state.phaseDeadline,
+      });
+      this.armPhaseTimeout("dealing");
+    } else {
+      this.setTurn(starter ?? this.state.playerOrder[0] ?? "");
+    }
     return true;
   }
 
-  private playCard(playerId: string, cardId: string, client?: Client): boolean {
+  private beginPlayingAfterDeal() {
+    this.phaseTimeout?.clear();
+    this.state.phaseDeadline = 0;
+    this.state.phase = "playing";
+    this.state.message = this.botsEnabled
+      ? "演示模式：所有玩家已准备，梅花 2 先出"
+      : "所有玩家已准备，梅花 2 先出";
+    this.publishRoomMetadata();
+    this.broadcast("game_ready", { roundNumber: this.state.roundNumber });
+    this.setTurn(this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "");
+  }
+
+  private allRealPlayersHave(predicate: (player: Player) => boolean): boolean {
+    for (const playerId of this.state.playerOrder) {
+      if (this.isBotPlayer(playerId)) continue;
+      const player = this.state.players.get(playerId);
+      if (!player || !predicate(player)) return false;
+    }
+    return true;
+  }
+
+  private armPhaseTimeout(phase: string) {
+    this.phaseTimeout?.clear();
+    this.phaseTimeout = this.clock.setTimeout(() => {
+      if (this.state.phase !== phase) return;
+      this.returnToWaiting(`${phase === "dealing" ? "发牌动画" : "牌桌初始化"}超时，已返回准备房间`);
+    }, PHASE_READY_DURATION);
+  }
+
+  private returnToWaiting(message: string) {
+    this.phaseTimeout?.clear();
+    this.turnTimeout?.clear();
+    this.hands.clear();
+    this.state.phase = "waiting";
+    this.state.phaseDeadline = 0;
+    this.state.currentTurn = "";
+    this.state.turnDeadline = 0;
+    this.state.trick.clear();
+    this.state.lastTrick.clear();
+    this.state.lastTrickWinner = "";
+    this.state.lastTrickPoints = 0;
+    this.state.leadSuit = "";
+    this.state.heartsBroken = false;
+    this.state.trickNumber = 0;
+    this.state.pot = 0;
+    for (const [playerId, player] of this.state.players.entries()) {
+      player.tableReady = false;
+      player.dealReady = false;
+      player.nextRoundReady = false;
+      player.ready = player.isHost || player.isBot;
+      if (player.stake > 0) player.chips += player.stake;
+      player.stake = 0;
+      player.score = 0;
+      player.tricksWon = 0;
+      player.payout = 0;
+      player.handCount = 0;
+      if (this.isBotPlayer(playerId)) player.connected = true;
+    }
+    this.state.message = message;
+    void this.unlock().catch(() => {});
+    this.publishRoomMetadata();
+    this.broadcast("room_reset", { reason: message });
+  }
+
+  private playCard(playerId: string, cardId: string, client?: Client, submittedIndex?: number): boolean {
     if (this.state.phase !== "playing") {
       if (client) {
         this.sendError(client, "当前没有可出的牌");
@@ -320,6 +593,13 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       if (client) {
         this.sendError(client, "这张牌不在你的手牌中");
       }
+      return false;
+    }
+    // The index is useful for deterministic client animation, but the card id
+    // remains the authority because clients may sort their visible hand.
+    if (submittedIndex !== undefined &&
+      (!Number.isInteger(submittedIndex) || submittedIndex < 0 || submittedIndex >= hand.length)) {
+      if (client) this.sendError(client, "出牌位置无效");
       return false;
     }
 
@@ -356,6 +636,9 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     this.broadcast("card_played", {
       playerId,
       cardId: card.id,
+      cardIndex: handIndex,
+      suit: card.suit,
+      rank: card.rank,
       roundNumber: this.state.roundNumber,
       trickIndex: this.state.trick.length - 1,
     });
@@ -433,9 +716,11 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       player.payout = payout;
       player.chips += payout;
       player.isTreating = highest.has(playerId);
+      player.nextRoundReady = this.isBotPlayer(playerId);
       payouts[playerId] = payout;
     }
     this.state.message = "本局结束：最高分玩家共同请客";
+    this.publishRoomMetadata();
     this.broadcast("round_finished", {
       scores: scores.map((entry) => ({ playerId: entry.playerId, score: entry.score })),
       payouts,
@@ -456,12 +741,18 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     }
     this.state.currentTurn = playerId;
     this.state.turnCount += 1;
-    const turnDuration = this.isBotPlayer(playerId) ? BOT_TURN_DURATION : TURN_DURATION;
+    // Real players receive the 15-second decision budget. Synthetic seats do
+    // not have a client to wait for, so they answer their turn immediately
+    // using the short server-side bot cadence.
+    const turnDuration = this.isBotPlayer(playerId)
+      ? BOT_TURN_DURATION : TURN_DURATION;
+    this.state.turnDuration = turnDuration;
     this.state.turnDeadline = this.clock.currentTime + turnDuration;
     this.turnTimeout = this.clock.setTimeout(() => this.autoPlayCurrentTurn(), turnDuration);
     this.broadcast("turn_started", {
       playerId,
       deadline: this.state.turnDeadline,
+      duration: turnDuration,
       trickNumber: this.state.trickNumber,
       automated: this.isBotPlayer(playerId),
     });
@@ -487,13 +778,11 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       this.finishRound();
       return;
     }
-    const selected = [...legal].sort((left, right) => {
-      const rankDifference = rankValue(left) - rankValue(right);
-      return rankDifference !== 0 ? rankDifference : left.id.localeCompare(right.id);
-    })[0];
+    const selected = legal[Math.floor(Math.random() * legal.length)] ?? legal[0];
     this.broadcast("auto_play", {
       playerId,
       cardId: selected.id,
+      cardIndex: hand.indexOf(selected),
       automated: this.isBotPlayer(playerId),
     });
     this.playCard(playerId, selected.id);
@@ -502,25 +791,32 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
   /** Add the three non-network seats used by the single-client demo room. */
   private addDemoBots() {
     while (this.state.players.size < MAX_PLAYERS) {
-      const seat = this.state.players.size;
-      const playerId = this.createBotId(seat);
-      const player = new Player();
-      player.name = `机器人 ${seat + 1}`;
-      player.seat = seat;
-      player.chips = this.startingChips;
-      player.connected = true;
-      player.isTreating = false;
-      this.state.players.set(playerId, player);
-      this.state.playerOrder.push(playerId);
-      this.hands.set(playerId, []);
-      this.botPlayerIds.add(playerId);
-      this.broadcast("player_joined", {
-        playerId,
-        seat,
-        name: player.name,
-        automated: true,
-      });
+      this.addBot();
     }
+  }
+
+  private addBot() {
+    const seat = this.state.players.size;
+    const playerId = this.createBotId(seat);
+    const player = new Player();
+    player.name = `机器人 ${seat + 1}`;
+    player.seat = seat;
+    player.chips = this.startingChips;
+    player.connected = true;
+    player.isTreating = false;
+    player.ready = true;
+    player.isBot = true;
+    player.isHost = false;
+    this.state.players.set(playerId, player);
+    this.state.playerOrder.push(playerId);
+    this.hands.set(playerId, []);
+    this.botPlayerIds.add(playerId);
+    this.broadcast("player_joined", {
+      playerId,
+      seat,
+      name: player.name,
+      automated: true,
+    });
   }
 
   private createBotId(seat: number): string {
@@ -601,8 +897,35 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
       if (typeof legacy.id === "string") {
         return legacy.id;
       }
+      const suit = typeof legacy.suit === "string" ? legacy.suit.toLowerCase() : "";
+      const rank = legacy.rank;
+      if (suit && (typeof rank === "string" || typeof rank === "number")) {
+        const suitPrefix = suit.startsWith("club") ? "Club"
+          : suit.startsWith("diamond") ? "Diamond"
+          : suit.startsWith("heart") ? "Heart"
+          : suit.startsWith("spade") ? "Spade" : "";
+        const rankText = typeof rank === "number"
+          ? ({ 11: "J", 12: "Q", 13: "K", 14: "A" } as Record<number, string>)[Math.trunc(rank)] ?? String(Math.trunc(rank))
+          : ({ jack: "J", queen: "Q", king: "K", ace: "A" } as Record<string, string>)[rank.toLowerCase()] ?? rank;
+        if (suitPrefix && rankText) return suitPrefix + rankText;
+      }
     }
     return undefined;
+  }
+
+  private readCardIndex(message: PlayMessage): number | undefined {
+    if (!message || typeof message !== "object") return undefined;
+    const value = (message as Record<string, unknown>).cardIndex;
+    return typeof value === "number" && Number.isInteger(value) ? value : undefined;
+  }
+
+  private isCardDescriptorConsistent(message: PlayMessage, cardId: string): boolean {
+    if (!message || typeof message !== "object") return true;
+    const rawSuit = (message as Record<string, unknown>).suit;
+    const rawRank = (message as Record<string, unknown>).rank;
+    if (rawSuit === undefined && rawRank === undefined) return true;
+    const expected = this.readCardId({ suit: rawSuit, rank: rawRank });
+    return expected === cardId;
   }
 
   private readName(value: unknown, seatNumber: number): string {
@@ -611,6 +934,32 @@ export class MyRoom extends Room<{ state: MyRoomState }> {
     }
     const trimmed = value.trim().slice(0, 20);
     return trimmed.length > 0 ? trimmed : `玩家 ${seatNumber}`;
+  }
+
+  private readRoomName(value: unknown): string {
+    if (typeof value !== "string") return "房间";
+    const name = value.trim();
+    return name.length > 0 ? name.slice(0, 32) : "房间";
+  }
+
+  /** Publish enough public data for the lobby without exposing hands. */
+  private publishRoomMetadata() {
+    const players = [...this.state.players.values()];
+    const host = this.state.players.get(this.state.hostId);
+    void this.setMatchmaking({
+      metadata: {
+        displayName: this.displayName,
+        phase: this.state.phase,
+        playerCount: players.length,
+        maxPlayers: MAX_PLAYERS,
+        readyCount: players.filter((player) => player.ready).length,
+        bots: players.some((player) => player.isBot),
+        hostName: host?.name ?? "",
+      },
+    }).catch(() => {
+      // A room may publish one final state patch while the test/server is
+      // shutting down; metadata is best-effort and never affects the match.
+    });
   }
 
   private readChipAmount(value: unknown, fallback: number): number {

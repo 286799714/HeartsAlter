@@ -19,6 +19,16 @@ export const Player = schema({
   payout: t.int32().default(0),
   connected: t.boolean().default(true),
   isTreating: t.boolean().default(false),
+  /** The lobby owner is always ready and cannot toggle this flag off. */
+  ready: t.boolean().default(false),
+  /** Synthetic seats are public so the ready-room can render their badge. */
+  isBot: t.boolean().default(false),
+  /** Exactly one seat is the room owner. */
+  isHost: t.boolean().default(false),
+  /** Signals emitted by the local table/animation controller. */
+  tableReady: t.boolean().default(false),
+  dealReady: t.boolean().default(false),
+  nextRoundReady: t.boolean().default(false),
 });
 export type Player = SchemaType<typeof Player>;
 
@@ -35,6 +45,7 @@ export const MyRoomState = schema({
   playerOrder: t.array("string"),
   currentTurn: t.string().default(""),
   turnDeadline: t.float64().default(0),
+  turnDuration: t.uint16().default(15000),
   turnCount: t.uint16().default(0),
   trickNumber: t.uint8().default(0),
   leadSuit: t.string().default(""),
@@ -47,5 +58,31 @@ export const MyRoomState = schema({
   ante: t.int32().default(100),
   roundNumber: t.uint16().default(0),
   message: t.string().default("等待四名玩家加入"),
+  /** Session id of the room owner; the owner is always ready. */
+  hostId: t.string().default(""),
+  /** A lobby-created room waits for an explicit host start command. */
+  lobbyManaged: t.boolean().default(false),
+  /** Deadline for a phase-level handshake (table/deal), in server ms. */
+  phaseDeadline: t.float64().default(0),
 });
 export type MyRoomState = SchemaType<typeof MyRoomState>;
+
+/** Public listing row shown by the lobby. */
+export const LobbyRoomInfo = schema({
+  roomId: t.string().default(""),
+  name: t.string().default("房间"),
+  phase: t.string().default("waiting"),
+  playerCount: t.uint8().default(0),
+  maxPlayers: t.uint8().default(4),
+  readyCount: t.uint8().default(0),
+  bots: t.boolean().default(false),
+  hostName: t.string().default(""),
+});
+export type LobbyRoomInfo = SchemaType<typeof LobbyRoomInfo>;
+
+/** State for the singleton lobby room. */
+export const LobbyState = schema({
+  rooms: t.map(LobbyRoomInfo),
+  message: t.string().default("正在加载房间…"),
+});
+export type LobbyState = SchemaType<typeof LobbyState>;

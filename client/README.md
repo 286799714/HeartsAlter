@@ -1,7 +1,16 @@
 # HeartsAlter Godot 客户端
 
-客户端使用 Godot 4.7 .NET 与 C#，入口场景为 `Main.tscn`。打开
+客户端使用 Godot 4.7 .NET 与 C#，入口场景为 `Lobby.tscn`。打开
 `project.godot` 后即可运行；牌面资源位于 `assets/cards/`。
+
+启动后先进入大厅，房间列表由服务端同步。输入昵称和房间名可以创建房间，点击列表中的
+“加入”会进入 `ReadyRoom.tscn`；房主固定准备，可添加机器人，所有四个席位准备后由房主
+开启游戏并切换到 `Table.tscn`。席位预约只在场景切换期间保存在进程内会话对象中。
+
+进入牌桌后客户端发送 `table_ready`；收到私有手牌并完成发牌 tween 后发送 `deal_ready`。
+服务端会在两个阶段各等待 30 秒，超时就把所有客户端带回准备房间。对局中按服务端
+`turn_started.duration` 在 `MainPlayerInfo` 本地倒计时；牌局结束进入 `Settlement.tscn`，
+点击“下一局”会发送 `next_round`，等待所有真人同意。
 
 “连接服务器”按钮通过 Colyseus C# SDK 以 `bots: true` 加入 `hearts` 房间。服务端会
 自动补齐 3 个机器人，所以只启动一个客户端也能看到牌局推进；连接成功后，公开状态来自

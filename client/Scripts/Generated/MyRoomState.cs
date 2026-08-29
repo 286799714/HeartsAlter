@@ -32,39 +32,51 @@ public MyRoomState() { }
 		public double turnDeadline = default(double);
 
 		[Type(5, "uint16")]
+		public ushort turnDuration = default(ushort);
+
+		[Type(6, "uint16")]
 		public ushort turnCount = default(ushort);
 
-		[Type(6, "uint8")]
+		[Type(7, "uint8")]
 		public byte trickNumber = default(byte);
 
-		[Type(7, "string")]
+		[Type(8, "string")]
 		public string leadSuit = default(string);
 
-		[Type(8, "boolean")]
+		[Type(9, "boolean")]
 		public bool heartsBroken = default(bool);
 
-		[Type(9, "array", typeof(ArraySchema<TrickCard>))]
+		[Type(10, "array", typeof(ArraySchema<TrickCard>))]
 		public ArraySchema<TrickCard> trick = null;
 
-		[Type(10, "array", typeof(ArraySchema<TrickCard>))]
+		[Type(11, "array", typeof(ArraySchema<TrickCard>))]
 		public ArraySchema<TrickCard> lastTrick = null;
 
-		[Type(11, "string")]
+		[Type(12, "string")]
 		public string lastTrickWinner = default(string);
 
-		[Type(12, "uint8")]
+		[Type(13, "uint8")]
 		public byte lastTrickPoints = default(byte);
 
-		[Type(13, "int32")]
+		[Type(14, "int32")]
 		public int pot = default(int);
 
-		[Type(14, "int32")]
+		[Type(15, "int32")]
 		public int ante = default(int);
 
-		[Type(15, "uint16")]
+		[Type(16, "uint16")]
 		public ushort roundNumber = default(ushort);
 
-		[Type(16, "string")]
+		[Type(17, "string")]
 		public string message = default(string);
+
+		[Type(18, "string")]
+		public string hostId = default(string);
+
+		[Type(19, "boolean")]
+		public bool lobbyManaged = default(bool);
+
+		[Type(20, "float64")]
+		public double phaseDeadline = default(double);
 	}
 }

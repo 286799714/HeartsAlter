@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cj4j3imhm0qt2"]
 
-[ext_resource type="Script" uid="uid://biqthl1ucn8e1" path="res://Scripts/InGame/Card/Card.cs" id="1_t6800"]
+[ext_resource type="Script" uid="uid://biqthl1ucn8e1" path="res://Scripts/InGame/Card/CardControl.cs" id="1_t6800"]
 [ext_resource type="Script" uid="uid://byybyo3ducj3p" path="res://Scripts/InGame/Card/CardVisual.cs" id="2_0306u"]
 [ext_resource type="Resource" uid="uid://67ui1ybayqnh" path="res://assets/resources/StandardCardResource.tres" id="3_hi7ln"]
 [ext_resource type="Script" uid="uid://b7q4tf2y3ta0v" path="res://Scripts/InGame/Card/CardInteraction.cs" id="4_hi7ln"]

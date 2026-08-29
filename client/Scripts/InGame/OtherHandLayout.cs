@@ -63,6 +63,8 @@ public partial class OtherHandLayout : Control
 	private LayoutPlan _activeLayoutPlan;
 	private LayoutPlan _pendingLayoutPlan;
 	private Tween _layoutTween;
+	private AnimationLayer _animationLayer;
+	private PlayArea _playArea;
 	/// <summary>
 	/// Cards currently managed by this hand in logical left-to-right order. The
 	/// returned view is read-only and follows receive order.
@@ -145,6 +147,104 @@ public partial class OtherHandLayout : Control
 		PruneInvalidCards();
 		SubmitLayoutPlan(CreateLayoutPlan(_cards));
 	}
+
+	/// <summary>
+	/// Supplies the shared animation layer and this seat's central play area.
+	/// Table owns this wiring so ordinary callers only need an index and data.
+	/// </summary>
+	internal void BindPlayAnimation(AnimationLayer animationLayer, PlayArea playArea)
+	{
+		_animationLayer = animationLayer;
+		_playArea = playArea;
+	}
+
+	/// <summary>
+	/// Reveals and plays the indexed hidden card. The card data is assigned while
+	/// it is still showing its back; AnimationLayer coordinates the flight and
+	/// the flip to the face-up destination pose.
+	/// </summary>
+	public bool TryPlayCard(int cardIndex, CardData cardData)
+	{
+		return TryPlayCard(cardIndex, cardData, completed: null);
+	}
+
+	/// <summary>
+	/// Internal table seam that also reports when the card has landed in its play
+	/// area. Ordinary callers use the two-argument overload.
+	/// </summary>
+	internal bool TryPlayCard(
+		int cardIndex,
+		CardData cardData,
+		Action<CardControl> completed)
+	{
+		PruneInvalidCards();
+		if (cardIndex < 0 || cardIndex >= _cards.Count ||
+			_animationLayer is null || !IsInstanceValid(_animationLayer) ||
+			!_animationLayer.IsInsideTree() ||
+			_playArea is null || !IsInstanceValid(_playArea) ||
+			!_playArea.IsInsideTree())
+		{
+			return false;
+		}
+
+		CardControl card = _cards[cardIndex];
+		if (!IsInstanceValid(card) || card.GetParent() != this)
+			return false;
+
+		card.Setup(cardData, startFaceUp: false);
+		CardPose2D sourcePose = new(
+			card.GetGlobalTransformWithCanvas(),
+			new Vector2(card.CardWidth, card.CardHeight),
+			IsFaceUp: false
+		);
+		CardPose2D targetPose;
+		try
+		{
+			targetPose = _playArea.GetReceivePose(card);
+		}
+		catch (Exception exception)
+		{
+			GD.PushWarning($"Unable to calculate an opponent play pose: {exception.Message}");
+			return false;
+		}
+
+		card.Reparent(_animationLayer, keepGlobalTransform: true);
+		bool started = _animationLayer.PlayCardToPose(
+			card,
+			sourcePose,
+			targetPose,
+			playedCard =>
+			{
+				_playArea.ReceiveCard(playedCard);
+				completed?.Invoke(playedCard);
+			}
+		);
+
+		if (!started && IsInstanceValid(card))
+			ReceiveCard(card);
+
+		return started;
+	}
+
+	/// <summary>Immediately clears all logical and visual cards from this hand.</summary>
+	public void ClearCards()
+	{
+		if (_layoutTween is { } layoutTween && layoutTween.IsValid())
+			layoutTween.Kill();
+		_layoutTween = null;
+
+		CardControl[] cards = _cards.ToArray();
+		_cards.Clear();
+		_activeLayoutStarts.Clear();
+		_activeLayoutPlan = null;
+		_pendingLayoutPlan = null;
+
+		foreach (CardControl card in cards)
+		{
+			if (IsInstanceValid(card))
+				card.QueueFree();
+		}
+	}
 	/// <summary>
 	/// Returns the local destination used by the next received card. While a
 	/// layout tween is active, its target snapshot keeps this position stable.
@@ -162,7 +262,7 @@ public partial class OtherHandLayout : Control
 		}
 
 		if (_pendingLayoutPlan is not null &&
-		    TryGetRightmost(_pendingLayoutPlan, out Vector2 pendingPosition))
+			TryGetRightmost(_pendingLayoutPlan, out Vector2 pendingPosition))
 		{
 			return pendingPosition;
 		}
@@ -399,7 +499,7 @@ public partial class OtherHandLayout : Control
 		foreach (KeyValuePair<CardControl, Vector2> pair in _activeLayoutStarts)
 		{
 			if (plan.Targets.TryGetValue(pair.Key, out Vector2 target) &&
-			    pair.Value.DistanceTo(target) > 0.01f)
+				pair.Value.DistanceTo(target) > 0.01f)
 			{
 				hasMotion = true;
 				break;
@@ -427,8 +527,8 @@ public partial class OtherHandLayout : Control
 					{
 						CardControl card = pair.Key;
 						if (!IsInstanceValid(card) ||
-						    card.GetParent() != this ||
-						    !_activeLayoutStarts.TryGetValue(card, out Vector2 start))
+							card.GetParent() != this ||
+							!_activeLayoutStarts.TryGetValue(card, out Vector2 start))
 							continue;
 
 						card.SetLayoutPosition(start.Lerp(pair.Value, progress));
@@ -447,7 +547,7 @@ public partial class OtherHandLayout : Control
 	private void CompleteLayoutTween(Tween completedTween, LayoutPlan completedPlan)
 	{
 		if (!ReferenceEquals(_layoutTween, completedTween) ||
-		    !ReferenceEquals(_activeLayoutPlan, completedPlan))
+			!ReferenceEquals(_activeLayoutPlan, completedPlan))
 			return;
 
 		ApplyLayoutTargets(completedPlan);
@@ -522,8 +622,8 @@ public partial class OtherHandLayout : Control
 		{
 			CardControl card = plan.Order[i];
 			if (IsInstanceValid(card) &&
-			    card.GetParent() == this &&
-			    plan.Targets.TryGetValue(card, out rightmost))
+				card.GetParent() == this &&
+				plan.Targets.TryGetValue(card, out rightmost))
 				return true;
 		}
 

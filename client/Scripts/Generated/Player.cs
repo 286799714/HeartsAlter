@@ -45,5 +45,23 @@ public Player() { }
 
 		[Type(9, "boolean")]
 		public bool isTreating = default(bool);
+
+		[Type(10, "boolean")]
+		public bool ready = default(bool);
+
+		[Type(11, "boolean")]
+		public bool isBot = default(bool);
+
+		[Type(12, "boolean")]
+		public bool isHost = default(bool);
+
+		[Type(13, "boolean")]
+		public bool tableReady = default(bool);
+
+		[Type(14, "boolean")]
+		public bool dealReady = default(bool);
+
+		[Type(15, "boolean")]
+		public bool nextRoundReady = default(bool);
 	}
 }

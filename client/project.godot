@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="HeartsAlter"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/Lobby.tscn"
 config/features=PackedStringArray("4.7", "C#")
 config/icon="res://icon.svg"
 
@@ -38,3 +38,4 @@ project/assembly_name="HeartsAlter"
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

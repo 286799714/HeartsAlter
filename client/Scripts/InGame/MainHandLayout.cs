@@ -74,9 +74,13 @@ public partial class MainHandLayout : Control
 	[Export]
 	public Tween.EaseType SelectionEase = Tween.EaseType.InOut;
 
+	[Export]
+	private Label _ruleHintLabel;
+
 	private readonly List<CardControl> _cards = new();
 	private readonly Dictionary<CardControl, CardControl.ClickedEventHandler> _clickHandlers = new();
 	private readonly Dictionary<CardControl, Tween> _selectionTweens = new();
+	private readonly HashSet<string> _playableCardIds = new(StringComparer.Ordinal);
 
 	// The active layout tween owns these snapshots. They must not be replaced
 	// while it is running, since they define its end state and the collection
@@ -87,6 +91,18 @@ public partial class MainHandLayout : Control
 	private Tween _layoutTween;
 
 	private CardControl _selectedCard;
+	private AnimationLayer _animationLayer;
+	private PlayArea _playArea;
+	private bool _selectionEnabled = true;
+	private bool _restrictPlayableCards;
+
+	/// <summary>
+	/// Emitted when the player clicks the already-selected card. The request is
+	/// intentionally separate from the animation so a game controller can
+	/// validate the play before calling <see cref="TryPlayCard"/>.
+	/// </summary>
+	[Signal]
+	public delegate void CardPlayRequestedEventHandler(int cardIndex);
 
 	/// <summary>
 	/// Cards currently managed by this hand in logical left-to-right order. The
@@ -99,6 +115,21 @@ public partial class MainHandLayout : Control
 	/// Card currently selected by the player, or null when nothing is selected.
 	/// </summary>
 	public CardControl SelectedCard => _selectedCard;
+
+	/// <summary>Whether clicks may currently select or request a hand card.</summary>
+	public bool SelectionEnabled => _selectionEnabled;
+	public IReadOnlyCollection<string> PlayableCardIds => _playableCardIds;
+
+	/// <summary>
+	/// Returns whether the indexed card is legal for the current server turn.
+	/// Selection remains independent from this value; callers use it only when
+	/// committing a play.
+	/// </summary>
+	public bool IsCardPlayable(int cardIndex)
+	{
+		PruneInvalidCards();
+		return cardIndex >= 0 && cardIndex < _cards.Count && IsCardPlayable(_cards[cardIndex]);
+	}
 
 	/// <summary>
 	/// True while the non-preemptive layout tween is running.
@@ -152,6 +183,8 @@ public partial class MainHandLayout : Control
 		ChildEnteredTree += HandleChildEnteredTree;
 		ChildExitingTree += HandleChildExitingTree;
 		RecalculateLayout();
+		if (_ruleHintLabel is not null)
+			_ruleHintLabel.Text = string.Empty;
 	}
 
 	public override void _ExitTree()
@@ -180,6 +213,26 @@ public partial class MainHandLayout : Control
 		_activeLayoutStarts.Clear();
 		_activeLayoutPlan = null;
 		_pendingLayoutPlan = null;
+		_playableCardIds.Clear();
+	}
+
+	/// <summary>
+	/// Clears the current choice when the player presses outside every main-hand
+	/// card. _Input runs before GUI dispatch, so the test sees the cards at their
+	/// pre-click positions and still works when another Control consumes the
+	/// eventual GUI event.
+	/// </summary>
+	public override void _Input(InputEvent @event)
+	{
+		if (!_selectionEnabled ||
+			_selectedCard is null ||
+			!TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
+		{
+			return;
+		}
+
+		if (GetTopmostCardAtCanvasPoint(canvasPosition) is null)
+			ClearSelection();
 	}
 
 	/// <summary>
@@ -219,6 +272,158 @@ public partial class MainHandLayout : Control
 	}
 
 	/// <summary>
+	/// Supplies the shared animation layer and this seat's central play area.
+	/// Table owns this wiring so ordinary callers only need a card index.
+	/// </summary>
+	internal void BindPlayAnimation(AnimationLayer animationLayer, PlayArea playArea)
+	{
+		_animationLayer = animationLayer;
+		_playArea = playArea;
+	}
+
+	/// <summary>
+	/// Enables or disables player interaction for every managed card. Disabling
+	/// also clears the current choice so a pre-deal selection cannot leak into
+	/// the newly dealt hand.
+	/// </summary>
+	public void SetSelectionEnabled(bool enabled)
+	{
+		_selectionEnabled = enabled;
+		if (!enabled)
+			ClearSelection();
+
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+	}
+
+	/// <summary>Applies legal-card highlighting for the current server turn.</summary>
+	public void SetPlayableCards(
+		IEnumerable<CardData> playableCards,
+		string hint = "",
+		string autoSelectCardId = "")
+	{
+		_playableCardIds.Clear();
+		if (playableCards is not null)
+		{
+			foreach (CardData card in playableCards)
+				_playableCardIds.Add(ToCardId(card));
+		}
+		_restrictPlayableCards = true;
+		if (_ruleHintLabel is not null)
+			_ruleHintLabel.Text = hint ?? string.Empty;
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+		if (!string.IsNullOrWhiteSpace(autoSelectCardId))
+		{
+			CardControl candidate = _cards.Find(card =>
+				ToCardId(card.Data) == autoSelectCardId &&
+				_playableCardIds.Contains(autoSelectCardId));
+			if (candidate is not null)
+				SelectCard(candidate);
+		}
+	}
+
+	/// <summary>Clears the legal-card gate and rule hint.</summary>
+	public void ClearPlayableCards()
+	{
+		_restrictPlayableCards = false;
+		_playableCardIds.Clear();
+		if (_ruleHintLabel is not null)
+			_ruleHintLabel.Text = string.Empty;
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+	}
+
+	/// <summary>
+	/// Removes the indexed card from the hand, flies it to the configured play
+	/// area, and lets the existing layout planner tween the remaining cards.
+	/// </summary>
+	public bool TryPlayCard(int cardIndex)
+	{
+		PruneInvalidCards();
+		if (cardIndex < 0 || cardIndex >= _cards.Count ||
+			_animationLayer is null || !IsInstanceValid(_animationLayer) ||
+			!_animationLayer.IsInsideTree() ||
+			_playArea is null || !IsInstanceValid(_playArea) ||
+			!_playArea.IsInsideTree())
+		{
+			return false;
+		}
+
+		CardControl card = _cards[cardIndex];
+		if (!IsInstanceValid(card) || card.GetParent() != this)
+			return false;
+
+		CardPose2D sourcePose = new(
+			card.GetGlobalTransformWithCanvas(),
+			new Vector2(card.CardWidth, card.CardHeight),
+			card.IsFaceUp
+		);
+		CardPose2D targetPose;
+		try
+		{
+			targetPose = _playArea.GetReceivePose(card);
+		}
+		catch (Exception exception)
+		{
+			GD.PushWarning($"Unable to calculate the main player's play pose: {exception.Message}");
+			return false;
+		}
+
+		card.Reparent(_animationLayer, keepGlobalTransform: true);
+		bool started = _animationLayer.PlayCardToPose(
+			card,
+			sourcePose,
+			targetPose,
+			playedCard => _playArea.ReceiveCard(playedCard)
+		);
+
+		if (!started && IsInstanceValid(card))
+			ReceiveCard(card);
+
+		return started;
+	}
+
+	/// <summary>Immediately clears all logical and visual cards from this hand.</summary>
+	public void ClearCards()
+	{
+		_restrictPlayableCards = false;
+		_playableCardIds.Clear();
+		if (_ruleHintLabel is not null)
+			_ruleHintLabel.Text = string.Empty;
+		if (_layoutTween is { } layoutTween && layoutTween.IsValid())
+			layoutTween.Kill();
+		_layoutTween = null;
+
+		foreach (Tween tween in _selectionTweens.Values)
+		{
+			if (tween is { } && tween.IsValid())
+				tween.Kill();
+		}
+
+		foreach (KeyValuePair<CardControl, CardControl.ClickedEventHandler> pair in _clickHandlers)
+		{
+			if (IsInstanceValid(pair.Key))
+				pair.Key.Clicked -= pair.Value;
+		}
+
+		CardControl[] cards = _cards.ToArray();
+		_cards.Clear();
+		_clickHandlers.Clear();
+		_selectionTweens.Clear();
+		_selectedCard = null;
+		_activeLayoutStarts.Clear();
+		_activeLayoutPlan = null;
+		_pendingLayoutPlan = null;
+
+		foreach (CardControl card in cards)
+		{
+			if (IsInstanceValid(card))
+				card.QueueFree();
+		}
+	}
+
+	/// <summary>
 	/// Returns the local destination used by the next received card. While a
 	/// layout tween is active, its target snapshot keeps this position stable.
 	/// </summary>
@@ -235,7 +440,7 @@ public partial class MainHandLayout : Control
 		}
 
 		if (_pendingLayoutPlan is not null &&
-		    TryGetRightmost(_pendingLayoutPlan, out Vector2 pendingPosition))
+			TryGetRightmost(_pendingLayoutPlan, out Vector2 pendingPosition))
 		{
 			return pendingPosition;
 		}
@@ -370,9 +575,11 @@ public partial class MainHandLayout : Control
 		card.CaptureCurrentPositionAsLayout();
 		NormalizeCardAnchors(card);
 
-		CardControl.ClickedEventHandler handler = () => HandleCardClicked(card);
+		CardControl.ClickedEventHandler handler = canvasPosition =>
+			HandleCardClicked(card, canvasPosition);
 		card.Clicked += handler;
 		_clickHandlers[card] = handler;
+		ApplyInteractionState(card);
 
 		card.SetSelectionLift(ReferenceEquals(card, _selectedCard) ? SelectedLift : 0.0f);
 		UpdateZIndices();
@@ -381,10 +588,122 @@ public partial class MainHandLayout : Control
 			RecalculateLayout();
 	}
 
-	private void HandleCardClicked(CardControl card)
+	private void HandleCardClicked(CardControl card, Vector2 canvasPosition)
 	{
-		if (IsInstanceValid(card))
-			SelectCard(card);
+		if (!_selectionEnabled || !IsInstanceValid(card))
+			return;
+
+		CardControl topmostCard = GetTopmostCardAtCanvasPoint(canvasPosition);
+		if (topmostCard is not null)
+			card = topmostCard;
+
+		if (ReferenceEquals(card, _selectedCard))
+		{
+			int cardIndex = _cards.IndexOf(card);
+			if (cardIndex >= 0)
+				EmitSignal(SignalName.CardPlayRequested, cardIndex);
+			return;
+		}
+
+		SelectCard(card);
+	}
+
+	private void ApplyInteractionState(CardControl card)
+	{
+		if (!IsInstanceValid(card))
+		{
+			return;
+		}
+		bool playable = IsCardPlayable(card);
+		card.Modulate = playable
+			? Colors.White
+			: new Color(0.45f, 0.45f, 0.45f, 1.0f);
+		if (card.Interaction is null || !IsInstanceValid(card.Interaction))
+			return;
+
+		// Legal-card state only affects visual feedback. Every card must remain
+		// selectable so overlapping cards can be inspected before committing.
+		card.Interaction.MouseFilter = _selectionEnabled
+			? MouseFilterEnum.Stop
+			: MouseFilterEnum.Ignore;
+	}
+
+	private bool IsCardPlayable(CardControl card)
+	{
+		return !_restrictPlayableCards || _playableCardIds.Contains(ToCardId(card.Data));
+	}
+
+	private static string ToCardId(CardData card)
+	{
+		string suit = card.Suit switch
+		{
+			PokerSuit.Club => "Club",
+			PokerSuit.Diamond => "Diamond",
+			PokerSuit.Heart => "Heart",
+			_ => "Spade",
+		};
+		string rank = card.Rank switch
+		{
+			PokerRank.Jack => "J",
+			PokerRank.Queen => "Q",
+			PokerRank.King => "K",
+			PokerRank.Ace => "A",
+			_ => ((int)card.Rank).ToString(),
+		};
+		return suit + rank;
+	}
+
+	/// <summary>
+	/// Resolves the visually topmost hand card at a canvas point. This runs only
+	/// for an actual click; normal mouse motion stays entirely in Godot's native
+	/// GUI hit testing path.
+	/// </summary>
+	internal CardControl GetTopmostCardAtCanvasPoint(Vector2 canvasPoint)
+	{
+		for (int index = _cards.Count - 1; index >= 0; index--)
+		{
+			CardControl candidate = _cards[index];
+			if (!IsInstanceValid(candidate) ||
+				candidate.GetParent() != this ||
+				!candidate.Visible)
+			{
+				continue;
+			}
+
+			Vector2 localPoint = candidate
+				.GetGlobalTransformWithCanvas()
+				.AffineInverse() * canvasPoint;
+			Rect2 candidateRect = new(
+				Vector2.Zero,
+				new Vector2(candidate.CardWidth, candidate.CardHeight)
+			);
+			if (candidateRect.HasPoint(localPoint))
+				return candidate;
+		}
+
+		return null;
+	}
+
+	private static bool TryGetPressedPointerPosition(
+		InputEvent @event,
+		out Vector2 position)
+	{
+		switch (@event)
+		{
+			case InputEventMouseButton
+				{
+					ButtonIndex: MouseButton.Left,
+					Pressed: true
+				} mouseEvent:
+				position = mouseEvent.Position;
+				return true;
+			case InputEventScreenTouch { Pressed: true } touchEvent:
+				position = touchEvent.Position;
+				return true;
+			default:
+				position = Vector2.Zero;
+				return false;
+		}
 	}
 
 	private void HandleChildEnteredTree(Node node)
@@ -400,7 +719,7 @@ public partial class MainHandLayout : Control
 
 		CancelSelectionTween(card);
 		if (_clickHandlers.Remove(card, out CardControl.ClickedEventHandler handler) &&
-		    IsInstanceValid(card))
+			IsInstanceValid(card))
 		{
 			card.Clicked -= handler;
 		}
@@ -436,9 +755,9 @@ public partial class MainHandLayout : Control
 		float target = selected ? Mathf.Max(0.0f, SelectedLift) : 0.0f;
 
 		if (Mathf.IsEqualApprox(start, target) ||
-		    SelectionTweenDuration <= 0.0f ||
-		    !IsInsideTree() ||
-		    !card.IsInsideTree())
+			SelectionTweenDuration <= 0.0f ||
+			!IsInsideTree() ||
+			!card.IsInsideTree())
 		{
 			card.SetSelectionLift(target);
 			return;
@@ -463,7 +782,7 @@ public partial class MainHandLayout : Control
 		tween.TweenCallback(Callable.From(() =>
 		{
 			if (!_selectionTweens.TryGetValue(card, out Tween active) ||
-			    !ReferenceEquals(active, tween))
+				!ReferenceEquals(active, tween))
 				return;
 
 			_selectionTweens.Remove(card);
@@ -580,7 +899,7 @@ public partial class MainHandLayout : Control
 		foreach (KeyValuePair<CardControl, Vector2> pair in _activeLayoutStarts)
 		{
 			if (plan.Targets.TryGetValue(pair.Key, out Vector2 target) &&
-			    pair.Value.DistanceTo(target) > 0.01f)
+				pair.Value.DistanceTo(target) > 0.01f)
 			{
 				hasMotion = true;
 				break;
@@ -608,8 +927,8 @@ public partial class MainHandLayout : Control
 					{
 						CardControl card = pair.Key;
 						if (!IsInstanceValid(card) ||
-						    card.GetParent() != this ||
-						    !_activeLayoutStarts.TryGetValue(card, out Vector2 start))
+							card.GetParent() != this ||
+							!_activeLayoutStarts.TryGetValue(card, out Vector2 start))
 							continue;
 
 						card.SetLayoutPosition(start.Lerp(pair.Value, progress));
@@ -628,7 +947,7 @@ public partial class MainHandLayout : Control
 	private void CompleteLayoutTween(Tween completedTween, LayoutPlan completedPlan)
 	{
 		if (!ReferenceEquals(_layoutTween, completedTween) ||
-		    !ReferenceEquals(_activeLayoutPlan, completedPlan))
+			!ReferenceEquals(_activeLayoutPlan, completedPlan))
 			return;
 
 		ApplyLayoutTargets(completedPlan);
@@ -714,8 +1033,8 @@ public partial class MainHandLayout : Control
 		{
 			CardControl card = plan.Order[i];
 			if (IsInstanceValid(card) &&
-			    card.GetParent() == this &&
-			    plan.Targets.TryGetValue(card, out rightmost))
+				card.GetParent() == this &&
+				plan.Targets.TryGetValue(card, out rightmost))
 				return true;
 		}
 

@@ -1,21 +1,33 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
-using CardPose2D = HeartsAlter.Scripts.InGame.Card.CardPose2D;
-using CardData = HeartsAlter.Scripts.InGame.Card.CardData;
-using PlayingCard = HeartsAlter.Scripts.InGame.Card.CardControl;
-using PokerRank = HeartsAlter.Scripts.InGame.Card.PokerRank;
-using PokerSuit = HeartsAlter.Scripts.InGame.Card.PokerSuit;
+using HeartsAlter.Scripts.InGame.Card;
+using HeartsAlter.Scripts.Generated;
+using HeartsAlter.Scripts;
 
 namespace HeartsAlter.Scripts.InGame;
 
 /// <summary>
-/// Small offline table controller used by the scene preview.  It coordinates
-/// the deck, hand, and shared animation layer; game/network state can replace
-/// this controller later without changing those reusable components.
+/// The presentation seam for a four-seat table. Callers describe deals and
+/// plays by seat/card index; hand ownership, pose calculation, and animation
+/// sequencing remain inside the table and its layout modules.
 /// </summary>
 public partial class Table : Control
 {
+	private readonly record struct CollectFlight(
+		CardControl Card,
+		CardPose2D SourcePose,
+		CardPose2D TargetPose
+	);
+
+	public const int MainPlayerIndex = 0;
+	public const int LeftPlayerIndex = 1;
+	public const int OppositePlayerIndex = 2;
+	public const int RightPlayerIndex = 3;
+	public const int PlayerCount = 4;
+
 	[Export]
 	private CardDeck _cardDeck = null!;
 
@@ -35,302 +47,1094 @@ public partial class Table : Control
 	private AnimationLayer _animationLayer = null!;
 
 	[Export]
-	private Button _drawCardButton = null!;
+	private PlayArea _mainPlayArea = null!;
 
-	/// <summary>
-	/// Number of cards shown when a scene starts with an empty deck.
-	/// </summary>
 	[Export]
-	public int StartingDeckCount = 52;
+	private PlayArea _leftPlayArea = null!;
 
-	/// <summary>
-	/// Capacity used by the thickness calculation for the demo deck.
-	/// </summary>
 	[Export]
-	public int StartingDeckCapacity = 52;
+	private PlayArea _oppositePlayArea = null!;
 
-	/// <summary>
-	/// Keyboard key accepted by the draw-card shortcut.  Space is deliberately
-	/// also printed on the button in Table.tscn so the affordance is discoverable.
-	/// </summary>
 	[Export]
-	public Key DrawKey = Key.Space;
+	private PlayArea _rightPlayArea = null!;
 
-	private readonly RandomNumberGenerator _random = new();
-	private readonly List<Control> _handLayouts = new();
-	private int _drawsInFlight;
-	private int _nextHandIndex;
+	[Export]
+	private PlayerInfo _mainPlayerInfo = null!;
+
+	[Export]
+	private PlayerInfo _nextPlayerInfo = null!;
+
+	[Export]
+	private PlayerInfo _oppositePlayerInfo = null!;
+
+	[Export]
+	private PlayerInfo _previousPlayerInfo = null!;
+
+	/// <summary>Seconds between the starts of consecutive deal animations.</summary>
+	[Export]
+	public float DealInterval = 0.12f;
+
+	/// <summary>Pause after the last dealt card lands before arranging the hand.</summary>
+	[Export]
+	public float ArrangeDelay = 0.2f;
+
+	/// <summary>Pause after all four played cards land before collecting the trick.</summary>
+	[Export]
+	public float TrickCollectDelay = 0.3f;
 
 	/// <summary>
-	/// The deck count at the last frame.  Exposing it makes the preview easy to
-	/// inspect from a debugger and keeps callers from reaching into private
-	/// scene fields.
+	/// Raised when the main player clicks an already-selected hand card. The
+	/// receiver can validate the request and call <see cref="PlayMainPlayerCard"/>.
 	/// </summary>
+	public event Action<int, CardData> MainPlayerCardPlayRequested;
+
+	private readonly List<OtherHandLayout> _opponentHands = new();
+	private readonly List<CollectFlight> _preparedCollectFlights = new(PlayerCount);
+	private int _dealGeneration;
+	private int _dealFlights;
+	private bool _dealDispatchCompleted;
+	private bool _dealFinishing;
+	private int _collectGeneration;
+	private int _collectFlights;
+	private bool _collectDispatchCompleted;
+	private PlayerInfo _collectingPlayerInfo = null!;
+	private int _collectingPlayerIndex = -1;
+	private int _pendingRoundScoreDelta;
+	private bool _collectCardsPrepared;
+	private bool _rightPlayerPlayCompleted;
+	private ColyseusClientAdapter _networkAdapter;
+	private bool _networkDealStarted;
+	private readonly Queue<(string PlayerId, string CardId)> _pendingNetworkPlays = new();
+	private readonly List<CardData> _networkHandCards = new();
+	private bool _networkTableReadySent;
+	private bool _networkDealReadySent;
+	private bool _networkTransitioning;
+	private const double NetworkPlayRequestIntervalMsec = 100.0;
+	private double _lastNetworkPlaySentMsec = double.NegativeInfinity;
+
 	public int RemainingCards =>
-		_cardDeck is not null && GodotObject.IsInstanceValid(_cardDeck)
+		_cardDeck is not null && IsInstanceValid(_cardDeck)
 			? _cardDeck.CardCount
 			: 0;
 
-	public bool IsDrawInProgress => _drawsInFlight > 0;
+	public bool IsDealing { get; private set; }
+	public bool IsCollectingTrick { get; private set; }
 
 	/// <summary>
-	/// Number of transient cards that have been accepted by the animation layer
-	/// but have not reached the hand yet.  Draws are intentionally allowed to
-	/// overlap, so this is a count rather than a single busy flag.
+	/// Whether a request to play the main player's selected card may be forwarded
+	/// to the game controller. This is deliberately independent of hand
+	/// selection: a player can select a card while waiting for the play gate to
+	/// open, then submit it once play becomes available.
 	/// </summary>
-	public int ActiveDrawCount => _drawsInFlight;
+	public bool CanMainPlayerPlay { get; private set; }
+
+	/// <summary>
+	/// Initializes the public information shown for all four seats. Seat order is
+	/// main player, next player (left), opposite player, previous player (right).
+	/// Round scores are reset to zero for the new table state.
+	/// </summary>
+	public void InitializePlayerInfo(
+		string mainPlayerId,
+		Texture2D mainPlayerAvatar,
+		int mainPlayerChipCount,
+		string nextPlayerId,
+		Texture2D nextPlayerAvatar,
+		int nextPlayerChipCount,
+		string oppositePlayerId,
+		Texture2D oppositePlayerAvatar,
+		int oppositePlayerChipCount,
+		string previousPlayerId,
+		Texture2D previousPlayerAvatar,
+		int previousPlayerChipCount)
+	{
+		ResolvePlayerInfoReferences();
+		InitializeSeatPlayerInfo(
+			_mainPlayerInfo,
+			mainPlayerId,
+			mainPlayerAvatar,
+			mainPlayerChipCount
+		);
+		InitializeSeatPlayerInfo(
+			_nextPlayerInfo,
+			nextPlayerId,
+			nextPlayerAvatar,
+			nextPlayerChipCount
+		);
+		InitializeSeatPlayerInfo(
+			_oppositePlayerInfo,
+			oppositePlayerId,
+			oppositePlayerAvatar,
+			oppositePlayerChipCount
+		);
+		InitializeSeatPlayerInfo(
+			_previousPlayerInfo,
+			previousPlayerId,
+			previousPlayerAvatar,
+			previousPlayerChipCount
+		);
+	}
 
 	public override void _Ready()
 	{
 		ResolveSceneReferences();
-		_nextHandIndex = 0;
-		_random.Randomize();
-		InitializeDeck();
+		BindLayoutAnimations();
+		SetMainPlayerPlayEnabled(false);
 
-		if (_drawCardButton is not null &&
-			GodotObject.IsInstanceValid(_drawCardButton))
+		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
+			_mainHandLayout.CardPlayRequested += HandleMainPlayerCardPlayRequested;
+
+		if (_cardDeck is not null && IsInstanceValid(_cardDeck))
 		{
-			_drawCardButton.Pressed += HandleDrawButtonPressed;
+			_cardDeck.ChangeMaxCardCount(52);
+			_cardDeck.ChangeCardCount(0);
 		}
 
-		UpdateDrawButtonState();
+		_networkAdapter = GameSession.GameAdapter;
+		if (_networkAdapter is not null)
+		{
+			_networkAdapter.StateChanged += HandleNetworkStateChanged;
+			_networkAdapter.HandReceived += HandleNetworkHandReceived;
+			_networkAdapter.CardPlayed += HandleNetworkCardPlayed;
+			_networkAdapter.TurnStarted += HandleNetworkTurnStarted;
+			_networkAdapter.TrickResolved += HandleNetworkTrickResolved;
+			_networkAdapter.RoundFinished += HandleNetworkRoundFinished;
+			_networkAdapter.RoomReset += HandleNetworkRoomReset;
+			MainPlayerCardPlayRequested += HandleNetworkCardPlayRequested;
+			HandleNetworkStateChanged(_networkAdapter.State, true);
+			_ = _networkAdapter.RequestHandAsync();
+		}
 	}
 
 	public override void _ExitTree()
 	{
-		if (_drawCardButton is not null &&
-			GodotObject.IsInstanceValid(_drawCardButton))
-		{
-			_drawCardButton.Pressed -= HandleDrawButtonPressed;
-		}
+		_dealGeneration++;
+		_collectGeneration++;
+		IsDealing = false;
+		IsCollectingTrick = false;
+		CanMainPlayerPlay = false;
 
-		_drawsInFlight = 0;
-		_nextHandIndex = 0;
-		_handLayouts.Clear();
+		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
+			_mainHandLayout.CardPlayRequested -= HandleMainPlayerCardPlayRequested;
+
+		_opponentHands.Clear();
+		_pendingNetworkPlays.Clear();
+		if (_networkAdapter is not null)
+		{
+			_networkAdapter.StateChanged -= HandleNetworkStateChanged;
+			_networkAdapter.HandReceived -= HandleNetworkHandReceived;
+			_networkAdapter.CardPlayed -= HandleNetworkCardPlayed;
+			_networkAdapter.TurnStarted -= HandleNetworkTurnStarted;
+			_networkAdapter.TrickResolved -= HandleNetworkTrickResolved;
+			_networkAdapter.RoundFinished -= HandleNetworkRoundFinished;
+			_networkAdapter.RoomReset -= HandleNetworkRoomReset;
+			MainPlayerCardPlayRequested -= HandleNetworkCardPlayRequested;
+			_networkHandCards.Clear();
+			_lastNetworkPlaySentMsec = double.NegativeInfinity;
+		}
+	}
+
+	private void HandleNetworkStateChanged(MyRoomState state, bool first)
+	{
+		if (state is null || _networkAdapter is null) return;
+		if (state.phase == "waiting")
+		{
+			_mainHandLayout?.SetSelectionEnabled(false);
+			_networkHandCards.Clear();
+			TransitionNetworkScene("res://scenes/ReadyRoom.tscn");
+			return;
+		}
+		if (state.phase == "finished")
+		{
+			TransitionNetworkScene("res://scenes/Settlement.tscn");
+			return;
+		}
+		var players = new Player[PlayerCount];
+		foreach (string playerId in state.playerOrder.GetItems())
+		{
+			if (!state.players.TryGetValue(playerId, out Player player)) continue;
+			int seat = (player.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
+			players[seat] = player;
+		}
+		Texture2D avatar = GD.Load<Texture2D>("res://assets/textures/ui/avatar_placeholder.svg");
+		InitializePlayerInfo(
+			players[0]?.name ?? "", avatar, players[0]?.chips ?? 0,
+			players[1]?.name ?? "", avatar, players[1]?.chips ?? 0,
+			players[2]?.name ?? "", avatar, players[2]?.chips ?? 0,
+			players[3]?.name ?? "", avatar, players[3]?.chips ?? 0);
+		if (state.phase == "table_ready" && !_networkTableReadySent)
+		{
+			_networkTableReadySent = true;
+			_ = _networkAdapter.TableReadyAsync();
+		}
+		if (state.phase == "playing")
+			UpdateNetworkTurn(state.currentTurn, state.turnDuration > 0 ? state.turnDuration : 15_000, state);
+	}
+
+	private void HandleNetworkHandReceived(System.Collections.Generic.IReadOnlyList<string> cardIds, int roundNumber)
+	{
+		if (_networkAdapter?.State?.phase is not ("table_ready" or "dealing" or "playing") || _networkDealStarted || cardIds is null || cardIds.Count == 0)
+			return;
+		var cards = new List<CardData>(cardIds.Count);
+		foreach (string cardId in cardIds)
+		{
+			if (TryParseCardId(cardId, out CardData card)) cards.Add(card);
+		}
+		if (cards.Count > 0)
+		{
+			_networkHandCards.Clear();
+			_networkHandCards.AddRange(cards);
+			_networkDealStarted = true;
+			StartDeal(cards.ToArray());
+		}
+	}
+
+	private void HandleNetworkCardPlayRequested(int cardIndex, CardData cardData)
+	{
+		double now = Time.GetTicksMsec();
+		if (_networkAdapter is not null &&
+			now - _lastNetworkPlaySentMsec >= NetworkPlayRequestIntervalMsec)
+		{
+			_lastNetworkPlaySentMsec = now;
+			_ = _networkAdapter.PlayCardAsync(cardIndex, cardData);
+		}
+	}
+
+	private void HandleNetworkCardPlayed(string playerId, string cardId, int roundNumber)
+	{
+		if (_networkAdapter is null || !TryParseCardId(cardId, out CardData card))
+			return;
+		if (playerId == _networkAdapter.SessionId)
+		{
+			int visualIndex = -1;
+			if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
+			{
+				for (int index = 0; index < _mainHandLayout.Cards.Count; index++)
+				{
+					if (ToCardId(_mainHandLayout.Cards[index].Data) == cardId)
+					{
+						visualIndex = index;
+						break;
+					}
+				}
+			}
+			if (visualIndex >= 0 && !PlayMainPlayerCard(visualIndex))
+				_mainHandLayout.TryPlayCard(visualIndex);
+			int localIndex = _networkHandCards.FindIndex(candidate => ToCardId(candidate) == cardId);
+			if (localIndex >= 0) _networkHandCards.RemoveAt(localIndex);
+			return;
+		}
+		if (IsDealing)
+		{
+			_pendingNetworkPlays.Enqueue((playerId, cardId));
+			return;
+		}
+		ApplyNetworkOpponentPlay(playerId, card);
+	}
+
+	private void ApplyNetworkOpponentPlay(string playerId, CardData card)
+	{
+		if (!_networkAdapter.State.players.TryGetValue(playerId, out Player player)) return;
+		int seat = (player.seat - GetLocalSeat(_networkAdapter.State) + PlayerCount) % PlayerCount;
+		if (seat == MainPlayerIndex) return;
+		// Opponent hands intentionally contain backs only. The authoritative
+		// notification reveals the played card and removes the first remaining
+		// back from that seat's layout.
+		PlayCard(seat, 0, card);
+	}
+
+	private void HandleNetworkTurnStarted(string playerId, int duration, int trickNumber)
+	{
+		if (_networkAdapter?.State is MyRoomState state)
+			UpdateNetworkTurn(playerId, duration, state);
+	}
+
+	private void UpdateNetworkTurn(string playerId, int duration, MyRoomState state)
+	{
+		bool localTurn = _networkAdapter is not null && playerId == _networkAdapter.SessionId;
+		if (_mainPlayerInfo is not null && IsInstanceValid(_mainPlayerInfo))
+		{
+			if (localTurn) _mainPlayerInfo.StartTurnCountdown(duration);
+			else _mainPlayerInfo.ClearTurnCountdown();
+		}
+		if (!localTurn || _mainHandLayout is null || !IsInstanceValid(_mainHandLayout))
+		{
+			SetMainPlayerPlayEnabled(false);
+			_mainHandLayout?.SetSelectionEnabled(false);
+			_mainHandLayout?.ClearPlayableCards();
+			return;
+		}
+		List<CardData> legal = GetLegalNetworkCards(state);
+		bool openingClubTwo = state.trickNumber == 0 && state.trick.Count == 0 &&
+			legal.Count == 1 && ToCardId(legal[0]) == "Club2";
+		// MainHandLayout controls hit testing; Table controls the network play
+		// gate. Both must be open before the second click can be forwarded to the
+		// server.
+		SetMainPlayerPlayEnabled(true);
+		_mainHandLayout.SetSelectionEnabled(true);
+		_mainHandLayout.SetPlayableCards(
+			legal,
+			openingClubTwo ? "你持有 ♣2，需要第一个出牌。" : "",
+			openingClubTwo ? "Club2" : "");
+	}
+
+	private List<CardData> GetLegalNetworkCards(MyRoomState state)
+	{
+		var legal = new List<CardData>(_networkHandCards);
+		if (legal.Count == 0) return legal;
+		if (state.trick.Count == 0 && state.trickNumber == 0 && legal.Exists(card => ToCardId(card) == "Club2"))
+			return legal.FindAll(card => ToCardId(card) == "Club2");
+		if (!string.IsNullOrEmpty(state.leadSuit))
+		{
+			PokerSuit lead = ParseSuit(state.leadSuit);
+			List<CardData> follow = legal.FindAll(card => card.Suit == lead);
+			if (follow.Count > 0) return follow;
+		}
+		if (state.trickNumber == 0)
+		{
+			List<CardData> safe = legal.FindAll(card =>
+				card.Suit != PokerSuit.Heart && !(card.Suit == PokerSuit.Spade && card.Rank == PokerRank.Queen));
+			if (safe.Count > 0) return safe;
+		}
+		if (state.trick.Count == 0 && !state.heartsBroken)
+		{
+			List<CardData> nonHearts = legal.FindAll(card => card.Suit != PokerSuit.Heart);
+			if (nonHearts.Count > 0) return nonHearts;
+		}
+		return legal;
+	}
+
+	private static PokerSuit ParseSuit(string suit) => suit switch
+	{
+		"clubs" or "club" => PokerSuit.Club,
+		"diamonds" or "diamond" => PokerSuit.Diamond,
+		"hearts" or "heart" => PokerSuit.Heart,
+		_ => PokerSuit.Spade,
+	};
+
+	private void HandleNetworkTrickResolved(string winnerId, int points, int trickNumber)
+	{
+		if (_networkAdapter?.State is not MyRoomState state ||
+			!state.players.TryGetValue(winnerId, out Player winner)) return;
+		int seat = (winner.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
+		CollectTrick(seat, points);
+	}
+
+	private void HandleNetworkRoundFinished()
+	{
+		if (_networkAdapter?.State?.phase == "finished")
+			TransitionNetworkScene("res://scenes/Settlement.tscn");
+	}
+
+	private void HandleNetworkRoomReset(string reason)
+	{
+		TransitionNetworkScene("res://scenes/ReadyRoom.tscn");
+	}
+
+	private void TransitionNetworkScene(string scenePath)
+	{
+		if (_networkTransitioning || !IsInsideTree()) return;
+		_networkTransitioning = true;
+		GameSession.GameAdapter = _networkAdapter;
+		GetTree().ChangeSceneToFile(scenePath);
+	}
+
+	private int GetLocalSeat(MyRoomState state)
+	{
+		return state is not null && _networkAdapter is not null &&
+			state.players.TryGetValue(_networkAdapter.SessionId, out Player local)
+			? local.seat : 0;
+	}
+
+	private void FlushPendingNetworkPlays()
+	{
+		while (!IsDealing && _pendingNetworkPlays.Count > 0)
+		{
+			var pending = _pendingNetworkPlays.Dequeue();
+			if (TryParseCardId(pending.CardId, out CardData card))
+				ApplyNetworkOpponentPlay(pending.PlayerId, card);
+		}
+	}
+
+	private static string ToCardId(CardData card)
+	{
+		string suit = card.Suit switch
+		{
+			PokerSuit.Club => "Club",
+			PokerSuit.Diamond => "Diamond",
+			PokerSuit.Heart => "Heart",
+			_ => "Spade",
+		};
+		string rank = card.Rank switch
+		{
+			PokerRank.Jack => "J",
+			PokerRank.Queen => "Q",
+			PokerRank.King => "K",
+			PokerRank.Ace => "A",
+			_ => ((int)card.Rank).ToString(),
+		};
+		return suit + rank;
+	}
+
+	private static bool TryParseCardId(string value, out CardData card)
+	{
+		card = default;
+		if (string.IsNullOrWhiteSpace(value)) return false;
+		PokerSuit suit;
+		string rankText;
+		if (value.StartsWith("Club", StringComparison.Ordinal)) { suit = PokerSuit.Club; rankText = value[4..]; }
+		else if (value.StartsWith("Diamond", StringComparison.Ordinal)) { suit = PokerSuit.Diamond; rankText = value[7..]; }
+		else if (value.StartsWith("Heart", StringComparison.Ordinal)) { suit = PokerSuit.Heart; rankText = value[5..]; }
+		else if (value.StartsWith("Spade", StringComparison.Ordinal)) { suit = PokerSuit.Spade; rankText = value[5..]; }
+		else return false;
+		PokerRank rank = rankText switch
+		{
+			"J" => PokerRank.Jack,
+			"Q" => PokerRank.Queen,
+			"K" => PokerRank.King,
+			"A" => PokerRank.Ace,
+			_ when int.TryParse(rankText, out int number) && number >= 2 && number <= 10 => (PokerRank)number,
+			_ => (PokerRank)0,
+		};
+		if ((int)rank < 2) return false;
+		card = new CardData(suit, rank);
+		return true;
 	}
 
 	/// <summary>
-	/// Handles the keyboard shortcut without consuming key events intended for
-	/// text controls.  Echo events are ignored, while separate key presses are
-	/// allowed to enqueue independent overlapping draws.
+	/// Plays a card for seat 0..3, ordered main, left, opposite, right. The main
+	/// hand already knows its card data; opponent hands use the supplied data to
+	/// reveal the chosen card while it flies.
 	/// </summary>
-	public override void _UnhandledInput(InputEvent @event)
+	public bool PlayCard(int playerIndex, int cardIndex, CardData cardData)
 	{
-		if (@event is not InputEventKey keyEvent ||
-			!keyEvent.Pressed ||
-			keyEvent.Echo ||
-			!IsDrawKey(keyEvent))
+		return playerIndex switch
+		{
+			MainPlayerIndex => PlayMainPlayerCard(cardIndex),
+			LeftPlayerIndex => TryPlayOpponentCard(
+				LeftPlayerIndex,
+				_otherHandLayout,
+				cardIndex,
+				cardData
+			),
+			OppositePlayerIndex => TryPlayOpponentCard(
+				OppositePlayerIndex,
+				_otherHandLayout2,
+				cardIndex,
+				cardData
+			),
+			RightPlayerIndex => TryPlayOpponentCard(
+				RightPlayerIndex,
+				_otherHandLayout3,
+				cardIndex,
+				cardData
+			),
+			_ => false
+		};
+	}
+
+	/// <summary>Plays the indexed card from the main player's visible hand.</summary>
+	public bool PlayMainPlayerCard(int cardIndex)
+	{
+		if (!CanMainPlayerPlay ||
+			_mainHandLayout is null ||
+			!IsInstanceValid(_mainHandLayout) ||
+			!_mainHandLayout.TryPlayCard(cardIndex))
+		{
+			return false;
+		}
+
+		_rightPlayerPlayCompleted = false;
+		SetMainPlayerPlayEnabled(false);
+		_mainHandLayout.SetSelectionEnabled(false);
+		return true;
+	}
+
+	/// <summary>
+	/// Queues collection of the current four-card trick for seat 0..3. The table
+	/// waits for outstanding play flights, moves every play-area card to the
+	/// selected player's authored collect pose, then applies the score delta.
+	/// </summary>
+	public bool CollectTrick(int playerIndex, int roundScoreDelta)
+	{
+		ResolveSceneReferences();
+		PlayerInfo collector = GetPlayerInfo(playerIndex);
+		if (IsDealing ||
+			IsCollectingTrick ||
+			!IsInsideTree() ||
+			collector is null ||
+			!IsInstanceValid(collector) ||
+			_animationLayer is null ||
+			!IsInstanceValid(_animationLayer) ||
+			!_animationLayer.IsInsideTree())
+		{
+			return false;
+		}
+
+		int generation = ++_collectGeneration;
+		_collectFlights = 0;
+		_collectDispatchCompleted = false;
+		_collectCardsPrepared = false;
+		_preparedCollectFlights.Clear();
+		_collectingPlayerInfo = collector;
+		_collectingPlayerIndex = playerIndex;
+		_pendingRoundScoreDelta = roundScoreDelta;
+		IsCollectingTrick = true;
+
+		// A trick is still in progress until every collect flight has landed,
+		// regardless of which seat receives it. Keep the main player's play gate
+		// closed for the whole collection animation.
+		SetMainPlayerPlayEnabled(false);
+
+		if (!_animationLayer.IsAnimating)
+			TryPrepareCollectTrickCards(generation);
+
+		_ = CollectTrickAsync(generation);
+		return true;
+	}
+
+	/// <summary>Returns the current logical hand size for seat 0..3.</summary>
+	public int GetPlayerCardCount(int playerIndex)
+	{
+		return playerIndex switch
+		{
+			MainPlayerIndex => GetCardCount(_mainHandLayout),
+			LeftPlayerIndex => GetCardCount(_otherHandLayout),
+			OppositePlayerIndex => GetCardCount(_otherHandLayout2),
+			RightPlayerIndex => GetCardCount(_otherHandLayout3),
+			_ => 0
+		};
+	}
+
+	/// <summary>
+	/// Clears the table and deals an equal number of cards to all four seats.
+	/// Main-player cards are configured from <paramref name="mainPlayerCards"/>;
+	/// opponent cards remain unconfigured backs until they are played.
+	/// </summary>
+	public bool StartDeal(CardData[] mainPlayerCards)
+	{
+		ArgumentNullException.ThrowIfNull(mainPlayerCards);
+		if (!HasCompleteTable())
+			return false;
+
+		CancelCollectTrick();
+		int generation = ++_dealGeneration;
+		_animationLayer.CancelAnimation(freeCard: true);
+		_rightPlayerPlayCompleted = false;
+		SetMainPlayerPlayEnabled(false);
+		ClearHandsAndPlayAreas();
+
+		int totalCardCount = checked(mainPlayerCards.Length * PlayerCount);
+		_cardDeck.ChangeMaxCardCount(Math.Max(1, totalCardCount));
+		_cardDeck.ChangeCardCount(totalCardCount);
+
+		_dealFlights = 0;
+		_dealDispatchCompleted = mainPlayerCards.Length == 0;
+		_dealFinishing = false;
+		IsDealing = true;
+
+		if (mainPlayerCards.Length > 0)
+			_ = DealCardsAsync(mainPlayerCards.ToArray(), generation);
+		else
+			TryCompleteDeal(generation);
+
+		return true;
+	}
+
+	private async Task CollectTrickAsync(int generation)
+	{
+		while (IsCollectOperationCurrent(generation) && !_collectCardsPrepared)
+		{
+			if (!_animationLayer.IsAnimating)
+			{
+				if (!TryPrepareCollectTrickCards(generation))
+				{
+					AbortCollectTrick(generation);
+					return;
+				}
+
+				break;
+			}
+
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		}
+	}
+
+	private void HandleCollectFlightCompleted(CardControl card, int generation)
+	{
+		if (IsInstanceValid(card))
+			card.QueueFree();
+
+		if (generation != _collectGeneration)
+			return;
+
+		_collectFlights = Math.Max(0, _collectFlights - 1);
+		TryCompleteCollectTrick(generation);
+	}
+
+	private void TryCompleteCollectTrick(int generation)
+	{
+		if (!IsCollectOperationCurrent(generation) ||
+			!_collectDispatchCompleted ||
+			_collectFlights > 0)
 		{
 			return;
 		}
 
-		GetViewport()?.SetInputAsHandled();
-		TryDrawCard();
+		PlayerInfo collector = _collectingPlayerInfo;
+		int collectingPlayerIndex = _collectingPlayerIndex;
+		int roundScoreDelta = _pendingRoundScoreDelta;
+		ResetCollectTrickState();
+
+		if (collector is not null && IsInstanceValid(collector))
+			collector.ApplyRoundScoreDelta(roundScoreDelta);
+
+		if (collectingPlayerIndex == MainPlayerIndex ||
+			(collectingPlayerIndex != MainPlayerIndex && _rightPlayerPlayCompleted))
+		{
+			SetMainPlayerPlayEnabled(true);
+		}
 	}
 
-	/// <summary>
-	/// Button-friendly entry point.  Godot signal handlers are void-returning,
-	/// while code-driven callers can use <see cref="TryDrawCard"/> for a result.
-	/// </summary>
-	public void DrawCard() => TryDrawCard();
-
-	/// <summary>
-	/// Starts one draw animation when the table is ready. Other cards may still
-	/// be flying; each accepted draw owns an independent animation lane.
-	/// </summary>
-	/// <returns>True if a transient card was created and animated.</returns>
-	public bool TryDrawCard()
+	private bool TryPrepareCollectTrickCards(int generation)
 	{
-		if (!CanDraw())
+		if (!IsCollectOperationCurrent(generation))
 			return false;
-
-		if (!TryGetNextHand(out Control destination, out int destinationIndex))
-			return false;
-
-		if (!_cardDeck.TryGetTopPose(out CardPose2D sourcePose))
-			return false;
-
-		if (!_cardDeck.TryDuplicateTopCard(out PlayingCard card) ||
-			card is null ||
-			!GodotObject.IsInstanceValid(card))
+		if (_collectCardsPrepared)
+			return true;
+		if (!TryCreateCollectFlights(
+			_collectingPlayerInfo,
+			out List<CollectFlight> flights
+		))
 		{
 			return false;
 		}
 
-		CardData data = new(
-			(PokerSuit)_random.RandiRange(
-				(int)PokerSuit.Spade,
-				(int)PokerSuit.Club
-			),
-			(PokerRank)_random.RandiRange(
-				(int)PokerRank.Two,
-				(int)PokerRank.Ace
-			)
-		);
+		_preparedCollectFlights.Clear();
+		_preparedCollectFlights.AddRange(flights);
+		_collectCardsPrepared = _preparedCollectFlights.Count == PlayerCount;
+		if (!_collectCardsPrepared)
+			return false;
 
-		// AddChild runs Card._Ready before Setup, allowing the visual and
-		// interaction children to bind correctly even for a duplicated scene.
+		foreach (CollectFlight flight in flights)
+		{
+			CardControl card = flight.Card;
+			if (!IsInstanceValid(card))
+			{
+				FreePreparedCollectCards();
+				return false;
+			}
+
+			// Hand the card to AnimationLayer and let its transform carrier apply the
+			// snapshotted source pose immediately. Control.Reparent only preserves the
+			// position here and loses a rotated PlayArea's basis (notably the opposite
+			// seat), which caused a visible one-frame jump before collection.
+			card.Reparent(_animationLayer, keepGlobalTransform: false);
+			_collectFlights++;
+			bool started = _animationLayer.PlayCollectToPose(
+				card,
+				flight.SourcePose,
+				flight.TargetPose,
+				TrickCollectDelay,
+				collectedCard => HandleCollectFlightCompleted(
+					collectedCard,
+					generation
+				)
+			);
+
+			if (!started)
+			{
+				_collectFlights = Math.Max(0, _collectFlights - 1);
+				if (IsInstanceValid(card))
+					card.QueueFree();
+			}
+		}
+
+		_collectDispatchCompleted = true;
+		TryCompleteCollectTrick(generation);
+		return _collectCardsPrepared;
+	}
+
+	private bool TryCreateCollectFlights(
+		PlayerInfo collector,
+		out List<CollectFlight> flights)
+	{
+		flights = new List<CollectFlight>(PlayerCount);
+		PlayArea[] playAreas =
+		{
+			_mainPlayArea,
+			_leftPlayArea,
+			_oppositePlayArea,
+			_rightPlayArea
+		};
+
+		foreach (PlayArea playArea in playAreas)
+		{
+			CardControl card = playArea?.PlayedCard;
+			if (playArea is null ||
+				!IsInstanceValid(playArea) ||
+				card is null ||
+				!IsInstanceValid(card))
+			{
+				flights.Clear();
+				return false;
+			}
+
+			try
+			{
+				Vector2 cardSize = new(card.CardWidth, card.CardHeight);
+				CardPose2D sourcePose = new(
+					card.GetGlobalTransformWithCanvas(),
+					cardSize,
+					card.IsFaceUp
+				);
+				CardPose2D targetPose = collector.GetCollectPose(card);
+				flights.Add(new CollectFlight(card, sourcePose, targetPose));
+			}
+			catch (Exception exception)
+			{
+				GD.PushWarning($"Unable to calculate a trick collect pose: {exception.Message}");
+				flights.Clear();
+				return false;
+			}
+		}
+
+		return flights.Count == PlayerCount;
+	}
+
+	private bool IsCollectOperationCurrent(int generation)
+	{
+		return generation == _collectGeneration &&
+			IsCollectingTrick &&
+			IsInsideTree() &&
+			_animationLayer is not null &&
+			IsInstanceValid(_animationLayer);
+	}
+
+	private void AbortCollectTrick(int generation)
+	{
+		if (generation == _collectGeneration)
+		{
+			int collectingPlayerIndex = _collectingPlayerIndex;
+			FreePreparedCollectCards();
+			ResetCollectTrickState();
+			if (collectingPlayerIndex != MainPlayerIndex && _rightPlayerPlayCompleted)
+				SetMainPlayerPlayEnabled(true);
+		}
+	}
+
+	private void CancelCollectTrick()
+	{
+		_collectGeneration++;
+		FreePreparedCollectCards();
+		ResetCollectTrickState();
+	}
+
+	private void FreePreparedCollectCards()
+	{
+		foreach (CollectFlight flight in _preparedCollectFlights)
+		{
+			if (IsInstanceValid(flight.Card))
+				flight.Card.QueueFree();
+		}
+
+		_preparedCollectFlights.Clear();
+	}
+
+	private void ResetCollectTrickState()
+	{
+		_collectFlights = 0;
+		_collectDispatchCompleted = false;
+		_collectCardsPrepared = false;
+		_preparedCollectFlights.Clear();
+		_collectingPlayerInfo = null!;
+		_collectingPlayerIndex = -1;
+		_pendingRoundScoreDelta = 0;
+		IsCollectingTrick = false;
+	}
+
+	private async Task DealCardsAsync(CardData[] mainPlayerCards, int generation)
+	{
+		int totalDispatches = mainPlayerCards.Length * PlayerCount;
+		int dispatched = 0;
+
+		for (int cardIndex = 0; cardIndex < mainPlayerCards.Length; cardIndex++)
+		{
+			for (int playerIndex = 0; playerIndex < PlayerCount; playerIndex++)
+			{
+				if (generation != _dealGeneration || !IsInsideTree())
+					return;
+
+				CardData? mainCard = playerIndex == MainPlayerIndex
+					? mainPlayerCards[cardIndex]
+					: null;
+				TryStartDealFlight(playerIndex, mainCard, generation);
+				dispatched++;
+
+				if (dispatched >= totalDispatches || DealInterval <= 0.0f)
+					continue;
+
+				SceneTreeTimer timer = GetTree().CreateTimer(DealInterval);
+				await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
+			}
+		}
+
+		if (generation != _dealGeneration)
+			return;
+
+		_dealDispatchCompleted = true;
+		TryCompleteDeal(generation);
+	}
+
+	private bool TryStartDealFlight(
+		int playerIndex,
+		CardData? mainPlayerCard,
+		int generation)
+	{
+		Control destination = GetHand(playerIndex);
+		if (destination is null || !IsInstanceValid(destination) ||
+			_cardDeck.CardCount <= 0 ||
+			!_cardDeck.TryGetTopPose(out CardPose2D sourcePose) ||
+			!_cardDeck.TryDuplicateTopCard(out CardControl card))
+		{
+			return false;
+		}
+
 		_animationLayer.AddChild(card);
-		card.Setup(data, startFaceUp: sourcePose.IsFaceUp);
+		if (mainPlayerCard is CardData data)
+			card.Setup(data, startFaceUp: sourcePose.IsFaceUp);
 
-		CardPose2D receivePose;
+		CardPose2D targetPose;
 		try
 		{
-			receivePose = GetCurrentReceivePose(destination, card);
+			targetPose = GetReceivePose(destination, card);
 		}
 		catch (Exception exception)
 		{
-			GD.PushWarning($"Unable to calculate the hand receive pose: {exception.Message}");
+			GD.PushWarning($"Unable to calculate a deal destination: {exception.Message}");
 			card.QueueFree();
 			return false;
 		}
 
-		_drawsInFlight++;
-		bool started = _animationLayer.PlayCardToPose(
+		_dealFlights++;
+		bool started = _animationLayer.PlayDrawToPose(
 			card,
 			sourcePose,
-			receivePose,
-			drawnCard => HandleCardAnimationCompleted(destination, drawnCard)
+			targetPose,
+			dealtCard => HandleDealFlightCompleted(
+				destination,
+				dealtCard,
+				generation
+			)
 		);
 
 		if (!started)
 		{
-			_drawsInFlight = Math.Max(0, _drawsInFlight - 1);
-			if (GodotObject.IsInstanceValid(card))
+			_dealFlights = Math.Max(0, _dealFlights - 1);
+			if (IsInstanceValid(card))
 				card.QueueFree();
-			UpdateDrawButtonState();
 			return false;
 		}
 
-		// Reserve the next seat only after the animation layer accepts this draw.
-		// The selected destination is captured by the completion callback above,
-		// so overlapping flights cannot be redirected by a later button press.
-		_nextHandIndex = (destinationIndex + 1) % _handLayouts.Count;
-
-		// Consume the deck slot once the animation has been accepted.  Capturing
-		// sourcePose first keeps the card flying from the old top position even
-		// when this draw empties the deck and hides its authored top card.
 		_cardDeck.ChangeCardCount(_cardDeck.CardCount - 1);
-		UpdateDrawButtonState();
 		return true;
 	}
 
-	private void HandleDrawButtonPressed() => TryDrawCard();
-
-	private void HandleCardAnimationCompleted(Control destination, PlayingCard card)
+	private void HandleDealFlightCompleted(
+		Control destination,
+		CardControl card,
+		int generation)
 	{
-		try
+		if (generation != _dealGeneration)
 		{
-			if (GodotObject.IsInstanceValid(card) &&
-				IsValidHandLayout(destination))
-			{
-				ReceiveCard(destination, card);
-			}
-			else if (GodotObject.IsInstanceValid(card))
-			{
-				// If a table was partially instanced without a hand, avoid leaking
-				// the transient card on the animation layer.
+			if (IsInstanceValid(card))
 				card.QueueFree();
-			}
+			return;
 		}
-		finally
+
+		if (IsInstanceValid(card) && IsInstanceValid(destination))
+			ReceiveCard(destination, card);
+		else if (IsInstanceValid(card))
+			card.QueueFree();
+
+		_dealFlights = Math.Max(0, _dealFlights - 1);
+		TryCompleteDeal(generation);
+	}
+
+	private void TryCompleteDeal(int generation)
+	{
+		if (generation != _dealGeneration ||
+			!_dealDispatchCompleted ||
+			_dealFlights > 0 ||
+			_dealFinishing)
 		{
-			_drawsInFlight = Math.Max(0, _drawsInFlight - 1);
-			UpdateDrawButtonState();
+			return;
 		}
+
+		_dealFinishing = true;
+		_ = FinishDealAsync(generation);
 	}
 
-	private bool CanDraw()
+	private async Task FinishDealAsync(int generation)
 	{
-		return _cardDeck is not null &&
-			   GodotObject.IsInstanceValid(_cardDeck) &&
-			   _handLayouts.Count > 0 &&
-			   _animationLayer is not null &&
-			   GodotObject.IsInstanceValid(_animationLayer) &&
-			   _animationLayer.IsInsideTree() &&
-			   _cardDeck.CardCount > 0;
+		if (ArrangeDelay > 0.0f)
+		{
+			SceneTreeTimer timer = GetTree().CreateTimer(ArrangeDelay);
+			await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
+		}
+
+		if (generation != _dealGeneration || !IsInsideTree())
+			return;
+
+		_mainHandLayout.ArrangeHand();
+		while (generation == _dealGeneration &&
+			IsInsideTree() &&
+			_mainHandLayout.IsLayoutAnimating)
+		{
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		}
+
+		if (generation != _dealGeneration || !IsInsideTree())
+			return;
+
+		_dealFinishing = false;
+		IsDealing = false;
+		if (_networkAdapter?.State?.phase == "dealing")
+		{
+			_networkDealReadySent = true;
+			SetMainPlayerPlayEnabled(false);
+			_mainHandLayout.SetSelectionEnabled(false);
+			_ = _networkAdapter.DealReadyAsync();
+		}
+		else
+		{
+			SetMainPlayerPlayEnabled(true);
+			_mainHandLayout.SetSelectionEnabled(true);
+		}
+		FlushPendingNetworkPlays();
 	}
 
-	private bool IsDrawKey(InputEventKey keyEvent)
+	private void HandleMainPlayerCardPlayRequested(int cardIndex)
 	{
-		return keyEvent.Keycode == DrawKey ||
-			   keyEvent.PhysicalKeycode == DrawKey;
+		if (!CanMainPlayerPlay ||
+			_mainHandLayout is null ||
+			!IsInstanceValid(_mainHandLayout) ||
+			cardIndex < 0 ||
+			cardIndex >= _mainHandLayout.Cards.Count)
+		{
+			return;
+		}
+
+		CardData data = _mainHandLayout.Cards[cardIndex].Data;
+		MainPlayerCardPlayRequested?.Invoke(cardIndex, data);
 	}
 
 	private void ResolveSceneReferences()
 	{
-		if (_cardDeck is null || !IsInstanceValid(_cardDeck))
-			_cardDeck = GetNodeOrNull<CardDeck>("CardDeck");
+		_cardDeck = Resolve(_cardDeck, "CardDeck");
+		_mainHandLayout = Resolve(_mainHandLayout, "MainHandLayout");
+		_otherHandLayout = Resolve(_otherHandLayout, "OtherHandLayout");
+		_otherHandLayout2 = Resolve(_otherHandLayout2, "OtherHandLayout2");
+		_otherHandLayout3 = Resolve(_otherHandLayout3, "OtherHandLayout3");
+		_animationLayer = Resolve(_animationLayer, "AnimationLayer");
+		_mainPlayArea = Resolve(_mainPlayArea, "MainPlayArea");
+		_leftPlayArea = Resolve(_leftPlayArea, "LeftPlayArea");
+		_oppositePlayArea = Resolve(_oppositePlayArea, "OppositePlayArea");
+		_rightPlayArea = Resolve(_rightPlayArea, "RightPlayArea");
+		ResolvePlayerInfoReferences();
 
-		if (_mainHandLayout is null || !IsInstanceValid(_mainHandLayout))
-			_mainHandLayout = GetNodeOrNull<MainHandLayout>("MainHandLayout");
-
-		if (_otherHandLayout is null || !IsInstanceValid(_otherHandLayout))
-			_otherHandLayout = GetNodeOrNull<OtherHandLayout>("OtherHandLayout");
-
-		if (_otherHandLayout2 is null || !IsInstanceValid(_otherHandLayout2))
-			_otherHandLayout2 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout2");
-
-		if (_otherHandLayout3 is null || !IsInstanceValid(_otherHandLayout3))
-			_otherHandLayout3 = GetNodeOrNull<OtherHandLayout>("OtherHandLayout3");
-		
-		if (_animationLayer is null || !IsInstanceValid(_animationLayer))
-				_animationLayer = GetNodeOrNull<AnimationLayer>("AnimationLayer");
-
-		if (_drawCardButton is null || !IsInstanceValid(_drawCardButton))
-			_drawCardButton = GetNodeOrNull<Button>("DrawCardButton");
-
-		_handLayouts.Clear();
-		AddHandLayout(_mainHandLayout);
-		AddHandLayout(_otherHandLayout);
-		AddHandLayout(_otherHandLayout2);
-		AddHandLayout(_otherHandLayout3);
+		_opponentHands.Clear();
+		if (_otherHandLayout is not null)
+			_opponentHands.Add(_otherHandLayout);
+		if (_otherHandLayout2 is not null)
+			_opponentHands.Add(_otherHandLayout2);
+		if (_otherHandLayout3 is not null)
+			_opponentHands.Add(_otherHandLayout3);
 	}
 
-	private void AddHandLayout(Control handLayout)
+	private void BindLayoutAnimations()
 	{
-		if (IsValidHandLayout(handLayout) && !_handLayouts.Contains(handLayout))
-			_handLayouts.Add(handLayout);
+		_mainHandLayout?.BindPlayAnimation(_animationLayer, _mainPlayArea);
+		_otherHandLayout?.BindPlayAnimation(_animationLayer, _leftPlayArea);
+		_otherHandLayout2?.BindPlayAnimation(_animationLayer, _oppositePlayArea);
+		_otherHandLayout3?.BindPlayAnimation(_animationLayer, _rightPlayArea);
 	}
 
-	private bool TryGetNextHand(out Control destination, out int destinationIndex)
+	private void ResolvePlayerInfoReferences()
 	{
-		destination = null!;
-		destinationIndex = -1;
+		_mainPlayerInfo = Resolve(_mainPlayerInfo, "MainPlayerInfo");
+		_nextPlayerInfo = Resolve(_nextPlayerInfo, "PlayerInfo");
+		_oppositePlayerInfo = Resolve(_oppositePlayerInfo, "PlayerInfo2");
+		_previousPlayerInfo = Resolve(_previousPlayerInfo, "PlayerInfo3");
+	}
 
-		int handCount = _handLayouts.Count;
-		if (handCount == 0)
-			return false;
+	private static void InitializeSeatPlayerInfo(
+		PlayerInfo playerInfo,
+		string playerId,
+		Texture2D avatar,
+		int chipCount)
+	{
+		if (playerInfo is null || !IsInstanceValid(playerInfo))
+			return;
 
-		int startIndex = _nextHandIndex % handCount;
-		if (startIndex < 0)
-			startIndex += handCount;
+		playerInfo.SetPlayerId(playerId);
+		playerInfo.SetAvatar(avatar);
+		playerInfo.SetChipCount(chipCount);
+		playerInfo.SetRoundScore(0);
+	}
 
-		for (int offset = 0; offset < handCount; offset++)
+	private bool HasCompleteTable()
+	{
+		return _cardDeck is not null && IsInstanceValid(_cardDeck) &&
+			_mainHandLayout is not null && IsInstanceValid(_mainHandLayout) &&
+			_otherHandLayout is not null && IsInstanceValid(_otherHandLayout) &&
+			_otherHandLayout2 is not null && IsInstanceValid(_otherHandLayout2) &&
+			_otherHandLayout3 is not null && IsInstanceValid(_otherHandLayout3) &&
+			_animationLayer is not null && IsInstanceValid(_animationLayer) &&
+			_mainPlayArea is not null && IsInstanceValid(_mainPlayArea) &&
+			_leftPlayArea is not null && IsInstanceValid(_leftPlayArea) &&
+			_oppositePlayArea is not null && IsInstanceValid(_oppositePlayArea) &&
+			_rightPlayArea is not null && IsInstanceValid(_rightPlayArea);
+	}
+
+	private void ClearHandsAndPlayAreas()
+	{
+		_mainHandLayout.ClearCards();
+		foreach (OtherHandLayout hand in _opponentHands)
+			hand.ClearCards();
+
+		_mainPlayArea.ClearCard();
+		_leftPlayArea.ClearCard();
+		_oppositePlayArea.ClearCard();
+		_rightPlayArea.ClearCard();
+	}
+
+	private Control GetHand(int playerIndex)
+	{
+		return playerIndex switch
 		{
-			int index = (startIndex + offset) % handCount;
-			Control candidate = _handLayouts[index];
-			if (!IsValidHandLayout(candidate))
-				continue;
-
-			destination = candidate;
-			destinationIndex = index;
-			return true;
-		}
-
-		return false;
+			MainPlayerIndex => _mainHandLayout,
+			LeftPlayerIndex => _otherHandLayout,
+			OppositePlayerIndex => _otherHandLayout2,
+			RightPlayerIndex => _otherHandLayout3,
+			_ => null
+		};
 	}
 
-	private static bool IsValidHandLayout(Control handLayout)
+	private PlayerInfo GetPlayerInfo(int playerIndex)
 	{
-		return handLayout is MainHandLayout or OtherHandLayout &&
-			   GodotObject.IsInstanceValid(handLayout) &&
-			   handLayout.IsInsideTree();
+		return playerIndex switch
+		{
+			MainPlayerIndex => _mainPlayerInfo,
+			LeftPlayerIndex => _nextPlayerInfo,
+			OppositePlayerIndex => _oppositePlayerInfo,
+			RightPlayerIndex => _previousPlayerInfo,
+			_ => null
+		};
 	}
 
-	private static CardPose2D GetCurrentReceivePose(Control handLayout, PlayingCard card)
+	private static CardPose2D GetReceivePose(Control hand, CardControl card)
 	{
-		return handLayout switch
+		return hand switch
 		{
 			MainHandLayout mainHand => mainHand.GetCurrentReceivePose(card),
 			OtherHandLayout otherHand => otherHand.GetCurrentReceivePose(card),
@@ -338,9 +1142,9 @@ public partial class Table : Control
 		};
 	}
 
-	private static void ReceiveCard(Control handLayout, PlayingCard card)
+	private static void ReceiveCard(Control hand, CardControl card)
 	{
-		switch (handLayout)
+		switch (hand)
 		{
 			case MainHandLayout mainHand:
 				mainHand.ReceiveCard(card);
@@ -348,37 +1152,64 @@ public partial class Table : Control
 			case OtherHandLayout otherHand:
 				otherHand.ReceiveCard(card);
 				break;
-			default:
-				throw new InvalidOperationException("Unsupported hand layout type.");
 		}
 	}
 
-	private void InitializeDeck()
+	private static int GetCardCount(Control hand)
 	{
-		if (_cardDeck is null || !GodotObject.IsInstanceValid(_cardDeck))
-			return;
-
-		int capacity = Math.Max(1, StartingDeckCapacity);
-		_cardDeck.ChangeMaxCardCount(capacity);
-
-		// A scene-authored non-empty count is respected.  The stock Table scene
-		// starts at zero and is filled to a standard 52-card deck here.
-		if (_cardDeck.CardCount <= 0 && StartingDeckCount > 0)
+		return hand switch
 		{
-			_cardDeck.ChangeCardCount(
-				Math.Min(StartingDeckCount, _cardDeck.MaxCardCount)
-			);
-		}
+			MainHandLayout mainHand when IsInstanceValid(mainHand) => mainHand.Cards.Count,
+			OtherHandLayout otherHand when IsInstanceValid(otherHand) => otherHand.Cards.Count,
+			_ => 0
+		};
 	}
 
-	private void UpdateDrawButtonState()
+	private bool TryPlayOpponentCard(
+		int playerIndex,
+		OtherHandLayout hand,
+		int cardIndex,
+		CardData cardData)
 	{
-		if (_drawCardButton is null || !GodotObject.IsInstanceValid(_drawCardButton))
-			return;
+		return hand is not null &&
+			IsInstanceValid(hand) &&
+			hand.TryPlayCard(
+				cardIndex,
+				cardData,
+				playedCard => HandleOpponentPlayCompleted(playerIndex, playedCard)
+			);
+	}
 
-		// Keep the control enabled while cards are flying: a subsequent press
-		// should create another independent flight.  Only an empty deck disables
-		// the trigger.
-		_drawCardButton.Disabled = RemainingCards <= 0;
+	private void HandleOpponentPlayCompleted(int playerIndex, CardControl playedCard)
+	{
+		if (playerIndex != RightPlayerIndex ||
+			playedCard is null ||
+			!IsInstanceValid(playedCard))
+		{
+			return;
+		}
+
+		_rightPlayerPlayCompleted = true;
+		if (IsCollectingTrick)
+		{
+			TryPrepareCollectTrickCards(_collectGeneration);
+			// Collection owns the play gate until all of its flights finish. The
+			// completion path re-opens it after ResetCollectTrickState().
+			return;
+		}
+
+		SetMainPlayerPlayEnabled(true);
+	}
+
+	private void SetMainPlayerPlayEnabled(bool enabled)
+	{
+		CanMainPlayerPlay = enabled && !IsDealing && !IsCollectingTrick;
+	}
+
+	private T Resolve<T>(T current, NodePath fallbackPath) where T : Node
+	{
+		return current is not null && IsInstanceValid(current)
+			? current
+			: GetNodeOrNull<T>(fallbackPath);
 	}
 }

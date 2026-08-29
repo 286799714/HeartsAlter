@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bg6tvprpjlpck"]
 
-[ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/InGame/MainHandLayout/MainHandLayout.cs" id="1_layout"]
+[ext_resource type="Script" uid="uid://bhniah81uyn20" path="res://Scripts/InGame/MainHandLayout.cs" id="1_layout"]
 
-[node name="MainHandLayout" type="Control" unique_id=1689990100]
+[node name="MainHandLayout" type="Control" unique_id=1689990100 node_paths=PackedStringArray("_ruleHintLabel")]
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -13,13 +13,15 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_layout")
-MaxSpacing = 42.0
-MinSpacing = 0.0
-LayoutWidth = 0.0
-LayoutTweenDuration = 0.24
-SelectedLift = 32.0
-SelectionTweenDuration = 0.16
-LayoutTransition = 1
-LayoutEase = 2
-SelectionTransition = 1
-SelectionEase = 2
+_ruleHintLabel = NodePath("RuleHint")
+
+[node name="RuleHint" type="Label" parent="." unique_id=1673981644]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_top = -32.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.36, 1)
+theme_override_font_sizes/font_size = 18
+text = "你持有 ♣2，需要第一个出牌。"
+horizontal_alignment = 1

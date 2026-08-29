@@ -18,29 +18,98 @@ namespace HeartsAlter.Scripts.InGame;
 /// </summary>
 public partial class AnimationLayer : Control
 {
-	[Export]
-	public float CardFlightDuration { get; set; } = 0.55f;
+	[ExportCategory("Card Animation")]
+	[ExportGroup("Draw / Deal")]
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float DrawFlightDuration = 0.55f;
 
 	[Export]
-	public float CardFlipDuration { get; set; } = 0.28f;
-
-	[Export]
-	public Tween.TransitionType FlightTransition { get; set; } =
+	public Tween.TransitionType DrawFlightTransition =
 		Tween.TransitionType.Sine;
 
 	[Export]
-	public Tween.EaseType FlightEase { get; set; } = Tween.EaseType.InOut;
+	public Tween.EaseType DrawFlightEase = Tween.EaseType.InOut;
+
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float DrawFlipDuration = 0.28f;
+
+	[Export]
+	public Tween.TransitionType DrawFlipTransition =
+		Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType DrawFlipEase = Tween.EaseType.InOut;
+
+	[ExportGroup("Play")]
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float PlayFlightDuration = 0.55f;
+
+	[Export]
+	public Tween.TransitionType PlayFlightTransition =
+		Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType PlayFlightEase = Tween.EaseType.InOut;
+
+	[Export(PropertyHint.Range, "-4,4,1,suffix: turns")]
+	public int PlayClockwiseTurns = 1;
+
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float PlayFlipDuration = 0.28f;
+
+	[Export]
+	public Tween.TransitionType PlayFlipTransition =
+		Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType PlayFlipEase = Tween.EaseType.InOut;
+
+	[ExportGroup("Collect")]
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float CollectFlightDuration = 0.55f;
+
+	[Export]
+	public Tween.TransitionType CollectFlightTransition =
+		Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType CollectFlightEase = Tween.EaseType.InOut;
+
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float CollectFlipDuration = 0.2f;
+
+	[Export]
+	public Tween.TransitionType CollectFlipTransition =
+		Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType CollectFlipEase = Tween.EaseType.InOut;
+
+	[Export(PropertyHint.Range, "-4,4,1,suffix: turns")]
+	public int CollectClockwiseTurns;
 
 	[Signal]
 	public delegate void CardAnimationCompletedEventHandler();
+
+	private readonly record struct AnimationSettings(
+		float FlightDuration,
+		Tween.TransitionType FlightTransition,
+		Tween.EaseType FlightEase,
+		float FlipDuration,
+		Tween.TransitionType FlipTransition,
+		Tween.EaseType FlipEase,
+		int ClockwiseTurns
+	);
 
 	private sealed class FlightState
 	{
 		public CardControl Card = null!;
 		public Node2D Carrier = null!;
+		public Node2D SpinCarrier = null!;
 		public Tween FlightTween = null!;
 		public CardControl.FlipCompletedEventHandler FlipHandler = null!;
 		public Action<CardControl> Completion = null!;
+		public AnimationSettings Settings;
 		public bool FlightFinished;
 		public bool FlipFinished;
 	}
@@ -86,19 +155,88 @@ public partial class AnimationLayer : Control
 		_flights.Clear();
 	}
 
-	/// <summary>
-	/// Animates <paramref name="card"/> from <paramref name="sourcePose"/> to
-	/// <paramref name="targetPose"/>. The card must already be a child of this
-	/// layer; the method then moves it under a private carrier. The completion
-	/// callback runs after both the flight and an optional face flip finish, so
-	/// callers can safely call <see cref="Ingame.MainHandLayout.MainHandLayout.ReceiveCard"/> there.
-	/// </summary>
-	/// <returns>False when the layer/card is not ready or the card is busy.</returns>
+	/// <summary>Animates a card drawn/dealt from the deck to a hand.</summary>
+	public bool PlayDrawToPose(
+		CardControl card,
+		CardPose2D sourcePose,
+		CardPose2D targetPose,
+		Action<CardControl> completed = null)
+	{
+		return PlayToPose(
+			card,
+			sourcePose,
+			targetPose,
+			CreateDrawSettings(),
+			startDelay: 0.0f,
+			completed: completed
+		);
+	}
+
+	/// <summary>Animates a card played from a hand to its play area.</summary>
 	public bool PlayCardToPose(
 		CardControl card,
 		CardPose2D sourcePose,
 		CardPose2D targetPose,
 		Action<CardControl> completed = null)
+	{
+		return PlayToPose(
+			card,
+			sourcePose,
+			targetPose,
+			CreatePlaySettings(),
+			startDelay: 0.0f,
+			completed: completed
+		);
+	}
+
+	/// <summary>Animates a completed trick from a play area to its collector.</summary>
+	public bool PlayCollectToPose(
+		CardControl card,
+		CardPose2D sourcePose,
+		CardPose2D targetPose,
+		Action<CardControl> completed = null)
+	{
+		return PlayCollectToPose(
+			card,
+			sourcePose,
+			targetPose,
+			startDelay: 0.0f,
+			completed: completed
+		);
+	}
+
+	/// <summary>
+	/// Owns a completed trick immediately, holds it at its exact source pose for
+	/// <paramref name="startDelay"/>, then animates it to the collector.
+	/// </summary>
+	public bool PlayCollectToPose(
+		CardControl card,
+		CardPose2D sourcePose,
+		CardPose2D targetPose,
+		float startDelay,
+		Action<CardControl> completed = null)
+	{
+		return PlayToPose(
+			card,
+			sourcePose,
+			targetPose,
+			CreateCollectSettings(),
+			startDelay,
+			completed
+		);
+	}
+
+	/// <summary>
+	/// Animates a card between two canvas poses. Settings are snapshotted per
+	/// flight, so simultaneous draw and play animations remain independent.
+	/// </summary>
+	private bool PlayToPose(
+		CardControl card,
+		CardPose2D sourcePose,
+		CardPose2D targetPose,
+		AnimationSettings settings,
+		float startDelay,
+		Action<CardControl> completed)
 	{
 		if (card is null ||
 			!GodotObject.IsInstanceValid(card) ||
@@ -126,9 +264,10 @@ public partial class AnimationLayer : Control
 
 		// A Control's Transform2D setter is not exposed by GodotSharp. Normalize
 		// the card and animate a Node2D carrier instead, preserving the complete
-		// matrix even when the source/target controls are rotated or scaled. The
-		// carrier's origin is aligned to the card center, so rotation never pivots
-		// around the card's top-left corner.
+		// matrix even when the source/target controls are rotated or scaled. Keep
+		// the decorative full-turn spin on a separate child: composing it into the
+		// pose matrix can make Node2D decompose the final matrix as an equivalent
+		// negative scale, which appears as a one-frame vertical mirror.
 		card.SetAnchorsPreset(LayoutPreset.TopLeft, keepOffsets: true);
 		card.Position = Vector2.Zero;
 		card.Rotation = 0.0f;
@@ -147,13 +286,20 @@ public partial class AnimationLayer : Control
 			ZIndex = 1
 		};
 		AddChild(carrier);
-		card.Reparent(carrier, keepGlobalTransform: false);
+		Node2D spinCarrier = new()
+		{
+			Name = $"{card.Name}_Spin"
+		};
+		carrier.AddChild(spinCarrier);
+		card.Reparent(spinCarrier, keepGlobalTransform: false);
 
 		FlightState state = new()
 		{
 			Card = card,
 			Carrier = carrier,
+			SpinCarrier = spinCarrier,
 			Completion = completed,
+			Settings = settings,
 			FlightFinished = false,
 			FlipFinished = card.IsFaceUp == targetPose.IsFaceUp
 		};
@@ -161,14 +307,17 @@ public partial class AnimationLayer : Control
 
 		card.Visible = true;
 		ApplyPose(carrier, card, sourceTransform, sourcePose.Size);
+		ApplySpin(spinCarrier, settings.ClockwiseTurns, 0.0f);
 
-		if (!state.FlipFinished)
+		float delay = Mathf.Max(0.0f, startDelay);
+		if (!state.FlipFinished && delay <= 0.0f)
 			StartFlip(state, targetPose.IsFaceUp);
 
-		float duration = Mathf.Max(0.0f, CardFlightDuration);
-		if (duration <= 0.0f)
+		float duration = Mathf.Max(0.0f, settings.FlightDuration);
+		if (duration <= 0.0f && delay <= 0.0f)
 		{
 			ApplyPose(carrier, card, targetTransform, targetPose.Size);
+			ResetSpin(spinCarrier);
 			state.FlightFinished = true;
 		}
 		else
@@ -176,31 +325,51 @@ public partial class AnimationLayer : Control
 			Tween tween = CreateTween();
 			state.FlightTween = tween;
 
-			tween.TweenMethod(
-				Callable.From<float>(progress =>
+			if (delay > 0.0f)
+			{
+				tween.TweenInterval(delay);
+				if (!state.FlipFinished)
 				{
-					if (!GodotObject.IsInstanceValid(card) ||
-						!_flights.Contains(state))
-					{
-						return;
-					}
+					tween.TweenCallback(
+						Callable.From(() =>
+						{
+							if (_flights.Contains(state) && !state.FlipFinished)
+								StartFlip(state, targetPose.IsFaceUp);
+						})
+					);
+				}
+			}
 
-					Transform2D interpolated = sourceTransform.InterpolateWith(
-						targetTransform,
-						progress
-					);
-					Vector2 interpolatedSize = sourcePose.Size.Lerp(
-						targetPose.Size,
-						progress
-					);
-					ApplyPose(carrier, card, interpolated, interpolatedSize);
-				}),
-				0.0f,
-				1.0f,
-				duration
-			)
-			.SetTrans(FlightTransition)
-			.SetEase(FlightEase);
+			if (duration > 0.0f)
+			{
+				tween.TweenMethod(
+					Callable.From<float>(progress =>
+					{
+						if (!GodotObject.IsInstanceValid(card) ||
+							!GodotObject.IsInstanceValid(spinCarrier) ||
+							!_flights.Contains(state))
+						{
+							return;
+						}
+
+						Transform2D interpolated = sourceTransform.InterpolateWith(
+							targetTransform,
+							progress
+						);
+						Vector2 interpolatedSize = sourcePose.Size.Lerp(
+							targetPose.Size,
+							progress
+						);
+						ApplyPose(carrier, card, interpolated, interpolatedSize);
+						ApplySpin(spinCarrier, settings.ClockwiseTurns, progress);
+					}),
+					0.0f,
+					1.0f,
+					duration
+				)
+				.SetTrans(settings.FlightTransition)
+				.SetEase(settings.FlightEase);
+			}
 
 			tween.TweenCallback(
 				Callable.From(() => HandleFlightCompleted(
@@ -214,6 +383,45 @@ public partial class AnimationLayer : Control
 
 		TryComplete(state);
 		return true;
+	}
+
+	private AnimationSettings CreateDrawSettings()
+	{
+		return new AnimationSettings(
+			DrawFlightDuration,
+			DrawFlightTransition,
+			DrawFlightEase,
+			DrawFlipDuration,
+			DrawFlipTransition,
+			DrawFlipEase,
+			ClockwiseTurns: 0
+		);
+	}
+
+	private AnimationSettings CreatePlaySettings()
+	{
+		return new AnimationSettings(
+			PlayFlightDuration,
+			PlayFlightTransition,
+			PlayFlightEase,
+			PlayFlipDuration,
+			PlayFlipTransition,
+			PlayFlipEase,
+			PlayClockwiseTurns
+		);
+	}
+
+	private AnimationSettings CreateCollectSettings()
+	{
+		return new AnimationSettings(
+			CollectFlightDuration,
+			CollectFlightTransition,
+			CollectFlightEase,
+			CollectFlipDuration,
+			CollectFlipTransition,
+			CollectFlipEase,
+			CollectClockwiseTurns
+		);
 	}
 
 	/// <summary>Cancels all active flights.</summary>
@@ -250,10 +458,10 @@ public partial class AnimationLayer : Control
 		card.FlipCompleted += state.FlipHandler;
 		card.PlayFlip(
 			toFront,
-			Mathf.Max(0.0f, CardFlipDuration),
+			Mathf.Max(0.0f, state.Settings.FlipDuration),
 			reverse: false,
-			transitionType: FlightTransition,
-			easeType: FlightEase
+			transitionType: state.Settings.FlipTransition,
+			easeType: state.Settings.FlipEase
 		);
 
 		// CardVisual does not emit a signal when it is already at the target face.
@@ -288,6 +496,10 @@ public partial class AnimationLayer : Control
 
 		if (GodotObject.IsInstanceValid(state.Card))
 			ApplyPose(state.Carrier, state.Card, targetTransform, targetSize);
+		// A complete number of turns is visually identical to zero rotation.
+		// Normalize before the card is reparented into the play area so both sides
+		// of the hand-off use exactly the same transform.
+		ResetSpin(state.SpinCarrier);
 
 		state.FlightFinished = true;
 		state.FlightTween = null;
@@ -327,6 +539,12 @@ public partial class AnimationLayer : Control
 			// A successful callback normally reparents the card into the hand. If
 			// it did not, freeing the carrier also cleans up the transient card.
 			// Free immediately so ReceiveCard's reparent cannot race a queued free.
+			if (GodotObject.IsInstanceValid(state.SpinCarrier) &&
+				state.SpinCarrier.GetChildCount() == 0)
+			{
+				state.SpinCarrier.Free();
+			}
+
 			if (GodotObject.IsInstanceValid(state.Carrier) &&
 				state.Carrier.GetChildCount() == 0)
 			{
@@ -357,8 +575,8 @@ public partial class AnimationLayer : Control
 		else if (!freeCard &&
 			state.Card is not null &&
 			GodotObject.IsInstanceValid(state.Card) &&
-			GodotObject.IsInstanceValid(state.Carrier) &&
-			state.Card.GetParent() == state.Carrier)
+			GodotObject.IsInstanceValid(state.SpinCarrier) &&
+			state.Card.GetParent() == state.SpinCarrier)
 		{
 			// Detach before freeing the private carrier so the caller can reclaim
 			// the cancelled card as promised by the public API.
@@ -432,6 +650,23 @@ public partial class AnimationLayer : Control
 		Vector2 halfSize = size * 0.5f;
 		card.Position = -halfSize;
 		carrier.Transform = localTransform;
+	}
+
+	private static void ApplySpin(
+		Node2D spinCarrier,
+		int clockwiseTurns,
+		float progress)
+	{
+		if (!GodotObject.IsInstanceValid(spinCarrier))
+			return;
+
+		spinCarrier.Rotation = Mathf.Tau * clockwiseTurns * progress;
+	}
+
+	private static void ResetSpin(Node2D spinCarrier)
+	{
+		if (GodotObject.IsInstanceValid(spinCarrier))
+			spinCarrier.Rotation = 0.0f;
 	}
 
 	private static Transform2D ToCenterTransform(

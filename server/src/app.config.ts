@@ -11,6 +11,7 @@ import {
  * Import your Room files
  */
 import { MyRoom } from "./rooms/MyRoom.js";
+import { LobbyRoom } from "./rooms/LobbyRoom.js";
 
 const server = defineServer({
 
@@ -18,6 +19,7 @@ const server = defineServer({
    * Define your room handlers:
    */
   rooms: {
+    lobby: defineRoom(LobbyRoom),
     hearts: defineRoom(MyRoom),
     // Keep the starter room name as a compatibility alias for existing
     // load-test scripts; new clients should join `hearts`.

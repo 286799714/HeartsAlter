@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Colyseus;
 using HeartsAlter.Scripts.Generated;
+using HeartsAlter.Scripts.InGame.Card;
 
 namespace HeartsAlter.Scripts;
 
@@ -37,6 +38,11 @@ public sealed class ColyseusClientAdapter
     /// A negative round means a legacy server omitted the field.
     /// </summary>
     public event Action<string, string, int> CardPlayed;
+    public event Action<string, string, int, int> CardPlayedDetailed;
+    public event Action<string, int, int> TurnStarted;
+    public event Action<string, int, int> TrickResolved;
+    public event Action RoundFinished;
+    public event Action<string> RoomReset;
     public event Action<string> ServerMessage;
     public event Action<string> InvalidPlay;
     public event Action<int, string> Error;
@@ -98,6 +104,73 @@ public sealed class ColyseusClientAdapter
         }
     }
 
+    /// <summary>
+    /// Consumes the seat reservation issued by the lobby. This keeps room
+    /// creation/joining atomic on the server and avoids a second matchmaking
+    /// race between the lobby and ready-room scenes.
+    /// </summary>
+    public async Task<bool> ConnectByReservationAsync(
+        RoomReservation reservation,
+        string endpoint = DefaultEndpoint)
+    {
+        if (reservation == null || string.IsNullOrWhiteSpace(reservation.RoomId))
+        {
+            Error?.Invoke(0, "房间预约无效");
+            return false;
+        }
+        if (IsConnected) return true;
+        try
+        {
+            _client = new Client(endpoint);
+            _room = await _client.ConsumeSeatReservation<MyRoomState>(
+                reservation.ToSeatReservation(), new Dictionary<string, string>());
+            RegisterRoomHandlers(_room);
+            await _room.WaitForFirstState();
+            await _room.Send("request_hand");
+            ServerMessage?.Invoke("已进入准备房间");
+            return true;
+        }
+        catch (Exception exception)
+        {
+            Error?.Invoke(0, exception.Message);
+            await DisconnectSilentlyAsync();
+            return false;
+        }
+    }
+
+    public Task SetReadyAsync(bool ready)
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("ready", new Dictionary<string, object>
+        {
+            ["ready"] = ready,
+        });
+    }
+
+    public Task AddBotAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("add_bot");
+    }
+
+    public Task StartGameAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("start_game");
+    }
+
+    public Task TableReadyAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("table_ready");
+    }
+
+    public Task DealReadyAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("deal_ready");
+    }
+
+    public Task NextRoundAsync()
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("next_round");
+    }
+
     public Task RequestHandAsync()
     {
         return _room == null ? Task.CompletedTask : _room.Send("request_hand");
@@ -113,6 +186,18 @@ public sealed class ColyseusClientAdapter
         return _room.Send("play", new Dictionary<string, object>
         {
             ["cardId"] = cardId
+        });
+    }
+
+    public Task PlayCardAsync(int cardIndex, CardData card)
+    {
+        if (_room == null) return Task.CompletedTask;
+        return _room.Send("play", new Dictionary<string, object>
+        {
+            ["cardIndex"] = cardIndex,
+            ["cardId"] = ToCardId(card),
+            ["suit"] = ToSuitName(card.Suit),
+            ["rank"] = (int)card.Rank,
         });
     }
 
@@ -176,10 +261,13 @@ public sealed class ColyseusClientAdapter
         room.OnMessage<Dictionary<string, object>>("player_joined", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("player_left", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("player_disconnected", OnInformationalMessage);
-        room.OnMessage<Dictionary<string, object>>("turn_started", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("turn_started", OnTurnStartedMessage);
         room.OnMessage<Dictionary<string, object>>("round_started", OnInformationalMessage);
-        room.OnMessage<Dictionary<string, object>>("round_finished", OnInformationalMessage);
-        room.OnMessage<Dictionary<string, object>>("trick_resolved", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("round_finished", OnRoundFinishedMessage);
+        room.OnMessage<Dictionary<string, object>>("trick_resolved", OnTrickResolvedMessage);
+        room.OnMessage<Dictionary<string, object>>("room_reset", OnRoomResetMessage);
+        room.OnMessage<Dictionary<string, object>>("deal_started", OnInformationalMessage);
+        room.OnMessage<Dictionary<string, object>>("game_ready", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("invalid_play", OnInvalidPlayMessage);
         room.OnMessage<Dictionary<string, object>>("auto_play", OnInformationalMessage);
     }
@@ -216,7 +304,38 @@ public sealed class ColyseusClientAdapter
         {
             var roundNumber = ReadInt(payload, "roundNumber", -1);
             CardPlayed?.Invoke(playerId, cardId, roundNumber);
+            CardPlayedDetailed?.Invoke(playerId, cardId, ReadInt(payload, "cardIndex", -1), roundNumber);
         }
+    }
+
+    private void OnTurnStartedMessage(Dictionary<string, object> payload)
+    {
+        string playerId = ReadString(payload, "playerId");
+        TurnStarted?.Invoke(
+            playerId,
+            ReadInt(payload, "duration", 15_000),
+            ReadInt(payload, "trickNumber", 0));
+    }
+
+    private void OnTrickResolvedMessage(Dictionary<string, object> payload)
+    {
+        TrickResolved?.Invoke(
+            ReadString(payload, "winnerId"),
+            ReadInt(payload, "points", 0),
+            ReadInt(payload, "trickNumber", 0));
+    }
+
+    private void OnRoundFinishedMessage(Dictionary<string, object> payload)
+    {
+        RoundFinished?.Invoke();
+        OnInformationalMessage(payload);
+    }
+
+    private void OnRoomResetMessage(Dictionary<string, object> payload)
+    {
+        string reason = ReadString(payload, "reason");
+        RoomReset?.Invoke(reason);
+        if (!string.IsNullOrEmpty(reason)) ServerMessage?.Invoke(reason);
     }
 
     private void OnInvalidPlayMessage(Dictionary<string, object> payload)
@@ -265,6 +384,33 @@ public sealed class ColyseusClientAdapter
 
         return string.Empty;
     }
+
+    private static string ToCardId(CardData card)
+    {
+        string rank = card.Rank switch
+        {
+            PokerRank.Jack => "J",
+            PokerRank.Queen => "Q",
+            PokerRank.King => "K",
+            PokerRank.Ace => "A",
+            _ => ((int)card.Rank).ToString(CultureInfo.InvariantCulture),
+        };
+        return ToSuitName(card.Suit) switch
+        {
+            "club" => "Club" + rank,
+            "diamond" => "Diamond" + rank,
+            "heart" => "Heart" + rank,
+            _ => "Spade" + rank,
+        };
+    }
+
+    private static string ToSuitName(PokerSuit suit) => suit switch
+    {
+        PokerSuit.Club => "club",
+        PokerSuit.Diamond => "diamond",
+        PokerSuit.Heart => "heart",
+        _ => "spade",
+    };
 
     /// <summary>
     /// Colyseus payload numbers can be materialized as any primitive numeric

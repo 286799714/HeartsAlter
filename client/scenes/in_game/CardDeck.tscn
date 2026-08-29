@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dfccqip2lq1qv"]
 
-[ext_resource type="Script" uid="uid://82b483uargw1" path="res://Scripts/InGame/CardDeck/CardDeck.cs" id="1_m27ya"]
+[ext_resource type="Script" uid="uid://82b483uargw1" path="res://Scripts/InGame/CardDeck.cs" id="1_m27ya"]
 [ext_resource type="PackedScene" uid="uid://cj4j3imhm0qt2" path="res://scenes/in_game/Card.tscn" id="3_7cnn2"]
 
 [node name="CardDeck" type="Control" unique_id=987148302 node_paths=PackedStringArray("_layers", "_topCard")]

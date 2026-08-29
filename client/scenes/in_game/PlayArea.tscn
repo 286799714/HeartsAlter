@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cubo7i4op1dv"]
+
+[ext_resource type="Script" uid="uid://tf5fs6psraih" path="res://Scripts/InGame/PlayArea.cs" id="1_play_area"]
+
+[node name="PlayArea" type="Control" unique_id=835103757]
+custom_minimum_size = Vector2(92, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 84.0
+offset_bottom = 117.0
+mouse_filter = 2
+script = ExtResource("1_play_area")
