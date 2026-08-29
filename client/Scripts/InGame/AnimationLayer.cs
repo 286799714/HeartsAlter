@@ -64,6 +64,25 @@ public partial class AnimationLayer : Control
 	[Export]
 	public Tween.EaseType PlayFlipEase = Tween.EaseType.InOut;
 
+	[ExportGroup("Passing")]
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float PassFlightDuration = 0.65f;
+
+	[Export]
+	public Tween.TransitionType PassFlightTransition = Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType PassFlightEase = Tween.EaseType.InOut;
+
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float PassFlipDuration = 0.25f;
+
+	[Export]
+	public Tween.TransitionType PassFlipTransition = Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType PassFlipEase = Tween.EaseType.InOut;
+
 	[ExportGroup("Collect")]
 	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
 	public float CollectFlightDuration = 0.55f;
@@ -184,6 +203,23 @@ public partial class AnimationLayer : Control
 			sourcePose,
 			targetPose,
 			CreatePlaySettings(),
+			startDelay: 0.0f,
+			completed: completed
+		);
+	}
+
+	/// <summary>Animates one card from a hand to its passing recipient.</summary>
+	public bool PlayPassToPose(
+		CardControl card,
+		CardPose2D sourcePose,
+		CardPose2D targetPose,
+		Action<CardControl> completed = null)
+	{
+		return PlayToPose(
+			card,
+			sourcePose,
+			targetPose,
+			CreatePassSettings(),
 			startDelay: 0.0f,
 			completed: completed
 		);
@@ -408,6 +444,19 @@ public partial class AnimationLayer : Control
 			PlayFlipTransition,
 			PlayFlipEase,
 			PlayClockwiseTurns
+		);
+	}
+
+	private AnimationSettings CreatePassSettings()
+	{
+		return new AnimationSettings(
+			PassFlightDuration,
+			PassFlightTransition,
+			PassFlightEase,
+			PassFlipDuration,
+			PassFlipTransition,
+			PassFlipEase,
+			ClockwiseTurns: 0
 		);
 	}
 

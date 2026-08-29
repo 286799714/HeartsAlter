@@ -6,6 +6,7 @@
 
 - 使用不含大小王的 52 张标准扑克牌，四名玩家各 13 张。
 - 每人投入相同底注（默认 100，可由房间创建选项调整），汇集为奖池（默认 400）。
+- 发牌后每人选择三张牌传给下家；传牌阶段最多等待 30 秒，未选择者由服务端随机补选。
 - 首墩由梅花 2 开始；有领出花色时必须跟花色；红心未破前不能主动领出红桃。
 - 每张红桃计 1 点，黑桃 Q 计 6 点；不使用射月。
 - 结算时最高分玩家（并列时全部并列者）共同请客，不拿奖池；其他玩家按点数比例分配奖池。整数余数按座位顺序分配。
@@ -42,12 +43,13 @@ npm run build
 客户端消息：
 
 - `request_hand`：请求重新发送当前玩家的私有手牌。
+- `pass_cards`：传牌阶段发送 `{ "cardIds": ["HeartQ", "Club4", "Spade9"] }`。
 - `play`：发送 `{ "cardId": "HeartQ" }` 出牌意图。
 - `restart`：结算后重新开始一局（所有玩家必须有足够底注）。
 
 创建房间选项：`bots: true` 开启单人演示房间（服务端补齐 3 个机器人并限制为 1 个真实连接）；省略或设为 `false` 时使用四名真人模式。
 
-服务端私有/广播消息包括 `hand`、`round_started`、`turn_started`、`card_played`、`trick_resolved`、`round_finished` 和 `invalid_play`。公开状态字段见 `server/src/rooms/schema/MyRoomState.ts`。
+服务端私有/广播消息包括 `hand`、`round_started`、`passing_started`、`passing_selected`、`passing_received`、`passing_completed`、`turn_started`、`card_played`、`trick_resolved`、`round_finished` 和 `invalid_play`。公开状态字段见 `server/src/rooms/schema/MyRoomState.ts`。
 
 客户端连接后应注册 `hand` 处理器并主动发送一次 `request_hand`；服务端在入座和发牌后还会延迟重发一次，覆盖加入时的消息处理器竞态。
 

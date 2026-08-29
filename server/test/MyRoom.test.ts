@@ -24,6 +24,25 @@ describe("authoritative Hearts room", () => {
     await colyseus.cleanup();
   });
 
+  const completePassing = async (room: any, clients: any[]) => {
+    const hands = new Map<string, string[]>();
+    for (const client of clients) {
+      const handMessage = client.waitForMessage("hand");
+      client.send("request_hand");
+      const payload = await handMessage;
+      hands.set(client.sessionId, [...payload.cards]);
+    }
+    for (const client of clients) {
+      client.send("pass_cards", { cardIds: hands.get(client.sessionId)!.slice(0, 3) });
+    }
+    const deadline = Date.now() + 2_000;
+    while (room.state.phase !== "playing" && Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, 5));
+    }
+    assert.equal(room.state.phase, "playing");
+    return hands;
+  };
+
   it("waits for four seats, charges one equal ante, and deals 13 cards per seat", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
     const clients = [];
@@ -31,7 +50,7 @@ describe("authoritative Hearts room", () => {
       clients.push(await colyseus.connectTo(room, { name: `玩家${index + 1}` }));
     }
 
-    assert.equal(room.state.phase, "playing");
+    assert.equal(room.state.phase, "passing");
     assert.equal(room.state.players.size, MAX_PLAYERS);
     assert.equal(room.state.pot, 400);
     assert.equal(room.state.ante, 100);
@@ -41,6 +60,7 @@ describe("authoritative Hearts room", () => {
       assert.equal(player.stake, 100);
       assert.equal(player.chips, 900);
     }
+    await completePassing(room, clients);
 
     // The first turn is always owned by the seat holding the two of clubs;
     // this also proves the room did not invent a client-controlled turn.
@@ -48,12 +68,46 @@ describe("authoritative Hearts room", () => {
     assert.ok(clients.some((client) => client.sessionId === room.state.currentTurn));
   });
 
+  it("broadcasts passing choices and privately delivers them to the successor", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", {});
+    const clients: any[] = [];
+    for (let index = 0; index < MAX_PLAYERS; index += 1) {
+      clients.push(await colyseus.connectTo(room));
+    }
+    const hands = new Map<string, string[]>();
+    for (const client of clients) {
+      const handMessage = client.waitForMessage("hand");
+      client.send("request_hand");
+      hands.set(client.sessionId, [...(await handMessage).cards]);
+    }
+
+    const firstSelection = hands.get(clients[0].sessionId)!.slice(0, 3);
+    const privatePass = clients[1].waitForMessage("passing_received");
+    clients[0].send("pass_cards", { cardIds: firstSelection });
+    const privatePayload = await privatePass;
+    assert.equal(privatePayload.fromPlayerId, clients[0].sessionId);
+    assert.deepEqual(privatePayload.cardIds, firstSelection);
+    assert.equal(room.state.phase, "passing");
+
+    for (let index = 1; index < clients.length; index += 1) {
+      clients[index].send("pass_cards", {
+        cardIds: hands.get(clients[index].sessionId)!.slice(0, 3),
+      });
+    }
+    const deadline = Date.now() + 2_000;
+    while (room.state.phase !== "playing" && Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, 5));
+    }
+    assert.equal(room.state.phase, "playing");
+    assert.ok([...room.state.players.values()].every((player) => player.handCount === 13));
+  });
+
   it("fills a bot demo room from one client and lets a bot take a turn", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", { bots: true });
     const client = await colyseus.connectTo(room, { name: "演示玩家" });
 
     assert.equal(room.maxClients, 1);
-    assert.equal(room.state.phase, "playing");
+    assert.equal(room.state.phase, "passing");
     assert.equal(room.state.players.size, MAX_PLAYERS);
     assert.equal(room.state.playerOrder.length, MAX_PLAYERS);
     assert.equal(room.state.pot, DEFAULT_ANTE * MAX_PLAYERS);
@@ -70,6 +124,7 @@ describe("authoritative Hearts room", () => {
     // Install the play listener before requesting the hand: a bot may already
     // own the opening turn, and its short timer should not race the assertion.
     const firstPlayMessage = client.waitForMessage("card_played", 5_000);
+    await completePassing(room, [client]);
     const handMessage = client.waitForMessage("hand");
     client.send("request_hand");
     const handPayload = await handMessage;
@@ -100,6 +155,7 @@ describe("authoritative Hearts room", () => {
     }
 
     const expectedRound = room.state.roundNumber;
+    await completePassing(room, clients);
     const handMessage = clients[0].waitForMessage("hand");
     clients[0].send("request_hand");
     const handPayload = await handMessage;
@@ -137,7 +193,7 @@ describe("authoritative Hearts room", () => {
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
       await colyseus.connectTo(raisedBuyIn);
     }
-    assert.equal(raisedBuyIn.state.phase, "playing");
+    assert.equal(raisedBuyIn.state.phase, "passing");
     assert.equal(raisedBuyIn.state.ante, 2_000);
     assert.equal(raisedBuyIn.state.pot, 8_000);
     assert.ok([...raisedBuyIn.state.players.values()].every((player) => player.chips === 0));
@@ -159,6 +215,7 @@ describe("authoritative Hearts room", () => {
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
       clients.push(await colyseus.connectTo(room));
     }
+    await completePassing(room, clients);
     const starter = clients.find((client) => client.sessionId === room.state.currentTurn);
     assert.ok(starter);
     const other = clients.find((client) => client.sessionId !== room.state.currentTurn);
@@ -177,9 +234,11 @@ describe("authoritative Hearts room", () => {
 
   it("keeps public state free of private hand contents", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
+    const clients: any[] = [];
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
-      await colyseus.connectTo(room);
+      clients.push(await colyseus.connectTo(room));
     }
+    await completePassing(room, clients);
     const serialized = JSON.stringify(room.state.toJSON());
     assert.equal(serialized.includes("Club2"), false);
     assert.equal(serialized.includes("HeartA"), false);
@@ -192,6 +251,7 @@ describe("authoritative Hearts room", () => {
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
       clients.push(await colyseus.connectTo(room));
     }
+    await completePassing(room, clients);
     const byId = new Map<string, any>(clients.map((client) => [client.sessionId, client]));
     const hands = new Map<string, string[]>();
 
@@ -257,9 +317,10 @@ describe("authoritative Hearts room", () => {
     const roundStartedPayload = await roundStartedMessage;
     assert.equal(roundStartedPayload.roundNumber, finishedRound + 1);
     assert.equal(room.state.roundNumber, finishedRound + 1);
-    assert.equal(room.state.phase, "playing");
+    assert.equal(room.state.phase, "passing");
     assert.equal(room.state.pot, 400);
     assert.ok([...room.state.players.values()].every((player) => player.handCount === 13));
+    await completePassing(room, clients);
 
     const restartedHandMessage = clients[0].waitForMessage("hand");
     clients[0].send("request_hand");

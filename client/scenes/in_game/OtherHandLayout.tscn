@@ -19,3 +19,7 @@ LayoutWidth = 0.0
 LayoutTweenDuration = 0.24
 LayoutTransition = 1
 LayoutEase = 2
+SelectedLift = 32.0
+SelectionTweenDuration = 0.16
+SelectionTransition = 1
+SelectionEase = 2

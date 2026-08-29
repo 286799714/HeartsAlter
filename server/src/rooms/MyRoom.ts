@@ -6,6 +6,7 @@ import {
   getLegalCards,
   scoreCards,
   settlePot,
+  shuffleDeck,
   type Card,
   type PlayedCard,
 } from "../game/rules.js";
@@ -19,6 +20,9 @@ export const PHASE_READY_DURATION = 30_000;
 export const BOT_TURN_DURATION = 600;
 /** Extra pause after a trick is collected before a bot starts the next one. */
 export const BOT_TRICK_DELAY = 1_000;
+/** Maximum wait for all four players to choose their three passing cards. */
+export const PASSING_DURATION = 30_000;
+export const PASS_CARD_COUNT = 3;
 export const DEFAULT_ANTE = 100;
 export const DEFAULT_STARTING_CHIPS = 1_000;
 export const MAX_PLAYERS = 4;
@@ -40,6 +44,12 @@ type PlayMessage = {
   cardIndex?: unknown;
   suit?: unknown;
   rank?: unknown;
+} | string | undefined;
+
+type PassMessage = {
+  cardIds?: unknown;
+  cards?: unknown;
+  cardIndexes?: unknown;
 } | string | undefined;
 
 /**
@@ -74,6 +84,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private lobbyManaged = false;
   private starting = false;
   private phaseTimeout?: Delayed;
+  private passingTimeout?: Delayed;
+  private readonly passingSelections = new Map<string, Card[]>();
 
   messages = {
     /** Toggle the ready flag. The host and bots are always ready. */
@@ -164,6 +176,18 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       if (this.allRealPlayersHave((candidate) => candidate.dealReady)) {
         this.beginPlayingAfterDeal();
       }
+    },
+
+    /** Submit exactly three cards to pass to the next seat. */
+    pass_cards: (client: Client, message: PassMessage) => {
+      this.submitPassingCards(client, message);
+    },
+    // Keep a short alias for clients built against an earlier protocol draft.
+    pass: (client: Client, message: PassMessage) => {
+      this.submitPassingCards(client, message);
+    },
+    pass_selected: (client: Client, message: PassMessage) => {
+      this.submitPassingCards(client, message);
     },
 
     /** Every player explicitly agrees to proceed to another round. */
@@ -366,11 +390,13 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   onDispose() {
     this.turnTimeout?.clear();
     this.phaseTimeout?.clear();
+    this.passingTimeout?.clear();
     for (const timer of this.handResendTimers) {
       timer.clear();
     }
     this.handResendTimers.clear();
     this.hands.clear();
+    this.passingSelections.clear();
     this.botPlayerIds.clear();
   }
 
@@ -399,7 +425,9 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private enterTableReady() {
     this.phaseTimeout?.clear();
     this.turnTimeout?.clear();
+    this.passingTimeout?.clear();
     this.hands.clear();
+    this.passingSelections.clear();
     this.state.phase = "table_ready";
     this.state.phaseDeadline = this.clock.currentTime + PHASE_READY_DURATION;
     this.state.currentTurn = "";
@@ -439,9 +467,11 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     }
     this.turnTimeout?.clear();
     this.phaseTimeout?.clear();
+    this.passingTimeout?.clear();
+    this.passingSelections.clear();
     this.hands.clear();
     this.state.roundNumber += 1;
-    this.state.phase = waitForDealReady ? "dealing" : "playing";
+    this.state.phase = waitForDealReady ? "dealing" : "passing";
     this.state.currentTurn = "";
     this.state.turnDeadline = 0;
     this.state.phaseDeadline = waitForDealReady
@@ -490,10 +520,9 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       }
     });
 
-    const starter = this.findTwoOfClubsOwner();
     this.state.message = this.botsEnabled
-      ? "演示模式：已发牌，梅花 2 先出"
-      : "已发牌，梅花 2 先出";
+      ? "演示模式：已发牌，请选择三张牌传给下家"
+      : "已发牌，请选择三张牌传给下家";
     this.publishRoomMetadata();
     this.broadcast("round_started", {
       roundNumber: this.state.roundNumber,
@@ -508,7 +537,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       });
       this.armPhaseTimeout("dealing");
     } else {
-      this.setTurn(starter ?? this.state.playerOrder[0] ?? "");
+      this.beginPassingAfterDeal();
     }
     return true;
   }
@@ -516,13 +545,41 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private beginPlayingAfterDeal() {
     this.phaseTimeout?.clear();
     this.state.phaseDeadline = 0;
-    this.state.phase = "playing";
+    this.beginPassingAfterDeal();
+  }
+
+  /** Enter the post-deal three-card passing stage. */
+  private beginPassingAfterDeal() {
+    this.turnTimeout?.clear();
+    this.phaseTimeout?.clear();
+    this.passingTimeout?.clear();
+    this.passingSelections.clear();
+    this.state.phase = "passing";
+    this.state.currentTurn = "";
+    this.state.turnDeadline = 0;
+    this.state.phaseDeadline = this.clock.currentTime + PASSING_DURATION;
     this.state.message = this.botsEnabled
-      ? "演示模式：所有玩家已准备，梅花 2 先出"
-      : "所有玩家已准备，梅花 2 先出";
+      ? "演示模式：请选择三张牌传给下家"
+      : "请选择三张牌传给下家";
     this.publishRoomMetadata();
-    this.broadcast("game_ready", { roundNumber: this.state.roundNumber });
-    this.setTurn(this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "");
+    this.broadcast("passing_started", {
+      roundNumber: this.state.roundNumber,
+      deadline: this.state.phaseDeadline,
+      duration: PASSING_DURATION,
+      cardCount: PASS_CARD_COUNT,
+    });
+
+    // Synthetic seats have no client from which to receive a selection. Make
+    // their choice immediately so a demo room never waits thirty seconds for
+    // a bot to answer.
+    for (const playerId of this.state.playerOrder) {
+      if (this.isBotPlayer(playerId)) this.autoSelectPassingCards(playerId);
+    }
+    this.passingTimeout = this.clock.setTimeout(
+      () => this.completeMissingPassingSelections(),
+      PASSING_DURATION,
+    );
+    this.tryResolvePassing();
   }
 
   private allRealPlayersHave(predicate: (player: Player) => boolean): boolean {
@@ -532,6 +589,145 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       if (!player || !predicate(player)) return false;
     }
     return true;
+  }
+
+  private submitPassingCards(client: Client, message: PassMessage) {
+    const playerId = client.sessionId;
+    if (this.state.phase !== "passing") {
+      this.sendError(client, "当前不是传牌阶段");
+      return;
+    }
+    if (!this.state.players.has(playerId)) {
+      this.sendError(client, "你不在本局座位中");
+      return;
+    }
+    if (this.passingSelections.has(playerId)) {
+      this.sendError(client, "你已经完成传牌选择");
+      return;
+    }
+
+    const cardIds = this.readPassingCardIds(message);
+    if (cardIds.length !== PASS_CARD_COUNT || new Set(cardIds).size !== PASS_CARD_COUNT) {
+      this.sendError(client, `请选择 ${PASS_CARD_COUNT} 张不同的牌`);
+      return;
+    }
+
+    const hand = this.hands.get(playerId) ?? [];
+    const selected: Card[] = [];
+    for (const cardId of cardIds) {
+      const card = cardFromId(cardId);
+      if (!card || !hand.some((candidate) => candidate.id === card.id)) {
+        this.sendError(client, "只能选择自己手里的牌");
+        return;
+      }
+      selected.push(card);
+    }
+    this.recordPassingSelection(playerId, selected);
+  }
+
+  private recordPassingSelection(playerId: string, selected: Card[]) {
+    if (this.state.phase !== "passing" || this.passingSelections.has(playerId)) {
+      return;
+    }
+    const hand = this.hands.get(playerId) ?? [];
+    const cardIndexes = selected.map((card) => hand.findIndex((candidate) => candidate.id === card.id));
+    if (cardIndexes.some((index) => index < 0)) {
+      return;
+    }
+    this.passingSelections.set(playerId, selected.map((card) => ({ ...card })));
+    this.broadcast("passing_selected", {
+      roundNumber: this.state.roundNumber,
+      playerId,
+      cardIds: selected.map((card) => card.id),
+      cardIndexes,
+      suits: selected.map((card) => card.suit),
+      ranks: selected.map((card) => card.rank),
+    });
+
+    const recipientId = this.nextSeat(playerId);
+    if (!this.isBotPlayer(recipientId)) {
+      const recipient = this.clients.find((candidate) => candidate.sessionId === recipientId);
+      recipient?.send("passing_received", {
+        roundNumber: this.state.roundNumber,
+        fromPlayerId: playerId,
+        toPlayerId: recipientId,
+        cardIds: selected.map((card) => card.id),
+        suits: selected.map((card) => card.suit),
+        ranks: selected.map((card) => card.rank),
+      });
+    }
+    this.tryResolvePassing();
+  }
+
+  private tryResolvePassing() {
+    if (this.state.phase !== "passing" || this.passingSelections.size !== MAX_PLAYERS) {
+      return;
+    }
+
+    this.passingTimeout?.clear();
+    const nextHands = new Map<string, Card[]>();
+    for (let index = 0; index < this.state.playerOrder.length; index += 1) {
+      const playerId = this.state.playerOrder[index];
+      const hand = this.hands.get(playerId) ?? [];
+      const outgoing = new Set(
+        (this.passingSelections.get(playerId) ?? []).map((card) => card.id),
+      );
+      const previousPlayerId = this.state.playerOrder[
+        (index - 1 + this.state.playerOrder.length) % this.state.playerOrder.length
+      ];
+      const incoming = this.passingSelections.get(previousPlayerId) ?? [];
+      nextHands.set(playerId, [
+        ...hand.filter((card) => !outgoing.has(card.id)),
+        ...incoming.map((card) => ({ ...card })),
+      ]);
+    }
+
+    for (const [playerId, hand] of nextHands.entries()) {
+      this.hands.set(playerId, hand);
+      const player = this.state.players.get(playerId);
+      if (player) player.handCount = hand.length;
+    }
+
+    this.state.phase = "playing";
+    this.state.phaseDeadline = 0;
+    this.state.message = this.botsEnabled
+      ? "演示模式：传牌完成，梅花 2 先出"
+      : "传牌完成，梅花 2 先出";
+    this.publishRoomMetadata();
+    this.broadcast("passing_completed", { roundNumber: this.state.roundNumber });
+    this.setTurn(this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "");
+  }
+
+  private completeMissingPassingSelections() {
+    if (this.state.phase !== "passing") return;
+    for (const playerId of this.state.playerOrder) {
+      if (!this.passingSelections.has(playerId)) {
+        this.autoSelectPassingCards(playerId);
+      }
+    }
+    this.tryResolvePassing();
+  }
+
+  private autoSelectPassingCards(playerId: string) {
+    if (this.passingSelections.has(playerId)) return;
+    const hand = this.hands.get(playerId) ?? [];
+    if (hand.length < PASS_CARD_COUNT) return;
+    const shuffled = shuffleDeck(hand);
+    this.recordPassingSelection(playerId, shuffled.slice(0, PASS_CARD_COUNT));
+  }
+
+  private readPassingCardIds(message: PassMessage): string[] {
+    if (!message || typeof message !== "object") return [];
+    const raw = (message as Record<string, unknown>).cardIds ??
+      (message as Record<string, unknown>).cards;
+    if (!Array.isArray(raw)) return [];
+    return raw.map((entry) => {
+      if (typeof entry === "string") return entry;
+      if (entry && typeof entry === "object" && typeof (entry as Record<string, unknown>).cardId === "string") {
+        return (entry as Record<string, string>).cardId;
+      }
+      return "";
+    }).filter((cardId): cardId is string => cardId.length > 0);
   }
 
   private armPhaseTimeout(phase: string) {
@@ -545,6 +741,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private returnToWaiting(message: string) {
     this.phaseTimeout?.clear();
     this.turnTimeout?.clear();
+    this.passingTimeout?.clear();
+    this.passingSelections.clear();
     this.hands.clear();
     this.state.phase = "waiting";
     this.state.phaseDeadline = 0;

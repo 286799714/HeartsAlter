@@ -103,7 +103,7 @@ public partial class ReadyRoom : Control
 		_botButton.Disabled = state.players.Count >= 4 || state.phase != "waiting";
 		_startButton.Visible = isHost;
 		_startButton.Disabled = !isHost || !allReady || state.phase != "waiting";
-		if (state.phase is "table_ready" or "dealing" or "playing")
+		if (state.phase is "table_ready" or "dealing" or "passing" or "playing")
 			TransitionToTable();
 	}
 

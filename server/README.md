@@ -18,7 +18,7 @@ npm start
 
 大厅房间名是 `lobby`。客户端先 `joinOrCreate("lobby")`，通过 `create_room`/`join_room` 获取具体 `hearts` 房间的 SeatReservation；大厅列表来自每个房间的公开 matchmaking metadata。大厅创建的房间进入准备阶段：房主固定准备，普通玩家发送 `ready`，房主可发送 `add_bot` 补齐空席位，并在四个席位全部准备后发送 `start_game`。
 
-房主开始后，房间依次等待 `table_ready` 和 `deal_ready` 两轮客户端握手，各自超时 30 秒会广播 `room_reset` 并回到准备阶段。进入 `playing` 后真人座位的出牌时限为 15 秒，机器人席位使用短延迟自动出牌；真人超时和异常情况会从合法牌中随机代打。`trick_resolved` 提供本墩赢家和点数，结算后用 `next_round` 等待所有真实玩家同意下一局。
+房主开始后，房间依次等待 `table_ready` 和 `deal_ready` 两轮客户端握手，各自超时 30 秒会广播 `room_reset` 并回到准备阶段。发牌完成后进入 `passing`，每名玩家通过 `pass_cards` 选择三张牌传给下家；传牌阶段固定等待 30 秒，超时由服务端随机补选。四名玩家的选择齐全后服务端直接交换手牌并进入 `playing`。进入 `playing` 后真人座位的出牌时限为 15 秒，机器人席位使用短延迟自动出牌；真人超时和异常情况会从合法牌中随机代打。`trick_resolved` 提供本墩赢家和点数，结算后用 `next_round` 等待所有真实玩家同意下一局。
 
 结算界面的普通玩家可以直接离开房间；房主发送 `disband_room` 后服务端会关闭房间并断开全部客户端。
 

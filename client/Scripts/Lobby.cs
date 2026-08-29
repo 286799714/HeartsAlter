@@ -257,6 +257,7 @@ public partial class Lobby : Control
 		"playing" => "游戏中",
 		"table_ready" => "进入牌桌",
 		"dealing" => "发牌中",
+		"passing" => "传牌中",
 		"finished" => "已结束",
 		_ => "等待中",
 	};

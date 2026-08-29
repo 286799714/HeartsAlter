@@ -247,11 +247,22 @@ public partial class PlayerInfo : Control
 	/// <summary>Starts the local countdown shown when this is the active seat.</summary>
 	public void StartTurnCountdown(int durationMilliseconds)
 	{
+		StartCountdown(durationMilliseconds, "到你出牌");
+	}
+
+	/// <summary>Starts the shared countdown with the passing-stage label.</summary>
+	public void StartPassCountdown(int durationMilliseconds)
+	{
+		StartCountdown(durationMilliseconds, "选择传牌");
+	}
+
+	private void StartCountdown(int durationMilliseconds, string status)
+	{
 		ResolveSceneReferences();
 		_turnDeadlineMsec = (double)Time.GetTicksMsec() + Math.Max(0, durationMilliseconds);
 		if (IsValid(_turnStatusLabel))
 		{
-			_turnStatusLabel.Text = "到你出牌";
+			_turnStatusLabel.Text = status;
 			_turnStatusLabel.Visible = true;
 		}
 		if (IsValid(_turnCountdownLabel))

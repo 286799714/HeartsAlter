@@ -49,10 +49,22 @@ public partial class OtherHandLayout : Control
 	public float LayoutTweenDuration = 0.24f;
 
 	[Export]
+	public float SelectedLift = 32.0f;
+
+	[Export]
+	public float SelectionTweenDuration = 0.16f;
+
+	[Export]
 	public Tween.TransitionType LayoutTransition = Tween.TransitionType.Sine;
 
 	[Export]
 	public Tween.EaseType LayoutEase = Tween.EaseType.InOut;
+
+	[Export]
+	public Tween.TransitionType SelectionTransition = Tween.TransitionType.Sine;
+
+	[Export]
+	public Tween.EaseType SelectionEase = Tween.EaseType.InOut;
 
 	private readonly List<CardControl> _cards = new();
 
@@ -63,6 +75,7 @@ public partial class OtherHandLayout : Control
 	private LayoutPlan _activeLayoutPlan;
 	private LayoutPlan _pendingLayoutPlan;
 	private Tween _layoutTween;
+	private readonly Dictionary<CardControl, Tween> _selectionTweens = new();
 	private AnimationLayer _animationLayer;
 	private PlayArea _playArea;
 	/// <summary>
@@ -132,6 +145,11 @@ public partial class OtherHandLayout : Control
 
 		if (_layoutTween is { } layoutTween && layoutTween.IsValid())
 			layoutTween.Kill();
+		foreach (Tween tween in _selectionTweens.Values)
+		{
+			if (tween is { } && tween.IsValid()) tween.Kill();
+		}
+		_selectionTweens.Clear();
 
 		_activeLayoutStarts.Clear();
 		_activeLayoutPlan = null;
@@ -232,6 +250,11 @@ public partial class OtherHandLayout : Control
 		if (_layoutTween is { } layoutTween && layoutTween.IsValid())
 			layoutTween.Kill();
 		_layoutTween = null;
+		foreach (Tween tween in _selectionTweens.Values)
+		{
+			if (tween is { } && tween.IsValid()) tween.Kill();
+		}
+		_selectionTweens.Clear();
 
 		CardControl[] cards = _cards.ToArray();
 		_cards.Clear();
@@ -244,6 +267,35 @@ public partial class OtherHandLayout : Control
 			if (IsInstanceValid(card))
 				card.QueueFree();
 		}
+	}
+
+	/// <summary>Raises the specified hidden cards to show a remote selection.</summary>
+	public void SelectCards(IEnumerable<int> cardIndices)
+	{
+		HashSet<int> selected = cardIndices is null
+			? new()
+			: new(cardIndices.Where(index => index >= 0));
+		for (int index = 0; index < _cards.Count; index++)
+			AnimateSelection(_cards[index], selected.Contains(index));
+	}
+
+	/// <summary>Retracts every card that was raised for a remote selection.</summary>
+	public void RetractSelectedCards()
+	{
+		foreach (CardControl card in _cards)
+			AnimateSelection(card, selected: false);
+	}
+
+	/// <summary>Detaches a card without freeing it so Table can animate a pass.</summary>
+	public bool DetachCardForTransfer(CardControl card)
+	{
+		if (card is null || !_cards.Remove(card))
+			return false;
+		CancelSelectionTween(card);
+		card.SetSelectionLift(0.0f);
+		UpdateZIndices();
+		RecalculateLayout();
+		return true;
 	}
 	/// <summary>
 	/// Returns the local destination used by the next received card. While a
@@ -388,6 +440,45 @@ public partial class OtherHandLayout : Control
 		if (recalculate)
 			RecalculateLayout();
 	}
+
+	private void AnimateSelection(CardControl card, bool selected)
+	{
+		if (!IsInstanceValid(card)) return;
+		CancelSelectionTween(card);
+		float start = card.SelectionLift;
+		float target = selected ? Mathf.Max(0.0f, SelectedLift) : 0.0f;
+		if (Mathf.IsEqualApprox(start, target) || SelectionTweenDuration <= 0.0f ||
+			!IsInsideTree() || !card.IsInsideTree())
+		{
+			card.SetSelectionLift(target);
+			return;
+		}
+		Tween tween = card.CreateTween();
+		_selectionTweens[card] = tween;
+		tween.TweenMethod(
+			Callable.From<float>(value =>
+			{
+				if (IsInstanceValid(card)) card.SetSelectionLift(value);
+			}),
+			start,
+			target,
+			SelectionTweenDuration
+		).SetTrans(SelectionTransition).SetEase(SelectionEase);
+		tween.TweenCallback(Callable.From(() =>
+		{
+			if (!_selectionTweens.TryGetValue(card, out Tween active) ||
+				!ReferenceEquals(active, tween)) return;
+			_selectionTweens.Remove(card);
+			if (IsInstanceValid(card)) card.SetSelectionLift(target);
+		}));
+	}
+
+	private void CancelSelectionTween(CardControl card)
+	{
+		if (!_selectionTweens.TryGetValue(card, out Tween tween)) return;
+		if (tween is { } && tween.IsValid()) tween.Kill();
+		_selectionTweens.Remove(card);
+	}
 	private void HandleChildEnteredTree(Node node)
 	{
 		if (node is CardControl card)
@@ -399,6 +490,7 @@ public partial class OtherHandLayout : Control
 		if (node is not CardControl card || !_cards.Remove(card))
 			return;
 
+		CancelSelectionTween(card);
 		UpdateZIndices();
 		RecalculateLayout();
 	}

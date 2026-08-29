@@ -77,10 +77,14 @@ public partial class MainHandLayout : Control
 	[Export]
 	private Label _ruleHintLabel;
 
+	[Export]
+	private Button _passButton;
+
 	private readonly List<CardControl> _cards = new();
 	private readonly Dictionary<CardControl, CardControl.ClickedEventHandler> _clickHandlers = new();
 	private readonly Dictionary<CardControl, Tween> _selectionTweens = new();
 	private readonly HashSet<string> _playableCardIds = new(StringComparer.Ordinal);
+	private readonly List<CardControl> _passSelectedCards = new();
 
 	// The active layout tween owns these snapshots. They must not be replaced
 	// while it is running, since they define its end state and the collection
@@ -89,12 +93,21 @@ public partial class MainHandLayout : Control
 	private LayoutPlan _activeLayoutPlan;
 	private LayoutPlan _pendingLayoutPlan;
 	private Tween _layoutTween;
+	private Tween _passButtonTween;
 
 	private CardControl _selectedCard;
 	private AnimationLayer _animationLayer;
 	private PlayArea _playArea;
 	private bool _selectionEnabled = true;
 	private bool _restrictPlayableCards;
+	private bool _passSelectionMode;
+	private bool _passSelectionLocked;
+
+	[Export(PropertyHint.Range, "1,13,1,or_greater")]
+	public int PassCardCount = 3;
+
+	[Export(PropertyHint.Range, "0,3,0.01,or_greater,suffix:s")]
+	public float PassButtonPulseDuration = 0.8f;
 
 	/// <summary>
 	/// Emitted when the player clicks the already-selected card. The request is
@@ -103,6 +116,9 @@ public partial class MainHandLayout : Control
 	/// </summary>
 	[Signal]
 	public delegate void CardPlayRequestedEventHandler(int cardIndex);
+
+	/// <summary>Raised once the player locks exactly three cards for passing.</summary>
+	public event Action<IReadOnlyList<CardData>> PassCardsSubmitted;
 
 	/// <summary>
 	/// Cards currently managed by this hand in logical left-to-right order. The
@@ -119,6 +135,9 @@ public partial class MainHandLayout : Control
 	/// <summary>Whether clicks may currently select or request a hand card.</summary>
 	public bool SelectionEnabled => _selectionEnabled;
 	public IReadOnlyCollection<string> PlayableCardIds => _playableCardIds;
+	public IReadOnlyList<CardControl> SelectedPassCards => _passSelectedCards;
+	public bool IsPassSelectionActive => _passSelectionMode;
+	public bool IsPassSelectionLocked => _passSelectionLocked;
 
 	/// <summary>
 	/// Returns whether the indexed card is legal for the current server turn.
@@ -170,6 +189,12 @@ public partial class MainHandLayout : Control
 
 	public override void _Ready()
 	{
+		if (_ruleHintLabel is null || !IsInstanceValid(_ruleHintLabel))
+			_ruleHintLabel = GetNodeOrNull<Label>("RuleHint");
+		if (_passButton is null || !IsInstanceValid(_passButton))
+			_passButton = GetNodeOrNull<Button>("PassButton");
+		if (_passButton is not null && IsInstanceValid(_passButton))
+			_passButton.Pressed += HandlePassButtonPressed;
 		// MainHandLayout.tscn intentionally contains no sample card, but
 		// registering authored children makes the component safe to reuse in a
 		// scene that does provide initial cards.
@@ -195,6 +220,9 @@ public partial class MainHandLayout : Control
 
 		if (_layoutTween is { } layoutTween && layoutTween.IsValid())
 			layoutTween.Kill();
+		StopPassButtonAnimation();
+		if (_passButton is not null && IsInstanceValid(_passButton))
+			_passButton.Pressed -= HandlePassButtonPressed;
 
 		foreach (Tween tween in _selectionTweens.Values)
 		{
@@ -214,6 +242,7 @@ public partial class MainHandLayout : Control
 		_activeLayoutPlan = null;
 		_pendingLayoutPlan = null;
 		_playableCardIds.Clear();
+		_passSelectedCards.Clear();
 	}
 
 	/// <summary>
@@ -225,7 +254,8 @@ public partial class MainHandLayout : Control
 	public override void _Input(InputEvent @event)
 	{
 		if (!_selectionEnabled ||
-			_selectedCard is null ||
+			(_selectedCard is null && !_passSelectionMode) ||
+			_passSelectionMode ||
 			!TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
 		{
 			return;
@@ -294,6 +324,97 @@ public partial class MainHandLayout : Control
 
 		foreach (CardControl card in _cards)
 			ApplyInteractionState(card);
+	}
+
+	/// <summary>Enables the three-card passing mode for the current hand.</summary>
+	public void SetPassSelectionEnabled(bool enabled)
+	{
+		_passSelectionMode = enabled;
+		_passSelectionLocked = false;
+		_selectionEnabled = enabled;
+		_restrictPlayableCards = false;
+		_playableCardIds.Clear();
+		ClearPassSelectionInternal();
+		if (_ruleHintLabel is not null && IsInstanceValid(_ruleHintLabel))
+			_ruleHintLabel.Text = enabled ? "选择三张牌传递给下家。" : string.Empty;
+		UpdatePassButton();
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+	}
+
+	public void EnablePassSelection() => SetPassSelectionEnabled(true);
+	public void DisablePassSelection() => SetPassSelectionEnabled(false);
+
+	/// <summary>Applies a server-selected set, used when a passing timeout fires.</summary>
+	public void ApplyPassSelection(IEnumerable<string> cardIds, bool lockSelection = true)
+	{
+		if (!_passSelectionMode)
+			return;
+		ClearPassSelectionInternal();
+		HashSet<string> ids = cardIds is null
+			? new(StringComparer.Ordinal)
+			: new(cardIds.Where(id => !string.IsNullOrWhiteSpace(id)), StringComparer.Ordinal);
+		foreach (CardControl card in _cards)
+		{
+			if (ids.Contains(ToCardId(card.Data)) && _passSelectedCards.Count < Math.Max(1, PassCardCount))
+			{
+				_passSelectedCards.Add(card);
+				AnimateSelection(card, selected: true);
+			}
+		}
+		_passSelectionLocked = lockSelection;
+		_selectionEnabled = !lockSelection;
+		UpdatePassButton();
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+	}
+
+	/// <summary>Returns the selected cards in the order the player clicked them.</summary>
+	public IReadOnlyList<CardData> GetPassSelection()
+	{
+		return _passSelectedCards
+			.Where(card => IsInstanceValid(card))
+			.Select(card => card.Data)
+			.ToArray();
+	}
+
+	/// <summary>Locks and emits the current three-card passing choice.</summary>
+	public bool SubmitPassSelection()
+	{
+		if (!_passSelectionMode || _passSelectionLocked ||
+			_passSelectedCards.Count != Math.Max(1, PassCardCount))
+			return false;
+		_passSelectionLocked = true;
+		_selectionEnabled = false;
+		StopPassButtonAnimation();
+		if (_passButton is not null && IsInstanceValid(_passButton))
+			_passButton.Visible = false;
+		foreach (CardControl card in _cards)
+			ApplyInteractionState(card);
+		PassCardsSubmitted?.Invoke(GetPassSelection());
+		return true;
+	}
+
+	public bool ConfirmPassSelection() => SubmitPassSelection();
+
+	/// <summary>
+	/// Detaches a card without freeing it so Table can animate a pass flight.
+	/// </summary>
+	public bool DetachCardForTransfer(CardControl card)
+	{
+		if (card is null || !_cards.Remove(card))
+			return false;
+		CancelSelectionTween(card);
+		card.SetSelectionLift(0.0f);
+		_passSelectedCards.Remove(card);
+		if (_clickHandlers.Remove(card, out CardControl.ClickedEventHandler handler) &&
+			IsInstanceValid(card))
+			card.Clicked -= handler;
+		if (ReferenceEquals(_selectedCard, card))
+			_selectedCard = null;
+		UpdateZIndices();
+		RecalculateLayout();
+		return true;
 	}
 
 	/// <summary>Applies legal-card highlighting for the current server turn.</summary>
@@ -412,6 +533,10 @@ public partial class MainHandLayout : Control
 		_clickHandlers.Clear();
 		_selectionTweens.Clear();
 		_selectedCard = null;
+		_passSelectedCards.Clear();
+		_passSelectionMode = false;
+		_passSelectionLocked = false;
+		StopPassButtonAnimation();
 		_activeLayoutStarts.Clear();
 		_activeLayoutPlan = null;
 		_pendingLayoutPlan = null;
@@ -597,6 +722,26 @@ public partial class MainHandLayout : Control
 		if (topmostCard is not null)
 			card = topmostCard;
 
+		if (_passSelectionMode)
+		{
+			if (_passSelectionLocked)
+				return;
+			if (_passSelectedCards.Contains(card))
+			{
+				_passSelectedCards.Remove(card);
+				AnimateSelection(card, selected: false);
+			}
+			else if (_passSelectedCards.Count < Math.Max(1, PassCardCount))
+			{
+				_passSelectedCards.Add(card);
+				AnimateSelection(card, selected: true);
+			}
+			UpdatePassButton();
+			foreach (CardControl candidate in _cards)
+				ApplyInteractionState(candidate);
+			return;
+		}
+
 		if (ReferenceEquals(card, _selectedCard))
 		{
 			int cardIndex = _cards.IndexOf(card);
@@ -614,7 +759,12 @@ public partial class MainHandLayout : Control
 		{
 			return;
 		}
-		bool playable = IsCardPlayable(card);
+		bool passSelectable = !_passSelectionMode ||
+			(!_passSelectionLocked && (_passSelectedCards.Contains(card) ||
+				_passSelectedCards.Count < Math.Max(1, PassCardCount)));
+		bool playable = _passSelectionMode
+			? passSelectable
+			: IsCardPlayable(card);
 		card.Modulate = playable
 			? Colors.White
 			: new Color(0.45f, 0.45f, 0.45f, 1.0f);
@@ -623,9 +773,73 @@ public partial class MainHandLayout : Control
 
 		// Legal-card state only affects visual feedback. Every card must remain
 		// selectable so overlapping cards can be inspected before committing.
-		card.Interaction.MouseFilter = _selectionEnabled
+		card.Interaction.MouseFilter = _selectionEnabled && passSelectable
 			? MouseFilterEnum.Stop
 			: MouseFilterEnum.Ignore;
+	}
+
+	private void HandlePassButtonPressed()
+	{
+		SubmitPassSelection();
+	}
+
+	private void UpdatePassButton()
+	{
+		if (_passButton is null || !IsInstanceValid(_passButton))
+			return;
+		bool visible = _passSelectionMode && !_passSelectionLocked &&
+			_passSelectedCards.Count == Math.Max(1, PassCardCount);
+		_passButton.Visible = visible;
+		_passButton.Disabled = !visible;
+		if (visible)
+			StartPassButtonAnimation();
+		else
+			StopPassButtonAnimation();
+	}
+
+	private void StartPassButtonAnimation()
+	{
+		if (_passButton is null || !IsInstanceValid(_passButton) ||
+			!_passButton.Visible || PassButtonPulseDuration <= 0.0f ||
+			!IsInsideTree())
+			return;
+		StopPassButtonAnimation();
+		_passButton.PivotOffset = _passButton.Size * 0.5f;
+		_passButton.Scale = Vector2.One;
+		_passButtonTween = _passButton.CreateTween();
+		_passButtonTween.SetLoops();
+		_passButtonTween.TweenProperty(
+			_passButton,
+			"scale",
+			new Vector2(1.08f, 1.08f),
+			PassButtonPulseDuration * 0.5f
+		).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+		_passButtonTween.TweenProperty(
+			_passButton,
+			"scale",
+			Vector2.One,
+			PassButtonPulseDuration * 0.5f
+		).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+	}
+
+	private void StopPassButtonAnimation()
+	{
+		if (_passButtonTween is { } tween && tween.IsValid())
+			tween.Kill();
+		_passButtonTween = null;
+		if (_passButton is not null && IsInstanceValid(_passButton))
+			_passButton.Scale = Vector2.One;
+	}
+
+	private void ClearPassSelectionInternal()
+	{
+		CardControl[] selected = _passSelectedCards.ToArray();
+		_passSelectedCards.Clear();
+		foreach (CardControl card in selected)
+		{
+			if (IsInstanceValid(card))
+				AnimateSelection(card, selected: false);
+		}
 	}
 
 	private bool IsCardPlayable(CardControl card)

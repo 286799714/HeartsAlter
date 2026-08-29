@@ -40,6 +40,10 @@ public sealed class ColyseusClientAdapter
     public event Action<string, string, int> CardPlayed;
     public event Action<string, string, int, int> CardPlayedDetailed;
     public event Action<string, int, int> TurnStarted;
+    public event Action<int, int, int> PassingStarted;
+    public event Action<string, IReadOnlyList<string>, IReadOnlyList<int>, int> PassingSelected;
+    public event Action<string, IReadOnlyList<string>, IReadOnlyList<string>, IReadOnlyList<int>, int> PassingReceived;
+    public event Action PassingCompleted;
     public event Action<string, int, int> TrickResolved;
     public event Action RoundFinished;
     public event Action<string> RoomReset;
@@ -177,6 +181,28 @@ public sealed class ColyseusClientAdapter
         return _room == null ? Task.CompletedTask : _room.Send("deal_ready");
     }
 
+    public Task SubmitPassingCardsAsync(IReadOnlyList<CardData> cards)
+    {
+        if (_room == null || cards == null) return Task.CompletedTask;
+        var cardIds = new List<string>(cards.Count);
+        var suits = new List<string>(cards.Count);
+        var ranks = new List<int>(cards.Count);
+        foreach (CardData card in cards)
+        {
+            cardIds.Add(ToCardId(card));
+            suits.Add(ToSuitName(card.Suit));
+            ranks.Add((int)card.Rank);
+        }
+        return _room.Send("pass_cards", new Dictionary<string, object>
+        {
+            ["cardIds"] = cardIds,
+            ["suits"] = suits,
+            ["ranks"] = ranks,
+        });
+    }
+
+    public Task PassCardsAsync(IReadOnlyList<CardData> cards) => SubmitPassingCardsAsync(cards);
+
     public Task NextRoundAsync()
     {
         return _room == null ? Task.CompletedTask : _room.Send("next_round");
@@ -273,6 +299,10 @@ public sealed class ColyseusClientAdapter
         room.OnMessage<Dictionary<string, object>>("player_left", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("player_disconnected", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("turn_started", OnTurnStartedMessage);
+        room.OnMessage<Dictionary<string, object>>("passing_started", OnPassingStartedMessage);
+        room.OnMessage<Dictionary<string, object>>("passing_selected", OnPassingSelectedMessage);
+        room.OnMessage<Dictionary<string, object>>("passing_received", OnPassingReceivedMessage);
+        room.OnMessage<Dictionary<string, object>>("passing_completed", OnPassingCompletedMessage);
         room.OnMessage<Dictionary<string, object>>("round_started", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("round_finished", OnRoundFinishedMessage);
         room.OnMessage<Dictionary<string, object>>("trick_resolved", OnTrickResolvedMessage);
@@ -326,6 +356,38 @@ public sealed class ColyseusClientAdapter
             playerId,
             ReadInt(payload, "duration", 15_000),
             ReadInt(payload, "trickNumber", 0));
+    }
+
+    private void OnPassingStartedMessage(Dictionary<string, object> payload)
+    {
+        PassingStarted?.Invoke(
+            ReadInt(payload, "duration", 30_000),
+            ReadInt(payload, "deadline", 0),
+            ReadInt(payload, "roundNumber", -1));
+    }
+
+    private void OnPassingSelectedMessage(Dictionary<string, object> payload)
+    {
+        PassingSelected?.Invoke(
+            ReadString(payload, "playerId"),
+            ReadStringList(payload, "cardIds"),
+            ReadIntList(payload, "cardIndexes"),
+            ReadInt(payload, "roundNumber", -1));
+    }
+
+    private void OnPassingReceivedMessage(Dictionary<string, object> payload)
+    {
+        PassingReceived?.Invoke(
+            ReadString(payload, "fromPlayerId"),
+            ReadStringList(payload, "cardIds"),
+            ReadStringList(payload, "suits"),
+            ReadIntList(payload, "ranks"),
+            ReadInt(payload, "roundNumber", -1));
+    }
+
+    private void OnPassingCompletedMessage(Dictionary<string, object> payload)
+    {
+        PassingCompleted?.Invoke();
     }
 
     private void OnTrickResolvedMessage(Dictionary<string, object> payload)
@@ -487,5 +549,39 @@ public sealed class ColyseusClientAdapter
         return integer >= int.MinValue && integer <= int.MaxValue
             ? (int)integer
             : fallback;
+    }
+
+    private static List<string> ReadStringList(Dictionary<string, object> payload, string key)
+    {
+        var result = new List<string>();
+        if (payload == null || !payload.TryGetValue(key, out var value) || value is not IEnumerable enumerable)
+            return result;
+        foreach (object entry in enumerable)
+        {
+            if (entry is string text && !string.IsNullOrWhiteSpace(text))
+                result.Add(text);
+        }
+        return result;
+    }
+
+    private static List<int> ReadIntList(Dictionary<string, object> payload, string key)
+    {
+        var result = new List<int>();
+        if (payload == null || !payload.TryGetValue(key, out var value) || value is not IEnumerable enumerable)
+            return result;
+        foreach (object entry in enumerable)
+        {
+            if (entry is byte b) result.Add(b);
+            else if (entry is sbyte sb) result.Add(sb);
+            else if (entry is short s) result.Add(s);
+            else if (entry is ushort us) result.Add(us);
+            else if (entry is int i) result.Add(i);
+            else if (entry is uint ui && ui <= int.MaxValue) result.Add((int)ui);
+            else if (entry is long l && l >= int.MinValue && l <= int.MaxValue) result.Add((int)l);
+            else if (entry is ulong ul && ul <= int.MaxValue) result.Add((int)ul);
+            else if (entry is double d && double.IsFinite(d) && d >= int.MinValue && d <= int.MaxValue) result.Add((int)Math.Truncate(d));
+            else if (entry is float f && float.IsFinite(f) && f >= int.MinValue && f <= int.MaxValue) result.Add((int)Math.Truncate(f));
+        }
+        return result;
     }
 }
