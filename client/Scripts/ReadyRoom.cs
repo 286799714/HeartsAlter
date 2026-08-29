@@ -15,6 +15,7 @@ public partial class ReadyRoom : Control
 	private Button _botButton;
 	private Button _startButton;
 	private bool _transitioning;
+	private string _lastError = string.Empty;
 
 	public override void _Ready()
 	{
@@ -23,7 +24,11 @@ public partial class ReadyRoom : Control
 		_adapter.StateChanged += HandleStateChanged;
 		_adapter.ServerMessage += message => _status.Text = message;
 		_adapter.InvalidPlay += message => _status.Text = message;
-		_adapter.Error += (_, message) => _status.Text = $"错误：{message}";
+		_adapter.Error += (_, message) =>
+		{
+			_lastError = message ?? string.Empty;
+			_status.Text = $"错误：{_lastError}";
+		};
 		var reservation = GameSession.PendingReservation;
 		GameSession.PendingReservation = null;
 		if (GameSession.GameAdapter is not null && GameSession.GameAdapter.IsConnected)
@@ -54,10 +59,15 @@ public partial class ReadyRoom : Control
 
 	private async Task ConnectAsync(RoomReservation reservation)
 	{
-		if (!await _adapter.ConnectByReservationAsync(reservation, Endpoint))
+		string endpoint = string.IsNullOrWhiteSpace(GameSession.ServerEndpoint)
+			? Endpoint
+			: GameSession.ServerEndpoint;
+		if (!await _adapter.ConnectByReservationAsync(reservation, endpoint))
 		{
 			if (IsInsideTree())
-				_status.Text = "无法进入房间，席位可能已被占用";
+				_status.Text = string.IsNullOrWhiteSpace(_lastError)
+					? "无法进入房间，席位可能已被占用"
+					: $"无法进入房间：{_lastError}";
 			return;
 		}
 		if (IsInsideTree())
