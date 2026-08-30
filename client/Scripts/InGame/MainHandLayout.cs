@@ -1020,7 +1020,11 @@ public partial class MainHandLayout : Control
 				} mouseEvent:
 				position = mouseEvent.Position;
 				return true;
-			case InputEventScreenTouch { Pressed: true } touchEvent:
+			// With Godot's default touch-to-mouse emulation, the same tap arrives
+			// again as a left mouse press. Handling both would select and then
+			// immediately deselect a passing card on mobile.
+			case InputEventScreenTouch { Pressed: true } touchEvent
+				when !Input.EmulateMouseFromTouch:
 				position = touchEvent.Position;
 				return true;
 			default:
