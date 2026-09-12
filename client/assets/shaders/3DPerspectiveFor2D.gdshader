@@ -99,7 +99,6 @@ void fragment()
 {
     float z = world_pos_3d.z;
 
-    // Avoid unstable division near 90 degrees.
     if (abs(z) < 0.0001)
         discard;
 
@@ -111,18 +110,37 @@ void fragment()
         - perspective_offset
         + vec2(0.5);
 
-    if (
-        projected_uv.x < 0.0 ||
-        projected_uv.x > 1.0 ||
-        projected_uv.y < 0.0 ||
-        projected_uv.y > 1.0
-    )
-    {
-        discard;
-    }
+    // Distance to the four UV boundaries.
+    vec2 edge_dist =
+        min(projected_uv, vec2(1.0) - projected_uv);
 
-    // Preserve Control.Modulate / SelfModulate.
+    // Estimate how much projected UV changes across one screen pixel.
+    vec2 uv_width = fwidth(projected_uv);
+
+    // Smooth each axis around the 0..1 border.
+    vec2 edge_alpha =
+        smoothstep(
+            vec2(0.0),
+            uv_width,
+            edge_dist
+        );
+
+    float alpha =
+        min(edge_alpha.x, edge_alpha.y);
+
+    // Completely outside; avoid unnecessary texture reads.
+    if (alpha <= 0.0)
+        discard;
+
+    vec2 safe_uv =
+        clamp(projected_uv, vec2(0.0), vec2(1.0));
+
+    vec4 tex =
+        texture(TEXTURE, safe_uv);
+
     COLOR =
-        texture(TEXTURE, projected_uv)
+        tex
         * vertex_modulate;
+
+    COLOR.a *= alpha;
 }

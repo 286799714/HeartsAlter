@@ -57,6 +57,7 @@ _front = NodePath("Face")
 _back = NodePath("Back")
 
 [node name="Face" type="TextureRect" parent="CardVisual" unique_id=1321680405]
+texture_filter = 6
 material = SubResource("ShaderMaterial_rvslj")
 layout_mode = 1
 anchors_preset = 15
@@ -70,6 +71,7 @@ texture = ExtResource("4_o6jgq")
 expand_mode = 1
 
 [node name="Back" type="TextureRect" parent="CardVisual" unique_id=1317413988]
+texture_filter = 6
 material = SubResource("ShaderMaterial_0bbpv")
 layout_mode = 1
 anchors_preset = 15

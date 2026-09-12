@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cowdm8l8xfy8i" path="res://scenes/in_game/AnimationLayer.tscn" id="4_animation"]
 [ext_resource type="PackedScene" uid="uid://bwmamljc0p248" path="res://scenes/in_game/OtherHandLayout.tscn" id="4_mshro"]
 [ext_resource type="PackedScene" uid="uid://dfyheemovxqsq" path="res://scenes/in_game/PlayerInfo.tscn" id="5_g6j7s"]
-[ext_resource type="PackedScene" path="res://scenes/in_game/PlayerInfoHorizontal.tscn" id="6_player_info_horizontal"]
+[ext_resource type="PackedScene" uid="uid://s62dhw4wtgf1" path="res://scenes/in_game/PlayerInfoHorizontal.tscn" id="6_player_info_horizontal"]
 [ext_resource type="PackedScene" uid="uid://cubo7i4op1dv" path="res://scenes/in_game/PlayArea.tscn" id="7_play_area"]
 [ext_resource type="PackedScene" uid="uid://pttp8k537qw4" path="res://scenes/in_game/MainPlayerInfo.tscn" id="8_main_player_info"]
 
@@ -32,7 +32,6 @@ _mainPlayerInfo = NodePath("MainPlayerInfo")
 _nextPlayerInfo = NodePath("PlayerInfo")
 _oppositePlayerInfo = NodePath("PlayerInfo2")
 _previousPlayerInfo = NodePath("PlayerInfo3")
-TrickCollectDelay = 0.3
 
 [node name="CardDeck" parent="." unique_id=2072646441 instance=ExtResource("2_deck")]
 layout_mode = 1
