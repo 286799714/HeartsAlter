@@ -308,28 +308,24 @@ public partial class Table : Control
 			int seat = (player.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
 			players[seat] = player;
 		}
-		Texture2D avatar = GD.Load<Texture2D>("res://assets/textures/ui/avatar_placeholder.svg");
 		bool resetScores = _networkScoreRound != state.roundNumber;
 		if (resetScores)
 		{
 			_networkScoreRound = state.roundNumber;
 			InitializePlayerInfo(
-				players[0]?.name ?? "", avatar, players[0]?.chips ?? 0,
-				players[1]?.name ?? "", avatar, players[1]?.chips ?? 0,
-				players[2]?.name ?? "", avatar, players[2]?.chips ?? 0,
-				players[3]?.name ?? "", avatar, players[3]?.chips ?? 0);
+				players[0]?.name ?? "", null, players[0]?.chips ?? 0,
+				players[1]?.name ?? "", null, players[1]?.chips ?? 0,
+				players[2]?.name ?? "", null, players[2]?.chips ?? 0,
+				players[3]?.name ?? "", null, players[3]?.chips ?? 0);
 			_mainPlayerInfo?.SetRoundScore(players[0]?.score ?? 0);
 			_nextPlayerInfo?.SetRoundScore(players[1]?.score ?? 0);
 			_oppositePlayerInfo?.SetRoundScore(players[2]?.score ?? 0);
 			_previousPlayerInfo?.SetRoundScore(players[3]?.score ?? 0);
 		}
-		else
-		{
-			UpdateSeatIdentity(_mainPlayerInfo, players[0], avatar);
-			UpdateSeatIdentity(_nextPlayerInfo, players[1], avatar);
-			UpdateSeatIdentity(_oppositePlayerInfo, players[2], avatar);
-			UpdateSeatIdentity(_previousPlayerInfo, players[3], avatar);
-		}
+		UpdateSeatIdentity(_mainPlayerInfo, players[0]);
+		UpdateSeatIdentity(_nextPlayerInfo, players[1]);
+		UpdateSeatIdentity(_oppositePlayerInfo, players[2]);
+		UpdateSeatIdentity(_previousPlayerInfo, players[3]);
 		if (state.phase == "table_ready" && !_networkTableReadySent)
 		{
 			_networkTableReadySent = true;
@@ -1518,13 +1514,11 @@ public partial class Table : Control
 		playerInfo.SetRoundScore(0);
 	}
 
-	private static void UpdateSeatIdentity(PlayerInfo playerInfo, Player player, Texture2D avatar)
+	private static void UpdateSeatIdentity(PlayerInfo playerInfo, Player player)
 	{
 		if (playerInfo is null || !IsInstanceValid(playerInfo) || player is null)
 			return;
-		playerInfo.SetPlayerId(player.name);
-		playerInfo.SetAvatar(avatar);
-		playerInfo.SetChipCount(player.chips);
+		playerInfo.SetProfileIdentity(player.name, player.chips, player.avatarId);
 	}
 
 	private bool HasCompleteTable()

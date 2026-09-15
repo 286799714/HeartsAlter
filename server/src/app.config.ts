@@ -12,6 +12,7 @@ import {
  */
 import { MyRoom } from "./rooms/MyRoom.js";
 import { LobbyRoom } from "./rooms/LobbyRoom.js";
+import { closePlayerProfileStore } from "./persistence/PlayerProfileStore.js";
 
 const server = defineServer({
 
@@ -65,5 +66,7 @@ const server = defineServer({
     }
   }
 });
+
+server.onShutdown(closePlayerProfileStore);
 
 export default server;

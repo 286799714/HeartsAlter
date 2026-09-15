@@ -11,6 +11,7 @@ import {
   type PlayedCard,
 } from "../game/rules.js";
 import { MyRoomState, Player, TrickCard } from "./schema/MyRoomState.js";
+import { AVATAR_COUNT, getPlayerProfileStore, readDeviceId } from "../persistence/PlayerProfileStore.js";
 
 /** How long a connected or disconnected seat has to act before the server plays for it. */
 export const TURN_DURATION = 15_000;
@@ -78,6 +79,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private readonly hands = new Map<string, Card[]>();
   private readonly handResendTimers = new Set<Delayed>();
   private readonly botPlayerIds = new Set<string>();
+  private readonly profileSeats = new Map<string, string>();
+  private readonly departedPlayers = new Set<string>();
   private turnTimeout?: Delayed;
   private ante = DEFAULT_ANTE;
   private startingChips = DEFAULT_STARTING_CHIPS;
@@ -141,6 +144,10 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
         this.sendError(client, `需要 ${MAX_PLAYERS} 个席位才能开始`);
         return;
       }
+      if ([...this.state.players.values()].some((player) => !player.isBot && !player.connected)) {
+        this.sendError(client, "请等待所有玩家连接后再开始");
+        return;
+      }
       if ([...this.state.players.values()].some((player) => !player.ready)) {
         this.sendError(client, "仍有玩家未准备");
         return;
@@ -196,6 +203,10 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     next_round: (client: Client) => {
       const player = this.state.players.get(client.sessionId);
       if (!player || this.state.phase !== "finished") return;
+      if ([...this.state.players.values()].some((candidate) => !candidate.isBot && !candidate.connected)) {
+        this.sendError(client, "有玩家已离开，请返回大厅重新组局");
+        return;
+      }
       player.nextRoundReady = true;
       if (this.allRealPlayersHave((candidate) => candidate.nextRoundReady)) {
         this.enterTableReady();
@@ -233,6 +244,10 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       }
       if (this.lobbyManaged) {
         this.messages.next_round(client);
+        return;
+      }
+      if ([...this.state.players.values()].some((player) => !player.isBot && !player.connected)) {
+        this.sendError(client, "有玩家已离开，请重新组局");
         return;
       }
       const cannotAnte = this.state.playerOrder.find((playerId) => {
@@ -279,9 +294,20 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
 
     const player = new Player();
     const safeOptions = options && typeof options === "object" ? options : {};
-    player.name = this.readName(safeOptions.name, this.state.players.size + 1);
+    // Legacy direct rooms may still use ephemeral guests. Lobby seats always
+    // load server-owned data, ignoring any submitted avatar/chips/profile id.
+    const profile = this.lobbyManaged || safeOptions.deviceId !== undefined
+      ? getPlayerProfileStore().getOrCreate(readDeviceId(safeOptions.deviceId), safeOptions.name)
+      : undefined;
+    if (profile) {
+      getPlayerProfileStore().claimSeat(profile.playerId, this.profileOwner(client.sessionId));
+      this.profileSeats.set(client.sessionId, profile.playerId);
+      player.profileId = profile.playerId;
+      player.avatarId = profile.avatarId;
+    }
+    player.name = profile?.name ?? this.readName(safeOptions.name, this.state.players.size + 1);
     player.seat = this.state.players.size;
-    player.chips = this.startingChips;
+    player.chips = profile?.chips ?? this.startingChips;
     player.connected = true;
     player.isTreating = false;
     player.ready = this.state.players.size === 0;
@@ -320,7 +346,12 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   onLeave(client: Client, code: CloseCode) {
     const player = this.state.players.get(client.sessionId);
     if (!player) {
+      this.releaseProfileSeat(client.sessionId);
       return;
+    }
+    this.departedPlayers.add(client.sessionId);
+    if (this.state.phase === "waiting" || this.state.phase === "finished") {
+      this.releaseProfileSeat(client.sessionId);
     }
 
     // Before a round starts, a vacant seat can be filled by another player.
@@ -390,6 +421,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   }
 
   onDispose() {
+    for (const sessionId of this.profileSeats.keys()) this.releaseProfileSeat(sessionId);
+    this.departedPlayers.clear();
     this.turnTimeout?.clear();
     this.phaseTimeout?.clear();
     this.passingTimeout?.clear();
@@ -443,6 +476,9 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.trickNumber = 0;
     this.state.pot = 0;
     for (const [playerId, player] of this.state.players.entries()) {
+      // The previous round is already settled. Its stake is only retained for
+      // the settlement UI and must not be refunded by a new handshake timeout.
+      player.stake = 0;
       player.tableReady = this.isBotPlayer(playerId);
       player.dealReady = false;
       player.nextRoundReady = false;
@@ -776,6 +812,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       if (this.isBotPlayer(playerId)) player.connected = true;
     }
     this.state.message = message;
+    for (const sessionId of this.departedPlayers) this.releaseProfileSeat(sessionId);
     void this.unlock().catch(() => {});
     this.publishRoomMetadata();
     this.broadcast("room_reset", { reason: message });
@@ -911,15 +948,28 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
 
   private finishRound() {
     this.turnTimeout?.clear();
-    this.state.phase = "finished";
-    this.state.currentTurn = "";
-    this.state.turnDeadline = 0;
 
     const scores = this.state.playerOrder.map((playerId) => ({
       playerId,
       score: this.state.players.get(playerId)?.score ?? 0,
     }));
     const settlement = settlePot(scores, this.state.pot);
+    try {
+      if (this.profileSeats.size > 0) {
+        getPlayerProfileStore().saveBalances([...this.profileSeats].map(([sessionId, playerId]) => ({
+          playerId,
+          owner: this.profileOwner(sessionId),
+          chips: this.state.players.get(sessionId)!.chips + (settlement.payouts.get(sessionId) ?? 0),
+        })));
+      }
+    } catch (error) {
+      console.error("Failed to persist round settlement", error);
+      this.returnToWaiting("存档保存失败，本局已取消并退还底注，请稍后重试");
+      return;
+    }
+    this.state.phase = "finished";
+    this.state.currentTurn = "";
+    this.state.turnDeadline = 0;
     const highest = new Set(settlement.highestPlayerIds);
     const payouts: Record<string, number> = {};
     for (const playerId of this.state.playerOrder) {
@@ -935,6 +985,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       payouts[playerId] = payout;
     }
     this.state.message = "本局结束：最高分玩家共同请客";
+    for (const sessionId of this.departedPlayers) this.releaseProfileSeat(sessionId);
     this.publishRoomMetadata();
     this.broadcast("round_finished", {
       scores: scores.map((entry) => ({ playerId: entry.playerId, score: entry.score })),
@@ -1020,6 +1071,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     const playerId = this.createBotId(seat);
     const player = new Player();
     player.name = `机器人 ${seat + 1}`;
+    player.avatarId = seat % AVATAR_COUNT + 1;
     player.seat = seat;
     player.chips = this.startingChips;
     player.connected = true;
@@ -1052,6 +1104,17 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
 
   private isBotPlayer(playerId: string): boolean {
     return this.botPlayerIds.has(playerId);
+  }
+
+  private profileOwner(sessionId: string): string {
+    return `${this.roomId}:${sessionId}`;
+  }
+
+  private releaseProfileSeat(sessionId: string) {
+    const profileId = this.profileSeats.get(sessionId);
+    if (!profileId) return;
+    getPlayerProfileStore().releaseSeat(profileId, this.profileOwner(sessionId));
+    this.profileSeats.delete(sessionId);
   }
 
   private nextSeat(playerId: string): string {

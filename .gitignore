@@ -23,6 +23,12 @@ npm-debug.log*
 # Local inspection/download scratch space
 tmp_colyseus_pkg/
 
+# Server-owned player saves (including SQLite WAL sidecars)
+server/data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
 # OS noise
 .DS_Store
 Thumbs.db

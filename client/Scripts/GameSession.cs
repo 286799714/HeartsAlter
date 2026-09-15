@@ -9,12 +9,14 @@ public static class GameSession
 	public static RoomReservation PendingReservation { get; set; }
 	public static ColyseusClientAdapter GameAdapter { get; set; }
 	public static string ServerEndpoint { get; set; } = string.Empty;
+	public static PlayerProfile Profile { get; set; }
 
 	public static void Clear()
 	{
 		PendingReservation = null;
 		GameAdapter = null;
 		ServerEndpoint = string.Empty;
+		Profile = null;
 	}
 }
 

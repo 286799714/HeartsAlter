@@ -1,6 +1,7 @@
 import { Client, Room, matchMaker } from "colyseus";
 import { LobbyRoomInfo, LobbyState } from "./schema/MyRoomState.js";
 import { MAX_PLAYERS, MyRoom } from "./MyRoom.js";
+import { getPlayerProfileStore, readDeviceId } from "../persistence/PlayerProfileStore.js";
 
 type RoomOptions = { name?: unknown; roomName?: unknown; ante?: unknown; playerName?: unknown; bots?: unknown };
 
@@ -13,20 +14,25 @@ type RoomOptions = { name?: unknown; roomName?: unknown; ante?: unknown; playerN
 export class LobbyRoom extends Room<{ state: LobbyState }> {
   state = new LobbyState();
   private disposed = false;
+  private readonly devices = new Map<string, string>();
 
   messages = {
+    request_profile: (client: Client) => {
+      this.sendProfile(client);
+    },
     refresh: async () => {
       await this.syncRooms();
     },
 
     create_room: async (client: Client, options: RoomOptions | undefined) => {
       try {
+        const deviceId = this.getDevice(client);
         const reservation = await matchMaker.create("hearts", {
           lobbyManaged: true,
           bots: options?.bots === true,
           roomName: this.readRoomName(options?.name ?? options?.roomName),
           ante: this.readAnte(options?.ante),
-          name: this.readPlayerName(options?.playerName, client.sessionId),
+          deviceId,
         });
         this.sendReservation(client, reservation, "created");
         await this.syncRooms();
@@ -44,7 +50,7 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
       try {
         const reservation = await matchMaker.joinById(roomId, {
           lobbyManaged: true,
-          name: this.readPlayerName(typeof payload === "string" ? undefined : payload?.playerName, client.sessionId),
+          deviceId: this.getDevice(client),
         });
         this.sendReservation(client, reservation, "joined");
       } catch (error) {
@@ -61,13 +67,32 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
     void this.syncRooms();
   }
 
-  async onJoin(client: Client) {
+  async onJoin(client: Client, options: { deviceId?: unknown; name?: unknown } = {}) {
+    const deviceId = readDeviceId(options?.deviceId);
+    getPlayerProfileStore().getOrCreate(deviceId, options?.name);
+    this.devices.set(client.sessionId, deviceId);
+    this.sendProfile(client);
     client.send("lobby_ready", { sessionId: client.sessionId });
     await this.syncRooms();
   }
 
   onDispose() {
     this.disposed = true;
+    this.devices.clear();
+  }
+
+  onLeave(client: Client) {
+    this.devices.delete(client.sessionId);
+  }
+
+  private getDevice(client: Client): string {
+    const deviceId = this.devices.get(client.sessionId);
+    if (!deviceId) throw new Error("请先连接大厅并同步存档");
+    return deviceId;
+  }
+
+  private sendProfile(client: Client) {
+    client.send("player_profile", getPlayerProfileStore().getByDevice(this.getDevice(client)));
   }
 
   private async syncRooms() {
@@ -132,11 +157,6 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
   private sendError(client: Client, error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     client.send("lobby_error", { message });
-  }
-
-  private readPlayerName(value: unknown, sessionId: string): string {
-    if (typeof value === "string" && value.trim().length > 0) return value.trim().slice(0, 24);
-    return `玩家 ${sessionId.slice(0, 4)}`;
   }
 
   private readRoomName(value: unknown): string {

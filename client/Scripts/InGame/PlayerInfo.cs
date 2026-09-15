@@ -12,6 +12,7 @@ namespace HeartsAlter.Scripts.InGame;
 public partial class PlayerInfo : Control
 {
 	private const string DisconnectedPlayerText = "未连接";
+	private static readonly Texture2D[] ProfileAvatars = new Texture2D[4];
 
 	[ExportGroup("Player")]
 
@@ -34,17 +35,6 @@ public partial class PlayerInfo : Control
 		{
 			_playerId = value?.Trim() ?? string.Empty;
 			RefreshPlayerId();
-		}
-	}
-
-	[Export(PropertyHint.Range, "1,999,1,or_greater")]
-	public int Level
-	{
-		get => _level;
-		set
-		{
-			_level = Math.Max(1, value);
-			RefreshLevel();
 		}
 	}
 
@@ -100,9 +90,6 @@ public partial class PlayerInfo : Control
 	private Label _playerIdLabel = null!;
 
 	[Export]
-	private Label _levelLabel = null!;
-
-	[Export]
 	private Label _chipCountLabel = null!;
 
 	[Export]
@@ -123,7 +110,6 @@ public partial class PlayerInfo : Control
 	private Texture2D _avatarTexture = null!;
 	private Texture2D _fallbackAvatar = null!;
 	private string _playerId = string.Empty;
-	private int _level = 1;
 	private int _chipCount;
 	private int _roundScore;
 	private Tween _scoreRollTween = null!;
@@ -290,7 +276,6 @@ public partial class PlayerInfo : Control
 	{
 		SetPlayerInfo(
 			playerId,
-			_level,
 			_chipCount,
 			roundScore,
 			avatarTexture
@@ -298,17 +283,15 @@ public partial class PlayerInfo : Control
 	}
 
 	/// <summary>
-	/// Updates the complete player display, including level and chip balance.
+	/// Updates the complete player display
 	/// </summary>
 	public void SetPlayerInfo(
 		string playerId,
-		int level,
 		int chipCount,
 		int roundScore,
 		Texture2D avatarTexture = null)
 	{
 		_playerId = playerId?.Trim() ?? string.Empty;
-		_level = Math.Max(1, level);
 		_chipCount = Math.Max(0, chipCount);
 		_roundScore = Math.Max(0, roundScore);
 		_avatarTexture = avatarTexture;
@@ -322,14 +305,33 @@ public partial class PlayerInfo : Control
 		AvatarTexture = avatarTexture;
 	}
 
+	/// <summary>Applies a server save without resetting in-progress score animations.</summary>
+	public void SetProfile(PlayerProfile profile)
+	{
+		ArgumentNullException.ThrowIfNull(profile);
+		SetProfileIdentity(profile.Name, profile.Chips, profile.AvatarId);
+	}
+
+	/// <summary>Also accepts the public save fields synchronized for another seat.</summary>
+	public void SetProfileIdentity(string playerName, int chips, int avatarId)
+	{
+		PlayerId = playerName;
+		ChipCount = chips;
+		SetAvatarId(avatarId);
+	}
+
+	public void SetAvatarId(int avatarId)
+	{
+		// Missing/unknown IDs from older servers use the first bundled avatar.
+		int index = avatarId >= 1 && avatarId <= ProfileAvatars.Length ? avatarId - 1 : 0;
+		if (!IsValid(ProfileAvatars[index]))
+			ProfileAvatars[index] = GD.Load<Texture2D>($"res://assets/textures/ui/profile_icon_{index + 1}.jpg");
+		AvatarTexture = ProfileAvatars[index];
+	}
+
 	public void SetPlayerId(string playerId)
 	{
 		PlayerId = playerId;
-	}
-
-	public void SetLevel(int level)
-	{
-		Level = level;
 	}
 
 	public void SetChipCount(int chipCount)
@@ -355,13 +357,6 @@ public partial class PlayerInfo : Control
 		{
 			_playerIdLabel = GetNodeOrNull<Label>(
 				"Card/Content/Column/PlayerIdLabel"
-			);
-		}
-
-		if (!IsValid(_levelLabel))
-		{
-			_levelLabel = GetNodeOrNull<Label>(
-				"Card/Content/Column/AvatarBlock/LevelBadge/LevelLabel"
 			);
 		}
 
@@ -402,7 +397,6 @@ public partial class PlayerInfo : Control
 	{
 		RefreshAvatar();
 		RefreshPlayerId();
-		RefreshLevel();
 		RefreshChipCount();
 		RefreshRoundScore();
 	}
@@ -428,12 +422,6 @@ public partial class PlayerInfo : Control
 
 		_playerIdLabel.Text = displayText;
 		_playerIdLabel.TooltipText = displayText;
-	}
-
-	private void RefreshLevel()
-	{
-		if (IsValid(_levelLabel))
-			_levelLabel.Text = _level.ToString(CultureInfo.InvariantCulture);
 	}
 
 	private void RefreshChipCount()

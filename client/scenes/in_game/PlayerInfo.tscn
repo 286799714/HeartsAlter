@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dfyheemovxqsq"]
 
 [ext_resource type="Script" uid="uid://b6w8e8hrwy4rh" path="res://Scripts/InGame/PlayerInfo.cs" id="1_player_info"]
-[ext_resource type="Texture2D" uid="uid://4u3nbi840gq7" path="res://assets/textures/ui/avatar_placeholder.svg" id="2_avatar_placeholder"]
-[ext_resource type="Texture2D" uid="uid://b6sqpdb5vjinm" path="res://assets/textures/ui/avatar_ring.svg" id="3_avatar_ring"]
+[ext_resource type="Texture2D" uid="uid://bdn140738so8q" path="res://assets/textures/ui/profile_icon_1.jpg" id="2_8bcv7"]
+[ext_resource type="Texture2D" uid="uid://dkpixwn7te1rw" path="res://assets/textures/ui/avatar_ring_2.png" id="3_hshwk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 bg_color = Color(0, 0, 0, 0)
@@ -32,21 +32,6 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_circle_crop"]
 shader = SubResource("Shader_circle_crop")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_level"]
-bg_color = Color(3.724548e-06, 0.5095724, 0.6686204, 0.98039216)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.941176, 0.968627, 1, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-shadow_color = Color(0, 0, 0, 0.4)
-shadow_size = 3
-shadow_offset = Vector2(0, 2)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score"]
 bg_color = Color(0.0784314, 0.384314, 0.494118, 1)
 corner_radius_top_left = 10
@@ -54,7 +39,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="PlayerInfo" type="Control" unique_id=618743409 node_paths=PackedStringArray("_avatarTextureRect", "_playerIdLabel", "_levelLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker")]
+[node name="PlayerInfo" type="Control" unique_id=618743409 node_paths=PackedStringArray("_avatarTextureRect", "_playerIdLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker")]
 custom_minimum_size = Vector2(168, 232)
 layout_mode = 3
 anchors_preset = 0
@@ -63,11 +48,9 @@ offset_bottom = 232.0
 mouse_filter = 2
 script = ExtResource("1_player_info")
 PlayerId = "玩家 1001"
-Level = 4
 ChipCount = 10000
 _avatarTextureRect = NodePath("Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding/AvatarTexture")
 _playerIdLabel = NodePath("Card/Content/Column/PlayerIdLabel")
-_levelLabel = NodePath("Card/Content/Column/AvatarBlock/LevelBadge/LevelLabel")
 _chipCountLabel = NodePath("Card/Content/Column/ChipCountLabel")
 _scoreValueLabel = NodePath("Card/Content/Column/ScoreRow/ScoreBadge/ScorePadding/ScoreValueLabel")
 _scoreDeltaLabel = NodePath("ScoreDeltaLabel")
@@ -111,6 +94,8 @@ text_overrun_behavior = 3
 custom_minimum_size = Vector2(112, 120)
 layout_mode = 2
 size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.95, 0.95)
 mouse_filter = 2
 
 [node name="AvatarFrame" type="Control" parent="Card/Content/Column/AvatarBlock" unique_id=2020796956]
@@ -138,45 +123,30 @@ theme_override_constants/margin_bottom = 4
 
 [node name="AvatarTexture" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1998404419]
 unique_name_in_owner = true
+texture_filter = 3
 material = SubResource("ShaderMaterial_circle_crop")
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("2_avatar_placeholder")
+texture = ExtResource("2_8bcv7")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="AvatarRing" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame" unique_id=2103892678]
+texture_filter = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("3_avatar_ring")
+texture = ExtResource("3_hshwk")
 expand_mode = 1
 stretch_mode = 5
-
-[node name="LevelBadge" type="PanelContainer" parent="Card/Content/Column/AvatarBlock" unique_id=1088783009]
-custom_minimum_size = Vector2(38, 26)
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.0
-offset_top = 92.0
-offset_right = 19.0
-offset_bottom = 118.0
-grow_horizontal = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_level")
-
-[node name="LevelLabel" type="Label" parent="Card/Content/Column/AvatarBlock/LevelBadge" unique_id=240614921]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 16
-text = "4"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ChipCountLabel" type="Label" parent="Card/Content/Column" unique_id=1965349158]
 layout_mode = 2

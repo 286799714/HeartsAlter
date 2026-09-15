@@ -82,6 +82,7 @@ public sealed class ColyseusClientAdapter
             var options = new Dictionary<string, object>
             {
                 ["name"] = string.IsNullOrWhiteSpace(playerName) ? "玩家 1" : playerName,
+                ["deviceId"] = DeviceIdentity.GetDeviceId(),
                 ["ante"] = ante,
                 ["bots"] = bots
             };

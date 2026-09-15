@@ -29,6 +29,9 @@ export const Player = schema({
   tableReady: t.boolean().default(false),
   dealReady: t.boolean().default(false),
   nextRoundReady: t.boolean().default(false),
+  /** Stable public save identity; never the device key. Empty for legacy guests/bots. */
+  profileId: t.string().default(""),
+  avatarId: t.uint8().default(1),
 });
 export type Player = SchemaType<typeof Player>;
 

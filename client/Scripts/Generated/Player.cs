@@ -63,5 +63,11 @@ public Player() { }
 
 		[Type(15, "boolean")]
 		public bool nextRoundReady = default(bool);
+
+		[Type(16, "string")]
+		public string profileId = default(string);
+
+		[Type(17, "uint8")]
+		public byte avatarId = default(byte);
 	}
 }

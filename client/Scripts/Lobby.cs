@@ -31,6 +31,7 @@ public partial class Lobby : Control
 		_adapter = new ColyseusLobbyAdapter();
 		_adapter.StateChanged += HandleStateChanged;
 		_adapter.RoomReservationReceived += HandleReservation;
+		_adapter.ProfileReceived += HandleProfile;
 		_adapter.ServerMessage += message => _status.Text = message;
 		_adapter.Error += message => _status.Text = $"错误：{message}";
 		SetConnectedUi(false);
@@ -42,6 +43,7 @@ public partial class Lobby : Control
 		{
 			_adapter.StateChanged -= HandleStateChanged;
 			_adapter.RoomReservationReceived -= HandleReservation;
+			_adapter.ProfileReceived -= HandleProfile;
 			_ = _adapter.DisconnectAsync();
 		}
 	}
@@ -57,9 +59,10 @@ public partial class Lobby : Control
 		}
 		_connectButton.Disabled = true;
 		_status.Text = $"正在连接 {endpoint}…";
-		if (!await _adapter.ConnectAsync(endpoint) && IsInsideTree())
+		bool connected = await _adapter.ConnectAsync(endpoint);
+		if (!IsInsideTree()) return;
+		if (!connected)
 		{
-			_status.Text = "无法连接大厅，请确认服务端已启动";
 			SetConnectedUi(false);
 			return;
 		}
@@ -146,10 +149,16 @@ public partial class Lobby : Control
 		}
 	}
 
+	private void HandleProfile(PlayerProfile profile)
+	{
+		if (!IsInsideTree()) return;
+		_playerName.Text = profile.Name;
+		_playerName.TooltipText = $"玩家 ID：{profile.PlayerId}\n筹码：{profile.Chips}（最近结算）";
+	}
+
 	private void JoinRoom(string roomId)
 	{
 		if (!_connected) return;
-		_adapter.PlayerName = _playerName.Text.Trim();
 		_status.Text = "正在进入准备房间…";
 		_ = _adapter.JoinRoomAsync(roomId);
 	}
@@ -157,7 +166,6 @@ public partial class Lobby : Control
 	private void CreateRoom()
 	{
 		if (!_connected) return;
-		_adapter.PlayerName = _playerName.Text.Trim();
 		_createButton.Disabled = true;
 		_status.Text = "正在创建房间…";
 		_ = CreateRoomAsync();
@@ -220,7 +228,8 @@ public partial class Lobby : Control
 		column.AddChild(endpointRow);
 		var profile = new HBoxContainer();
 		profile.AddChild(new Label { Text = "昵称" });
-		_playerName = new LineEdit { Text = "玩家 1", CustomMinimumSize = new Vector2(180, 0) };
+		_playerName = new LineEdit { Text = GameSession.Profile?.Name ?? "玩家 1", MaxLength = 24,
+			PlaceholderText = "首次建档昵称", CustomMinimumSize = new Vector2(180, 0) };
 		profile.AddChild(_playerName);
 		profile.AddChild(new Label { Text = "房间名" });
 		_roomName = new LineEdit { Text = "新房间", CustomMinimumSize = new Vector2(220, 0) };
@@ -250,6 +259,7 @@ public partial class Lobby : Control
 			_endpointPreset.Disabled = connected;
 		if (_hostInput is not null && IsInstanceValid(_hostInput)) _hostInput.Editable = !connected;
 		if (_portInput is not null && IsInstanceValid(_portInput)) _portInput.Editable = !connected;
+		if (_playerName is not null && IsInstanceValid(_playerName)) _playerName.Editable = !connected;
 	}
 
 	private static string PhaseText(string phase) => phase switch

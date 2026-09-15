@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { ColyseusTestServer, boot } from "@colyseus/testing";
 
 import appConfig from "../src/app.config.js";
@@ -9,7 +12,8 @@ import {
   MAX_PLAYERS,
   PASSING_BOT_DELAY,
 } from "../src/rooms/MyRoom.js";
-import { MyRoomState } from "../src/rooms/schema/MyRoomState.js";
+import { LobbyState, MyRoomState } from "../src/rooms/schema/MyRoomState.js";
+import { closePlayerProfileStore, getPlayerProfileStore } from "../src/persistence/PlayerProfileStore.js";
 import {
   cardFromId,
   getLegalCards,
@@ -17,9 +21,20 @@ import {
 
 describe("authoritative Hearts room", () => {
   let colyseus: ColyseusTestServer<typeof appConfig>;
+  let saveDirectory: string;
+  const previousDatabasePath = process.env.PLAYER_DB_PATH;
 
-  before(async () => { colyseus = await boot(appConfig); });
-  after(async () => { await colyseus.shutdown(); });
+  before(async () => {
+    saveDirectory = mkdtempSync(join(tmpdir(), "hearts-room-tests-"));
+    process.env.PLAYER_DB_PATH = join(saveDirectory, "players.sqlite");
+    colyseus = await boot(appConfig);
+  });
+  after(async () => {
+    await colyseus.shutdown();
+    if (previousDatabasePath === undefined) delete process.env.PLAYER_DB_PATH;
+    else process.env.PLAYER_DB_PATH = previousDatabasePath;
+    rmSync(saveDirectory, { recursive: true, force: true });
+  });
 
   beforeEach(async () => {
     await colyseus.cleanup();
@@ -43,6 +58,105 @@ describe("authoritative Hearts room", () => {
     assert.equal(room.state.phase, "playing");
     return hands;
   };
+
+  const requestProfile = async (client: any) => {
+    const message = client.waitForMessage("player_profile");
+    client.send("request_profile");
+    return message;
+  };
+
+  const consumeReservation = async (lobby: any, type: string, payload: any) => {
+    const received = lobby.waitForMessage("room_joined");
+    lobby.send(type, payload);
+    const reservation = await received;
+    const client = await colyseus.sdk.consumeSeatReservation<MyRoomState>(reservation);
+    await client.waitForInitialState();
+    return { client, room: colyseus.getRoomById<MyRoomState>(reservation.roomId) };
+  };
+
+  it("requires a valid device key before joining the lobby", async () => {
+    for (const deviceId of [undefined, "", " ", 42, "x".repeat(129)]) {
+      await assert.rejects(colyseus.sdk.joinOrCreate("lobby", { deviceId }), /设备标识无效/);
+    }
+  });
+
+  it("privately syncs stable device saves and carries their public identity through lobby reservations", async () => {
+    const lobbyA = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "lobby-device-a", name: "Alice" });
+    const profileA = await requestProfile(lobbyA);
+    const lobbyB = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "lobby-device-b", name: "Bob" });
+    const profileB = await requestProfile(lobbyB);
+    const again = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "lobby-device-a", name: "Overwrite" });
+    assert.deepEqual(await requestProfile(again), profileA);
+    assert.notEqual(profileA.playerId, profileB.playerId);
+    assert.deepEqual(Object.keys(profileA).sort(), ["avatarId", "chips", "name", "playerId"]);
+    assert.ok(profileA.avatarId >= 1 && profileA.avatarId <= 4);
+    assert.equal(profileA.chips, 1000);
+    assert.equal(profileA.name, "Alice");
+    const publicLobby = JSON.stringify(colyseus.getRoomById<LobbyState>(lobbyA.roomId).state.toJSON());
+    assert.equal(publicLobby.includes("lobby-device-a"), false);
+    assert.equal(publicLobby.includes(profileA.playerId), false);
+
+    const { client: host, room } = await consumeReservation(lobbyA, "create_room", {
+      name: "Profile test", playerName: "Forged", avatarId: 99, chips: 99999, deviceId: "lobby-device-b",
+    });
+    const { client: guest } = await consumeReservation(lobbyB, "join_room", {
+      roomId: room.roomId, playerName: "Forged", avatarId: 99, chips: 99999,
+    });
+    for (const [client, profile] of [[host, profileA], [guest, profileB]] as const) {
+      const player = room.state.players.get(client.sessionId)!;
+      assert.equal(player.profileId, profile.playerId);
+      assert.equal(player.name, profile.name);
+      assert.equal(player.avatarId, profile.avatarId);
+      assert.equal(player.chips, profile.chips);
+    }
+    assert.equal(JSON.stringify(room.state.toJSON()).includes("lobby-device-"), false);
+    await room.waitForNextPatch();
+    assert.equal(host.state.players.get(guest.sessionId).avatarId, profileB.avatarId);
+  });
+
+  it("rejects a second active seat and releases the device after leaving a waiting room", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    const client = await colyseus.connectTo(room, { deviceId: "exclusive-device" });
+    await assert.rejects(colyseus.connectTo(room, { deviceId: "exclusive-device" }), /已在游戏房间/);
+    const other = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    await assert.rejects(colyseus.connectTo(other, { deviceId: "exclusive-device" }), /已在游戏房间/);
+    const profileId = room.state.players.get(client.sessionId)!.profileId;
+    await client.leave();
+    const fresh = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    const rejoined = await colyseus.connectTo(fresh, { deviceId: "exclusive-device", chips: 99999 });
+    assert.equal(fresh.state.players.get(rejoined.sessionId)!.profileId, profileId);
+    assert.equal(fresh.state.players.get(rejoined.sessionId)!.chips, 1000);
+  });
+
+  it("keeps unfinished stakes out of saved balances and gives bots bundled avatars without saves", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { bots: true });
+    const client = await colyseus.connectTo(room, { deviceId: "aborted-device" });
+    assert.equal(room.state.players.get(client.sessionId)!.chips, 900);
+    const saved = getPlayerProfileStore().getByDevice("aborted-device");
+    assert.equal(saved.chips, 1000);
+    for (const player of room.state.players.values()) {
+      assert.ok(player.avatarId >= 1 && player.avatarId <= 4);
+      if (player.isBot) assert.equal(player.profileId, "");
+    }
+    await colyseus.cleanup();
+    closePlayerProfileStore();
+    assert.deepEqual(getPlayerProfileStore().getByDevice("aborted-device"), saved);
+  });
+
+  it("refunds a failed deal handshake without changing the save", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true, bots: true });
+    const client = await colyseus.connectTo(room, { deviceId: "handshake-device" });
+    client.send("start_game");
+    await room.waitForMessage("start_game");
+    client.send("table_ready");
+    await room.waitForMessage("table_ready");
+    assert.equal(room.state.phase, "dealing");
+    assert.equal(room.state.players.get(client.sessionId)!.chips, 900);
+    for (const timer of [...room.clock.delayed]) timer.tick(31_000);
+    assert.equal(room.state.phase, "waiting");
+    assert.equal(room.state.players.get(client.sessionId)!.chips, 1000);
+    assert.equal(getPlayerProfileStore().getByDevice("handshake-device").chips, 1000);
+  });
 
   it("waits for four seats, charges one equal ante, and deals 13 cards per seat", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
@@ -96,7 +210,7 @@ describe("authoritative Hearts room", () => {
       });
     }
     const deadline = Date.now() + 2_000;
-    while (room.state.phase !== "playing" && Date.now() < deadline) {
+    while (String(room.state.phase) !== "playing" && Date.now() < deadline) {
       await new Promise((resolve) => setTimeout(resolve, 5));
     }
     assert.equal(room.state.phase, "playing");
@@ -255,7 +369,7 @@ describe("authoritative Hearts room", () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
     const clients: any[] = [];
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
-      clients.push(await colyseus.connectTo(room));
+      clients.push(await colyseus.connectTo(room, { deviceId: `settlement-device-${index}` }));
     }
     await completePassing(room, clients);
     const byId = new Map<string, any>(clients.map((client) => [client.sessionId, client]));
@@ -316,6 +430,11 @@ describe("authoritative Hearts room", () => {
     assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.score, 0), 19);
     assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.payout, 0), 400);
     assert.equal([...room.state.players.values()].filter((player) => player.isTreating).length >= 1, true);
+    const savedProfiles = clients.map((client, index) => {
+      const profile = getPlayerProfileStore().getByDevice(`settlement-device-${index}`);
+      assert.equal(profile.chips, room.state.players.get(client.sessionId)!.chips);
+      return profile;
+    });
 
     const finishedRound = room.state.roundNumber;
     const roundStartedMessage = clients[0].waitForMessage("round_started");
@@ -333,5 +452,13 @@ describe("authoritative Hearts room", () => {
     const restartedHandPayload = await restartedHandMessage;
     assert.equal(restartedHandPayload.roundNumber, finishedRound + 1);
     assert.equal(restartedHandPayload.cards.length, 13);
+    await colyseus.cleanup();
+    closePlayerProfileStore();
+    const lobby = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "settlement-device-0" });
+    assert.deepEqual(await requestProfile(lobby), savedProfiles[0]);
+    const { client: restoredClient, room: restoredRoom } = await consumeReservation(lobby, "create_room", {});
+    const restored = restoredRoom.state.players.get(restoredClient.sessionId)!;
+    assert.equal(restored.chips, savedProfiles[0].chips);
+    assert.equal(restored.avatarId, savedProfiles[0].avatarId);
   });
 });
