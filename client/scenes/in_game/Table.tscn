@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c2hddsv6ha3gi"]
 
 [ext_resource type="Script" uid="uid://dtab1econtr0l" path="res://Scripts/InGame/Table.cs" id="1_table"]
+[ext_resource type="Texture2D" uid="uid://dejhcuen70chy" path="res://assets/textures/ui/in_game/Table_background.png" id="2_04syn"]
 [ext_resource type="PackedScene" uid="uid://dfccqip2lq1qv" path="res://scenes/in_game/CardDeck.tscn" id="2_deck"]
-[ext_resource type="Texture2D" uid="uid://dr3o0wqprqu2v" path="res://assets/textures/ui/in_game/mahjong-background-red-transparent.png" id="2_gb1b3"]
 [ext_resource type="PackedScene" uid="uid://bg6tvprpjlpck" path="res://scenes/in_game/MainHandLayout.tscn" id="3_hand"]
 [ext_resource type="PackedScene" uid="uid://cowdm8l8xfy8i" path="res://scenes/in_game/AnimationLayer.tscn" id="4_animation"]
 [ext_resource type="PackedScene" uid="uid://bwmamljc0p248" path="res://scenes/in_game/OtherHandLayout.tscn" id="4_mshro"]
@@ -84,18 +84,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_gb1b3")
+texture = ExtResource("2_04syn")
+expand_mode = 1
 
 [node name="CardDeck" parent="." unique_id=2072646441 instance=ExtResource("2_deck")]
 layout_mode = 1
 anchors_preset = 8
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 456.0
-offset_top = -339.0
-offset_right = 576.0
-offset_bottom = -172.0
+offset_left = -35.0
+offset_top = -83.0
+offset_right = 85.0
+offset_bottom = 84.0
 grow_vertical = 2
+scale = Vector2(0.75, 0.75)
 
 [node name="MainHandLayout" parent="." unique_id=1404605166 instance=ExtResource("3_hand")]
 layout_mode = 1

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr3o0wqprqu2v"
-path="res://.godot/imported/mahjong-background-red-transparent.png-d8f565df959d30fba28be6d82c27b361.ctex"
+uid="uid://dejhcuen70chy"
+path="res://.godot/imported/Table_background.png-7692cde139da98c940e0eab19de753f8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/ui/in_game/mahjong-background-red-transparent.png"
-dest_files=["res://.godot/imported/mahjong-background-red-transparent.png-d8f565df959d30fba28be6d82c27b361.ctex"]
+source_file="res://assets/textures/ui/in_game/Table_background.png"
+dest_files=["res://.godot/imported/Table_background.png-7692cde139da98c940e0eab19de753f8.ctex"]
 
 [params]
 
