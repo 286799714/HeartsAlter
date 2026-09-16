@@ -1,0 +1,3721 @@
+[gd_scene format=3 uid="uid://cmgyniaqt02p4"]
+
+[ext_resource type="Script" uid="uid://c1rvs6bx7t5ck" path="res://addons/figma_importer/figma_importer.gd" id="1_m35yq"]
+[ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="2_4hqpo"]
+[ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="3_nmff4"]
+[ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="4_md1d2"]
+[ext_resource type="Texture2D" uid="uid://nsc8xahna76j" path="res://assets/textures/ui/in_game/584dbc28d6690f575642280e797b71699dd52723.png" id="5_codbl"]
+[ext_resource type="Texture2D" uid="uid://ctdwf5pjdgm2e" path="res://assets/textures/ui/in_game/595a868710677e3bdcbbfb69dbc629eeb3ea2323.png" id="6_h66ak"]
+[ext_resource type="Texture2D" uid="uid://b3s85g0rimjx8" path="res://assets/textures/ui/in_game/c43901a598e44122a318870472d0c9664d9023cc.png" id="7_alusc"]
+[ext_resource type="Texture2D" uid="uid://c564m6pxhssgf" path="res://assets/textures/ui/in_game/2cadbefdd583de9e5dc8046f5748bf6b5647dead.png" id="8_p8ntc"]
+[ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="9_1vdqy"]
+[ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="10_qs4lv"]
+[ext_resource type="Texture2D" uid="uid://bo138bv038mee" path="res://assets/textures/ui/in_game/6d55a8a64bc242f5613039704302dea8f8c9f7e0.png" id="11_m813u"]
+[ext_resource type="Texture2D" uid="uid://bdn140738so8q" path="res://assets/textures/ui/profile_icon_1.jpg" id="11_md1d2"]
+[ext_resource type="Texture2D" uid="uid://dkpixwn7te1rw" path="res://assets/textures/ui/avatar_ring_2.png" id="12_codbl"]
+[ext_resource type="Texture2D" uid="uid://iauy3tjiem1b" path="res://assets/textures/ui/in_game/c2d55a085bb6c9087d818ecece880b78862bc72a.png" id="12_ybp5g"]
+[ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="14_45mqc"]
+[ext_resource type="Texture2D" uid="uid://belmg1mc87ql6" path="res://assets/textures/ui/in_game/generated/Frame 138.png" id="22_qs4lv"]
+[ext_resource type="Texture2D" uid="uid://7nwhpg86u1te" path="res://assets/textures/ui/in_game/generated/Frame 101.png" id="22_ybp5g"]
+[ext_resource type="Texture2D" uid="uid://cbo6ocytt2yax" path="res://assets/textures/ui/in_game/generated/Frame 76.png" id="24_jg048"]
+[ext_resource type="Texture2D" uid="uid://d1vwc7oxcq40s" path="res://assets/textures/ui/in_game/generated/rgba-296x4-2e51344d5c185b67.png" id="png_2e51344d5c185b67"]
+[ext_resource type="Texture2D" uid="uid://ciji7ltcjsal1" path="res://assets/textures/ui/in_game/generated/rgba-24x24-35a0805cab7a0d15.png" id="png_35a0805cab7a0d15"]
+[ext_resource type="Texture2D" uid="uid://ddu1rtj0211ik" path="res://assets/textures/ui/in_game/generated/rgba-24x24-513d6f681db1ba88.png" id="png_513d6f681db1ba88"]
+[ext_resource type="Texture2D" uid="uid://nx77fwhacvee" path="res://assets/textures/ui/in_game/generated/rgba-617x73-687e7750eba2f0c2.png" id="png_687e7750eba2f0c2"]
+[ext_resource type="Texture2D" uid="uid://cgtnva5mefcr" path="res://assets/textures/ui/in_game/generated/rgba-1760x832-0784519e562c1c17.png" id="png_0784519e562c1c17"]
+[ext_resource type="Texture2D" uid="uid://7lrieckewcwg" path="res://assets/textures/ui/in_game/generated/rgba-296x4-bc05ed9c2a83b795.png" id="png_bc05ed9c2a83b795"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2aku"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0g4hv"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_0784519e562c1c17")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(1760, 832)
+shader_parameter/texture_size = Vector2(1760, 832)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un8fe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hp68h"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("5_codbl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(56, 56)
+shader_parameter/texture_size = Vector2(56, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8miu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ksh52"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("5_codbl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(56, 56)
+shader_parameter/texture_size = Vector2(56, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3x3c3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nh34r"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("5_codbl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(56, 56)
+shader_parameter/texture_size = Vector2(56, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yxf6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_swkra"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("5_codbl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(56, 56)
+shader_parameter/texture_size = Vector2(56, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ejhu3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8x54"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty4d2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1od15"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("6_h66ak")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(464, 216)
+shader_parameter/texture_size = Vector2(464, 216)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g0yus"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b2n1s"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("7_alusc")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(123, 121)
+shader_parameter/texture_size = Vector2(123, 121)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71wxc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efijo"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("7_alusc")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(123, 121)
+shader_parameter/texture_size = Vector2(123, 121)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lywkd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wy6jw"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("8_p8ntc")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(280, 159)
+shader_parameter/texture_size = Vector2(280, 159)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_radod"]
+
+[sub_resource type="Gradient" id="Gradient_qku7v"]
+colors = PackedColorArray(1, 0.9097609, 0.8308017, 1, 1, 0.9098039, 0.83137256, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gfi1i"]
+gradient = SubResource("Gradient_qku7v")
+fill_from = Vector2(0.5, -3.061617e-17)
+fill_to = Vector2(0.5, 1)
+script = ExtResource("9_1vdqy")
+figma_transform = Transform2D(6.123234e-17, -1, 1, 6.123234e-17, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wosyj"]
+shader = ExtResource("3_nmff4")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_gfi1i")
+shader_parameter/use_gradient = true
+shader_parameter/use_image = false
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(0, 0)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m41at"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pdicv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_crovs"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 19
+corner_radius_top_right = 19
+corner_radius_bottom_right = 19
+corner_radius_bottom_left = 19
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oscyv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_cxd22"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_esdh8"]
+base_font = SubResource("FontVariation_cxd22")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_5albn"]
+line_spacing = 0.0
+font = SubResource("FontVariation_esdh8")
+font_size = 28
+font_color = Color(0.6353534, 0.30896872, 0.3001475, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvcqo"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ub1y"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_nbk5n"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_dv8ch"]
+base_font = SubResource("FontVariation_nbk5n")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_r8icf"]
+line_spacing = 0.0
+font = SubResource("FontVariation_dv8ch")
+font_size = 28
+font_color = Color(0.6353534, 0.30896872, 0.3001475, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lws2p"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ctcva"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_e5y8u"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_m08ij"]
+base_font = SubResource("FontVariation_e5y8u")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_rtk2s"]
+line_spacing = 0.0
+font = SubResource("FontVariation_m08ij")
+font_size = 28
+font_color = Color(0.6353534, 0.30896872, 0.3001475, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hoy1y"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxkvk"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_2n6oy"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_0620v"]
+base_font = SubResource("FontVariation_2n6oy")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_eyir0"]
+line_spacing = 0.0
+font = SubResource("FontVariation_0620v")
+font_size = 28
+font_color = Color(0.6353534, 0.30896872, 0.3001475, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7orsw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5347"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.99607843, 0.87058824, 0.8509804, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9843137, 0.49803922, 0.50980395, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jlqp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_b8fgw"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_updg5"]
+base_font = SubResource("FontVariation_b8fgw")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_5nmu6"]
+line_spacing = 0.0
+font = SubResource("FontVariation_updg5")
+font_size = 32
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blesd"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aoepa"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_xl7rk"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_5w7x2"]
+base_font = SubResource("FontVariation_xl7rk")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_i6q7s"]
+line_spacing = 0.0
+font = SubResource("FontVariation_5w7x2")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bkpio"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6furg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_jjuyk"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_a4hot"]
+base_font = SubResource("FontVariation_jjuyk")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_0kcen"]
+line_spacing = 0.0
+font = SubResource("FontVariation_a4hot")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kke21"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgy2m"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_p2nug"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_s15jt"]
+base_font = SubResource("FontVariation_p2nug")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_ybw3x"]
+line_spacing = 0.0
+font = SubResource("FontVariation_s15jt")
+font_size = 32
+font_color = Color(1, 0.026315803, 0, 1)
+
+[sub_resource type="Shader" id="Shader_h66ak"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	float distance_from_center = distance(UV, vec2(0.5));
+	COLOR.a *= 1.0 - smoothstep(0.485, 0.5, distance_from_center);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_alusc"]
+shader = SubResource("Shader_h66ak")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhdas"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 0.9372549, 0.8039216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9607843, 0.73333335, 0.3529412, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15hcf"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_f2gik"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_4mxiq"]
+base_font = SubResource("FontVariation_f2gik")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_qojso"]
+line_spacing = 0.0
+font = SubResource("FontVariation_4mxiq")
+font_size = 32
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ml0fh"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_awt11"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_7cijs"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_8tpc7"]
+base_font = SubResource("FontVariation_7cijs")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_2vep6"]
+line_spacing = 0.0
+font = SubResource("FontVariation_8tpc7")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jax8f"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kc820"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_dlsyk"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_efq8u"]
+base_font = SubResource("FontVariation_dlsyk")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_knmet"]
+line_spacing = 0.0
+font = SubResource("FontVariation_efq8u")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kfxom"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpwjl"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_xq2v1"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_0rw00"]
+base_font = SubResource("FontVariation_xq2v1")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_fqbtd"]
+line_spacing = 0.0
+font = SubResource("FontVariation_0rw00")
+font_size = 32
+font_color = Color(0.26132974, 0.4954928, 0.011017568, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4uccp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.92156863, 0.97745097, 0.98039216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgl0p"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_g2xml"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_y0mh6"]
+base_font = SubResource("FontVariation_g2xml")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_jahbs"]
+line_spacing = 0.0
+font = SubResource("FontVariation_y0mh6")
+font_size = 32
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rgs0c"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qiyb5"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_ohdrb"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_i046y"]
+base_font = SubResource("FontVariation_ohdrb")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_xwxac"]
+line_spacing = 0.0
+font = SubResource("FontVariation_i046y")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44ict"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqbqq"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_p1q1f"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_rffyb"]
+base_font = SubResource("FontVariation_p1q1f")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_ifkwu"]
+line_spacing = 0.0
+font = SubResource("FontVariation_rffyb")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e58h"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e5drp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_ts7tb"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_n1io0"]
+base_font = SubResource("FontVariation_ts7tb")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_6gqib"]
+line_spacing = 0.0
+font = SubResource("FontVariation_n1io0")
+font_size = 32
+font_color = Color(0.24400489, 0.45178664, 0.021893384, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gsl5"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.92156863, 0.97745097, 0.98039216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ugbgh"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_2rdjk"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xv4sm"]
+base_font = SubResource("FontVariation_2rdjk")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_fwqf4"]
+line_spacing = 0.0
+font = SubResource("FontVariation_xv4sm")
+font_size = 32
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqpli"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65fjk"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_7mxyl"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_lrs8p"]
+base_font = SubResource("FontVariation_7mxyl")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_b4ikr"]
+line_spacing = 0.0
+font = SubResource("FontVariation_lrs8p")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_013p8"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fy5c"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_dvrvk"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_7rlhc"]
+base_font = SubResource("FontVariation_dvrvk")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_0qry1"]
+line_spacing = 0.0
+font = SubResource("FontVariation_7rlhc")
+font_size = 32
+font_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0afbe"]
+bg_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_siema"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_we7qe"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_q7fkd"]
+base_font = SubResource("FontVariation_we7qe")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_uul73"]
+line_spacing = 0.0
+font = SubResource("FontVariation_q7fkd")
+font_size = 32
+font_color = Color(1, 0.026315803, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cujkm"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skkxt"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h73gr"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_2e51344d5c185b67")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(148.02943, 2)
+shader_parameter/texture_size = Vector2(296, 4)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r3usu"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d7i1i"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_513d6f681db1ba88")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uk7rs"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ujm7"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lxcbh"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_35a0805cab7a0d15")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sr7s2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u2547"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x21f8"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wjvp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_uesrx"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_802tv"]
+base_font = SubResource("FontVariation_uesrx")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_x8k45"]
+line_spacing = 0.0
+font = SubResource("FontVariation_802tv")
+font_size = 24
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oahjc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ocmx1"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_bc05ed9c2a83b795")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(148.02943, 2)
+shader_parameter/texture_size = Vector2(296, 4)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnvyc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nx2e5"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_513d6f681db1ba88")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70tie"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kvil"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ipvp"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_35a0805cab7a0d15")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a78o1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_orulx"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxg2c"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4k0r"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6liqa"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.83137256, 0.6666667, 0.5686275, 1)
+corner_radius_top_left = 55
+corner_radius_top_right = 55
+corner_radius_bottom_right = 55
+corner_radius_bottom_left = 55
+
+[sub_resource type="FontVariation" id="FontVariation_5842b"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 2
+
+[sub_resource type="FontVariation" id="FontVariation_wwq16"]
+base_font = SubResource("FontVariation_5842b")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_suygy"]
+line_spacing = 0.0
+font = SubResource("FontVariation_wwq16")
+font_size = 48
+font_color = Color(0.7358774, 0, 0.015411046, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x20bg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tvm1u"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("11_m813u")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(173, 142)
+shader_parameter/texture_size = Vector2(210, 190)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4pqq3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_saa8s"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cmd05"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("11_m813u")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(173, 142)
+shader_parameter/texture_size = Vector2(210, 190)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs2y1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_www77"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kgca8"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("12_ybp5g")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(812, 197)
+shader_parameter/texture_size = Vector2(812, 197)
+shader_parameter/texture_scale = 0.5
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = true
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h22ek"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gpu0s"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epi6v"]
+shader = ExtResource("3_nmff4")
+shader_parameter/image_texture = ExtResource("png_687e7750eba2f0c2")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(617, 73)
+shader_parameter/texture_size = Vector2(617, 73)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpqni"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15ar2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_u10hs"]
+base_font = ExtResource("10_qs4lv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_mdvin"]
+base_font = SubResource("FontVariation_u10hs")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_svawp"]
+line_spacing = 0.0
+font = SubResource("FontVariation_mdvin")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bv8fv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_v164g"]
+base_font = ExtResource("14_45mqc")
+spacing_glyph = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_elj1h"]
+line_spacing = 0.0
+font = SubResource("FontVariation_v164g")
+font_size = 40
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[node name="Settlement" type="Control" unique_id=40988795]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m35yq")
+document_json_file = "res://assets/figma_2_godot/settlement/figma_export.json"
+SelectPage = "已完成部分 xIDx0:1x"
+SelectFrame = "Frame 56 xIDx81:8847x"
+fonts_folder = "res://assets/fonts"
+images_folder = "res://assets/textures/ui/in_game"
+autoPlaceImages = true
+metadata/_custom_type_script = "uid://c1rvs6bx7t5ck"
+
+[node name="Frame 56 xIDx81_8847x" type="ScrollContainer" parent="." unique_id=1099747572]
+custom_minimum_size = Vector2(1760, 946)
+clip_contents = false
+layout_mode = 0
+offset_left = -586.6
+offset_top = -315.3
+offset_right = 1173.4
+offset_bottom = 630.7
+scale = Vector2(0.667, 0.667)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x2aku")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer")
+minSize = Vector2(1760, 946)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x" unique_id=1338768370]
+layout_mode = 2
+
+[node name="image 73 xIDx81_8848x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=122583274]
+material = SubResource("ShaderMaterial_0g4hv")
+custom_minimum_size = Vector2(1760, 832)
+layout_mode = 0
+offset_top = 114.0
+offset_right = 1760.0
+offset_bottom = 946.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_un8fe")
+script = ExtResource("4_md1d2")
+minSize = Vector2(1760, 832)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_0784519e562c1c17")
+textureSizeMode = "Stretch"
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+metadata/figma_slice_children = PackedStringArray("I81:8848;72:2706", "I81:8848;72:2707", "I81:8848;72:2708", "I81:8848;72:2709", "I81:8848;72:2710", "I81:8848;72:2711", "I81:8848;72:2712", "I81:8848;72:2713", "I81:8848;72:2714")
+
+[node name="image 70 xIDx81_8849x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=274951592]
+material = SubResource("ShaderMaterial_hp68h")
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 1674.0
+offset_top = 144.0
+offset_right = 1730.0
+offset_bottom = 200.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_k8miu")
+script = ExtResource("4_md1d2")
+minSize = Vector2(56, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("5_codbl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 75 xIDx81_8850x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1608110776]
+material = SubResource("ShaderMaterial_ksh52")
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 86.0
+offset_top = 144.0
+offset_right = 142.0
+offset_bottom = 200.0
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3x3c3")
+script = ExtResource("4_md1d2")
+minSize = Vector2(56, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("5_codbl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 74 xIDx81_8851x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1393340571]
+material = SubResource("ShaderMaterial_nh34r")
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 1674.0
+offset_top = 916.0
+offset_right = 1730.0
+offset_bottom = 972.0
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8yxf6")
+script = ExtResource("4_md1d2")
+minSize = Vector2(56, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("5_codbl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 76 xIDx81_8852x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1364424571]
+material = SubResource("ShaderMaterial_swkra")
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 86.0
+offset_top = 916.0
+offset_right = 142.0
+offset_bottom = 972.0
+rotation = 3.1415927
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ejhu3")
+script = ExtResource("4_md1d2")
+minSize = Vector2(56, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("5_codbl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 89 xIDx81_8853x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=158916325]
+custom_minimum_size = Vector2(464, 178)
+clip_contents = false
+layout_mode = 0
+offset_left = 51.87403
+offset_top = 655.6222
+offset_right = 515.874
+offset_bottom = 833.6222
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d8x54")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer")
+minSize = Vector2(464, 178)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x" unique_id=37324200]
+layout_mode = 2
+
+[node name="Group 1 xIDx81_8854x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer" unique_id=464125065]
+custom_minimum_size = Vector2(474, 216)
+layout_mode = 0
+offset_left = -10.0
+offset_top = -27.0
+offset_right = 464.0
+offset_bottom = 189.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ty4d2")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x/InnerContainer")
+minSize = Vector2(474, 216)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x" unique_id=39493008]
+layout_mode = 2
+
+[node name="image 142 xIDx81_8855x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x/InnerContainer" unique_id=1032737285]
+material = SubResource("ShaderMaterial_1od15")
+custom_minimum_size = Vector2(464, 216)
+layout_mode = 0
+offset_left = 10.0
+offset_right = 474.0
+offset_bottom = 216.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g0yus")
+script = ExtResource("4_md1d2")
+minSize = Vector2(464, 216)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("6_h66ak")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 143 xIDx81_8856x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x/InnerContainer" unique_id=369586994]
+material = SubResource("ShaderMaterial_b2n1s")
+custom_minimum_size = Vector2(123, 121)
+layout_mode = 0
+offset_top = 20.0
+offset_right = 123.0
+offset_bottom = 141.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_71wxc")
+script = ExtResource("4_md1d2")
+minSize = Vector2(123, 121)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("7_alusc")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 146 xIDx81_8857x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x/InnerContainer" unique_id=4593546]
+material = SubResource("ShaderMaterial_efijo")
+custom_minimum_size = Vector2(123, 121)
+layout_mode = 0
+offset_left = 469.0
+offset_top = 20.0
+offset_right = 592.0
+offset_bottom = 141.0
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lywkd")
+script = ExtResource("4_md1d2")
+minSize = Vector2(123, 121)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("7_alusc")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 131 xIDx81_8858x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer" unique_id=283540378]
+material = SubResource("ShaderMaterial_wy6jw")
+custom_minimum_size = Vector2(280, 159)
+layout_mode = 0
+offset_left = 92.0
+offset_top = 19.0
+offset_right = 372.0
+offset_bottom = 178.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_radod")
+script = ExtResource("4_md1d2")
+minSize = Vector2(280, 159)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_p8ntc")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 88 xIDx81_8859x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=202937900]
+material = SubResource("ShaderMaterial_wosyj")
+custom_minimum_size = Vector2(1128, 608)
+clip_contents = false
+layout_mode = 0
+offset_left = 584.0
+offset_top = 248.0
+offset_right = 1712.0
+offset_bottom = 856.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_m41at")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer")
+minSize = Vector2(1128, 608)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_gradient = SubResource("GradientTexture2D_gfi1i")
+corner_radius = [24.0, 24.0, 24.0, 24.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x" unique_id=1955356531]
+layout_mode = 2
+
+[node name="Frame 87 xIDx81_8860x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer" unique_id=914764167]
+custom_minimum_size = Vector2(1088, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1108.0
+offset_bottom = 459.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pdicv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer")
+minSize = Vector2(1088, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x" unique_id=1833065181]
+layout_mode = 2
+
+[node name="PlayerSettlementInfoHead" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer" unique_id=789652241]
+custom_minimum_size = Vector2(0, 63)
+clip_contents = false
+layout_mode = 0
+offset_right = 1088.0
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_crovs")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 63)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [19.0, 19.0, 19.0, 19.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead" unique_id=989963021]
+layout_mode = 2
+
+[node name="Frame 79 xIDx81_8862x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=1641961114]
+custom_minimum_size = Vector2(186, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 60.0
+offset_top = 12.5
+offset_right = 246.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_oscyv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(186, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 79 xIDx81_8862x" unique_id=111949054]
+layout_mode = 2
+
+[node name="昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 79 xIDx81_8862x/InnerContainer" unique_id=349794934]
+layout_mode = 0
+offset_left = 50.5
+offset_right = 135.5
+offset_bottom = 38.0
+text = "昵称"
+label_settings = SubResource("LabelSettings_5albn")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 24 xIDx81_8864x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=1949671657]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 321.0
+offset_top = 12.5
+offset_right = 323.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fvcqo")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 80 xIDx81_8865x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=1576425280]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 398.0
+offset_top = 12.5
+offset_right = 496.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ub1y")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 80 xIDx81_8865x" unique_id=1647345372]
+layout_mode = 2
+
+[node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 80 xIDx81_8865x/InnerContainer" unique_id=1213625203]
+layout_mode = 0
+offset_left = 6.5
+offset_right = 91.5
+offset_bottom = 38.0
+text = "红包分"
+label_settings = SubResource("LabelSettings_r8icf")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 25 xIDx81_8867x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=409023082]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 571.0
+offset_top = 12.5
+offset_right = 573.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lws2p")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 81 xIDx81_8868x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=1574777540]
+custom_minimum_size = Vector2(130, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 648.0
+offset_top = 12.5
+offset_right = 778.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ctcva")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(130, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 81 xIDx81_8868x" unique_id=1743765588]
+layout_mode = 2
+
+[node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 81 xIDx81_8868x/InnerContainer" unique_id=1196315668]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 122.0
+offset_bottom = 38.0
+text = "分得金币"
+label_settings = SubResource("LabelSettings_rtk2s")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 26 xIDx81_8870x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=1697899713]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 853.0
+offset_top = 12.5
+offset_right = 855.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hoy1y")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 82 xIDx81_8871x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer" unique_id=207743453]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 930.0
+offset_top = 12.5
+offset_right = 1028.0
+offset_bottom = 50.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xxkvk")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 82 xIDx81_8871x" unique_id=4985031]
+layout_mode = 2
+
+[node name="净收益" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfoHead/InnerContainer/Frame 82 xIDx81_8871x/InnerContainer" unique_id=813360859]
+layout_mode = 0
+offset_left = 6.5
+offset_right = 91.5
+offset_bottom = 38.0
+text = "净收益"
+label_settings = SubResource("LabelSettings_eyir0")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="PlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer" unique_id=1119852055]
+clip_contents = false
+layout_mode = 0
+offset_top = 63.0
+offset_right = 1088.0
+offset_bottom = 439.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7orsw")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo" unique_id=989375801]
+layout_mode = 2
+
+[node name="FirstPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1202709794]
+custom_minimum_size = Vector2(0, 88)
+clip_contents = false
+layout_mode = 0
+offset_right = 1088.0
+offset_bottom = 88.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_q5347")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 88)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.99607843, 0.87058824, 0.8509804, 1)
+use_solid_fill = true
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.9843137, 0.49803922, 0.50980395, 1)
+corner_radius = [16.0, 16.0, 16.0, 16.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo" unique_id=149705095]
+layout_mode = 2
+
+[node name="Frame 79 xIDx81_8875x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=300658023]
+clip_contents = false
+layout_mode = 0
+offset_left = 61.0
+offset_top = 12.0
+offset_right = 247.0
+offset_bottom = 76.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7jlqp")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8875x" unique_id=2039377009]
+layout_mode = 2
+
+[node name="昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8875x/InnerContainer" unique_id=1340816898]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 10.0
+offset_right = 186.0
+offset_bottom = 54.0
+text = "蒋天林"
+label_settings = SubResource("LabelSettings_5nmu6")
+clip_text = true
+
+[node name="Rectangle 24 xIDx81_8878x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=583658129]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 321.66663
+offset_top = 25.0
+offset_right = 323.66663
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_blesd")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 83 xIDx81_8879x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=1633052914]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 398.33325
+offset_top = 22.0
+offset_right = 496.33325
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aoepa")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8879x" unique_id=924530779]
+layout_mode = 2
+
+[node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8879x/InnerContainer" unique_id=44516605]
+layout_mode = 0
+offset_left = 29.5
+offset_right = 68.5
+offset_bottom = 44.0
+text = "12"
+label_settings = SubResource("LabelSettings_i6q7s")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 25 xIDx81_8881x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=860010408]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 571.0
+offset_top = 25.0
+offset_right = 573.0
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bkpio")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 84 xIDx81_8882x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=535206127]
+custom_minimum_size = Vector2(130, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 647.66675
+offset_top = 22.0
+offset_right = 777.66675
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6furg")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(130, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8882x" unique_id=1605031532]
+layout_mode = 2
+
+[node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8882x/InnerContainer" unique_id=1028758241]
+layout_mode = 0
+offset_left = 55.5
+offset_right = 74.5
+offset_bottom = 44.0
+text = "0"
+label_settings = SubResource("LabelSettings_0kcen")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 26 xIDx81_8884x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=455981348]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 852.3334
+offset_top = 25.0
+offset_right = 854.3334
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kke21")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 85 xIDx81_8885x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=1194195169]
+clip_contents = false
+layout_mode = 0
+offset_left = 929.00006
+offset_top = 22.0
+offset_right = 1027.0
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qgy2m")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8885x" unique_id=17428475]
+layout_mode = 2
+
+[node name="净收益" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8885x/InnerContainer" unique_id=1147525163]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 44.0
+text = "-100"
+label_settings = SubResource("LabelSettings_ybw3x")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="AvatarBlock" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer" unique_id=1142823735]
+anchors_preset = 0
+offset_left = 98.54872
+offset_top = 18.775084
+offset_right = 98.54872
+offset_bottom = 18.775084
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+
+[node name="AvatarFrame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/AvatarBlock" unique_id=413559830]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.905914
+offset_top = -1.4992504
+offset_right = 90.094086
+offset_bottom = 163.50075
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="AvatarPadding" type="MarginContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=1497823123]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PlayerAvatar" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1202228043]
+unique_name_in_owner = true
+texture_filter = 4
+material = SubResource("ShaderMaterial_alusc")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_md1d2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AvatarRing" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=1681118811]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_codbl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SecondPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1370676109]
+custom_minimum_size = Vector2(0, 88)
+clip_contents = false
+layout_mode = 0
+offset_top = 96.0
+offset_right = 1088.0
+offset_bottom = 184.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yhdas")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 88)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(1, 0.9372549, 0.8039216, 1)
+use_solid_fill = true
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.9607843, 0.73333335, 0.3529412, 1)
+corner_radius = [16.0, 16.0, 16.0, 16.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo" unique_id=404663605]
+layout_mode = 2
+
+[node name="Frame 79 xIDx81_8888x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=1810040068]
+custom_minimum_size = Vector2(186, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 61.0
+offset_top = 12.0
+offset_right = 247.0
+offset_bottom = 76.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_15hcf")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(186, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8888x" unique_id=1985844386]
+layout_mode = 2
+
+[node name="昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8888x/InnerContainer" unique_id=1688738701]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 10.0
+offset_right = 255.0
+offset_bottom = 54.0
+text = "蒋天林 (你)"
+label_settings = SubResource("LabelSettings_qojso")
+clip_text = true
+
+[node name="Rectangle 24 xIDx81_8891x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=1295950945]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 321.66663
+offset_top = 25.0
+offset_right = 323.66663
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ml0fh")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 83 xIDx81_8892x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=337104634]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 398.33325
+offset_top = 22.0
+offset_right = 496.33325
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_awt11")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8892x" unique_id=81031242]
+layout_mode = 2
+
+[node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8892x/InnerContainer" unique_id=1807296664]
+layout_mode = 0
+offset_left = 39.5
+offset_right = 58.5
+offset_bottom = 44.0
+text = "6"
+label_settings = SubResource("LabelSettings_2vep6")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 25 xIDx81_8894x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=857647002]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 571.0
+offset_top = 25.0
+offset_right = 573.0
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jax8f")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 84 xIDx81_8895x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=812328128]
+custom_minimum_size = Vector2(130, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 647.66675
+offset_top = 22.0
+offset_right = 777.66675
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kc820")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(130, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8895x" unique_id=2139774596]
+layout_mode = 2
+
+[node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8895x/InnerContainer" unique_id=289997451]
+layout_mode = 0
+offset_left = 35.5
+offset_right = 94.5
+offset_bottom = 44.0
+text = "200"
+label_settings = SubResource("LabelSettings_knmet")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 26 xIDx81_8897x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=1481368511]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 852.3334
+offset_top = 25.0
+offset_right = 854.3334
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kfxom")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 85 xIDx81_8898x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=283859218]
+clip_contents = false
+layout_mode = 0
+offset_left = 929.00006
+offset_top = 22.0
+offset_right = 1027.0
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qpwjl")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8898x" unique_id=513381451]
+layout_mode = 2
+
+[node name="净收益" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8898x/InnerContainer" unique_id=1161601993]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 44.0
+text = "+100"
+label_settings = SubResource("LabelSettings_fqbtd")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="AvatarBlock" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer" unique_id=1050199334]
+anchors_preset = 0
+offset_left = 98.54872
+offset_top = 18.775084
+offset_right = 98.54872
+offset_bottom = 18.775084
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+
+[node name="AvatarFrame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/AvatarBlock" unique_id=36809390]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.905914
+offset_top = -1.4992504
+offset_right = 90.094086
+offset_bottom = 163.50075
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="AvatarPadding" type="MarginContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=440373742]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PlayerAvatar" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1329558291]
+texture_filter = 4
+material = SubResource("ShaderMaterial_alusc")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_md1d2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AvatarRing" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=636165433]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_codbl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ThirdPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1296800980]
+custom_minimum_size = Vector2(0, 88)
+clip_contents = false
+layout_mode = 0
+offset_top = 192.0
+offset_right = 1088.0
+offset_bottom = 280.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4uccp")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 88)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.92156863, 0.97745097, 0.98039216, 1)
+use_solid_fill = true
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+corner_radius = [16.0, 16.0, 16.0, 16.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo" unique_id=1497106831]
+layout_mode = 2
+
+[node name="Frame 79 xIDx81_8901x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=1105102521]
+clip_contents = false
+layout_mode = 0
+offset_left = 61.0
+offset_top = 12.0
+offset_right = 247.0
+offset_bottom = 76.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jgl0p")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8901x" unique_id=2106707334]
+layout_mode = 2
+
+[node name="昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8901x/InnerContainer" unique_id=558938619]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 10.0
+offset_right = 186.0
+offset_bottom = 54.0
+text = "蒋天林"
+label_settings = SubResource("LabelSettings_jahbs")
+clip_text = true
+
+[node name="Rectangle 24 xIDx81_8904x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=2039382134]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 321.66663
+offset_top = 25.0
+offset_right = 323.66663
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rgs0c")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 83 xIDx81_8905x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=1312269255]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 398.33325
+offset_top = 22.0
+offset_right = 496.33325
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qiyb5")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8905x" unique_id=1427317121]
+layout_mode = 2
+
+[node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8905x/InnerContainer" unique_id=1209654131]
+layout_mode = 0
+offset_left = 39.5
+offset_right = 58.5
+offset_bottom = 44.0
+text = "4"
+label_settings = SubResource("LabelSettings_xwxac")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 25 xIDx81_8907x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=906632488]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 571.0
+offset_top = 25.0
+offset_right = 573.0
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_44ict")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 84 xIDx81_8908x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=2111829643]
+custom_minimum_size = Vector2(130, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 647.66675
+offset_top = 22.0
+offset_right = 777.66675
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mqbqq")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(130, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8908x" unique_id=437141209]
+layout_mode = 2
+
+[node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8908x/InnerContainer" unique_id=583882745]
+layout_mode = 0
+offset_left = 35.5
+offset_right = 94.5
+offset_bottom = 44.0
+text = "133"
+label_settings = SubResource("LabelSettings_ifkwu")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 26 xIDx81_8910x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=417328846]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 852.3334
+offset_top = 25.0
+offset_right = 854.3334
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4e58h")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 85 xIDx81_8911x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=441108901]
+clip_contents = false
+layout_mode = 0
+offset_left = 929.00006
+offset_top = 22.0
+offset_right = 1027.0
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e5drp")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8911x" unique_id=676559327]
+layout_mode = 2
+
+[node name="净收益" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8911x/InnerContainer" unique_id=1604242912]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 44.0
+text = "+33"
+label_settings = SubResource("LabelSettings_6gqib")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="AvatarBlock" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer" unique_id=1155457097]
+anchors_preset = 0
+offset_left = 98.54872
+offset_top = 18.775084
+offset_right = 98.54872
+offset_bottom = 18.775084
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+
+[node name="AvatarFrame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/AvatarBlock" unique_id=1969986285]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.905914
+offset_top = -1.4992504
+offset_right = 90.094086
+offset_bottom = 163.50075
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="AvatarPadding" type="MarginContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=1830179471]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PlayerAvatar" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=2145635649]
+texture_filter = 4
+material = SubResource("ShaderMaterial_alusc")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_md1d2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AvatarRing" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=213634888]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_codbl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FourthPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1521638568]
+custom_minimum_size = Vector2(0, 88)
+clip_contents = false
+layout_mode = 0
+offset_top = 288.0
+offset_right = 1088.0
+offset_bottom = 376.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4gsl5")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 88)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.92156863, 0.97745097, 0.98039216, 1)
+use_solid_fill = true
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+corner_radius = [16.0, 16.0, 16.0, 16.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo" unique_id=1456621634]
+layout_mode = 2
+
+[node name="Frame 79 xIDx81_8914x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=1570070116]
+clip_contents = false
+layout_mode = 0
+offset_left = 61.0
+offset_top = 12.0
+offset_right = 247.0
+offset_bottom = 76.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ugbgh")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8914x" unique_id=1157974661]
+layout_mode = 2
+
+[node name="昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 79 xIDx81_8914x/InnerContainer" unique_id=1908664091]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 10.0
+offset_right = 186.0
+offset_bottom = 54.0
+text = "蒋天林"
+label_settings = SubResource("LabelSettings_fwqf4")
+clip_text = true
+
+[node name="Rectangle 24 xIDx81_8917x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=999137014]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 321.66663
+offset_top = 25.0
+offset_right = 323.66663
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gqpli")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 83 xIDx81_8918x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=29747447]
+custom_minimum_size = Vector2(98, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 398.33325
+offset_top = 22.0
+offset_right = 496.33325
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_65fjk")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(98, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8918x" unique_id=488873069]
+layout_mode = 2
+
+[node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8918x/InnerContainer" unique_id=963177803]
+layout_mode = 0
+offset_left = 39.5
+offset_right = 58.5
+offset_bottom = 44.0
+text = "2"
+label_settings = SubResource("LabelSettings_b4ikr")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 25 xIDx81_8920x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=1692388223]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 571.0
+offset_top = 25.0
+offset_right = 573.0
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_013p8")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 84 xIDx81_8921x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=1813312031]
+custom_minimum_size = Vector2(130, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 647.66675
+offset_top = 22.0
+offset_right = 777.66675
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fy5c")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(130, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8921x" unique_id=698718077]
+layout_mode = 2
+
+[node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8921x/InnerContainer" unique_id=716483640]
+layout_mode = 0
+offset_left = 45.5
+offset_right = 84.5
+offset_bottom = 44.0
+text = "67"
+label_settings = SubResource("LabelSettings_0qry1")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Rectangle 26 xIDx81_8923x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=2037832413]
+custom_minimum_size = Vector2(2, 38)
+layout_mode = 0
+offset_left = 852.3334
+offset_top = 25.0
+offset_right = 854.3334
+offset_bottom = 63.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0afbe")
+script = ExtResource("4_md1d2")
+minSize = Vector2(2, 38)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.83137256, 0.6666667, 0.5647059, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 85 xIDx81_8924x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=1797437130]
+clip_contents = false
+layout_mode = 0
+offset_left = 929.00006
+offset_top = 22.0
+offset_right = 1027.0
+offset_bottom = 66.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_siema")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8924x" unique_id=2141045930]
+layout_mode = 2
+
+[node name="净收益" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 85 xIDx81_8924x/InnerContainer" unique_id=1543568043]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 44.0
+text = "-33"
+label_settings = SubResource("LabelSettings_uul73")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="AvatarBlock" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer" unique_id=1991973157]
+anchors_preset = 0
+offset_left = 98.54872
+offset_top = 18.775084
+offset_right = 98.54872
+offset_bottom = 18.775084
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+
+[node name="AvatarFrame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/AvatarBlock" unique_id=1957286119]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.905914
+offset_top = -1.4992504
+offset_right = 90.094086
+offset_bottom = 163.50075
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="AvatarPadding" type="MarginContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=503168127]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PlayerAvatar" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1496456914]
+texture_filter = 4
+material = SubResource("ShaderMaterial_alusc")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_md1d2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AvatarRing" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/AvatarBlock/AvatarFrame" unique_id=1965035023]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_codbl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Frame 18 xIDx81_8926x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer" unique_id=538456476]
+clip_contents = false
+layout_mode = 0
+offset_left = 221.5
+offset_top = 475.0
+offset_right = 906.5
+offset_bottom = 508.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cujkm")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x" unique_id=1330010252]
+layout_mode = 2
+
+[node name="Frame 15 xIDx81_8927x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer" unique_id=1052887951]
+custom_minimum_size = Vector2(169, 0)
+clip_contents = false
+layout_mode = 0
+offset_top = 8.014709
+offset_right = 169.0
+offset_bottom = 24.985271
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_skkxt")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer")
+minSize = Vector2(169, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x" unique_id=1261789447]
+layout_mode = 2
+
+[node name="Rectangle 8 xIDx81_8928x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer" unique_id=716593556]
+material = SubResource("ShaderMaterial_h73gr")
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 7.4852905
+offset_right = 148.02943
+offset_bottom = 9.485291
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r3usu")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Rectangle 8 xIDx81_8928x/InnerContainer")
+minSize = Vector2(0, 2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_2e51344d5c185b67")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Rectangle 8 xIDx81_8928x" unique_id=1756853885]
+layout_mode = 2
+
+[node name="Union xIDx81_8929x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer" unique_id=771154214]
+material = SubResource("ShaderMaterial_d7i1i")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_left = 152.02942
+offset_top = 8.485291
+offset_right = 164.02942
+offset_bottom = 20.48529
+rotation = -0.7853982
+scale = Vector2(0.99999994, 0.99999994)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uk7rs")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_513d6f681db1ba88")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x" unique_id=2101817278]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 7 xIDx81_8930x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer" unique_id=1262824635]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3ujm7")
+script = ExtResource("4_md1d2")
+minSize = Vector2(4, 4)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Subtract xIDx81_8931x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer" unique_id=244287708]
+material = SubResource("ShaderMaterial_lxcbh")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sr7s2")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer/Subtract xIDx81_8931x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_35a0805cab7a0d15")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer/Subtract xIDx81_8931x" unique_id=1293551624]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 5 xIDx81_8932x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer/Subtract xIDx81_8931x/InnerContainer" unique_id=1016380394]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u2547")
+script = ExtResource("4_md1d2")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle 6 xIDx81_8933x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer/Subtract xIDx81_8931x/InnerContainer" unique_id=1650153784]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x21f8")
+script = ExtResource("4_md1d2")
+minSize = Vector2(8, 8)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 13 xIDx81_8934x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer" unique_id=265984566]
+clip_contents = false
+layout_mode = 0
+offset_left = 183.0
+offset_right = 502.0
+offset_bottom = 33.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5wjvp")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 13 xIDx81_8934x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 13 xIDx81_8934x" unique_id=249629778]
+layout_mode = 2
+
+[node name="奖池按红包分进行正比例分配  xIDx81_8935x" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 13 xIDx81_8934x/InnerContainer" unique_id=704928494]
+layout_mode = 0
+offset_right = 319.0
+offset_bottom = 33.0
+text = "奖池按红包分进行正比例分配"
+label_settings = SubResource("LabelSettings_x8k45")
+clip_text = true
+
+[node name="Frame 17 xIDx81_8936x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer" unique_id=1204954316]
+custom_minimum_size = Vector2(169, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 685.0
+offset_top = 8.014709
+offset_right = 854.0
+offset_bottom = 24.985271
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_oahjc")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer")
+minSize = Vector2(169, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x" unique_id=582659499]
+layout_mode = 2
+
+[node name="Rectangle 8 xIDx81_8937x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer" unique_id=940797987]
+material = SubResource("ShaderMaterial_ocmx1")
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 7.4852905
+offset_right = 148.02943
+offset_bottom = 9.485291
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vnvyc")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Rectangle 8 xIDx81_8937x/InnerContainer")
+minSize = Vector2(0, 2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_bc05ed9c2a83b795")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Rectangle 8 xIDx81_8937x" unique_id=1356152961]
+layout_mode = 2
+
+[node name="Union xIDx81_8938x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer" unique_id=2069683071]
+material = SubResource("ShaderMaterial_nx2e5")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_left = 152.02942
+offset_top = 8.485291
+offset_right = 164.02942
+offset_bottom = 20.48529
+rotation = -0.7853982
+scale = Vector2(0.99999994, 0.99999994)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_70tie")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_513d6f681db1ba88")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x" unique_id=1270496952]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 7 xIDx81_8939x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer" unique_id=1830471]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6kvil")
+script = ExtResource("4_md1d2")
+minSize = Vector2(4, 4)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Subtract xIDx81_8940x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer" unique_id=2061828823]
+material = SubResource("ShaderMaterial_1ipvp")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a78o1")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer/Subtract xIDx81_8940x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_35a0805cab7a0d15")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer/Subtract xIDx81_8940x" unique_id=1350632982]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 5 xIDx81_8941x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer/Subtract xIDx81_8940x/InnerContainer" unique_id=1086071841]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_orulx")
+script = ExtResource("4_md1d2")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle 6 xIDx81_8942x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer/Subtract xIDx81_8940x/InnerContainer" unique_id=2027372750]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 0
+offset_left = 1.999939
+offset_top = 2.0
+offset_right = 9.999939
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nxg2c")
+script = ExtResource("4_md1d2")
+minSize = Vector2(8, 8)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 99 xIDx81_8943x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer" unique_id=1875499379]
+custom_minimum_size = Vector2(1045, 89)
+clip_contents = false
+layout_mode = 0
+offset_left = 41.5
+offset_top = 524.0
+offset_right = 1086.5
+offset_bottom = 613.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g4k0r")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer")
+minSize = Vector2(1045, 89)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x" unique_id=1760324803]
+layout_mode = 2
+
+[node name="Frame 97 xIDx81_8944x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer" unique_id=887352817]
+custom_minimum_size = Vector2(0, 89)
+clip_contents = false
+layout_mode = 0
+offset_left = 15.5
+offset_right = 1033.5
+offset_bottom = 89.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6liqa")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 97 xIDx81_8944x/InnerContainer")
+minSize = Vector2(0, 89)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.83137256, 0.6666667, 0.5686275, 1)
+corner_radius = [55.0, 55.0, 55.0, 55.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 97 xIDx81_8944x" unique_id=822663985]
+layout_mode = 2
+
+[node name="HintText" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 97 xIDx81_8944x/InnerContainer" unique_id=1832020466]
+layout_mode = 0
+offset_left = 144.0075
+offset_top = 11.058478
+offset_right = 869.1365
+offset_bottom = 77.05848
+text = "你获得 200 金币，净收益 100 金币"
+label_settings = SubResource("LabelSettings_suygy")
+clip_text = true
+
+[node name="Frame 102 xIDx81_8946x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer" unique_id=1268019404]
+custom_minimum_size = Vector2(219, 190)
+clip_contents = false
+layout_mode = 0
+offset_left = 1093.5
+offset_top = -52.0
+offset_right = 1312.5
+offset_bottom = 138.0
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x20bg")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 102 xIDx81_8946x/InnerContainer")
+minSize = Vector2(219, 190)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 102 xIDx81_8946x" unique_id=2057548829]
+layout_mode = 2
+
+[node name="image 143 xIDx81_8947x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 102 xIDx81_8946x/InnerContainer" unique_id=221636116]
+material = SubResource("ShaderMaterial_tvm1u")
+custom_minimum_size = Vector2(173, 142)
+layout_mode = 0
+offset_left = 209.22266
+offset_top = 55.11035
+offset_right = 382.22266
+offset_bottom = 197.11035
+rotation = -2.8173876
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4pqq3")
+script = ExtResource("4_md1d2")
+minSize = Vector2(173, 142)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("11_m813u")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 101 xIDx81_8948x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer" unique_id=227745812]
+custom_minimum_size = Vector2(219, 190)
+clip_contents = false
+layout_mode = 0
+offset_left = -42.5
+offset_top = -52.0
+offset_right = 176.5
+offset_bottom = 138.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_saa8s")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 101 xIDx81_8948x/InnerContainer")
+minSize = Vector2(219, 190)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 101 xIDx81_8948x" unique_id=482130973]
+layout_mode = 2
+
+[node name="image 143 xIDx81_8949x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 101 xIDx81_8948x/InnerContainer" unique_id=1420230639]
+material = SubResource("ShaderMaterial_cmd05")
+custom_minimum_size = Vector2(173, 142)
+layout_mode = 0
+offset_left = 209.22266
+offset_top = 55.11035
+offset_right = 382.22266
+offset_bottom = 197.11035
+rotation = -2.8173876
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gs2y1")
+script = ExtResource("4_md1d2")
+minSize = Vector2(173, 142)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("11_m813u")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 93 xIDx81_8950x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1824682201]
+custom_minimum_size = Vector2(812, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 474.0
+offset_top = -7.0
+offset_right = 1286.0
+offset_bottom = 234.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_www77")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer")
+minSize = Vector2(812, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x" unique_id=1988590908]
+layout_mode = 2
+
+[node name="image 150 xIDx81_8951x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer" unique_id=1065093117]
+material = SubResource("ShaderMaterial_kgca8")
+custom_minimum_size = Vector2(0, 197)
+layout_mode = 0
+offset_right = 812.0
+offset_bottom = 197.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h22ek")
+script = ExtResource("4_md1d2")
+minSize = Vector2(0, 197)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("12_ybp5g")
+textureSizeMode = "Keep Size"
+zoom = 0.5
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 95 xIDx81_8952x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer" unique_id=998553546]
+custom_minimum_size = Vector2(617, 73)
+clip_contents = false
+layout_mode = 0
+offset_left = 97.5
+offset_top = 168.0
+offset_right = 714.5
+offset_bottom = 241.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gpu0s")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer")
+minSize = Vector2(617, 73)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x" unique_id=330109593]
+layout_mode = 2
+
+[node name="image 149 xIDx81_8953x" type="Panel" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer" unique_id=1275443790]
+material = SubResource("ShaderMaterial_epi6v")
+custom_minimum_size = Vector2(617, 73)
+layout_mode = 0
+offset_right = 617.0
+offset_bottom = 73.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fpqni")
+script = ExtResource("4_md1d2")
+minSize = Vector2(617, 73)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_687e7750eba2f0c2")
+textureSizeMode = "Stretch"
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+metadata/figma_slice_children = PackedStringArray("I81:8953;77:6035", "I81:8953;77:6036", "I81:8953;77:6037", "I81:8953;77:6038", "I81:8953;77:6039", "I81:8953;77:6040", "I81:8953;77:6041", "I81:8953;77:6042", "I81:8953;77:6043")
+
+[node name="Frame 94 xIDx81_8954x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer" unique_id=211157753]
+clip_contents = false
+layout_mode = 0
+offset_left = 106.5
+offset_top = 17.5
+offset_right = 510.5
+offset_bottom = 55.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_15ar2")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer/Frame 94 xIDx81_8954x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer/Frame 94 xIDx81_8954x" unique_id=449395351]
+layout_mode = 2
+
+[node name="最高分请客，其余人瓜分奖池  xIDx81_8956x" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer/Frame 94 xIDx81_8954x/InnerContainer" unique_id=603749413]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 404.0
+offset_bottom = 38.0
+text = "瓜分百亿红包奖池"
+label_settings = SubResource("LabelSettings_svawp")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Frame 138 xIDx83_10505x" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=194729383]
+custom_minimum_size = Vector2(493, 557.5)
+clip_contents = false
+layout_mode = 0
+offset_left = 44.0
+offset_top = 127.0
+offset_right = 537.0
+offset_bottom = 684.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bv8fv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("2_4hqpo")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer")
+minSize = Vector2(493, 557.5)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x" unique_id=996365107]
+layout_mode = 2
+
+[node name="请客玩家头像" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer" unique_id=1272869546]
+anchors_preset = 0
+offset_left = 232.76158
+offset_top = 173.29984
+offset_right = 232.76158
+offset_bottom = 173.29984
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.7, 1.7)
+mouse_filter = 2
+
+[node name="AvatarFrame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/请客玩家头像" unique_id=945091561]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.905914
+offset_top = -1.4992504
+offset_right = 90.094086
+offset_bottom = 163.50075
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/请客玩家头像/AvatarFrame" unique_id=1558117157]
+texture_filter = 4
+layout_mode = 0
+offset_left = -55.52887
+offset_top = -17.990997
+offset_right = 224.83096
+offset_bottom = 191.90402
+texture = ExtResource("22_qs4lv")
+expand_mode = 1
+
+[node name="AvatarPadding" type="MarginContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/请客玩家头像/AvatarFrame" unique_id=1713569785]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PlayerAvatar" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/请客玩家头像/AvatarFrame/AvatarPadding" unique_id=1336663270]
+texture_filter = 4
+material = SubResource("ShaderMaterial_alusc")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("11_md1d2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AvatarRing" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/请客玩家头像/AvatarFrame" unique_id=1335053714]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_codbl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="昵称框" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer" unique_id=2125757426]
+texture_filter = 4
+layout_mode = 0
+offset_left = 102.3268
+offset_top = 437.16788
+offset_right = 382.68665
+offset_bottom = 522.6251
+texture = ExtResource("22_ybp5g")
+expand_mode = 1
+
+[node name="请客玩家昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/昵称框" unique_id=942318309]
+layout_mode = 0
+offset_left = 83.67322
+offset_top = 15.848572
+offset_right = 205.67322
+offset_bottom = 70.84857
+text = "蒋天林"
+label_settings = SubResource("LabelSettings_elj1h")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="气泡" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer" unique_id=572758196]
+texture_filter = 4
+layout_mode = 0
+offset_left = 33.361282
+offset_top = -0.61321163
+offset_right = 440.0359
+offset_bottom = 232.65666
+texture = ExtResource("24_jg048")
+expand_mode = 1
