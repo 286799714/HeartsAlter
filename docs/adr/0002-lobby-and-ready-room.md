@@ -14,5 +14,5 @@
 
 - 大厅不会看到手牌、session id 或其他私有牌局数据。
 - 房间列表中的人数、准备人数和阶段来自房间 metadata，而不是客户端推断。
-- 客户端场景流转为 `Lobby.tscn` → `ReadyRoom.tscn` → `Table.tscn`，席位预约和游戏适配器通过进程内会话对象传递。
+- 客户端场景流转为 `Lobby.tscn`（连接）→ `Intro.tscn`（玩家信息与房间目录）→ `ReadyRoom.tscn` → `Table.tscn`。大厅连接、席位预约和游戏适配器通过进程内会话对象传递；离开准备房间或结算页后返回 Intro 并重新同步存档。
 - 结算后玩家通过 `next_round` 表示同意，所有真实玩家同意后进入下一轮牌桌握手。

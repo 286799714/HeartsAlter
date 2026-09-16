@@ -40,6 +40,10 @@ public partial class Table : Control
 	public const int RightPlayerIndex = 3;
 	public const int PlayerCount = 4;
 
+	/// <summary>Set before entering the tree to use this table for a local lesson.</summary>
+	[Export]
+	public bool UseNetworkSession = true;
+
 	[Export]
 	private CardDeck _cardDeck = null!;
 
@@ -218,7 +222,7 @@ public partial class Table : Control
 			_cardDeck.ChangeCardCount(0);
 		}
 
-		_networkAdapter = GameSession.GameAdapter;
+		_networkAdapter = UseNetworkSession ? GameSession.GameAdapter : null;
 		if (_networkAdapter is not null)
 		{
 			_networkAdapter.StateChanged += HandleNetworkStateChanged;
@@ -240,6 +244,7 @@ public partial class Table : Control
 
 	public override void _ExitTree()
 	{
+		CancelLocalPassing();
 		_dealGeneration++;
 		_collectGeneration++;
 		IsDealing = false;
@@ -722,44 +727,17 @@ public partial class Table : Control
 		_mainHandLayout.SetSelectionEnabled(true);
 		_mainHandLayout.SetPlayableCards(
 			legal,
-			openingTurn ? "你持有 ♣2，由你先出，可选择任意合法牌。"
-				: mustDiscardPoints ? "你已缺门，必须优先出红桃或黑桃 Q。" : "");
+			openingTurn ? "你持有 ♣2，由你第一个出牌。"
+				: mustDiscardPoints ? "你已缺门，必须先出红桃或黑桃 Q。" : "");
 	}
 
 	private List<CardData> GetLegalNetworkCards(MyRoomState state, out bool mustDiscardPoints)
 	{
-		mustDiscardPoints = false;
-		var legal = new List<CardData>(_networkHandCards);
-		if (legal.Count == 0) return legal;
-		if (state.trick.Count > 0 && !string.IsNullOrEmpty(state.leadSuit))
-		{
-			PokerSuit lead = ParseSuit(state.leadSuit);
-			List<CardData> follow = legal.FindAll(card => card.Suit == lead);
-			if (follow.Count > 0) legal = follow;
-			else
-			{
-				// A void discard takes priority over first-trick restrictions.
-				List<CardData> pointCards = legal.FindAll(IsPointCard);
-				mustDiscardPoints = pointCards.Count > 0;
-				return mustDiscardPoints ? pointCards : legal;
-			}
-		}
-		if (state.trick.Count == 0 && !state.heartsBroken)
-		{
-			// Apply the same filters, in the same order, as the server rules.
-			List<CardData> nonHearts = legal.FindAll(card => card.Suit != PokerSuit.Heart);
-			if (nonHearts.Count > 0) legal = nonHearts;
-		}
-		if (state.trickNumber == 0)
-		{
-			List<CardData> safe = legal.FindAll(card => !IsPointCard(card));
-			if (safe.Count > 0) legal = safe;
-		}
-		return legal;
+		PokerSuit? lead = state.trick.Count > 0 && !string.IsNullOrEmpty(state.leadSuit)
+			? ParseSuit(state.leadSuit) : null;
+		return CardRules.LegalCards(_networkHandCards, lead, state.trickNumber == 0,
+			state.heartsBroken, out mustDiscardPoints);
 	}
-
-	private static bool IsPointCard(CardData card) =>
-		card.Suit == PokerSuit.Heart || (card.Suit == PokerSuit.Spade && card.Rank == PokerRank.Queen);
 
 	private static PokerSuit ParseSuit(string suit) => suit switch
 	{
@@ -822,7 +800,7 @@ public partial class Table : Control
 		if (_networkTransitioning || !IsInsideTree()) return;
 		_networkTransitioning = true;
 		GameSession.GameAdapter = _networkAdapter;
-		GetTree().ChangeSceneToFile(scenePath);
+		SceneNavigation.Change(this, scenePath);
 	}
 
 	private int GetLocalSeat(MyRoomState state)
@@ -1003,6 +981,7 @@ public partial class Table : Control
 		if (!HasCompleteTable())
 			return false;
 
+		CancelLocalPassing();
 		CancelCollectTrick();
 		int generation = ++_dealGeneration;
 		_animationLayer.CancelAnimation(freeCard: true);
@@ -1457,6 +1436,11 @@ public partial class Table : Control
 
 	private void HandleMainPlayerPassCardsSubmitted(IReadOnlyList<CardData> cards)
 	{
+		if (!UseNetworkSession)
+		{
+			MainPlayerPassCardsRequested?.Invoke(cards);
+			return;
+		}
 		if (_networkAdapter is null || _networkAdapter.State?.phase != "passing" ||
 			cards is null || cards.Count != 3)
 			return;

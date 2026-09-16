@@ -1,0 +1,14 @@
+[gd_resource type="FontVariation" format=3 uid="uid://jw46yql2w7ym"]
+
+[ext_resource type="FontFile" uid="uid://b5g1853nftc45" path="res://assets/fonts/NotoSansCJKsc-Regular.otf" id="1_87nvg"]
+[ext_resource type="FontFile" uid="uid://mw5mj8mxa0or" path="res://assets/fonts/NotoSansSymbols2-Regular.ttf" id="2_irl1i"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_irl1i")])
+base_font = ExtResource("1_87nvg")
+variation_opentype = {
+0: 1
+}
+opentype_features = {
+1667329140: 0
+}

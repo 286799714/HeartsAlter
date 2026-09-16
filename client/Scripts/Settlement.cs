@@ -121,7 +121,7 @@ public partial class Settlement : Control
 		if (_transitioning || !IsInsideTree()) return;
 		_transitioning = true;
 		GameSession.GameAdapter = null;
-		GetTree().ChangeSceneToFile("res://scenes/Lobby.tscn");
+		SceneNavigation.Change(this, "res://scenes/Intro.tscn");
 	}
 
 	private void Transition(string scene)
@@ -129,7 +129,7 @@ public partial class Settlement : Control
 		if (_transitioning) return;
 		_transitioning = true;
 		GameSession.GameAdapter = _adapter;
-		GetTree().ChangeSceneToFile(scene);
+		SceneNavigation.Change(this, scene);
 	}
 
 	private void BuildUi()

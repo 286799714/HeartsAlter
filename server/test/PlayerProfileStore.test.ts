@@ -17,14 +17,29 @@ describe("SQLite player saves", () => {
       assert.equal(profile.chips, 1000);
       store.claimSeat(profile.playerId, "seat-a");
       store.saveBalances([{ playerId: profile.playerId, chips: 875, owner: "seat-a" }]);
+      assert.deepEqual(store.updateName("device-a", " 新昵称 ' "), { ...profile, name: "新昵称 '", chips: 875 });
       store.close();
       store = new PlayerProfileStore(path);
-      assert.deepEqual(store.getOrCreate("device-a", "overwrite"), { ...profile, chips: 875 });
+      assert.deepEqual(store.getOrCreate("device-a", "overwrite"), { ...profile, name: "新昵称 '", chips: 875 });
       assert.deepEqual(store.getByDevice("device-b"), other);
     } finally {
       store.close();
       rmSync(directory, { recursive: true, force: true });
     }
+  });
+
+  it("rejects invalid nickname edits without changing the save", () => {
+    const store = new PlayerProfileStore(":memory:");
+    try {
+      const profile = store.getOrCreate("rename-device", "原昵称");
+      for (const name of [undefined, null, 123, {}, "", "  ", "名".repeat(25), "a\nb", "a\u0000b"]) {
+        assert.throws(() => store.updateName("rename-device", name), /昵称/);
+        assert.deepEqual(store.getByDevice("rename-device"), profile);
+      }
+      const name = "😀".repeat(24);
+      assert.equal(store.updateName("rename-device", name).name, name);
+      assert.throws(() => store.updateName("missing-device", "昵称"), /存档不存在/);
+    } finally { store.close(); }
   });
 
   it("rolls back every balance if any update in a settlement fails", () => {

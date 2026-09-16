@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 import {
   CARD_COUNT,
@@ -30,6 +31,17 @@ function card(id: string): Card {
 }
 
 describe("Hearts rules", () => {
+  it("matches the legality fixtures used by client hints and local tutorials", () => {
+    const fixtures = JSON.parse(readFileSync(new URL("../../client/Tests/fixtures/legal-cards.json", import.meta.url), "utf8"));
+    for (const fixture of fixtures) {
+      assert.deepEqual(
+        getLegalCards(fixture.hand.map(card), fixture.trick.map(card), fixture).map((entry) => entry.id),
+        fixture.legal,
+        fixture.name,
+      );
+    }
+  });
+
   it("creates exactly the 52 non-joker cards with asset-compatible ids", () => {
     assert.equal(CARD_COUNT, 52);
     assert.equal(PLAYER_COUNT, 4);

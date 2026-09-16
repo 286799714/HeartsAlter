@@ -20,21 +20,16 @@ public partial class ReadyRoom : Control
 	public override void _Ready()
 	{
 		BuildUi();
-		_adapter = new ColyseusClientAdapter();
+		_adapter = GameSession.GameAdapter is { IsConnected: true }
+			? GameSession.GameAdapter : new ColyseusClientAdapter();
 		_adapter.StateChanged += HandleStateChanged;
-		_adapter.ServerMessage += message => _status.Text = message;
-		_adapter.InvalidPlay += message => _status.Text = message;
-		_adapter.Error += (_, message) =>
-		{
-			_lastError = message ?? string.Empty;
-			_status.Text = $"错误：{_lastError}";
-		};
+		_adapter.ServerMessage += HandleServerMessage;
+		_adapter.InvalidPlay += HandleServerMessage;
+		_adapter.Error += HandleError;
 		var reservation = GameSession.PendingReservation;
 		GameSession.PendingReservation = null;
 		if (GameSession.GameAdapter is not null && GameSession.GameAdapter.IsConnected)
 		{
-			_adapter = GameSession.GameAdapter;
-			_adapter.StateChanged += HandleStateChanged;
 			HandleStateChanged(_adapter.State, true);
 			return;
 		}
@@ -52,9 +47,23 @@ public partial class ReadyRoom : Control
 		if (_adapter != null)
 		{
 			_adapter.StateChanged -= HandleStateChanged;
+			_adapter.ServerMessage -= HandleServerMessage;
+			_adapter.InvalidPlay -= HandleServerMessage;
+			_adapter.Error -= HandleError;
 			if (!_transitioning)
 				_ = _adapter.DisconnectAsync();
 		}
+	}
+
+	private void HandleServerMessage(string message)
+	{
+		if (IsInsideTree()) _status.Text = message;
+	}
+
+	private void HandleError(int code, string message)
+	{
+		_lastError = message ?? string.Empty;
+		if (IsInsideTree()) _status.Text = $"错误：{_lastError}";
 	}
 
 	private async Task ConnectAsync(RoomReservation reservation)
@@ -120,9 +129,11 @@ public partial class ReadyRoom : Control
 
 	private async Task LeaveToLobbyAsync()
 	{
+		if (_transitioning) return;
+		_transitioning = true;
 		await _adapter.DisconnectAsync();
 		GameSession.GameAdapter = null;
-		GetTree().ChangeSceneToFile("res://scenes/Lobby.tscn");
+		if (IsInsideTree()) SceneNavigation.Change(this, "res://scenes/Intro.tscn");
 	}
 
 	private void TransitionToTable()
@@ -130,7 +141,7 @@ public partial class ReadyRoom : Control
 		if (_transitioning) return;
 		_transitioning = true;
 		GameSession.GameAdapter = _adapter;
-		GetTree().ChangeSceneToFile("res://scenes/in_game/Table.tscn");
+		SceneNavigation.Change(this, "res://scenes/in_game/Table.tscn");
 	}
 
 	private void BuildUi()

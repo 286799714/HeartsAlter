@@ -12,12 +12,17 @@ public sealed class ColyseusLobbyAdapter
 	public const string DefaultEndpoint = ColyseusClientAdapter.DefaultEndpoint;
 	private Client _client;
 	private Room<LobbyState> _room;
+	private TaskCompletionSource<PlayerProfile> _nameUpdate;
+	private string _nameUpdateId;
 
 	public event Action<LobbyState, bool> StateChanged;
 	public event Action<RoomReservation> RoomReservationReceived;
 	public event Action<string> ServerMessage;
 	public event Action<string> Error;
 	public event Action<PlayerProfile> ProfileReceived;
+	public event Action<int> Left;
+	public bool IsConnected => _room != null && Profile != null;
+	public LobbyState State => _room?.State;
 	public RoomReservation PendingReservation { get; private set; }
 	public PlayerProfile Profile { get; private set; }
 	public string PlayerName { get; set; } = "玩家 1";
@@ -38,22 +43,35 @@ public sealed class ColyseusLobbyAdapter
 			});
 			_room.OnStateChange += (state, first) => StateChanged?.Invoke(state, first);
 			_room.OnError += (code, message) => Error?.Invoke(message ?? $"大厅错误 ({code})");
-			_room.OnLeave += _ =>
+			var connectedRoom = _room;
+			_room.OnLeave += code =>
 			{
+				if (_room != connectedRoom) return;
 				_room = null;
+				_nameUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
 				profileReady.TrySetException(new InvalidOperationException("同步存档时大厅连接已断开"));
+				Left?.Invoke(code);
 			};
 			_room.OnMessage<Dictionary<string, object>>("player_profile", payload =>
 			{
 				try
 				{
-					Profile = PlayerProfile.FromPayload(payload);
-					PlayerName = Profile.Name;
-					GameSession.Profile = Profile;
-					ProfileReceived?.Invoke(Profile);
+					ApplyProfile(payload);
 					profileReady.TrySetResult(Profile);
 				}
 				catch (Exception exception) { profileReady.TrySetException(exception); }
+			});
+			_room.OnMessage<Dictionary<string, object>>("player_name_updated", payload =>
+			{
+				if (_room != connectedRoom || _nameUpdate == null || ReadString(payload, "requestId") != _nameUpdateId) return;
+				try
+				{
+					string error = ReadString(payload, "error");
+					if (error.Length > 0) throw new InvalidOperationException(error);
+					ApplyProfile(payload);
+					_nameUpdate.TrySetResult(Profile);
+				}
+				catch (Exception exception) { _nameUpdate?.TrySetException(exception); }
 			});
 			_room.OnMessage<Dictionary<string, object>>("lobby_ready", payload => ServerMessage?.Invoke("大厅已连接"));
 			_room.OnMessage<Dictionary<string, object>>("lobby_error", payload => Error?.Invoke(ReadString(payload, "message")));
@@ -92,10 +110,42 @@ public sealed class ColyseusLobbyAdapter
 		});
 	}
 
+	public async Task<PlayerProfile> UpdatePlayerNameAsync(string name)
+	{
+		if (!IsConnected) throw new InvalidOperationException("请先连接大厅");
+		if (_nameUpdate != null) throw new InvalidOperationException("昵称正在保存，请稍候");
+		var completion = new TaskCompletionSource<PlayerProfile>(TaskCreationOptions.RunContinuationsAsynchronously);
+		_nameUpdate = completion;
+		_nameUpdateId = Guid.NewGuid().ToString("N");
+		try
+		{
+			await _room.Send("update_player_name", new Dictionary<string, object>
+			{
+				["name"] = name ?? string.Empty,
+				["requestId"] = _nameUpdateId,
+			});
+			return await completion.Task.WaitAsync(TimeSpan.FromSeconds(10));
+		}
+		finally
+		{
+			_nameUpdate = null;
+			_nameUpdateId = null;
+		}
+	}
+
+	private void ApplyProfile(Dictionary<string, object> payload)
+	{
+		Profile = PlayerProfile.FromPayload(payload);
+		PlayerName = Profile.Name;
+		GameSession.Profile = Profile;
+		ProfileReceived?.Invoke(Profile);
+	}
+
 	public async Task DisconnectAsync()
 	{
 		var room = _room;
 		_room = null;
+		_nameUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
 		if (room == null) return;
 		try { await room.Leave(true); } catch { }
 	}

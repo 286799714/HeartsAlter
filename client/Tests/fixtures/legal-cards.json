@@ -1,0 +1,14 @@
+[
+  { "name": "Club2 owner can lead other suits", "hand": ["Club2", "ClubA", "Diamond3", "Spade7", "Heart5", "SpadeQ"], "trick": [], "firstTrick": true, "heartsBroken": false, "legal": ["Club2", "ClubA", "Diamond3", "Spade7"] },
+  { "name": "follow suit before discarding points", "hand": ["Club3", "Heart5", "SpadeQ"], "trick": ["ClubA"], "firstTrick": false, "heartsBroken": false, "legal": ["Club3"] },
+  { "name": "void requires points on first trick", "hand": ["Club3", "Heart5", "SpadeQ"], "trick": ["DiamondA"], "firstTrick": true, "heartsBroken": false, "legal": ["Heart5", "SpadeQ"] },
+  { "name": "void requires hearts before breaking", "hand": ["Diamond3", "Heart5", "SpadeA"], "trick": ["ClubA"], "firstTrick": false, "heartsBroken": false, "legal": ["Heart5"] },
+  { "name": "void requires queen after breaking", "hand": ["Diamond3", "SpadeQ", "SpadeA"], "trick": ["HeartA"], "firstTrick": false, "heartsBroken": true, "legal": ["SpadeQ"] },
+  { "name": "void without points allows all", "hand": ["Diamond3", "SpadeK", "SpadeA"], "trick": ["ClubA"], "firstTrick": true, "heartsBroken": false, "legal": ["Diamond3", "SpadeK", "SpadeA"] },
+  { "name": "unbroken hearts cannot lead", "hand": ["Heart9", "Club2", "SpadeQ"], "trick": [], "firstTrick": false, "heartsBroken": false, "legal": ["Club2", "SpadeQ"] },
+  { "name": "broken hearts can lead", "hand": ["Heart9", "Club2", "SpadeQ"], "trick": [], "firstTrick": false, "heartsBroken": true, "legal": ["Heart9", "Club2", "SpadeQ"] },
+  { "name": "only hearts may lead unbroken", "hand": ["Heart2", "Heart9"], "trick": [], "firstTrick": true, "heartsBroken": false, "legal": ["Heart2", "Heart9"] },
+  { "name": "first trick spade alternatives exclude queen", "hand": ["Club2", "SpadeQ", "SpadeA", "Heart3"], "trick": ["Spade3"], "firstTrick": true, "heartsBroken": false, "legal": ["SpadeA"] },
+  { "name": "only matching spade is queen", "hand": ["Club2", "SpadeQ", "Heart3"], "trick": ["Spade3"], "firstTrick": true, "heartsBroken": false, "legal": ["SpadeQ"] },
+  { "name": "follow a heart lead", "hand": ["Heart3", "SpadeQ", "Club2"], "trick": ["HeartA"], "firstTrick": false, "heartsBroken": true, "legal": ["Heart3"] }
+]

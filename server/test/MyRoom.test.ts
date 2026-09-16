@@ -116,6 +116,34 @@ describe("authoritative Hearts room", () => {
     assert.equal(host.state.players.get(guest.sessionId).avatarId, profileB.avatarId);
   });
 
+  it("saves nickname edits only for the connected player and uses the new name in rooms and reconnects", async () => {
+    const lobby = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "rename-a", name: "Alice" });
+    const original = await requestProfile(lobby);
+    const other = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "rename-b", name: "Bob" });
+    const otherProfile = await requestProfile(other);
+    const updated = lobby.waitForMessage("player_name_updated");
+    lobby.send("update_player_name", {
+      requestId: "rename-1", name: "  新昵称  ", deviceId: "rename-b",
+      playerId: otherProfile.playerId, chips: 99999, avatarId: 99,
+    });
+    const expected = { ...original, name: "新昵称" };
+    assert.deepEqual(await updated, { ...expected, requestId: "rename-1" });
+    assert.deepEqual(await requestProfile(lobby), expected);
+    assert.deepEqual(await requestProfile(other), otherProfile);
+
+    for (const name of [" ", "长".repeat(25), null, "a\nb"]) {
+      const rejected = lobby.waitForMessage("player_name_updated");
+      lobby.send("update_player_name", { requestId: "invalid-name", name });
+      assert.match((await rejected).error, /昵称/);
+      assert.deepEqual(await requestProfile(lobby), expected);
+    }
+    const { client, room } = await consumeReservation(lobby, "create_room", { name: "改名后建房" });
+    assert.equal(room.state.players.get(client.sessionId)!.name, expected.name);
+    await lobby.leave();
+    const again = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "rename-a", name: "Overwrite" });
+    assert.deepEqual(await requestProfile(again), expected);
+  });
+
   it("rejects a second active seat and releases the device after leaving a waiting room", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
     const client = await colyseus.connectTo(room, { deviceId: "exclusive-device" });

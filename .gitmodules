@@ -1,0 +1,3 @@
+[submodule "client/addons/figma_importer"]
+	path = client/addons/figma_importer
+	url = https://github.com/morganwalkup/godot-figma-importer.git

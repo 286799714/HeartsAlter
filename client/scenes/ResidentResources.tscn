@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/ui/profile_icon_1.jpg" id="1_ml31p"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/profile_icon_2.jpg" id="2_fjoy4"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/profile_icon_3.jpg" id="3_rxmrs"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/profile_icon_4.jpg" id="4_vpsf4"]
+[ext_resource type="PackedScene" path="res://scenes/Intro.tscn" id="5_y77wm"]
+[ext_resource type="PackedScene" path="res://scenes/Lobby.tscn" id="6_ahnod"]
+[ext_resource type="PackedScene" path="res://scenes/ReadyRoom.tscn" id="7_2maae"]
+[ext_resource type="PackedScene" path="res://scenes/Settlement.tscn" id="8_8yman"]
+[ext_resource type="PackedScene" path="res://scenes/Tutorial.tscn" id="9_8y2er"]
+[ext_resource type="PackedScene" path="res://scenes/in_game/Table.tscn" id="10_poqhv"]
+
+[node name="ResidentResources" type="ResourcePreloader" unique_id=1223381544]
+resources = [PackedStringArray("res://assets/textures/ui/profile_icon_1.jpg", "res://assets/textures/ui/profile_icon_2.jpg", "res://assets/textures/ui/profile_icon_3.jpg", "res://assets/textures/ui/profile_icon_4.jpg", "res://scenes/Intro.tscn", "res://scenes/Lobby.tscn", "res://scenes/ReadyRoom.tscn", "res://scenes/Settlement.tscn", "res://scenes/Tutorial.tscn", "res://scenes/in_game/Table.tscn"), [ExtResource("1_ml31p"), ExtResource("2_fjoy4"), ExtResource("3_rxmrs"), ExtResource("4_vpsf4"), ExtResource("5_y77wm"), ExtResource("6_ahnod"), ExtResource("7_2maae"), ExtResource("8_8yman"), ExtResource("9_8y2er"), ExtResource("10_poqhv")]]

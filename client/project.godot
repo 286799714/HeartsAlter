@@ -15,6 +15,10 @@ run/main_scene="res://scenes/Lobby.tscn"
 config/features=PackedStringArray("4.7", "C#")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ResidentResources="*res://scenes/ResidentResources.tscn"
+
 [display]
 
 window/size/viewport_width=1280
@@ -29,6 +33,14 @@ window/size/min_height=540
 [dotnet]
 
 project/assembly_name="HeartsAlter"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/figma_importer/plugin.cfg")
+
+[gui]
+
+theme/custom_font="uid://jw46yql2w7ym"
 
 [physics]
 

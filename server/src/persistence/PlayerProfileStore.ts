@@ -66,6 +66,18 @@ export class PlayerProfileStore {
       avatarId: Number(row.avatarId), chips: Number(row.chips) };
   }
 
+  updateName(deviceId: string, value: unknown): PlayerProfile {
+    readDeviceId(deviceId);
+    const name = typeof value === "string" ? value.trim() : "";
+    if (!name) throw new Error("请输入昵称");
+    if ([...name].length > 24) throw new Error("昵称最多 24 个字符");
+    if (/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/u.test(name)) throw new Error("昵称不能包含换行或控制字符");
+    const result = this.database.prepare("UPDATE player_profiles SET name = ? WHERE device_id = ?")
+      .run(name, deviceId);
+    if (result.changes !== 1) throw new Error("玩家存档不存在");
+    return this.getByDevice(deviceId);
+  }
+
   claimSeat(playerId: string, owner: string) {
     const existing = this.activeSeats.get(playerId);
     if (existing && existing !== owner) throw new Error("此设备已在游戏房间中，请先离开原房间");

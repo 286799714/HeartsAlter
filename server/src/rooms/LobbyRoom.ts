@@ -20,6 +20,16 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
     request_profile: (client: Client) => {
       this.sendProfile(client);
     },
+    update_player_name: (client: Client, payload: { name?: unknown; requestId?: unknown } | undefined) => {
+      const requestId = typeof payload?.requestId === "string" ? payload.requestId.slice(0, 64) : "";
+      try {
+        const profile = getPlayerProfileStore().updateName(this.getDevice(client), payload?.name);
+        client.send("player_name_updated", { ...profile, requestId });
+      } catch (error) {
+        client.send("player_name_updated", { requestId,
+          error: error instanceof Error ? error.message : String(error) });
+      }
+    },
     refresh: async () => {
       await this.syncRooms();
     },
