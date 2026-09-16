@@ -67,6 +67,9 @@ export const MyRoomState = schema({
   lobbyManaged: t.boolean().default(false),
   /** Deadline for a phase-level handshake (table/deal), in server ms. */
   phaseDeadline: t.float64().default(0),
+  /** Room rules remain fixed from the start handshake through settlement. */
+  heartsBreakingEnabled: t.boolean().default(true),
+  mustDiscardPointsWhenVoid: t.boolean().default(true),
 });
 export type MyRoomState = SchemaType<typeof MyRoomState>;
 

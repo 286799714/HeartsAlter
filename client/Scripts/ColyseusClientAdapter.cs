@@ -157,6 +157,15 @@ public sealed class ColyseusClientAdapter
         });
     }
 
+    public Task SetRulesAsync(bool? heartsBreakingEnabled = null, bool? mustDiscardPointsWhenVoid = null)
+    {
+        if (_room == null) return Task.CompletedTask;
+        var options = new Dictionary<string, object>();
+        if (heartsBreakingEnabled.HasValue) options["heartsBreakingEnabled"] = heartsBreakingEnabled.Value;
+        if (mustDiscardPointsWhenVoid.HasValue) options["mustDiscardPointsWhenVoid"] = mustDiscardPointsWhenVoid.Value;
+        return _room.Send("set_rules", options);
+    }
+
     public Task AddBotAsync()
     {
         return _room == null ? Task.CompletedTask : _room.Send("add_bot");

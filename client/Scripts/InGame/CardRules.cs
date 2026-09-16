@@ -14,7 +14,8 @@ public static class CardRules
 		card.Suit == PokerSuit.Heart ? (queenPlayed ? 2 : 1) : IsQueen(card) ? 6 : 0;
 
 	public static List<CardData> LegalCards(IEnumerable<CardData> cards, PokerSuit? lead,
-		bool firstTrick, bool heartsBroken, out bool mustDiscardPoints)
+		bool firstTrick, bool heartsBroken, out bool mustDiscardPoints,
+		bool heartsBreakingEnabled = true, bool mustDiscardPointsWhenVoid = true)
 	{
 		var hand = cards.ToList();
 		mustDiscardPoints = false;
@@ -25,11 +26,11 @@ public static class CardRules
 			else
 			{
 				var points = hand.FindAll(IsPointCard);
-				mustDiscardPoints = points.Count > 0;
+				mustDiscardPoints = mustDiscardPointsWhenVoid && points.Count > 0;
 				return mustDiscardPoints ? points : hand;
 			}
 		}
-		else if (!heartsBroken && hand.Exists(card => card.Suit != PokerSuit.Heart))
+		else if (heartsBreakingEnabled && !heartsBroken && hand.Exists(card => card.Suit != PokerSuit.Heart))
 			hand = hand.FindAll(card => card.Suit != PokerSuit.Heart);
 		if (firstTrick && hand.Exists(card => !IsPointCard(card)))
 			hand = hand.FindAll(card => !IsPointCard(card));

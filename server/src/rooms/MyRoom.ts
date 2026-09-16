@@ -57,6 +57,11 @@ type PassMessage = {
   cardIndexes?: unknown;
 } | string | undefined;
 
+type RuleSettingsMessage = {
+  heartsBreakingEnabled?: unknown;
+  mustDiscardPointsWhenVoid?: unknown;
+} | undefined;
+
 /**
  * Colyseus adapter for the server-authoritative Hearts Alter round.
  *
@@ -109,6 +114,37 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     },
     toggle_ready: (client: Client, message: { ready?: unknown } | undefined) => {
       this.messages.ready(client, message);
+    },
+
+    /** Only the host may change rules before the start handshake begins. */
+    set_rules: (client: Client, message: RuleSettingsMessage) => {
+      if (!this.state.players.has(client.sessionId) || client.sessionId !== this.state.hostId) {
+        this.sendError(client, "只有房主可以修改房间规则");
+        return;
+      }
+      if (this.state.phase !== "waiting" || this.starting) {
+        this.sendError(client, "游戏开始后不能修改房间规则");
+        return;
+      }
+      const hearts = message?.heartsBreakingEnabled;
+      const discard = message?.mustDiscardPointsWhenVoid;
+      if ((hearts !== undefined && typeof hearts !== "boolean") ||
+        (discard !== undefined && typeof discard !== "boolean") ||
+        (hearts === undefined && discard === undefined)) {
+        this.sendError(client, "房间规则开关必须为布尔值");
+        return;
+      }
+      const nextHearts = typeof hearts === "boolean" ? hearts : this.state.heartsBreakingEnabled;
+      const nextDiscard = typeof discard === "boolean" ? discard : this.state.mustDiscardPointsWhenVoid;
+      if (nextHearts === this.state.heartsBreakingEnabled &&
+        nextDiscard === this.state.mustDiscardPointsWhenVoid) return;
+      this.state.heartsBreakingEnabled = nextHearts;
+      this.state.mustDiscardPointsWhenVoid = nextDiscard;
+      for (const player of this.state.players.values()) {
+        player.ready = player.isHost || player.isBot;
+      }
+      this.state.message = "房间规则已更新，请其他玩家重新准备";
+      this.publishRoomMetadata();
     },
 
     /** The owner adds one synthetic seat to an empty slot. */
@@ -279,6 +315,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.botsEnabled = safeOptions.bots === true;
     this.lobbyManaged = safeOptions.lobbyManaged === true;
     this.state.lobbyManaged = this.lobbyManaged;
+    this.state.heartsBreakingEnabled = safeOptions.heartsBreakingEnabled !== false;
+    this.state.mustDiscardPointsWhenVoid = safeOptions.mustDiscardPointsWhenVoid !== false;
     this.displayName = this.readRoomName(safeOptions.roomName);
     // A demo room has one real client and three synthetic seats.  Limiting
     // matchmaking to one connection makes the room's intent explicit and
@@ -868,10 +906,12 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     const legal = getLegalCards(hand, trickCards, {
       firstTrick: this.state.trickNumber === 0,
       heartsBroken: this.state.heartsBroken,
+      heartsBreakingEnabled: this.state.heartsBreakingEnabled,
+      mustDiscardPointsWhenVoid: this.state.mustDiscardPointsWhenVoid,
     });
     if (!legal.some((candidate) => candidate.id === card.id)) {
       if (client) {
-        const mustDiscardPoints = trickCards.length > 0 &&
+        const mustDiscardPoints = this.state.mustDiscardPointsWhenVoid && trickCards.length > 0 &&
           !hand.some((candidate) => candidate.suit === trickCards[0].suit) &&
           legal.some(isPointCard);
         this.sendError(client, mustDiscardPoints
@@ -1056,6 +1096,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     const legal = getLegalCards(hand, trickCards, {
       firstTrick: this.state.trickNumber === 0,
       heartsBroken: this.state.heartsBroken,
+      heartsBreakingEnabled: this.state.heartsBreakingEnabled,
+      mustDiscardPointsWhenVoid: this.state.mustDiscardPointsWhenVoid,
     });
     if (legal.length === 0) {
       // This should be unreachable for a valid 52-card deal. Recovering by

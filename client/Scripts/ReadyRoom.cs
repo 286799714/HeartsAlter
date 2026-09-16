@@ -14,6 +14,8 @@ public partial class ReadyRoom : Control
 	private Button _readyButton;
 	private Button _botButton;
 	private Button _startButton;
+	private CheckButton _heartsRule;
+	private CheckButton _discardPointsRule;
 	private bool _transitioning;
 	private string _lastError = string.Empty;
 
@@ -90,6 +92,9 @@ public partial class ReadyRoom : Control
 		foreach (Node child in _players.GetChildren()) child.QueueFree();
 		Player local = state.players.TryGetValue(_adapter.SessionId, out var current) ? current : null;
 		bool isHost = local?.isHost == true;
+		_heartsRule.SetPressedNoSignal(state.heartsBreakingEnabled);
+		_discardPointsRule.SetPressedNoSignal(state.mustDiscardPointsWhenVoid);
+		_heartsRule.Disabled = _discardPointsRule.Disabled = !isHost || state.phase != "waiting";
 		bool allReady = state.players.Count == 4;
 		foreach (string playerId in state.players.Keys)
 		{
@@ -164,6 +169,25 @@ public partial class ReadyRoom : Control
 		_players = new VBoxContainer { SizeFlagsVertical = Control.SizeFlags.ExpandFill };
 		_players.AddThemeConstantOverride("separation", 10);
 		column.AddChild(_players);
+		var rules = new VBoxContainer();
+		rules.AddThemeConstantOverride("separation", 6);
+		column.AddChild(rules);
+		rules.AddChild(new Label { Text = "房间规则（仅房主可在开局前修改）" });
+		_heartsRule = new CheckButton
+		{
+			Name = "HeartsBreakingToggle", Text = "启用碎心规则", ButtonPressed = true, Disabled = true,
+			TooltipText = "开启：红心未破时不能领出红桃，除非手中只剩红桃。关闭：解除此限制。首墩避免领出分牌的限制仍适用。",
+		};
+		_heartsRule.Toggled += enabled => _ = _adapter.SetRulesAsync(heartsBreakingEnabled: enabled);
+		rules.AddChild(_heartsRule);
+		_discardPointsRule = new CheckButton
+		{
+			Name = "PointDiscardToggle", Text = "缺门时必须优先垫得分牌", ButtonPressed = true, Disabled = true,
+			TooltipText = "开启：缺门时有红桃或黑桃 Q 必须先出分牌，首墩也适用。关闭：缺门时可出任意手牌。",
+		};
+		_discardPointsRule.Toggled += enabled => _ = _adapter.SetRulesAsync(mustDiscardPointsWhenVoid: enabled);
+		rules.AddChild(_discardPointsRule);
+		rules.AddChild(new Label { Text = "修改规则后，其他玩家需要重新准备。" });
 		var actions = new HBoxContainer();
 		_readyButton = new Button { Text = "准备" };
 		_readyButton.Pressed += ToggleReady;

@@ -202,6 +202,10 @@ export function dealShuffledHands(random: RandomSource = Math.random): Card[][] 
 export const dealFourHands = dealShuffledHands;
 
 export interface LegalPlayOptions {
+  /** Require hearts to be broken before leading them (default true). */
+  readonly heartsBreakingEnabled?: boolean;
+  /** Require point-card discards when void in the lead suit (default true). */
+  readonly mustDiscardPointsWhenVoid?: boolean;
   /** Whether a heart has already been played in an earlier trick. */
   readonly heartsBroken?: boolean;
   /** Whether this is the first trick of the deal. */
@@ -269,9 +273,9 @@ export function getLegalCards(
     if (followsLead) {
       legal = legal.filter((card) => card.suit === leadSuit);
     } else {
-      // Being void requires discarding a point card when one is held, even
-      // on the first trick or before hearts are broken.
-      const pointCards = hand.filter(isPointCard);
+      // When enabled, being void requires points even on the first trick.
+      // Otherwise any discard is allowed, regardless of hearts being broken.
+      const pointCards = options.mustDiscardPointsWhenVoid !== false ? hand.filter(isPointCard) : [];
       return pointCards.length > 0 ? pointCards : legal;
     }
   }
@@ -280,7 +284,8 @@ export function getLegalCards(
   // suit. This only constrains the lead; a player must still follow a heart
   // lead when they have one. Q♠ is not a heart and is never affected by this
   // flag (its six points are handled independently by isPointCard).
-  if (isLeading && !heartsBroken && hand.some((card) => card.suit !== "hearts")) {
+  if (isLeading && options.heartsBreakingEnabled !== false && !heartsBroken &&
+    hand.some((card) => card.suit !== "hearts")) {
     legal = legal.filter((card) => card.suit !== "hearts");
   }
 

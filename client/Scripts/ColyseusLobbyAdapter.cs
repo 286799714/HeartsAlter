@@ -92,13 +92,16 @@ public sealed class ColyseusLobbyAdapter
 		}
 	}
 
-	public Task CreateRoomAsync(string name, int ante = 100, bool bots = false)
+	public Task CreateRoomAsync(string name, int ante = 100, bool bots = false,
+		bool heartsBreakingEnabled = true, bool mustDiscardPointsWhenVoid = true)
 	{
 		return _room == null || Profile == null ? Task.CompletedTask : _room.Send("create_room", new Dictionary<string, object>
 		{
 			["name"] = name ?? string.Empty,
 			["ante"] = ante,
 			["bots"] = bots,
+			["heartsBreakingEnabled"] = heartsBreakingEnabled,
+			["mustDiscardPointsWhenVoid"] = mustDiscardPointsWhenVoid,
 		});
 	}
 

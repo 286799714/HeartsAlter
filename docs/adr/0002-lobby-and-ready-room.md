@@ -12,6 +12,8 @@
 
 ## 结果
 
+准备阶段由房主通过 `set_rules` 修改 `heartsBreakingEnabled` 和 `mustDiscardPointsWhenVoid`，只接受布尔值的部分更新；两项默认开启并作为公开状态同步。实际变更会重置其他真人的准备状态，房主和机器人保持准备；开始请求锁定房间后禁止修改，后续牌局及握手回退保留选项。
+
 - 大厅不会看到手牌、session id 或其他私有牌局数据。
 - 房间列表中的人数、准备人数和阶段来自房间 metadata，而不是客户端推断。
 - 客户端场景流转为 `Lobby.tscn`（连接）→ `Intro.tscn`（玩家信息与房间目录）→ `ReadyRoom.tscn` → `Table.tscn`。大厅连接、席位预约和游戏适配器通过进程内会话对象传递；离开准备房间或结算页后返回 Intro 并重新同步存档。

@@ -78,5 +78,11 @@ public MyRoomState() { }
 
 		[Type(20, "float64")]
 		public double phaseDeadline = default(double);
+
+		[Type(21, "boolean")]
+		public bool heartsBreakingEnabled = default(bool);
+
+		[Type(22, "boolean")]
+		public bool mustDiscardPointsWhenVoid = default(bool);
 	}
 }

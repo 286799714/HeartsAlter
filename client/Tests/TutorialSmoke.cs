@@ -119,7 +119,7 @@ public partial class TutorialSmoke : Node
 			await WaitForInput();
 			await _tutorial.NextAsync();
 			await WaitForInput();
-			Check(_tutorial.Step.Id == "void" && _tutorial.Phase == TutorialPhase.Play, "Next did not load the next exercise.");
+			Check(_tutorial.Step.Id == "control" && _tutorial.Phase == TutorialPhase.Play, "Next did not load the next exercise.");
 			// Re-enter while a deal is in flight, then leave while passing is in flight.
 			Task abandoned = _tutorial.StartLessonAsync(0);
 			await _tutorial.StartLessonAsync(2);
@@ -260,8 +260,12 @@ public partial class TutorialSmoke : Node
 			CardData[] trick = fixture.GetProperty("trick").EnumerateArray().Select(value => CardRules.Parse(value.GetString())).ToArray();
 			string[] expected = fixture.GetProperty("legal").EnumerateArray().Select(value => value.GetString()).ToArray();
 			Check(CardRules.LegalCards(hand, trick.Length > 0 ? trick[0].Suit : null,
-				fixture.GetProperty("firstTrick").GetBoolean(), fixture.GetProperty("heartsBroken").GetBoolean(), out _)
+				fixture.GetProperty("firstTrick").GetBoolean(), fixture.GetProperty("heartsBroken").GetBoolean(), out bool mustDiscard,
+				!fixture.TryGetProperty("heartsBreakingEnabled", out var heartsRule) || heartsRule.GetBoolean(),
+				!fixture.TryGetProperty("mustDiscardPointsWhenVoid", out var discardRule) || discardRule.GetBoolean())
 				.Select(CardRules.Id).SequenceEqual(expected), fixture.GetProperty("name").GetString());
+			if (fixture.TryGetProperty("mustDiscardPoints", out var expectedDiscard))
+				Check(mustDiscard == expectedDiscard.GetBoolean(), $"Incorrect discard hint: {fixture.GetProperty("name").GetString()}");
 		}
 		Check(CardRules.Payouts(new[] { 9, 12, 6, 0 }, 400).SequenceEqual(new[] { 240, 0, 160, 0 }), "Weighted payouts.");
 		Check(CardRules.Payouts(new[] { 10, 10, 5, 5 }, 401).SequenceEqual(new[] { 0, 0, 201, 200 }), "Tied highest payouts.");

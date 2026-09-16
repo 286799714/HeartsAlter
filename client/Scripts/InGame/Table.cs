@@ -736,7 +736,7 @@ public partial class Table : Control
 		PokerSuit? lead = state.trick.Count > 0 && !string.IsNullOrEmpty(state.leadSuit)
 			? ParseSuit(state.leadSuit) : null;
 		return CardRules.LegalCards(_networkHandCards, lead, state.trickNumber == 0,
-			state.heartsBroken, out mustDiscardPoints);
+			state.heartsBroken, out mustDiscardPoints, state.heartsBreakingEnabled, state.mustDiscardPointsWhenVoid);
 	}
 
 	private static PokerSuit ParseSuit(string suit) => suit switch

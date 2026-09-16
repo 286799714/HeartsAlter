@@ -3,7 +3,10 @@ import { LobbyRoomInfo, LobbyState } from "./schema/MyRoomState.js";
 import { MAX_PLAYERS, MyRoom } from "./MyRoom.js";
 import { getPlayerProfileStore, readDeviceId } from "../persistence/PlayerProfileStore.js";
 
-type RoomOptions = { name?: unknown; roomName?: unknown; ante?: unknown; playerName?: unknown; bots?: unknown };
+type RoomOptions = {
+  name?: unknown; roomName?: unknown; ante?: unknown; playerName?: unknown; bots?: unknown;
+  heartsBreakingEnabled?: unknown; mustDiscardPointsWhenVoid?: unknown;
+};
 
 /**
  * A lightweight, singleton-friendly lobby. Room instances remain authoritative
@@ -42,6 +45,8 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
           bots: options?.bots === true,
           roomName: this.readRoomName(options?.name ?? options?.roomName),
           ante: this.readAnte(options?.ante),
+          heartsBreakingEnabled: options?.heartsBreakingEnabled !== false,
+          mustDiscardPointsWhenVoid: options?.mustDiscardPointsWhenVoid !== false,
           deviceId,
         });
         this.sendReservation(client, reservation, "created");

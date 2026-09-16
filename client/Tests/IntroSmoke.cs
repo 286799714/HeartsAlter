@@ -98,6 +98,19 @@ public partial class IntroSmoke : Node
 			Check(!lobby.IsConnected, "Intro leaked its lobby connection after entering a room");
 			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].isHost, "Room creator is not the host");
 			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].name == "回车提交昵称", "Room did not use saved nickname");
+			var heartsToggle = Find<CheckButton>(Scene, "HeartsBreakingToggle");
+			var discardToggle = Find<CheckButton>(Scene, "PointDiscardToggle");
+			Check(heartsToggle.ButtonPressed && discardToggle.ButtonPressed && !heartsToggle.Disabled && !discardToggle.Disabled,
+				"Room rules must default on and be editable by the host");
+			await Click(heartsToggle);
+			await Until(() => !GameSession.GameAdapter.State.heartsBreakingEnabled, "hearts rule disabled");
+			Check(GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "Hearts toggle changed the discard rule");
+			await Click(discardToggle);
+			await Until(() => !GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "discard rule disabled");
+			await Click(heartsToggle);
+			await Until(() => GameSession.GameAdapter.State.heartsBreakingEnabled && heartsToggle.ButtonPressed, "hearts rule enabled again");
+			Check(!discardToggle.ButtonPressed, "Discard toggle did not retain its independent value");
+			await Capture("ready-room-rules");
 			await Click(FindButton("返回大厅"));
 			await IntroReady();
 			await Until(() => GameSession.LobbyAdapter.State.rooms.Count == 0, "created room removed after leaving");
@@ -136,6 +149,14 @@ public partial class IntroSmoke : Node
 			await Click(Find<Button>(row, "JoinButton"));
 			await Until(() => Scene is ReadyRoom && GameSession.GameAdapter?.State?.players?.Count == 2, "joined ready room");
 			Check(!GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].isHost, "Joiner unexpectedly became host");
+			heartsToggle = Find<CheckButton>(Scene, "HeartsBreakingToggle");
+			discardToggle = Find<CheckButton>(Scene, "PointDiscardToggle");
+			Check(heartsToggle.Disabled && discardToggle.Disabled, "Guest can edit room rules");
+			await _hosts[3].Send("set_rules", new Dictionary<string, object>
+			{
+				["heartsBreakingEnabled"] = false, ["mustDiscardPointsWhenVoid"] = false,
+			});
+			await Until(() => !heartsToggle.ButtonPressed && !discardToggle.ButtonPressed, "guest sees changed rules");
 			await Click(FindButton("返回大厅"));
 			await IntroReady();
 			await Click(Find<Button>(U<Control>("CreatePage"), "JoinTab"));
@@ -149,7 +170,7 @@ public partial class IntroSmoke : Node
 			await Click(U<Button>("BackToConnection"));
 			await Until(() => Scene is Lobby, "return to connection screen");
 			Check(GameSession.LobbyAdapter == null, "Lobby connection was not released");
-			GD.Print("INTRO_SMOKE_OK: connection handoff, profile, nickname editing/validation/persistence, tab clicks, empty history, create/join, scrolling, live room updates, errors and return flow");
+			GD.Print("INTRO_SMOKE_OK: connection handoff, profile, nickname editing/validation/persistence, tab clicks, empty history, create/join, room rule toggles and guest synchronization, scrolling, live room updates, errors and return flow");
 		}
 		catch (Exception exception)
 		{
