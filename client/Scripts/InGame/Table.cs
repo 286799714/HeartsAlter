@@ -137,7 +137,6 @@ public partial class Table : Control
 	private bool _networkPassExpected;
 	private bool _networkPassAnimationStarted;
 	private bool _networkPassAnimating;
-	private const double FinalSettlementDelaySeconds = 1.0;
 	private const double NetworkPlayRequestIntervalMsec = 100.0;
 	private double _lastNetworkPlaySentMsec = double.NegativeInfinity;
 	private ushort _networkScoreRound = ushort.MaxValue;
@@ -208,6 +207,7 @@ public partial class Table : Control
 	{
 		ResolveSceneReferences();
 		BindLayoutAnimations();
+		BindSettlementUi();
 		SetMainPlayerPlayEnabled(false);
 
 		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
@@ -236,6 +236,10 @@ public partial class Table : Control
 			_networkAdapter.TrickResolved += HandleNetworkTrickResolved;
 			_networkAdapter.RoundFinished += HandleNetworkRoundFinished;
 			_networkAdapter.RoomReset += HandleNetworkRoomReset;
+			_networkAdapter.ServerMessage += HandleNetworkStatus;
+			_networkAdapter.InvalidPlay += HandleNetworkStatus;
+			_networkAdapter.Error += HandleNetworkError;
+			_networkAdapter.Left += HandleNetworkRoomLeft;
 			MainPlayerCardPlayRequested += HandleNetworkCardPlayRequested;
 			HandleNetworkStateChanged(_networkAdapter.State, true);
 			_ = _networkAdapter.RequestHandAsync();
@@ -272,18 +276,29 @@ public partial class Table : Control
 			_networkAdapter.TrickResolved -= HandleNetworkTrickResolved;
 			_networkAdapter.RoundFinished -= HandleNetworkRoundFinished;
 			_networkAdapter.RoomReset -= HandleNetworkRoomReset;
+			_networkAdapter.ServerMessage -= HandleNetworkStatus;
+			_networkAdapter.InvalidPlay -= HandleNetworkStatus;
+			_networkAdapter.Error -= HandleNetworkError;
+			_networkAdapter.Left -= HandleNetworkRoomLeft;
 			MainPlayerCardPlayRequested -= HandleNetworkCardPlayRequested;
 			_networkHandCards.Clear();
 			_networkPassingSelections.Clear();
 			_networkPassingReceivedCards.Clear();
 			_networkPassGeneration++;
 			_lastNetworkPlaySentMsec = double.NegativeInfinity;
+			if (!_networkTransitioning) _ = _networkAdapter.DisconnectAsync();
 		}
 	}
 
 	private void HandleNetworkStateChanged(MyRoomState state, bool first)
 	{
-		if (state is null || _networkAdapter is null) return;
+		if (state is null || _networkAdapter is null || _networkTransitioning || _returningToLobby) return;
+		if (_networkSettlementScheduled && state.phase is ("table_ready" or "dealing" or "passing" or "playing"))
+		{
+			// A fresh table resets all deal/pass animation state and repeats the ready handshake.
+			TransitionNetworkScene("res://scenes/in_game/Table.tscn");
+			return;
+		}
 		if (state.phase == "waiting")
 		{
 			_networkPassGeneration++;
@@ -303,7 +318,10 @@ public partial class Table : Control
 		if (state.phase == "finished")
 		{
 			_mainPlayerInfo?.ClearTurnCountdown();
-			RequestNetworkSettlementTransition();
+			SetMainPlayerPlayEnabled(false);
+			_mainHandLayout?.SetSelectionEnabled(false);
+			UpdateSettlementUi(state);
+			RequestNetworkSettlement(!first);
 			return;
 		}
 		var players = new Player[PlayerCount];
@@ -380,7 +398,7 @@ public partial class Table : Control
 
 	private void HandleNetworkHandReceived(System.Collections.Generic.IReadOnlyList<string> cardIds, int roundNumber)
 	{
-		if (_networkAdapter?.State?.phase is not ("table_ready" or "dealing" or "passing" or "playing") || _networkDealStarted || cardIds is null || cardIds.Count == 0)
+		if (_networkTransitioning || _networkAdapter?.State?.phase is not ("table_ready" or "dealing" or "passing" or "playing") || _networkDealStarted || cardIds is null || cardIds.Count == 0)
 			return;
 		var cards = new List<CardData>(cardIds.Count);
 		foreach (string cardId in cardIds)
@@ -761,33 +779,32 @@ public partial class Table : Control
 	{
 		// The phase patch is the authoritative trigger. The message can arrive
 		// one dispatch tick before that patch, so do not schedule a one-shot
-		// transition against the stale `playing` state here.
+		// popup against the stale `playing` state here.
 		if (_networkAdapter?.State?.phase == "finished")
-			RequestNetworkSettlementTransition();
+			RequestNetworkSettlement();
 	}
 
-	private void RequestNetworkSettlementTransition()
+	private void RequestNetworkSettlement(bool waitForFinalTrick = true)
 	{
 		if (_networkSettlementScheduled) return;
 		_networkSettlementScheduled = true;
-		_ = TransitionToSettlementAfterFinalTrickAsync();
+		_ = ShowSettlementAfterFinalTrickAsync(waitForFinalTrick);
 	}
 
-	private async Task TransitionToSettlementAfterFinalTrickAsync()
+	private async Task ShowSettlementAfterFinalTrickAsync(bool waitForFinalTrick)
 	{
 		// State patches and room messages are delivered on separate client lanes.
 		// Wait briefly for the final trick_resolved message to start collection
 		// before we inspect IsCollectingTrick.
 		int dispatchFrames = 0;
-		while (IsInsideTree() && !_networkFinalTrickReceived && dispatchFrames++ < 120)
+		while (IsInsideTree() && !_networkTransitioning && waitForFinalTrick && !_networkFinalTrickReceived && dispatchFrames++ < 120)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		while (IsInsideTree() && IsCollectingTrick)
+		while (IsInsideTree() && !_networkTransitioning && IsCollectingTrick)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		if (!IsInsideTree() || _networkAdapter?.State?.phase != "finished") return;
-		SceneTreeTimer timer = GetTree().CreateTimer(FinalSettlementDelaySeconds);
-		await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
-		if (IsInsideTree() && _networkAdapter?.State?.phase == "finished")
-			TransitionNetworkScene("res://scenes/Settlement.tscn");
+		if (!IsInsideTree() || _networkTransitioning || _networkAdapter?.State?.phase != "finished") return;
+		_roundActions.Show();
+		UpdateSettlementUi(_networkAdapter.State);
+		_settlement.Open();
 	}
 
 	private void HandleNetworkRoomReset(string reason)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cmgyniaqt02p4"]
 
-[ext_resource type="Script" uid="uid://c1rvs6bx7t5ck" path="res://addons/figma_importer/figma_importer.gd" id="1_m35yq"]
+[ext_resource type="Script" uid="uid://bev6x4e2ixjje" path="res://Scripts/Settlement.cs" id="1_settlement"]
 [ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="2_4hqpo"]
 [ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="3_nmff4"]
 [ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="4_md1d2"]
@@ -1338,23 +1338,47 @@ font = SubResource("FontVariation_v164g")
 font_size = 40
 font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close"]
+bg_color = Color(0.68, 0.06, 0.07, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.74, 0.38, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_hover"]
+bg_color = Color(0.88, 0.13, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.87, 0.54, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
 [node name="Settlement" type="Control" unique_id=40988795]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_m35yq")
-document_json_file = "res://assets/figma_2_godot/settlement/figma_export.json"
-SelectPage = "已完成部分 xIDx0:1x"
-SelectFrame = "Frame 56 xIDx81:8847x"
-fonts_folder = "res://assets/fonts"
-images_folder = "res://assets/textures/ui/in_game"
-autoPlaceImages = true
-metadata/_custom_type_script = "uid://c1rvs6bx7t5ck"
+script = ExtResource("1_settlement")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=1996155132]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25, 0.25, 0.25, 0.65)
 
 [node name="Frame 56 xIDx81_8847x" type="ScrollContainer" parent="." unique_id=1099747572]
 custom_minimum_size = Vector2(1760, 946)
@@ -1371,7 +1395,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_x2aku")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(1760, 946)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -1490,7 +1514,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_d8x54")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(464, 178)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -1513,7 +1537,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ty4d2")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 89 xIDx81_8853x/InnerContainer/Group 1 xIDx81_8854x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(474, 216)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -1610,7 +1634,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_m41at")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(1128, 608)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -1635,7 +1659,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pdicv")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(1088, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -1877,6 +1901,7 @@ padding = [0, 0, 0, 0]
 layout_mode = 2
 
 [node name="FirstPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1202709794]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 88)
 clip_contents = false
 layout_mode = 0
@@ -1928,7 +1953,7 @@ layout_mode = 2
 layout_mode = 0
 offset_left = 88.0
 offset_top = 10.0
-offset_right = 186.0
+offset_right = 300.0
 offset_bottom = 54.0
 text = "蒋天林"
 label_settings = SubResource("LabelSettings_5nmu6")
@@ -1977,8 +2002,7 @@ layout_mode = 2
 
 [node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8879x/InnerContainer" unique_id=44516605]
 layout_mode = 0
-offset_left = 29.5
-offset_right = 68.5
+offset_right = 98.0
 offset_bottom = 44.0
 text = "12"
 label_settings = SubResource("LabelSettings_i6q7s")
@@ -2028,8 +2052,7 @@ layout_mode = 2
 
 [node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FirstPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8882x/InnerContainer" unique_id=1028758241]
 layout_mode = 0
-offset_left = 55.5
-offset_right = 74.5
+offset_right = 130.0
 offset_bottom = 44.0
 text = "0"
 label_settings = SubResource("LabelSettings_0kcen")
@@ -2150,6 +2173,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="SecondPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1370676109]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 88)
 clip_contents = false
 layout_mode = 0
@@ -2203,7 +2227,7 @@ layout_mode = 2
 layout_mode = 0
 offset_left = 88.0
 offset_top = 10.0
-offset_right = 255.0
+offset_right = 300.0
 offset_bottom = 54.0
 text = "蒋天林 (你)"
 label_settings = SubResource("LabelSettings_qojso")
@@ -2252,8 +2276,7 @@ layout_mode = 2
 
 [node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8892x/InnerContainer" unique_id=1807296664]
 layout_mode = 0
-offset_left = 39.5
-offset_right = 58.5
+offset_right = 98.0
 offset_bottom = 44.0
 text = "6"
 label_settings = SubResource("LabelSettings_2vep6")
@@ -2303,8 +2326,7 @@ layout_mode = 2
 
 [node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/SecondPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8895x/InnerContainer" unique_id=289997451]
 layout_mode = 0
-offset_left = 35.5
-offset_right = 94.5
+offset_right = 130.0
 offset_bottom = 44.0
 text = "200"
 label_settings = SubResource("LabelSettings_knmet")
@@ -2424,6 +2446,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="ThirdPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1296800980]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 88)
 clip_contents = false
 layout_mode = 0
@@ -2476,7 +2499,7 @@ layout_mode = 2
 layout_mode = 0
 offset_left = 88.0
 offset_top = 10.0
-offset_right = 186.0
+offset_right = 300.0
 offset_bottom = 54.0
 text = "蒋天林"
 label_settings = SubResource("LabelSettings_jahbs")
@@ -2525,8 +2548,7 @@ layout_mode = 2
 
 [node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8905x/InnerContainer" unique_id=1209654131]
 layout_mode = 0
-offset_left = 39.5
-offset_right = 58.5
+offset_right = 98.0
 offset_bottom = 44.0
 text = "4"
 label_settings = SubResource("LabelSettings_xwxac")
@@ -2576,8 +2598,7 @@ layout_mode = 2
 
 [node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/ThirdPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8908x/InnerContainer" unique_id=583882745]
 layout_mode = 0
-offset_left = 35.5
-offset_right = 94.5
+offset_right = 130.0
 offset_bottom = 44.0
 text = "133"
 label_settings = SubResource("LabelSettings_ifkwu")
@@ -2697,6 +2718,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="FourthPlayerSettlementInfo" type="ScrollContainer" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer" unique_id=1521638568]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 88)
 clip_contents = false
 layout_mode = 0
@@ -2749,7 +2771,7 @@ layout_mode = 2
 layout_mode = 0
 offset_left = 88.0
 offset_top = 10.0
-offset_right = 186.0
+offset_right = 300.0
 offset_bottom = 54.0
 text = "蒋天林"
 label_settings = SubResource("LabelSettings_fwqf4")
@@ -2798,8 +2820,7 @@ layout_mode = 2
 
 [node name="红包分" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 83 xIDx81_8918x/InnerContainer" unique_id=963177803]
 layout_mode = 0
-offset_left = 39.5
-offset_right = 58.5
+offset_right = 98.0
 offset_bottom = 44.0
 text = "2"
 label_settings = SubResource("LabelSettings_b4ikr")
@@ -2849,8 +2870,7 @@ layout_mode = 2
 
 [node name="分得金币" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 87 xIDx81_8860x/InnerContainer/PlayerSettlementInfo/InnerContainer/FourthPlayerSettlementInfo/InnerContainer/Frame 84 xIDx81_8921x/InnerContainer" unique_id=716483640]
 layout_mode = 0
-offset_left = 45.5
-offset_right = 84.5
+offset_right = 130.0
 offset_bottom = 44.0
 text = "67"
 label_settings = SubResource("LabelSettings_0qry1")
@@ -2982,7 +3002,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_cujkm")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3005,7 +3025,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_skkxt")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(169, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3028,7 +3048,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r3usu")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Rectangle 8 xIDx81_8928x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 2)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3056,7 +3076,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_uk7rs")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(12, 12)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3098,7 +3118,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_sr7s2")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 15 xIDx81_8927x/InnerContainer/Union xIDx81_8929x/InnerContainer/Subtract xIDx81_8931x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(12, 12)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3155,7 +3175,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_5wjvp")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 13 xIDx81_8934x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3189,7 +3209,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_oahjc")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(169, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3212,7 +3232,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vnvyc")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Rectangle 8 xIDx81_8937x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 2)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3240,7 +3260,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_70tie")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(12, 12)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3282,7 +3302,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_a78o1")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 18 xIDx81_8926x/InnerContainer/Frame 17 xIDx81_8936x/InnerContainer/Union xIDx81_8938x/InnerContainer/Subtract xIDx81_8940x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(12, 12)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3341,7 +3361,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_g4k0r")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(1045, 89)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3364,7 +3384,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6liqa")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 97 xIDx81_8944x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 89)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3377,6 +3397,7 @@ padding = [0, 0, 0, 0]
 layout_mode = 2
 
 [node name="HintText" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 97 xIDx81_8944x/InnerContainer" unique_id=1832020466]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 144.0075
 offset_top = 11.058478
@@ -3402,7 +3423,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_x20bg")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 102 xIDx81_8946x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(219, 190)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3446,7 +3467,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_saa8s")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 88 xIDx81_8859x/InnerContainer/Frame 99 xIDx81_8943x/InnerContainer/Frame 101 xIDx81_8948x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(219, 190)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3490,7 +3511,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_www77")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(812, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3532,7 +3553,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gpu0s")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(617, 73)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3573,7 +3594,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_15ar2")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 93 xIDx81_8950x/InnerContainer/Frame 95 xIDx81_8952x/InnerContainer/Frame 94 xIDx81_8954x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(0, 0)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3607,7 +3628,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bv8fv")
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("2_4hqpo")
-inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/Settlement/Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer")
+inner_container = NodePath("InnerContainer")
 minSize = Vector2(493, 557.5)
 maxSize = Vector2(100000, 100000)
 fill_color = Color(0, 0, 0, 0)
@@ -3618,6 +3639,7 @@ padding = [0, 0, 0, 0]
 layout_mode = 2
 
 [node name="请客玩家头像" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer" unique_id=1272869546]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 232.76158
 offset_top = 173.29984
@@ -3700,10 +3722,11 @@ texture = ExtResource("22_ybp5g")
 expand_mode = 1
 
 [node name="请客玩家昵称" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer/Frame 138 xIDx83_10505x/InnerContainer/昵称框" unique_id=942318309]
+unique_name_in_owner = true
 layout_mode = 0
-offset_left = 83.67322
+offset_left = 20.0
 offset_top = 15.848572
-offset_right = 205.67322
+offset_right = 260.0
 offset_bottom = 70.84857
 text = "蒋天林"
 label_settings = SubResource("LabelSettings_elj1h")
@@ -3719,3 +3742,23 @@ offset_right = 440.0359
 offset_bottom = 232.65666
 texture = ExtResource("24_jg048")
 expand_mode = 1
+
+[node name="CloseButton" type="Button" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1454487544]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1720.5397
+offset_top = 76.91153
+offset_right = 1784.5397
+offset_bottom = 143.16153
+tooltip_text = "关闭结算"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.93, 0.75, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.93, 0.75, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_close")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_close_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_close_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_close_hover")
+text = "×"

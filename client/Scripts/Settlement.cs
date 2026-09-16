@@ -1,164 +1,117 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Godot;
 using HeartsAlter.Scripts.Generated;
 
 namespace HeartsAlter.Scripts;
 
-/// <summary>Displays the authoritative scores/chip changes and coordinates the next round.</summary>
+/// <summary>The table's dismissible view of the authoritative round settlement.</summary>
 public partial class Settlement : Control
 {
-	private ColyseusClientAdapter _adapter;
-	private VBoxContainer _rows;
-	private Label _status;
-	private Button _nextButton;
-	private Button _backButton;
-	private bool _transitioning;
-	private bool _returningToLobby;
+	private sealed record PlayerRow(Control Root, Label Name, Label Score, Label Payout, Label Net, TextureRect Avatar);
+	private readonly List<PlayerRow> _rows = new();
+	private Control _content;
+	private Label _hint;
+	private Label _treatingName;
+	private TextureRect _treatingAvatar;
+	private Button _closeButton;
+	public event Action Closed;
 
 	public override void _Ready()
 	{
-		BuildUi();
-		_adapter = GameSession.GameAdapter;
-		if (_adapter is null)
+		_content = GetNode<Control>("Frame 56 xIDx81_8847x");
+		_hint = GetNode<Label>("%HintText");
+		_treatingName = GetNode<Label>("%请客玩家昵称");
+		_treatingAvatar = (TextureRect)GetNode<Control>("%请客玩家头像").FindChild("PlayerAvatar", true, false);
+		_closeButton = GetNode<Button>("%CloseButton");
+		_closeButton.Pressed += Close;
+		foreach (string name in new[] { "First", "Second", "Third", "Fourth" })
 		{
-			_status.Text = "没有可用的结算数据";
+			var root = GetNode<Control>($"%{name}PlayerSettlementInfo");
+			_rows.Add(new PlayerRow(root,
+				(Label)root.FindChild("昵称", true, false),
+				(Label)root.FindChild("红包分", true, false),
+				(Label)root.FindChild("分得金币", true, false),
+				(Label)root.FindChild("净收益", true, false),
+				(TextureRect)root.FindChild("PlayerAvatar", true, false)));
+		}
+		Resized += FitContent;
+		FitContent();
+	}
+
+	public void Open()
+	{
+		Show();
+		FitContent();
+		_closeButton.GrabFocus();
+	}
+
+	public void Close()
+	{
+		Hide();
+		Closed?.Invoke();
+	}
+
+	public override void _UnhandledKeyInput(InputEvent @event)
+	{
+		if (!Visible || !@event.IsActionPressed("ui_cancel")) return;
+		Close();
+		GetViewport().SetInputAsHandled();
+	}
+
+	public void Render(MyRoomState state, string sessionId)
+	{
+		var players = state.players.Keys.Cast<string>().Select(id => (Id: id, Player: state.players[id]))
+			.OrderByDescending(entry => entry.Player.score).ThenBy(entry => entry.Player.seat).ToList();
+		for (int index = 0; index < _rows.Count; index++)
+		{
+			PlayerRow row = _rows[index];
+			row.Root.Visible = index < players.Count;
+			if (!row.Root.Visible) continue;
+			var entry = players[index];
+			Player player = entry.Player;
+			row.Name.Text = player.name + (entry.Id == sessionId ? " (你)" : "");
+			row.Name.TooltipText = $"{row.Name.Text} · 筹码 {player.chips} · {(player.nextRoundReady ? "已同意下一局" : "等待同意下一局")}";
+			row.Score.Text = player.score.ToString();
+			row.Payout.Text = player.payout.ToString();
+			int net = player.payout - player.stake;
+			row.Net.Text = net >= 0 ? $"+{net}" : net.ToString();
+			row.Net.LabelSettings = (LabelSettings)row.Net.LabelSettings.Duplicate();
+			row.Net.LabelSettings.FontColor = net >= 0 ? new Color("b6751c") : new Color("bd3b44");
+			row.Avatar.Texture = GetAvatar(player.avatarId);
+		}
+
+		var treating = players.Where(entry => entry.Player.isTreating).ToList();
+		_treatingName.Text = string.Join("、", treating.Select(entry => entry.Player.name));
+		_treatingName.TooltipText = _treatingName.Text;
+		_treatingName.LabelSettings = (LabelSettings)_treatingName.LabelSettings.Duplicate();
+		_treatingName.LabelSettings.FontSize = treating.Count > 1 ? 24 : 32;
+		_treatingAvatar.Texture = treating.Count > 0 ? GetAvatar(treating[0].Player.avatarId) : null;
+		if (!state.players.TryGetValue(sessionId, out Player local))
+		{
+			_hint.Text = "本局已结束";
 			return;
 		}
-		_adapter.StateChanged += HandleStateChanged;
-		_adapter.ServerMessage += HandleServerMessage;
-		_adapter.InvalidPlay += HandleServerMessage;
-		_adapter.Left += HandleRoomLeft;
-		HandleStateChanged(_adapter.State, true);
+		int profit = local.payout - local.stake;
+		_hint.Text = local.isTreating ? "你是手气王，老老实实请客吧~"
+			: profit < 0 ? $"你获得 {local.payout} 金币，小亏 {-profit} 金币"
+			: $"你获得 {local.payout} 金币，净收益 {profit} 金币";
 	}
 
-	public override void _ExitTree()
+	private Texture2D GetAvatar(int avatarId)
 	{
-		if (_adapter is null) return;
-		_adapter.StateChanged -= HandleStateChanged;
-		_adapter.ServerMessage -= HandleServerMessage;
-		_adapter.InvalidPlay -= HandleServerMessage;
-		_adapter.Left -= HandleRoomLeft;
-		if (!_transitioning) _ = _adapter.DisconnectAsync();
+		int id = avatarId is >= 1 and <= 4 ? avatarId : 1;
+		var library = GetNode<ResourcePreloader>(SceneNavigation.LibraryPath);
+		return (Texture2D)library.GetResource($"res://assets/textures/ui/profile_icon_{id}.jpg");
 	}
 
-	private void HandleStateChanged(MyRoomState state, bool first)
+	private void FitContent()
 	{
-		if (!IsInsideTree() || state is null) return;
-		if (state.phase is "table_ready" or "dealing" or "playing")
-		{
-			Transition("res://scenes/in_game/Table.tscn");
-			return;
-		}
-		if (state.phase == "waiting")
-		{
-			Transition("res://scenes/ReadyRoom.tscn");
-			return;
-		}
-		_status.Text = state.message;
-		foreach (Node child in _rows.GetChildren()) child.QueueFree();
-		Player local = state.players.TryGetValue(_adapter.SessionId, out var current) ? current : null;
-		_nextButton.Disabled = local is null || local.nextRoundReady;
-		_nextButton.Text = local?.nextRoundReady == true ? "已同意下一局" : "下一局";
-		_backButton.Text = local?.isHost == true ? "解散房间并返回大厅" : "返回大厅";
-		var orderedPlayers = new List<Player>();
-		foreach (string playerId in state.players.Keys)
-			orderedPlayers.Add(state.players[playerId]);
-		orderedPlayers.Sort((left, right) =>
-		{
-			int score = right.score.CompareTo(left.score);
-			return score != 0 ? score : left.seat.CompareTo(right.seat);
-		});
-		for (int index = 0; index < orderedPlayers.Count; index++)
-		{
-			Player player = orderedPlayers[index];
-			var row = new HBoxContainer();
-			row.AddThemeConstantOverride("separation", 18);
-			row.AddChild(new Label
-			{
-				Text = $"#{index + 1}  {player.name}  {(player.isHost ? "房主" : player.isBot ? "机器人" : "")}",
-				SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
-			});
-			row.AddChild(new Label { Text = $"点数 {player.score}" });
-			row.AddChild(new Label { Text = $"筹码 {player.chips}" });
-			int chipChange = player.payout - player.stake;
-			row.AddChild(new Label { Text = chipChange >= 0 ? $"筹码变化 +{chipChange}" : $"筹码变化 {chipChange}" });
-			row.AddChild(new Label { Text = player.nextRoundReady ? "已同意" : "等待同意" });
-			_rows.AddChild(row);
-		}
-	}
-
-	private void HandleServerMessage(string message) => _status.Text = message;
-
-	private void AgreeNextRound() => _ = _adapter?.NextRoundAsync();
-
-	private void HandleRoomLeft(int code)
-	{
-		TransitionToLobby();
-	}
-
-	private async Task ReturnToLobbyAsync()
-	{
-		if (_returningToLobby || _adapter is null) return;
-		_returningToLobby = true;
-		_backButton.Disabled = true;
-		Player local = _adapter.State?.players.TryGetValue(_adapter.SessionId, out var current) == true ? current : null;
-		if (local?.isHost == true)
-		{
-			_status.Text = "正在解散房间…";
-			await _adapter.DisbandRoomAsync();
-		}
-		else
-		{
-			_status.Text = "正在离开房间…";
-		}
-		await _adapter.DisconnectAsync();
-		TransitionToLobby();
-	}
-
-	private void TransitionToLobby()
-	{
-		if (_transitioning || !IsInsideTree()) return;
-		_transitioning = true;
-		GameSession.GameAdapter = null;
-		SceneNavigation.Change(this, "res://scenes/Intro.tscn");
-	}
-
-	private void Transition(string scene)
-	{
-		if (_transitioning) return;
-		_transitioning = true;
-		GameSession.GameAdapter = _adapter;
-		SceneNavigation.Change(this, scene);
-	}
-
-	private void BuildUi()
-	{
-		var margin = new MarginContainer();
-		margin.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
-		margin.AddThemeConstantOverride("margin_left", 120);
-		margin.AddThemeConstantOverride("margin_right", 120);
-		margin.AddThemeConstantOverride("margin_top", 70);
-		margin.AddThemeConstantOverride("margin_bottom", 70);
-		AddChild(margin);
-		var column = new VBoxContainer { SizeFlagsVertical = Control.SizeFlags.ExpandFill };
-		column.AddThemeConstantOverride("separation", 16);
-		margin.AddChild(column);
-		var title = new Label { Text = "本局结算" };
-		title.AddThemeFontSizeOverride("font_size", 30);
-		column.AddChild(title);
-		_status = new Label { Text = "正在同步结算…" };
-		column.AddChild(_status);
-		_rows = new VBoxContainer { SizeFlagsVertical = Control.SizeFlags.ExpandFill };
-		_rows.AddThemeConstantOverride("separation", 10);
-		column.AddChild(_rows);
-		_nextButton = new Button { Text = "下一局" };
-		_nextButton.Pressed += AgreeNextRound;
-		var actions = new HBoxContainer();
-		actions.AddChild(_nextButton);
-		_backButton = new Button { Text = "返回大厅" };
-		_backButton.Pressed += () => _ = ReturnToLobbyAsync();
-		actions.AddChild(_backButton);
-		column.AddChild(actions);
+		if (_content is null) return;
+		// Keep the imported artwork's proportions with room for its decorative edges.
+		float scale = Mathf.Min(0.667f, Mathf.Min((Size.X - 40) / 1760f, (Size.Y - 40) / 990f));
+		_content.Scale = Vector2.One * Mathf.Max(0.1f, scale);
+		_content.Position = (Size - new Vector2(1760, 990) * _content.Scale) / 2;
 	}
 }

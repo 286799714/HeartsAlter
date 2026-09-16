@@ -1,13 +1,5 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://du8df5ckpaqlf"]
 
-[ext_resource type="Script" path="res://Scripts/Settlement.cs" id="1_settlement"]
+[ext_resource type="PackedScene" path="res://scenes/in_game/Table.tscn" id="1_table"]
 
-[node name="Settlement" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_settlement")
-
+[node name="Settlement" instance=ExtResource("1_table")]
