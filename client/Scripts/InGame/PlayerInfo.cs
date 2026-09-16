@@ -348,7 +348,8 @@ public partial class PlayerInfo : Control
 	{
 		if (!IsValid(_avatarTextureRect))
 		{
-			_avatarTextureRect = GetNodeOrNull<TextureRect>(
+			// All three layouts expose the avatar with the same scene-unique name.
+			_avatarTextureRect = GetNodeOrNull<TextureRect>("%AvatarTexture") ?? GetNodeOrNull<TextureRect>(
 				"Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding/AvatarTexture"
 			);
 		}

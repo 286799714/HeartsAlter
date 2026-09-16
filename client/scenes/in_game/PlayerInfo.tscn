@@ -123,7 +123,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="AvatarTexture" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1998404419]
 unique_name_in_owner = true
-texture_filter = 3
+texture_filter = 4
 material = SubResource("ShaderMaterial_circle_crop")
 layout_mode = 2
 mouse_filter = 2
@@ -132,7 +132,7 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="AvatarRing" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame" unique_id=2103892678]
-texture_filter = 3
+texture_filter = 4
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -30,8 +30,9 @@ export type Rank = (typeof RANKS)[number];
 export const PLAYER_COUNT = 4;
 export const CARD_COUNT = SUITS.length * RANKS.length;
 export const CARDS_PER_PLAYER = CARD_COUNT / PLAYER_COUNT;
-/** Total penalty points present in one deal (13 hearts + the six-point Q♠). */
-export const TOTAL_POINTS = 19;
+/** Deal totals depend on how many hearts are played after the six-point Q♠. */
+export const MIN_TOTAL_POINTS = 19;
+export const MAX_TOTAL_POINTS = 32;
 
 const SUIT_ASSET_PREFIX: Record<Suit, string> = {
   clubs: "Club",
@@ -205,11 +206,11 @@ export interface LegalPlayOptions {
   readonly heartsBroken?: boolean;
   /** Whether this is the first trick of the deal. */
   readonly firstTrick?: boolean;
-  /** Apply the standard first-trick heart/Q♠ restriction (default true). */
+  /** Restrict first-trick point cards when leading or following suit (default true). */
   readonly enforceFirstTrickPoints?: boolean;
 }
 
-function isQueenOfSpades(card: Card): boolean {
+export function isQueenOfSpades(card: Card): boolean {
   return card.suit === "spades" && card.rank === "Q";
 }
 
@@ -218,17 +219,22 @@ export function isPointCard(card: Card): boolean {
   return card.suit === "hearts" || isQueenOfSpades(card);
 }
 
-/** Number of penalty points carried by one card. */
-export function cardPoints(card: Card): number {
+/** Points carried by a card at the moment it is played. */
+export function cardPoints(card: Card, queenOfSpadesPlayed = false): number {
   if (card.suit === "hearts") {
-    return 1;
+    return queenOfSpadesPlayed ? 2 : 1;
   }
   return isQueenOfSpades(card) ? 6 : 0;
 }
 
-/** Sum penalty points in a captured-card collection. */
-export function scoreCards(cards: readonly Card[]): number {
-  return cards.reduce((total, card) => total + cardPoints(card), 0);
+/** Score cards in play order, including a Q♠ played earlier in the deal. */
+export function scoreCards(cards: readonly Card[], queenOfSpadesPlayed = false): number {
+  let points = 0;
+  for (const card of cards) {
+    points += cardPoints(card, queenOfSpadesPlayed);
+    queenOfSpadesPlayed ||= isQueenOfSpades(card);
+  }
+  return points;
 }
 
 /**
@@ -254,20 +260,19 @@ export function getLegalCards(
 
   let legal = [...hand];
 
-  // Standard Hearts starts with the two of clubs. If the hand contains it,
-  // no other card may be led on the first trick.
-  if (isLeading && firstTrick) {
-    const twoOfClubs = hand.find((card) => card.suit === "clubs" && card.rank === "2");
-    if (twoOfClubs) {
-      return [twoOfClubs];
-    }
-  }
+  // The room gives the opening turn to the holder of Club2, but that player
+  // may lead any card allowed by the ordinary lead and first-trick rules.
 
   if (!isLeading) {
     const leadSuit = trick[0].suit;
     const followsLead = hand.some((card) => card.suit === leadSuit);
     if (followsLead) {
       legal = legal.filter((card) => card.suit === leadSuit);
+    } else {
+      // Being void requires discarding a point card when one is held, even
+      // on the first trick or before hearts are broken.
+      const pointCards = hand.filter(isPointCard);
+      return pointCards.length > 0 ? pointCards : legal;
     }
   }
 
@@ -279,8 +284,8 @@ export function getLegalCards(
     legal = legal.filter((card) => card.suit !== "hearts");
   }
 
-  // On the first trick, hearts and Q♠ may not be discarded when a safe card is
-  // available. If every card is a point card, one of them must be permitted.
+  // On the first trick, avoid points when leading or following suit if a
+  // non-point option exists. The mandatory void discard was handled above.
   if (firstTrick && enforceFirstTrickPoints && legal.some((card) => !isPointCard(card))) {
     legal = legal.filter((card) => !isPointCard(card));
   }
@@ -333,11 +338,14 @@ export function determineTrickWinner<P>(plays: readonly PlayedCard<P>[]): P {
   return plays[determineTrickWinnerIndex(plays)].playerId;
 }
 
-/** Score each completed trick into a player-id keyed map. */
+/** Score completed tricks in chronological order into a player-id keyed map. */
 export function scoreTricks<P>(tricks: readonly ScoredTrick<P>[]): Map<P, number> {
   const scores = new Map<P, number>();
+  let queenOfSpadesPlayed = false;
   for (const trick of tricks) {
-    const points = scoreCards(trick.plays.map((play) => play.card));
+    const cards = trick.plays.map((play) => play.card);
+    const points = scoreCards(cards, queenOfSpadesPlayed);
+    queenOfSpadesPlayed ||= cards.some(isQueenOfSpades);
     scores.set(trick.winnerId, (scores.get(trick.winnerId) ?? 0) + points);
   }
   return scores;

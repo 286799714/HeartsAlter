@@ -4,6 +4,8 @@ import {
   dealShuffledHands,
   determineTrickWinner,
   getLegalCards,
+  isPointCard,
+  isQueenOfSpades,
   scoreCards,
   settlePot,
   shuffleDeck,
@@ -91,6 +93,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private phaseTimeout?: Delayed;
   private passingTimeout?: Delayed;
   private readonly passingSelections = new Map<string, Card[]>();
+  /** Q♠ in a completed trick; scoreCards handles play order within the current one. */
+  private queenOfSpadesCaptured = false;
 
   messages = {
     /** Toggle the ready flag. The host and bots are always ready. */
@@ -473,6 +477,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.lastTrickPoints = 0;
     this.state.leadSuit = "";
     this.state.heartsBroken = false;
+    this.queenOfSpadesCaptured = false;
     this.state.trickNumber = 0;
     this.state.pot = 0;
     for (const [playerId, player] of this.state.players.entries()) {
@@ -519,6 +524,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.trickNumber = 0;
     this.state.leadSuit = "";
     this.state.heartsBroken = false;
+    this.queenOfSpadesCaptured = false;
     this.state.trick.clear();
     this.state.lastTrick.clear();
     this.state.lastTrickWinner = "";
@@ -729,8 +735,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.phase = "playing";
     this.state.phaseDeadline = 0;
     this.state.message = this.botsEnabled
-      ? "演示模式：传牌完成，梅花 2 先出"
-      : "传牌完成，梅花 2 先出";
+      ? "演示模式：传牌完成，持有梅花 2 的玩家先出，可选择任意合法牌"
+      : "传牌完成，持有梅花 2 的玩家先出，可选择任意合法牌";
     this.publishRoomMetadata();
     this.broadcast("passing_completed", { roundNumber: this.state.roundNumber });
     const starter = this.findTwoOfClubsOwner() ?? this.state.playerOrder[0] ?? "";
@@ -796,6 +802,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.lastTrickPoints = 0;
     this.state.leadSuit = "";
     this.state.heartsBroken = false;
+    this.queenOfSpadesCaptured = false;
     this.state.trickNumber = 0;
     this.state.pot = 0;
     for (const [playerId, player] of this.state.players.entries()) {
@@ -864,7 +871,12 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     });
     if (!legal.some((candidate) => candidate.id === card.id)) {
       if (client) {
-        this.sendError(client, "这张牌不符合跟牌或红心规则");
+        const mustDiscardPoints = trickCards.length > 0 &&
+          !hand.some((candidate) => candidate.suit === trickCards[0].suit) &&
+          legal.some(isPointCard);
+        this.sendError(client, mustDiscardPoints
+          ? "缺门时必须优先出红桃或黑桃 Q"
+          : "这张牌不符合跟牌或红心规则");
       }
       return false;
     }
@@ -913,7 +925,9 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
         return { playerId: entry.playerId, card };
       });
     const winnerId = determineTrickWinner(plays);
-    const points = scoreCards(plays.map((play) => play.card));
+    const cards = plays.map((play) => play.card);
+    const points = scoreCards(cards, this.queenOfSpadesCaptured);
+    this.queenOfSpadesCaptured ||= cards.some(isQueenOfSpades);
     const winner = this.state.players.get(winnerId);
     if (winner) {
       winner.score += points;

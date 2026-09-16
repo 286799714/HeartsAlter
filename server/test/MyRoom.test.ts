@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { mock } from "node:test";
 import { ColyseusTestServer, boot } from "@colyseus/testing";
 
 import appConfig from "../src/app.config.js";
@@ -39,6 +40,7 @@ describe("authoritative Hearts room", () => {
   beforeEach(async () => {
     await colyseus.cleanup();
   });
+  afterEach(() => mock.restoreAll());
 
   const completePassing = async (room: any, clients: any[]) => {
     const hands = new Map<string, string[]>();
@@ -329,7 +331,8 @@ describe("authoritative Hearts room", () => {
     assert.ok(maxSafe.state.pot <= 2_147_483_647);
   });
 
-  it("rejects an out-of-turn play and accepts only the starter's two of clubs", async () => {
+  it("gives the Club2 holder the first turn but accepts a different opening card", async () => {
+    mock.method(Math, "random", () => 0.37);
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
     const clients = [];
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
@@ -341,14 +344,23 @@ describe("authoritative Hearts room", () => {
     const other = clients.find((client) => client.sessionId !== room.state.currentTurn);
     assert.ok(other);
 
+    const handMessage = starter!.waitForMessage("hand");
+    starter!.send("request_hand");
+    const { cards } = await handMessage;
+    assert.ok(cards.includes("Club2"), "the starter must hold Club2 after passing");
+    const opening = getLegalCards(cards.map((id: string) => cardFromId(id)!), [], { firstTrick: true })
+      .find((card) => card.suit !== "clubs");
+    assert.ok(opening, "the fixture should offer a different opening suit");
+
     other!.send("play", { cardId: "Club2" });
     await room.waitForMessage("play");
     assert.equal(room.state.trick.length, 0);
 
-    starter!.send("play", { cardId: "Club2" });
+    starter!.send("play", { cardId: opening.id });
     await room.waitForMessage("play");
     assert.equal(room.state.trick.length, 1);
-    assert.equal(room.state.trick[0].cardId, "Club2");
+    assert.equal(room.state.trick[0].cardId, opening.id);
+    assert.equal(room.state.leadSuit, opening.suit);
     assert.notEqual(room.state.currentTurn, starter!.sessionId);
   });
 
@@ -365,7 +377,8 @@ describe("authoritative Hearts room", () => {
     assert.equal(serialized.includes("hand"), true); // handCount remains public
   });
 
-  it("can finish all thirteen tricks through the public play seam", async () => {
+  it("enforces point discards, scores every trick, and resets scoring on the next round", async () => {
+    mock.method(Math, "random", () => 0.37);
     const room = await colyseus.createRoom<MyRoomState>("hearts", {});
     const clients: any[] = [];
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
@@ -389,10 +402,6 @@ describe("authoritative Hearts room", () => {
       }, 2_000);
       client.send("request_hand");
     });
-    for (const client of clients) {
-      hands.set(client.sessionId, await requestHand(client));
-    }
-
     const waitUntil = async (predicate: () => boolean) => {
       const deadline = Date.now() + 2_000;
       while (!predicate() && Date.now() < deadline) {
@@ -401,40 +410,91 @@ describe("authoritative Hearts room", () => {
       assert.ok(predicate(), "room did not advance after play");
     };
 
-    for (let playNumber = 0; playNumber < 52; playNumber += 1) {
-      const playerId = room.state.currentTurn;
-      const hand = hands.get(playerId);
-      assert.ok(hand, "current turn must have a private hand");
-      const trick = room.state.trick
-        .map((entry) => cardFromId(entry.cardId))
-        .filter((card): card is NonNullable<typeof card> => card !== undefined);
-      const legal = getLegalCards(
-        hand!.map((id) => cardFromId(id)!).filter(Boolean),
-        trick,
-        {
-          firstTrick: room.state.trickNumber === 0,
-          heartsBroken: room.state.heartsBroken,
-        },
-      );
-      assert.ok(legal.length > 0, `no legal card for ${playerId}`);
-      const cardId = legal[0].id;
-      const beforeCount = room.state.players.get(playerId)!.handCount;
-      hand!.splice(hand!.indexOf(cardId), 1);
-      byId.get(playerId).send("play", { cardId });
-      await waitUntil(() => room.state.phase === "finished" || room.state.players.get(playerId)!.handCount < beforeCount);
-    }
+    const playRound = async () => {
+      for (const client of clients) {
+        hands.set(client.sessionId, await requestHand(client));
+      }
+      assert.ok([...room.state.players.values()].every((player) => player.score === 0));
+      const expectedScores = new Map(clients.map((client) => [client.sessionId, 0]));
+      let queenPlayed = false;
+      let heartsBeforeQueen = 0;
+      let heartsAfterQueen = 0;
+      let trickPoints = 0;
+      let rejectedVoidDiscard = false;
 
-    assert.equal(room.state.phase, "finished");
-    assert.equal(room.state.trickNumber, 13);
-    assert.ok([...room.state.players.values()].every((player) => player.handCount === 0));
-    assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.score, 0), 19);
-    assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.payout, 0), 400);
-    assert.equal([...room.state.players.values()].filter((player) => player.isTreating).length >= 1, true);
-    const savedProfiles = clients.map((client, index) => {
-      const profile = getPlayerProfileStore().getByDevice(`settlement-device-${index}`);
-      assert.equal(profile.chips, room.state.players.get(client.sessionId)!.chips);
-      return profile;
-    });
+      for (let playNumber = 0; playNumber < 52; playNumber += 1) {
+        const playerId = room.state.currentTurn;
+        const hand = hands.get(playerId);
+        assert.ok(hand, "current turn must have a private hand");
+        const trick = room.state.trick
+          .map((entry) => cardFromId(entry.cardId))
+          .filter((card): card is NonNullable<typeof card> => card !== undefined);
+        const handCards = hand!.map((id) => cardFromId(id)!);
+        if (!rejectedVoidDiscard && trick.length > 0 &&
+          !handCards.some((card) => card.suit === trick[0].suit) &&
+          handCards.some((card) => card.suit === "hearts" || card.id === "SpadeQ")) {
+          const nonPointCard = handCards.find((card) => card.suit !== "hearts" && card.id !== "SpadeQ");
+          if (nonPointCard) {
+            const beforeCount = room.state.players.get(playerId)!.handCount;
+            const invalidMessage = byId.get(playerId).waitForMessage("invalid_play");
+            byId.get(playerId).send("play", { cardId: nonPointCard.id });
+            const invalid = await invalidMessage;
+            assert.equal(invalid.reason, "缺门时必须优先出红桃或黑桃 Q");
+            assert.equal(room.state.players.get(playerId)!.handCount, beforeCount);
+            assert.equal(room.state.currentTurn, playerId);
+            assert.equal(room.state.trick.length, trick.length);
+            rejectedVoidDiscard = true;
+          }
+        }
+        const legal = getLegalCards(
+          handCards,
+          trick,
+          {
+            firstTrick: room.state.trickNumber === 0,
+            heartsBroken: room.state.heartsBroken,
+          },
+        );
+        assert.ok(legal.length > 0, `no legal card for ${playerId}`);
+        const cardId = legal[0].id;
+        // Keep the expected scores independent of the production scoring helpers.
+        if (cardId.startsWith("Heart")) {
+          trickPoints += queenPlayed ? 2 : 1;
+          if (queenPlayed) heartsAfterQueen += 1;
+          else heartsBeforeQueen += 1;
+        } else if (cardId === "SpadeQ") {
+          trickPoints += 6;
+          queenPlayed = true;
+        }
+        const resolvedMessage = trick.length === 3 ? clients[0].waitForMessage("trick_resolved") : undefined;
+        const beforeCount = room.state.players.get(playerId)!.handCount;
+        hand!.splice(hand!.indexOf(cardId), 1);
+        byId.get(playerId).send("play", { cardId });
+        await waitUntil(() => room.state.phase === "finished" || room.state.players.get(playerId)!.handCount < beforeCount);
+        if (resolvedMessage) {
+          const resolved = await resolvedMessage;
+          assert.equal(resolved.points, trickPoints);
+          assert.equal(room.state.lastTrickPoints, trickPoints);
+          const winnerId = room.state.lastTrickWinner;
+          expectedScores.set(winnerId, expectedScores.get(winnerId)! + trickPoints);
+          assert.equal(room.state.players.get(winnerId)!.score, expectedScores.get(winnerId));
+          trickPoints = 0;
+        }
+      }
+
+      assert.equal(room.state.phase, "finished");
+      assert.equal(room.state.trickNumber, 13);
+      assert.ok(rejectedVoidDiscard, "the fixture must exercise rejecting a non-point void discard");
+      assert.ok(heartsBeforeQueen > 0 && heartsAfterQueen > 0, "the fixture must exercise both heart values");
+      assert.equal(heartsBeforeQueen + heartsAfterQueen, 13);
+      assert.ok([...room.state.players.values()].every((player) => player.handCount === 0));
+      for (const [playerId, score] of expectedScores) {
+        assert.equal(room.state.players.get(playerId)!.score, score);
+      }
+      assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.score, 0), 19 + heartsAfterQueen);
+      assert.equal([...room.state.players.values()].reduce((sum, player) => sum + player.payout, 0), 400);
+      assert.equal([...room.state.players.values()].filter((player) => player.isTreating).length >= 1, true);
+    };
+    await playRound();
 
     const finishedRound = room.state.roundNumber;
     const roundStartedMessage = clients[0].waitForMessage("round_started");
@@ -452,6 +512,12 @@ describe("authoritative Hearts room", () => {
     const restartedHandPayload = await restartedHandMessage;
     assert.equal(restartedHandPayload.roundNumber, finishedRound + 1);
     assert.equal(restartedHandPayload.cards.length, 13);
+    await playRound();
+    const savedProfiles = clients.map((client, index) => {
+      const profile = getPlayerProfileStore().getByDevice(`settlement-device-${index}`);
+      assert.equal(profile.chips, room.state.players.get(client.sessionId)!.chips);
+      return profile;
+    });
     await colyseus.cleanup();
     closePlayerProfileStore();
     const lobby = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "settlement-device-0" });

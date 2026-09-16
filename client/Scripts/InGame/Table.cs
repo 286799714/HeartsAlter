@@ -713,9 +713,8 @@ public partial class Table : Control
 			_mainHandLayout?.ClearPlayableCards();
 			return;
 		}
-		List<CardData> legal = GetLegalNetworkCards(state);
-		bool openingClubTwo = state.trickNumber == 0 && state.trick.Count == 0 &&
-			legal.Count == 1 && ToCardId(legal[0]) == "Club2";
+		List<CardData> legal = GetLegalNetworkCards(state, out bool mustDiscardPoints);
+		bool openingTurn = state.trickNumber == 0 && state.trick.Count == 0;
 		// MainHandLayout controls hit testing; Table controls the network play
 		// gate. Both must be open before the second click can be forwarded to the
 		// server.
@@ -723,38 +722,44 @@ public partial class Table : Control
 		_mainHandLayout.SetSelectionEnabled(true);
 		_mainHandLayout.SetPlayableCards(
 			legal,
-			openingClubTwo ? "你持有 ♣2，需要第一个出牌。" : "",
-			openingClubTwo ? "Club2" : "");
+			openingTurn ? "你持有 ♣2，由你先出，可选择任意合法牌。"
+				: mustDiscardPoints ? "你已缺门，必须优先出红桃或黑桃 Q。" : "");
 	}
 
-	private List<CardData> GetLegalNetworkCards(MyRoomState state)
+	private List<CardData> GetLegalNetworkCards(MyRoomState state, out bool mustDiscardPoints)
 	{
+		mustDiscardPoints = false;
 		var legal = new List<CardData>(_networkHandCards);
 		if (legal.Count == 0) return legal;
-		if (state.trick.Count == 0 && state.trickNumber == 0 && legal.Exists(card => ToCardId(card) == "Club2"))
-			return legal.FindAll(card => ToCardId(card) == "Club2");
-		if (!string.IsNullOrEmpty(state.leadSuit))
+		if (state.trick.Count > 0 && !string.IsNullOrEmpty(state.leadSuit))
 		{
 			PokerSuit lead = ParseSuit(state.leadSuit);
 			List<CardData> follow = legal.FindAll(card => card.Suit == lead);
-			if (follow.Count > 0) return follow;
-		}
-		if (state.trickNumber == 0)
-		{
-			List<CardData> safe = legal.FindAll(card =>
-				card.Suit != PokerSuit.Heart && !(card.Suit == PokerSuit.Spade && card.Rank == PokerRank.Queen));
-			if (safe.Count > 0) return safe;
+			if (follow.Count > 0) legal = follow;
+			else
+			{
+				// A void discard takes priority over first-trick restrictions.
+				List<CardData> pointCards = legal.FindAll(IsPointCard);
+				mustDiscardPoints = pointCards.Count > 0;
+				return mustDiscardPoints ? pointCards : legal;
+			}
 		}
 		if (state.trick.Count == 0 && !state.heartsBroken)
 		{
-			// Hearts-breaking only applies to a new lead. A player who is void in
-			// the lead suit reaches the earlier follow-suit branch with no matches,
-			// so hearts (and Q♠) remain legal discards.
+			// Apply the same filters, in the same order, as the server rules.
 			List<CardData> nonHearts = legal.FindAll(card => card.Suit != PokerSuit.Heart);
-			if (nonHearts.Count > 0) return nonHearts;
+			if (nonHearts.Count > 0) legal = nonHearts;
+		}
+		if (state.trickNumber == 0)
+		{
+			List<CardData> safe = legal.FindAll(card => !IsPointCard(card));
+			if (safe.Count > 0) legal = safe;
 		}
 		return legal;
 	}
+
+	private static bool IsPointCard(CardData card) =>
+		card.Suit == PokerSuit.Heart || (card.Suit == PokerSuit.Spade && card.Rank == PokerRank.Queen);
 
 	private static PokerSuit ParseSuit(string suit) => suit switch
 	{

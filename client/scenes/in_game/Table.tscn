@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dtab1econtr0l" path="res://Scripts/InGame/Table.cs" id="1_table"]
 [ext_resource type="PackedScene" uid="uid://dfccqip2lq1qv" path="res://scenes/in_game/CardDeck.tscn" id="2_deck"]
+[ext_resource type="Texture2D" uid="uid://dr3o0wqprqu2v" path="res://assets/textures/ui/in_game/mahjong-background-red-transparent.png" id="2_gb1b3"]
 [ext_resource type="PackedScene" uid="uid://bg6tvprpjlpck" path="res://scenes/in_game/MainHandLayout.tscn" id="3_hand"]
 [ext_resource type="PackedScene" uid="uid://cowdm8l8xfy8i" path="res://scenes/in_game/AnimationLayer.tscn" id="4_animation"]
 [ext_resource type="PackedScene" uid="uid://bwmamljc0p248" path="res://scenes/in_game/OtherHandLayout.tscn" id="4_mshro"]
@@ -32,6 +33,15 @@ _mainPlayerInfo = NodePath("MainPlayerInfo")
 _nextPlayerInfo = NodePath("PlayerInfo")
 _oppositePlayerInfo = NodePath("PlayerInfo2")
 _previousPlayerInfo = NodePath("PlayerInfo3")
+
+[node name="Background" type="TextureRect" parent="." unique_id=545593695]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gb1b3")
 
 [node name="CardDeck" parent="." unique_id=2072646441 instance=ExtResource("2_deck")]
 layout_mode = 1
