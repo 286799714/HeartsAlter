@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -6,7 +5,7 @@ using HeartsAlter.Scripts.Generated;
 
 namespace HeartsAlter.Scripts;
 
-/// <summary>The table's dismissible view of the authoritative round settlement.</summary>
+/// <summary>The table's modal view of the authoritative round settlement.</summary>
 public partial class Settlement : Control
 {
 	private sealed record PlayerRow(Control Root, Label Name, Label Score, Label Payout, Label Net, TextureRect Avatar);
@@ -15,8 +14,8 @@ public partial class Settlement : Control
 	private Label _hint;
 	private Label _treatingName;
 	private TextureRect _treatingAvatar;
-	private Button _closeButton;
-	public event Action Closed;
+	private TextureButton _nextRoundButton;
+	private TextureButton _lobbyButton;
 
 	public override void _Ready()
 	{
@@ -24,8 +23,8 @@ public partial class Settlement : Control
 		_hint = GetNode<Label>("%HintText");
 		_treatingName = GetNode<Label>("%请客玩家昵称");
 		_treatingAvatar = (TextureRect)GetNode<Control>("%请客玩家头像").FindChild("PlayerAvatar", true, false);
-		_closeButton = GetNode<Button>("%CloseButton");
-		_closeButton.Pressed += Close;
+		_nextRoundButton = GetNode<TextureButton>("%NextRoundButton");
+		_lobbyButton = GetNode<TextureButton>("%ReturnToLobbyButton");
 		foreach (string name in new[] { "First", "Second", "Third", "Fourth" })
 		{
 			var root = GetNode<Control>($"%{name}PlayerSettlementInfo");
@@ -44,20 +43,8 @@ public partial class Settlement : Control
 	{
 		Show();
 		FitContent();
-		_closeButton.GrabFocus();
-	}
-
-	public void Close()
-	{
-		Hide();
-		Closed?.Invoke();
-	}
-
-	public override void _UnhandledKeyInput(InputEvent @event)
-	{
-		if (!Visible || !@event.IsActionPressed("ui_cancel")) return;
-		Close();
-		GetViewport().SetInputAsHandled();
+		if (!_nextRoundButton.Disabled) _nextRoundButton.GrabFocus();
+		else if (!_lobbyButton.Disabled) _lobbyButton.GrabFocus();
 	}
 
 	public void Render(MyRoomState state, string sessionId)

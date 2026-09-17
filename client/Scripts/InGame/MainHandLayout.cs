@@ -80,6 +80,16 @@ public partial class MainHandLayout : Control
 	[Export]
 	private Button _passButton;
 
+	[Export]
+	private Control _countdown;
+
+	[Export]
+	private Label _countdownLabel;
+
+	private double _countdownDeadlineMsec;
+	private string _countdownStage = string.Empty;
+	private bool _countdownSuppressed;
+
 	private Label _passButtonIcon;
 	private Label _passButtonCaption;
 
@@ -178,10 +188,12 @@ public partial class MainHandLayout : Control
 			targetSize.X,
 			targetSize.Y
 		);
+		if (GetViewport().GuiSnapControlsToPixels)
+			localPosition = (localPosition + Vector2.One * 0.5f).Floor();
 		Transform2D localTransform = new(0.0f, localPosition);
 
 		return new CardPose2D(
-			GetGlobalTransformWithCanvas() * localTransform,
+			CardPose2D.GetRenderedCanvasTransform(this) * localTransform,
 			targetSize,
 			IsFaceUp: true
 		);
@@ -189,6 +201,9 @@ public partial class MainHandLayout : Control
 
 	public override void _Ready()
 	{
+		_countdown ??= GetNodeOrNull<Control>("Countdown");
+		_countdownLabel ??= GetNodeOrNull<Label>("Countdown/Label");
+		ClearCountdown();
 		if (_ruleHintLabel is null || !IsInstanceValid(_ruleHintLabel))
 			_ruleHintLabel = GetNodeOrNull<Label>("RuleHint");
 		if (_passButton is null || !IsInstanceValid(_passButton))
@@ -216,6 +231,7 @@ public partial class MainHandLayout : Control
 
 	public override void _ExitTree()
 	{
+		ClearCountdown();
 		Resized -= HandleResized;
 		ChildEnteredTree -= HandleChildEnteredTree;
 		ChildExitingTree -= HandleChildExitingTree;
@@ -247,6 +263,58 @@ public partial class MainHandLayout : Control
 		_passSelectedCards.Clear();
 	}
 
+	public override void _Process(double delta) => RefreshCountdown();
+
+	/// <summary>Shows the local player's remaining time to play.</summary>
+	public void StartTurnCountdown(int durationMilliseconds) => StartCountdown(durationMilliseconds, "正在出牌");
+
+	/// <summary>Shows the remaining time to select passing cards.</summary>
+	public void StartPassCountdown(int durationMilliseconds) => StartCountdown(durationMilliseconds, "选择传牌");
+
+	private void StartCountdown(int durationMilliseconds, string stage)
+	{
+		double deadline = Time.GetTicksMsec() + (double)Math.Max(0, durationMilliseconds);
+		// Repeated state patches for the same action must not restart its timer.
+		_countdownDeadlineMsec = _countdownStage == stage ? Math.Min(_countdownDeadlineMsec, deadline) : deadline;
+		_countdownStage = stage;
+		if (_countdown is not null) _countdown.TooltipText = stage;
+		SetProcess(true);
+		RefreshCountdown();
+	}
+
+	public void ClearCountdown()
+	{
+		_countdownDeadlineMsec = 0;
+		_countdownStage = string.Empty;
+		if (_countdown is not null) _countdown.Hide();
+		if (_countdownLabel is not null) _countdownLabel.Text = string.Empty;
+		SetProcess(false);
+	}
+
+	/// <summary>Defers the clock display during collection without pausing its deadline.</summary>
+	public void SetCountdownSuppressed(bool suppressed)
+	{
+		_countdownSuppressed = suppressed;
+		RefreshCountdown();
+	}
+
+	private void RefreshCountdown()
+	{
+		double remaining = _countdownDeadlineMsec - Time.GetTicksMsec();
+		if (remaining <= 0)
+		{
+			// Retain the expired deadline until the action ends, so a late patch
+			// cannot bring the same countdown back after it has reached zero.
+			if (_countdown is not null) _countdown.Hide();
+			if (_countdownLabel is not null) _countdownLabel.Text = string.Empty;
+			SetProcess(false);
+			return;
+		}
+		if (_countdown is not null) _countdown.Visible = !_countdownSuppressed;
+		if (_countdownLabel is not null)
+			_countdownLabel.Text = Math.Ceiling(remaining / 1000.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
+	}
+
 	/// <summary>
 	/// Clears the current choice when the player presses outside every main-hand
 	/// card. _Input runs before GUI dispatch, so the test sees the cards at their
@@ -255,7 +323,7 @@ public partial class MainHandLayout : Control
 	/// </summary>
 	public override void _Input(InputEvent @event)
 	{
-		if (!TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
+		if (!IsVisibleInTree() || !TryGetPressedPointerPosition(@event, out Vector2 canvasPosition))
 		{
 			return;
 		}
@@ -491,7 +559,7 @@ public partial class MainHandLayout : Control
 			return false;
 
 		CardPose2D sourcePose = new(
-			card.GetGlobalTransformWithCanvas(),
+			CardPose2D.GetRenderedCanvasTransform(card),
 			new Vector2(card.CardWidth, card.CardHeight),
 			card.IsFaceUp
 		);
@@ -523,6 +591,7 @@ public partial class MainHandLayout : Control
 	/// <summary>Immediately clears all logical and visual cards from this hand.</summary>
 	public void ClearCards()
 	{
+		ClearCountdown();
 		_restrictPlayableCards = false;
 		_playableCardIds.Clear();
 		if (_ruleHintLabel is not null)

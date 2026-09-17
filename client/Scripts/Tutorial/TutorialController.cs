@@ -17,6 +17,7 @@ public partial class TutorialController : Control
 	private readonly ConfigFile _progress = new();
 	private Control _menu;
 	private Control _game;
+	private Control _overlay;
 	private Table _table;
 	private TutorialSpotlight _guide;
 	private IReadOnlyList<TutorialGuidePage> _guidePages = Array.Empty<TutorialGuidePage>();
@@ -61,6 +62,7 @@ public partial class TutorialController : Control
 		Round = null;
 		Phase = TutorialPhase.Menu;
 		_game.Hide();
+		_overlay.Hide();
 		_menu.Show();
 		for (int index = 0; index < TutorialCatalog.Lessons.Length; index++)
 		{
@@ -82,6 +84,7 @@ public partial class TutorialController : Control
 		Phase = TutorialPhase.Animating;
 		_menu.Hide();
 		_game.Show();
+		_overlay.Show();
 		_next.Hide();
 		_choices.Hide();
 
@@ -376,6 +379,7 @@ public partial class TutorialController : Control
 	{
 		_menu = GetNode<Control>("%Menu");
 		_game = GetNode<Control>("%Game");
+		_overlay = GetNode<Control>("%Overlay");
 		_table = GetNode<Table>("%Table");
 		_guide = GetNode<TutorialSpotlight>("%GuideOverlay");
 		_guide.AdvanceRequested += AdvanceGuide;

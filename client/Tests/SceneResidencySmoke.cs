@@ -40,7 +40,7 @@ public partial class SceneResidencySmoke : Node
 				var roomName = GetTree().CurrentScene.GetNode<LineEdit>("%RoomNameInput");
 				Check(roomName.Text == "", "Old Intro input state leaked into a new scene instance");
 				roomName.Text = "temporary input";
-				await Swap("res://scenes/ReadyRoom.tscn");
+				await Swap("res://scenes/in_game/Table.tscn");
 				GameSession.Clear();
 				GC.Collect();
 				GC.WaitForPendingFinalizers();

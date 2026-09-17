@@ -47,10 +47,12 @@ public partial class PlayArea : Control
 
 		Vector2 targetSize = CalculateCardSize(card);
 		Vector2 localPosition = (Size - targetSize) * 0.5f;
+		if (GetViewport().GuiSnapControlsToPixels)
+			localPosition = (localPosition + Vector2.One * 0.5f).Floor();
 		Transform2D localTransform = new(0.0f, localPosition);
 
 		return new CardPose2D(
-			GetGlobalTransformWithCanvas() * localTransform,
+			CardPose2D.GetRenderedCanvasTransform(this) * localTransform,
 			targetSize,
 			IsFaceUp: true
 		);
@@ -91,7 +93,19 @@ public partial class PlayArea : Control
 		card.SetSelectionLift(0.0f);
 		card.SetLayoutPosition(targetPosition);
 		card.SetFace(front: true);
-		card.ZIndex = 1;
+		// Assign an explicit order: MoveChild updates canvas order a frame later
+		// when called from the flight tween, briefly putting this card underneath.
+		int zIndex = 1;
+		if (GetParent() is Node parent)
+		{
+			foreach (Node sibling in parent.GetChildren())
+			{
+				if (sibling is PlayArea area && area != this &&
+					area.PlayedCard is CardControl previous && IsInstanceValid(previous))
+					zIndex = Math.Max(zIndex, previous.ZIndex + 1);
+			}
+		}
+		card.ZIndex = zIndex;
 
 		if (card.Interaction is not null && IsInstanceValid(card.Interaction))
 			card.Interaction.MouseFilter = MouseFilterEnum.Ignore;

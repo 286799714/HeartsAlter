@@ -208,6 +208,8 @@ public partial class Table : Control
 		ResolveSceneReferences();
 		BindLayoutAnimations();
 		BindSettlementUi();
+		BindWaitingUi();
+		BindExitUi();
 		SetMainPlayerPlayEnabled(false);
 
 		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
@@ -222,7 +224,12 @@ public partial class Table : Control
 			_cardDeck.ChangeCardCount(0);
 		}
 
-		_networkAdapter = UseNetworkSession ? GameSession.GameAdapter : null;
+		_networkAdapter = UseNetworkSession && GameSession.GameAdapter?.IsConnected == true ? GameSession.GameAdapter : null;
+		RoomReservation reservation = UseNetworkSession ? GameSession.PendingReservation : null;
+		if (UseNetworkSession) GameSession.PendingReservation = null;
+		if (reservation is not null && _networkAdapter?.IsConnected != true)
+			GameSession.GameAdapter = _networkAdapter = new ColyseusClientAdapter();
+		SetWaitingVisible(UseNetworkSession && (_networkAdapter is null || reservation is not null || _networkAdapter.State?.phase == "waiting"));
 		if (_networkAdapter is not null)
 		{
 			_networkAdapter.StateChanged += HandleNetworkStateChanged;
@@ -241,9 +248,15 @@ public partial class Table : Control
 			_networkAdapter.Error += HandleNetworkError;
 			_networkAdapter.Left += HandleNetworkRoomLeft;
 			MainPlayerCardPlayRequested += HandleNetworkCardPlayRequested;
-			HandleNetworkStateChanged(_networkAdapter.State, true);
-			_ = _networkAdapter.RequestHandAsync();
+			if (reservation is not null && !_networkAdapter.IsConnected)
+				_ = ConnectWaitingRoomAsync(reservation);
+			else
+			{
+				HandleNetworkStateChanged(_networkAdapter.State, true);
+				_ = _networkAdapter.RequestHandAsync();
+			}
 		}
+		else if (UseNetworkSession) HandleNetworkStatus("没有可用的房间席位，请返回大厅");
 	}
 
 	public override void _ExitTree()
@@ -293,6 +306,8 @@ public partial class Table : Control
 	private void HandleNetworkStateChanged(MyRoomState state, bool first)
 	{
 		if (state is null || _networkAdapter is null || _networkTransitioning || _returningToLobby) return;
+		if (_exitConfirmation.Visible) UpdateExitConfirmation();
+		UpdateWaitingUi(state);
 		if (_networkSettlementScheduled && state.phase is ("table_ready" or "dealing" or "passing" or "playing"))
 		{
 			// A fresh table resets all deal/pass animation state and repeats the ready handshake.
@@ -301,23 +316,14 @@ public partial class Table : Control
 		}
 		if (state.phase == "waiting")
 		{
-			_networkPassGeneration++;
-			_networkPassingSelections.Clear();
-			_networkPassingReceivedCards.Clear();
-			_networkPassSubmitted = false;
-			_networkPassExpected = false;
-			_networkPassAnimationStarted = false;
-			_networkPassAnimating = false;
-			_mainPlayerInfo?.ClearTurnCountdown();
-			_mainHandLayout?.SetPassSelectionEnabled(false);
-			_mainHandLayout?.SetSelectionEnabled(false);
-			_networkHandCards.Clear();
-			TransitionNetworkScene("res://scenes/ReadyRoom.tscn");
+			if (_lastNetworkPhase != "waiting") ResetNetworkPresentation();
+			_lastNetworkPhase = state.phase;
 			return;
 		}
+		_lastNetworkPhase = state.phase;
 		if (state.phase == "finished")
 		{
-			_mainPlayerInfo?.ClearTurnCountdown();
+			_mainHandLayout?.ClearCountdown();
 			SetMainPlayerPlayEnabled(false);
 			_mainHandLayout?.SetSelectionEnabled(false);
 			UpdateSettlementUi(state);
@@ -361,9 +367,9 @@ public partial class Table : Control
 			if (!IsDealing && !_networkPassAnimationStarted && !_networkPassSubmitted)
 				_mainHandLayout?.SetPassSelectionEnabled(true);
 			if (_networkPassSubmitted)
-				_mainPlayerInfo?.ClearTurnCountdown();
+				_mainHandLayout?.ClearCountdown();
 			else
-				_mainPlayerInfo?.StartPassCountdown(_networkPassingDuration);
+				_mainHandLayout?.StartPassCountdown(_networkPassingDuration);
 			return;
 		}
 		if (state.phase == "playing")
@@ -438,7 +444,7 @@ public partial class Table : Control
 			_networkPassAnimationStarted = false;
 			_networkPassAnimating = false;
 		}
-		_mainPlayerInfo?.StartPassCountdown(_networkPassingDuration);
+		_mainHandLayout?.StartPassCountdown(_networkPassingDuration);
 		if (!IsDealing && !_networkPassAnimationStarted)
 		{
 			SetMainPlayerPlayEnabled(false);
@@ -464,7 +470,7 @@ public partial class Table : Control
 		{
 			_mainHandLayout?.ApplyPassSelection(cardIds, lockSelection: true);
 			_networkPassSubmitted = true;
-			_mainPlayerInfo?.ClearTurnCountdown();
+			_mainHandLayout?.ClearCountdown();
 		}
 		else if (_networkAdapter.State.players.TryGetValue(playerId, out Player player))
 		{
@@ -536,7 +542,7 @@ public partial class Table : Control
 					return;
 
 				CardPose2D sourcePose = new(
-					card.GetGlobalTransformWithCanvas(),
+					CardPose2D.GetRenderedCanvasTransform(card),
 					new Vector2(card.CardWidth, card.CardHeight),
 					card.IsFaceUp
 				);
@@ -615,7 +621,7 @@ public partial class Table : Control
 		foreach (OtherHandLayout hand in _opponentHands)
 			hand?.RetractSelectedCards();
 		_mainHandLayout?.SetPassSelectionEnabled(false);
-		_mainPlayerInfo?.ClearTurnCountdown();
+		_mainHandLayout?.ClearCountdown();
 
 		if (_networkAdapter is not null &&
 			_networkPassingSelections.TryGetValue(_networkAdapter.SessionId, out PassingSelection ownSelection))
@@ -673,6 +679,7 @@ public partial class Table : Control
 		if (playerId == _networkAdapter.SessionId)
 		{
 			int visualIndex = -1;
+			_mainHandLayout?.ClearCountdown();
 			if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
 			{
 				for (int index = 0; index < _mainHandLayout.Cards.Count; index++)
@@ -712,7 +719,11 @@ public partial class Table : Control
 	private void HandleNetworkTurnStarted(string playerId, int duration, int trickNumber)
 	{
 		if (_networkAdapter?.State is MyRoomState state)
+		{
+			// A new turn may belong to the same player who just won the trick.
+			_mainHandLayout?.ClearCountdown();
 			UpdateNetworkTurn(playerId, duration, state);
+		}
 	}
 
 	private void UpdateNetworkTurn(string playerId, int duration, MyRoomState state)
@@ -724,10 +735,10 @@ public partial class Table : Control
 			return;
 		}
 		bool localTurn = _networkAdapter is not null && playerId == _networkAdapter.SessionId;
-		if (_mainPlayerInfo is not null && IsInstanceValid(_mainPlayerInfo))
+		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
 		{
-			if (localTurn) _mainPlayerInfo.StartTurnCountdown(duration);
-			else _mainPlayerInfo.ClearTurnCountdown();
+			if (localTurn) _mainHandLayout.StartTurnCountdown(duration);
+			else _mainHandLayout.ClearCountdown();
 		}
 		if (!localTurn || _mainHandLayout is null || !IsInstanceValid(_mainHandLayout))
 		{
@@ -802,14 +813,17 @@ public partial class Table : Control
 		while (IsInsideTree() && !_networkTransitioning && IsCollectingTrick)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		if (!IsInsideTree() || _networkTransitioning || _networkAdapter?.State?.phase != "finished") return;
-		_roundActions.Show();
-		UpdateSettlementUi(_networkAdapter.State);
 		_settlement.Open();
+		UpdateSettlementUi(_networkAdapter.State);
 	}
 
 	private void HandleNetworkRoomReset(string reason)
 	{
-		TransitionNetworkScene("res://scenes/ReadyRoom.tscn");
+		// The message may precede the waiting patch. Reset immediately, and let
+		// the authoritative patch refresh seats and enable waiting-room actions.
+		ResetNetworkPresentation();
+		SetWaitingVisible(true);
+		HandleNetworkStatus(reason);
 	}
 
 	private void TransitionNetworkScene(string scenePath)
@@ -966,6 +980,7 @@ public partial class Table : Control
 		// regardless of which seat receives it. Keep the main player's play gate
 		// closed for the whole collection animation.
 		SetMainPlayerPlayEnabled(false);
+		_mainHandLayout?.SetCountdownSuppressed(true);
 
 		if (!_animationLayer.IsAnimating)
 			TryPrepareCollectTrickCards(generation);
@@ -1166,7 +1181,7 @@ public partial class Table : Control
 			{
 				Vector2 cardSize = new(card.CardWidth, card.CardHeight);
 				CardPose2D sourcePose = new(
-					card.GetGlobalTransformWithCanvas(),
+					CardPose2D.GetRenderedCanvasTransform(card),
 					cardSize,
 					card.IsFaceUp
 				);
@@ -1180,6 +1195,14 @@ public partial class Table : Control
 				return false;
 			}
 		}
+
+		// Preserve play order through collection, with scene order as a tie-breaker.
+		flights.Sort((left, right) =>
+		{
+			int order = left.Card.ZIndex.CompareTo(right.Card.ZIndex);
+			return order != 0 ? order :
+				left.Card.GetParent().GetIndex().CompareTo(right.Card.GetParent().GetIndex());
+		});
 
 		return flights.Count == PlayerCount;
 	}
@@ -1233,6 +1256,8 @@ public partial class Table : Control
 		_collectingPlayerIndex = -1;
 		_pendingRoundScoreDelta = 0;
 		IsCollectingTrick = false;
+		if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
+			_mainHandLayout.SetCountdownSuppressed(false);
 	}
 
 	private async Task DealCardsAsync(CardData[] mainPlayerCards, int generation)
@@ -1395,9 +1420,9 @@ public partial class Table : Control
 			_mainHandLayout.SetPassSelectionEnabled(true);
 			ApplyStoredPassingSelectionsToHands();
 			if (_networkPassSubmitted)
-				_mainPlayerInfo?.ClearTurnCountdown();
+				_mainHandLayout?.ClearCountdown();
 			else
-				_mainPlayerInfo?.StartPassCountdown(_networkPassingDuration);
+				_mainHandLayout?.StartPassCountdown(_networkPassingDuration);
 		}
 		else if (_networkAdapter?.State?.phase == "playing" &&
 			_networkPassingSelections.Count >= PlayerCount &&
@@ -1462,7 +1487,7 @@ public partial class Table : Control
 			cards is null || cards.Count != 3)
 			return;
 		_networkPassSubmitted = true;
-		_mainPlayerInfo?.ClearTurnCountdown();
+		_mainHandLayout?.ClearCountdown();
 		_ = _networkAdapter.SubmitPassingCardsAsync(cards);
 	}
 
@@ -1473,7 +1498,7 @@ public partial class Table : Control
 		_otherHandLayout = Resolve(_otherHandLayout, "OtherHandLayout");
 		_otherHandLayout2 = Resolve(_otherHandLayout2, "OtherHandLayout2");
 		_otherHandLayout3 = Resolve(_otherHandLayout3, "OtherHandLayout3");
-		_animationLayer = Resolve(_animationLayer, "AnimationLayer");
+		_animationLayer = Resolve(_animationLayer, "InGame/AnimationLayer");
 		_mainPlayArea = Resolve(_mainPlayArea, "MainPlayArea");
 		_leftPlayArea = Resolve(_leftPlayArea, "LeftPlayArea");
 		_oppositePlayArea = Resolve(_oppositePlayArea, "OppositePlayArea");
@@ -1503,6 +1528,12 @@ public partial class Table : Control
 		_nextPlayerInfo = Resolve(_nextPlayerInfo, "PlayerInfo");
 		_oppositePlayerInfo = Resolve(_oppositePlayerInfo, "PlayerInfo2");
 		_previousPlayerInfo = Resolve(_previousPlayerInfo, "PlayerInfo3");
+		for (int seat = 0; seat < PlayerCount; seat++)
+		{
+			PlayerInfo info = GetPlayerInfo(seat);
+			if (info is not null && IsInstanceValid(info))
+				info.IsLocalPlayer = seat == MainPlayerIndex;
+		}
 	}
 
 	private static void InitializeSeatPlayerInfo(
@@ -1518,6 +1549,7 @@ public partial class Table : Control
 		playerInfo.SetAvatar(avatar);
 		playerInfo.SetChipCount(chipCount);
 		playerInfo.SetRoundScore(0);
+		playerInfo.SetSeatState(!string.IsNullOrWhiteSpace(playerId), false, false, false);
 	}
 
 	private static void UpdateSeatIdentity(PlayerInfo playerInfo, Player player)
@@ -1525,6 +1557,8 @@ public partial class Table : Control
 		if (playerInfo is null || !IsInstanceValid(playerInfo) || player is null)
 			return;
 		playerInfo.SetProfileIdentity(player.name, player.chips, player.avatarId);
+		playerInfo.IsHost = player.isHost;
+		playerInfo.IsBot = player.isBot;
 	}
 
 	private bool HasCompleteTable()

@@ -1,0 +1,3963 @@
+[gd_scene format=3 uid="uid://b3h8esfh3ccr"]
+
+[ext_resource type="Script" uid="uid://c1rvs6bx7t5ck" path="res://addons/figma_importer/figma_importer.gd" id="1_c2qun"]
+[ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="2_ke4u5"]
+[ext_resource type="Texture2D" uid="uid://iyfm7dnixh4u" path="res://assets/textures/ui/in_game/019a21a4a04346af0673e03c9231b8e035fee9c6_5b782391243da3af.png" id="3_g7x3a"]
+[ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_krwpx"]
+[ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="5_g7x3a"]
+[ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="6_1tj6b"]
+[ext_resource type="Texture2D" uid="uid://lqhhmwygqyda" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_52dcbf7d1f6c5c93.png" id="7_1tj6b"]
+[ext_resource type="Texture2D" uid="uid://c7foqttcih0pc" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_f712a0caa4f36e14.png" id="8_buax0"]
+[ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="9_60tvj"]
+[ext_resource type="Texture2D" uid="uid://baoxpb7msv521" path="res://assets/textures/ui/in_game/00cbb37905cc7d8b8c14efc6c715c40cefd53b27_8d866cc86b813714.png" id="9_s6io5"]
+[ext_resource type="Texture2D" uid="uid://7o4ttfdhyrt1" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004_75f0845aed04ef02.png" id="11_60tvj"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="12_jiukj"]
+[ext_resource type="Texture2D" uid="uid://bjjt60mdhhfsb" path="res://assets/textures/ui/in_game/d52f13774127a0ce78e08547e3dec931cf963f60_f48cacb036aab3f4.png" id="12_mwfnc"]
+[ext_resource type="Texture2D" uid="uid://dlst72bwi4n0v" path="res://assets/textures/ui/in_game/2f4cf8ee6280d96afc522b005367a74cb0648a4d_795af5083afabc4e.png" id="14_xahu6"]
+[ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="15_46rn8"]
+[ext_resource type="Texture2D" uid="uid://dqtp1kglyhihy" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3_543714234a8e9e11.png" id="15_jiukj"]
+[ext_resource type="Texture2D" uid="uid://b73o3jqxjs5qt" path="res://assets/textures/ui/in_game/9802ded8d98b2794af39d603e1e6f66bd50f1aca_06e22c6fbcd2cd03.png" id="17_mqnrp"]
+[ext_resource type="Texture2D" uid="uid://b4hc1tprk5rv4" path="res://assets/textures/ui/in_game/a64c8d14162a0fabafbe666adce166a7e302b18b_826375f83d1ad1ca.png" id="18_t7wrm"]
+[ext_resource type="Texture2D" uid="uid://cykuuvkh41k4s" path="res://assets/textures/ui/in_game/843a46894d5de735d52777c81de320ead2707e69_2844188ea29b8a78.png" id="19_46rn8"]
+[ext_resource type="Texture2D" uid="uid://cjmx5iw4pc1kd" path="res://assets/textures/ui/in_game/7ea75287c73416ca76998a77fcadf86aae5398cc_56b637273605dcb3.png" id="20_8um3f"]
+[ext_resource type="Texture2D" uid="uid://d0jg7gc3ydq1i" path="res://assets/textures/ui/in_game/43e89cc1e3740a5877f15a21579711753576312f_c727613dd9afb085.png" id="21_up640"]
+[ext_resource type="Texture2D" uid="uid://cs8l320kr4gra" path="res://assets/textures/ui/in_game/e9007d392d8264d658a9331e15fd2f59245a3bc1_9db9da36b4242804.png" id="22_cqn6v"]
+[ext_resource type="Texture2D" uid="uid://dcttheh302rdc" path="res://assets/textures/ui/in_game/e9007d392d8264d658a9331e15fd2f59245a3bc1_cd2736bcb9180a58.png" id="23_lb8bt"]
+[ext_resource type="Texture2D" uid="uid://dfrx0qvhf2jaj" path="res://assets/textures/ui/in_game/e9007d392d8264d658a9331e15fd2f59245a3bc1_d182c8864192ff64.png" id="24_ek6t6"]
+[ext_resource type="Texture2D" uid="uid://dya6ws811wbrg" path="res://assets/textures/ui/in_game/76c6dbade0deda4431cec07f9946ddf8c56b0f02_3d08e702fd1cb41e.png" id="25_ckbsh"]
+[ext_resource type="Texture2D" uid="uid://b6sajsh6sy4qc" path="res://assets/textures/ui/in_game/08d41c41c0c05ef850718cf9523abc2c92f66c55_d30e005738b05c6d.png" id="26_88ot7"]
+[ext_resource type="Texture2D" uid="uid://d24m4hndqfi03" path="res://assets/textures/ui/in_game/generated/rgba-73x65-1d2897e463f044e9.png" id="png_1d2897e463f044e9"]
+[ext_resource type="Texture2D" uid="uid://g4sq21llinwx" path="res://assets/textures/ui/in_game/generated/rgba-96x96-7b9a446c62e06593.png" id="png_7b9a446c62e06593"]
+[ext_resource type="Texture2D" uid="uid://ciji7ltcjsal1" path="res://assets/textures/ui/in_game/generated/rgba-24x24-35a0805cab7a0d15.png" id="png_35a0805cab7a0d15"]
+[ext_resource type="Texture2D" uid="uid://c6qd4h7pct1kr" path="res://assets/textures/ui/in_game/generated/rgba-476x108-84e04563a27e4808.png" id="png_84e04563a27e4808"]
+[ext_resource type="Texture2D" uid="uid://d2yae71cm6ax5" path="res://assets/textures/ui/in_game/generated/rgba-48x48-6391edf33540fb82.png" id="png_6391edf33540fb82"]
+[ext_resource type="Texture2D" uid="uid://cg0x8gs0cvhc" path="res://assets/textures/ui/in_game/generated/rgba-36x44-beff862f54b42712.png" id="png_beff862f54b42712"]
+[ext_resource type="Texture2D" uid="uid://d1kkbobeq0k02" path="res://assets/textures/ui/in_game/generated/rgba-36x44-e86cc93e6f8663e4.png" id="png_e86cc93e6f8663e4"]
+[ext_resource type="Texture2D" uid="uid://d08q1lr83nosn" path="res://assets/textures/ui/in_game/generated/rgba-296x4-f070292e5c28f2f8.png" id="png_f070292e5c28f2f8"]
+[ext_resource type="Texture2D" uid="uid://bjiw4ci20mioy" path="res://assets/textures/ui/in_game/generated/rgba-24x24-fc5d881768f2f210.png" id="png_fc5d881768f2f210"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i0q6c"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("3_g7x3a")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(1920, 1080)
+shader_parameter/texture_size = Vector2(1920, 1080)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvr0w"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="Gradient" id="Gradient_d5ft7"]
+colors = PackedColorArray(0.10980392, 0.10980392, 0.10980392, 0, 0.1114232, 0.1114232, 0.1114232, 0.6)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nuppq"]
+gradient = SubResource("Gradient_d5ft7")
+fill_from = Vector2(0.07245079, 1.0491328)
+fill_to = Vector2(0.9999999, 0.052023232)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(0.970673, 1.0434676, -0.099941894, 0.970673, 0.034526296, -0.5939651)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cm2v5"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_nuppq")
+shader_parameter/use_gradient = true
+shader_parameter/use_image = false
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(0, 0)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7u1b"]
+
+[sub_resource type="Gradient" id="Gradient_wm03i"]
+colors = PackedColorArray(0.10980392, 0.10980392, 0.10980392, 0, 0.1114232, 0.1114232, 0.1114232, 0.6)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cr35r"]
+gradient = SubResource("Gradient_wm03i")
+fill_from = Vector2(0.07245079, 1.0491328)
+fill_to = Vector2(0.9999999, 0.052023232)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(0.970673, 1.0434676, -0.099941894, 0.970673, 0.034526296, -0.5939651)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1kdmu"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_cr35r")
+shader_parameter/use_gradient = true
+shader_parameter/use_image = false
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(0, 0)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5105"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kr1p"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmjbh"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_80h7x"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3fe2i"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("7_1tj6b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 162)
+shader_parameter/texture_size = Vector2(162, 162)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kaps0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kq8am"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("8_buax0")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(118, 118)
+shader_parameter/texture_size = Vector2(118, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcoo0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kakvk"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("9_s6io5")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 56)
+shader_parameter/texture_size = Vector2(162, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2noni"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_xjxv2"]
+base_font = ExtResource("9_60tvj")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_vlhih"]
+line_spacing = 0.0
+font = SubResource("FontVariation_xjxv2")
+font_size = 28
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x063q"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("11_60tvj")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(256, 80)
+shader_parameter/texture_size = Vector2(256, 80)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdlm8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m6jp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1dj4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ekjg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_km75x"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("7_1tj6b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 162)
+shader_parameter/texture_size = Vector2(162, 162)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xb7ow"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fh2ea"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("8_buax0")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(118, 118)
+shader_parameter/texture_size = Vector2(118, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ch52"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_trgx3"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("9_s6io5")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 56)
+shader_parameter/texture_size = Vector2(162, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ccv1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_akyjr"]
+base_font = ExtResource("9_60tvj")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_50w8q"]
+line_spacing = 0.0
+font = SubResource("FontVariation_akyjr")
+font_size = 28
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3eb7i"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("11_60tvj")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(256, 80)
+shader_parameter/texture_size = Vector2(256, 80)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nxqp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2gs0"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3gys"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8hyi"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0pi20"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("7_1tj6b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 162)
+shader_parameter/texture_size = Vector2(162, 162)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4fdd2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hpcno"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("8_buax0")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(118, 118)
+shader_parameter/texture_size = Vector2(118, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnfq7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_likb4"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("9_s6io5")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 56)
+shader_parameter/texture_size = Vector2(162, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6vk6s"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_61qm3"]
+base_font = ExtResource("9_60tvj")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_f5ijf"]
+line_spacing = 0.0
+font = SubResource("FontVariation_61qm3")
+font_size = 28
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y00ap"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("11_60tvj")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(256, 80)
+shader_parameter/texture_size = Vector2(256, 80)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wwjc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6gbqh"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("12_mwfnc")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(528, 69)
+shader_parameter/texture_size = Vector2(528, 69)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynfja"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjibk"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_5r6jt"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3ia13"]
+gradient = SubResource("Gradient_5r6jt")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2a0ac"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_3ia13")
+shader_parameter/label_size = Vector2(196, 44)
+
+[sub_resource type="FontVariation" id="FontVariation_35ucd"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_34aob"]
+base_font = SubResource("FontVariation_35ucd")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_6r3jo"]
+line_spacing = 0.0
+font = SubResource("FontVariation_34aob")
+font_size = 32
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7v52q"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0ect"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_beff862f54b42712")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(17.978127, 21.974998)
+shader_parameter/texture_size = Vector2(36, 44)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfo3x"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_36vjk"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_e86cc93e6f8663e4")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(17.978134, 21.974998)
+shader_parameter/texture_size = Vector2(36, 44)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ita2q"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56vib"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ej0fu"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("14_xahu6")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(600, 215)
+shader_parameter/texture_size = Vector2(600, 215)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55vl4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyhc3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dyd7k"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4hw3b"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_f070292e5c28f2f8")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(148.02943, 2)
+shader_parameter/texture_size = Vector2(296, 4)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddy43"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s76i2"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_fc5d881768f2f210")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wf8tf"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4of4b"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hk0c5"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_35a0805cab7a0d15")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x5v0i"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_740wj"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g08wj"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xwg4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_e1b7s"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_t7wrm"]
+base_font = SubResource("FontVariation_e1b7s")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_xtsay"]
+line_spacing = 0.0
+font = SubResource("FontVariation_t7wrm")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_lawfo"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_46rn8"]
+base_font = SubResource("FontVariation_lawfo")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_guj0r"]
+line_spacing = 0.0
+font = SubResource("FontVariation_46rn8")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aawhi"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_ihxhg"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_8um3f"]
+base_font = SubResource("FontVariation_ihxhg")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_wb0rq"]
+line_spacing = 0.0
+font = SubResource("FontVariation_8um3f")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqx22"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i7dnk"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("15_jiukj")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(32, 32)
+shader_parameter/texture_size = Vector2(32, 32)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihxe8"]
+
+[sub_resource type="Gradient" id="Gradient_kde25"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_up640"]
+gradient = SubResource("Gradient_kde25")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c7m3w"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_up640")
+shader_parameter/label_size = Vector2(52, 38)
+
+[sub_resource type="FontVariation" id="FontVariation_roa8i"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_cqn6v"]
+base_font = SubResource("FontVariation_roa8i")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_hwy6w"]
+line_spacing = 0.0
+font = SubResource("FontVariation_cqn6v")
+font_size = 28
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5qejm"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nouod"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_f070292e5c28f2f8")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(148.02943, 2)
+shader_parameter/texture_size = Vector2(296, 4)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axd1i"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_824td"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_fc5d881768f2f210")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tx1ms"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drk3b"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gi5mm"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_35a0805cab7a0d15")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(12, 12)
+shader_parameter/texture_size = Vector2(24, 24)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cd37a"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7082v"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m0hin"]
+bg_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mnde"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvbqx"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yhbei"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_84e04563a27e4808")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(476, 108)
+shader_parameter/texture_size = Vector2(476, 108)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6dej"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6u3jt"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixmo6"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sqkjb"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_7b9a446c62e06593")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(48, 48)
+shader_parameter/texture_size = Vector2(96, 96)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikfif"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4e3vy"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_1d2897e463f044e9")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(36.344997, 32.643)
+shader_parameter/texture_size = Vector2(73, 65)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fnc6"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d0yov"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("png_6391edf33540fb82")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(24.085438, 24.085176)
+shader_parameter/texture_size = Vector2(48, 48)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_88ra4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="Gradient" id="Gradient_s4ay4"]
+colors = PackedColorArray(0.16824195, 0.083288096, 0, 1, 0.42610902, 0.2280349, 0.02996079, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lb8bt"]
+gradient = SubResource("Gradient_s4ay4")
+fill_from = Vector2(0.5, 0.8536585)
+fill_to = Vector2(0.5, 0.15853655)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(1.0387267e-13, 1.4385965, -1.4385965, 1.2884477e-14, 1.2280701, -0.21929824)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dmhle"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_lb8bt")
+shader_parameter/label_size = Vector2(237, 82)
+
+[sub_resource type="FontVariation" id="FontVariation_ek6t6"]
+base_font = ExtResource("15_46rn8")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_qpypx"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ek6t6")
+font_size = 60
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oamki"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfq6f"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erfut"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_daykr"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("17_mqnrp")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(205.4, 118)
+shader_parameter/texture_size = Vector2(206, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1muoq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hjvtl"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("18_t7wrm")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(119.8, 118)
+shader_parameter/texture_size = Vector2(120, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qba45"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfl3y"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("19_46rn8")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(245.8, 118)
+shader_parameter/texture_size = Vector2(246, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lt3g5"]
+
+[sub_resource type="FontVariation" id="FontVariation_ckbsh"]
+base_font = ExtResource("15_46rn8")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_myj2h"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ckbsh")
+font_size = 60
+font_color = Color(0.31629708, 0.27927008, 0.26692766, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_ene6h"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_88ot7"]
+base_font = SubResource("FontVariation_ene6h")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_8sb76"]
+line_spacing = 0.0
+font = SubResource("FontVariation_88ot7")
+font_size = 24
+font_color = Color(1, 1, 1, 0.6666667)
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_neif6"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ccxdy"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("20_8um3f")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(72, 72)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rcbq3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gwotq"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("21_up640")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kql70"]
+
+[sub_resource type="FontVariation" id="FontVariation_20eof"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_p311d"]
+base_font = SubResource("FontVariation_20eof")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_1gbp6"]
+line_spacing = 0.0
+font = SubResource("FontVariation_p311d")
+font_size = 24
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+outline_size = 1
+outline_color = Color(0.18517831, 0.18386833, 0.18386833, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqrj8"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r67jw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n8wo3"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("20_8um3f")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(72, 72)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07fns"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n1kj3"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("22_cqn6v")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r45p0"]
+
+[sub_resource type="FontVariation" id="FontVariation_ybc68"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_61bof"]
+base_font = SubResource("FontVariation_ybc68")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_iuhql"]
+line_spacing = 0.0
+font = SubResource("FontVariation_61bof")
+font_size = 24
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+outline_size = 1
+outline_color = Color(0.18517831, 0.18386833, 0.18386833, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cxd2i"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c7rkn"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("20_8um3f")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(72, 72)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jc23l"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_infcl"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("23_lb8bt")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eae4"]
+
+[sub_resource type="FontVariation" id="FontVariation_ng7og"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_gwd1g"]
+base_font = SubResource("FontVariation_ng7og")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_p2nr2"]
+line_spacing = 0.0
+font = SubResource("FontVariation_gwd1g")
+font_size = 24
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+outline_size = 1
+outline_color = Color(0.18517831, 0.18386833, 0.18386833, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bkux"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ki6vk"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("20_8um3f")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(72, 72)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wc21"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4oid6"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("24_ek6t6")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s6uc"]
+
+[sub_resource type="FontVariation" id="FontVariation_7eqms"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_b38mj"]
+base_font = SubResource("FontVariation_7eqms")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_7doyy"]
+line_spacing = 0.0
+font = SubResource("FontVariation_b38mj")
+font_size = 24
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+outline_size = 1
+outline_color = Color(0.18517831, 0.18386833, 0.18386833, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1cje8"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cd27g"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yl4ag"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("25_ckbsh")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 162)
+shader_parameter/texture_size = Vector2(162, 162)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fta6m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_701c2"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("26_88ot7")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(178, 46)
+shader_parameter/texture_size = Vector2(178, 46)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mfbno"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_4lcwt"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_d5bxq"]
+base_font = SubResource("FontVariation_4lcwt")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_uyf25"]
+line_spacing = 0.0
+font = SubResource("FontVariation_d5bxq")
+font_size = 24
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhv71"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cirw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfd1e"]
+bg_color = Color(0.15239862, 0.027963052, 0, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yu51p"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("15_jiukj")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(32, 32)
+shader_parameter/texture_size = Vector2(32, 32)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_de1he"]
+
+[sub_resource type="FontVariation" id="FontVariation_kl1oo"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1laqs"]
+base_font = SubResource("FontVariation_kl1oo")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_6ooiv"]
+line_spacing = 0.0
+font = SubResource("FontVariation_1laqs")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pglc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c64l"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xi5mc"]
+bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="Gradient" id="Gradient_4ionu"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwnj7"]
+gradient = SubResource("Gradient_4ionu")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rhmmb"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_nwnj7")
+shader_parameter/label_size = Vector2(49, 33)
+
+[sub_resource type="FontVariation" id="FontVariation_6547y"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ry1pl"]
+base_font = SubResource("FontVariation_6547y")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_18vx1"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ry1pl")
+font_size = 24
+
+[node name="NewTable" type="Control" unique_id=1078052672]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_c2qun")
+document_json_file = "res://assets/figma_2_godot/new_table/figma_export.json"
+SelectPage = "已完成部分 xIDx0:1x"
+SelectFrame = "局内-创建房间-人未满 xIDx81:8451x"
+fonts_folder = "res://assets/fonts"
+images_folder = "res://assets/textures/ui/in_game"
+autoPlaceImages = true
+metadata/_custom_type_script = "uid://c1rvs6bx7t5ck"
+
+[node name="局内-创建房间-人未满 xIDx81_8451x" type="ScrollContainer" parent="." unique_id=2083696508]
+material = SubResource("ShaderMaterial_i0q6c")
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gvr0w")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer")
+minSize = Vector2(1920, 1080)
+maxSize = Vector2(100000, 100000)
+clipFrameContents = true
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("3_g7x3a")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x" unique_id=1415275545]
+layout_mode = 2
+
+[node name="Rectangle 11 xIDx81_8452x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=1354153271]
+material = SubResource("ShaderMaterial_cm2v5")
+custom_minimum_size = Vector2(559, 173)
+layout_mode = 0
+offset_left = 1361.0
+offset_right = 1920.0
+offset_bottom = 173.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_l7u1b")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(559, 173)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_gradient = SubResource("GradientTexture2D_nuppq")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle 10 xIDx81_8453x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=1566118384]
+material = SubResource("ShaderMaterial_1kdmu")
+custom_minimum_size = Vector2(559, 173)
+layout_mode = 0
+offset_left = 559.0
+offset_right = 1118.0
+offset_bottom = 173.0
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u5105")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(559, 173)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_gradient = SubResource("GradientTexture2D_cr35r")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Component 2 xIDx81_8454x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=1146555489]
+custom_minimum_size = Vector2(256, 275)
+clip_contents = false
+layout_mode = 0
+offset_left = 148.0
+offset_top = 338.0
+offset_right = 404.0
+offset_bottom = 613.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8kr1p")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer")
+minSize = Vector2(256, 275)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x" unique_id=1137327698]
+layout_mode = 2
+
+[node name="Frame 3 xIDxI81_8454;70_854x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer" unique_id=1833614250]
+custom_minimum_size = Vector2(162, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 47.0
+offset_right = 209.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bmjbh")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer")
+minSize = Vector2(162, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x" unique_id=1766244362]
+layout_mode = 2
+
+[node name="Frame 1 xIDxI81_8454;70_855x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer" unique_id=391737572]
+custom_minimum_size = Vector2(0, 162)
+clip_contents = false
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_80h7x")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer")
+minSize = Vector2(0, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x" unique_id=765281007]
+layout_mode = 2
+
+[node name="image 22 xIDxI81_8454;70_856x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer" unique_id=554009559]
+material = SubResource("ShaderMaterial_3fe2i")
+custom_minimum_size = Vector2(162, 162)
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kaps0")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(162, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("7_1tj6b")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 23 xIDxI81_8454;70_857x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer" unique_id=2004455764]
+material = SubResource("ShaderMaterial_kq8am")
+custom_minimum_size = Vector2(118, 118)
+layout_mode = 0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 140.0
+offset_bottom = 140.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bcoo0")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(118, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_buax0")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 2 xIDxI81_8454;70_858x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer" unique_id=1188990459]
+material = SubResource("ShaderMaterial_kakvk")
+custom_minimum_size = Vector2(0, 56)
+clip_contents = false
+layout_mode = 0
+offset_top = 129.0
+offset_right = 162.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2noni")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x/InnerContainer")
+minSize = Vector2(0, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("9_s6io5")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x" unique_id=868853300]
+layout_mode = 2
+
+[node name="等待加入  xIDxI81_8454;70_859x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x/InnerContainer" unique_id=1105021327]
+layout_mode = 0
+offset_left = 25.5
+offset_top = 9.0
+offset_right = 136.5
+offset_bottom = 47.0
+text = "等待加入"
+label_settings = SubResource("LabelSettings_vlhih")
+clip_text = true
+
+[node name="image 35 xIDxI81_8454;70_860x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer" unique_id=506961469]
+material = SubResource("ShaderMaterial_x063q")
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 0
+offset_top = 193.0
+offset_right = 256.0
+offset_bottom = 273.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wdlm8")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(0, 80)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("11_60tvj")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Component 2 xIDx81_8455x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=910412312]
+custom_minimum_size = Vector2(256, 275)
+clip_contents = false
+layout_mode = 0
+offset_left = 1490.0
+offset_top = 331.0
+offset_right = 1746.0
+offset_bottom = 606.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0m6jp")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer")
+minSize = Vector2(256, 275)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x" unique_id=465315519]
+layout_mode = 2
+
+[node name="Frame 3 xIDxI81_8455;70_854x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer" unique_id=1296778053]
+custom_minimum_size = Vector2(162, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 47.0
+offset_right = 209.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_y1dj4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer")
+minSize = Vector2(162, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x" unique_id=385409520]
+layout_mode = 2
+
+[node name="Frame 1 xIDxI81_8455;70_855x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer" unique_id=1404286439]
+custom_minimum_size = Vector2(0, 162)
+clip_contents = false
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ekjg")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 1 xIDxI81_8455;70_855x/InnerContainer")
+minSize = Vector2(0, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 1 xIDxI81_8455;70_855x" unique_id=388200540]
+layout_mode = 2
+
+[node name="image 22 xIDxI81_8455;70_856x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 1 xIDxI81_8455;70_855x/InnerContainer" unique_id=1121891723]
+material = SubResource("ShaderMaterial_km75x")
+custom_minimum_size = Vector2(162, 162)
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xb7ow")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(162, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("7_1tj6b")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 23 xIDxI81_8455;70_857x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 1 xIDxI81_8455;70_855x/InnerContainer" unique_id=1117378713]
+material = SubResource("ShaderMaterial_fh2ea")
+custom_minimum_size = Vector2(118, 118)
+layout_mode = 0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 140.0
+offset_bottom = 140.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ch52")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(118, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_buax0")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 2 xIDxI81_8455;70_858x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer" unique_id=2097643685]
+material = SubResource("ShaderMaterial_trgx3")
+custom_minimum_size = Vector2(0, 56)
+clip_contents = false
+layout_mode = 0
+offset_top = 129.0
+offset_right = 162.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ccv1")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 2 xIDxI81_8455;70_858x/InnerContainer")
+minSize = Vector2(0, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("9_s6io5")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 2 xIDxI81_8455;70_858x" unique_id=1056585356]
+layout_mode = 2
+
+[node name="等待加入  xIDxI81_8455;70_859x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer/Frame 3 xIDxI81_8455;70_854x/InnerContainer/Frame 2 xIDxI81_8455;70_858x/InnerContainer" unique_id=708866898]
+layout_mode = 0
+offset_left = 25.5
+offset_top = 9.0
+offset_right = 136.5
+offset_bottom = 47.0
+text = "等待加入"
+label_settings = SubResource("LabelSettings_50w8q")
+clip_text = true
+
+[node name="image 35 xIDxI81_8455;70_860x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8455x/InnerContainer" unique_id=1360398095]
+material = SubResource("ShaderMaterial_3eb7i")
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 0
+offset_top = 193.0
+offset_right = 256.0
+offset_bottom = 273.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7nxqp")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(0, 80)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("11_60tvj")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Component 2 xIDx81_8456x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=592046652]
+custom_minimum_size = Vector2(256, 275)
+clip_contents = false
+layout_mode = 0
+offset_left = 832.0
+offset_top = 129.0
+offset_right = 1088.0
+offset_bottom = 404.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b2gs0")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer")
+minSize = Vector2(256, 275)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x" unique_id=604240579]
+layout_mode = 2
+
+[node name="Frame 3 xIDxI81_8456;70_854x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer" unique_id=1130778295]
+custom_minimum_size = Vector2(162, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 47.0
+offset_right = 209.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a3gys")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer")
+minSize = Vector2(162, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x" unique_id=1339396234]
+layout_mode = 2
+
+[node name="Frame 1 xIDxI81_8456;70_855x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer" unique_id=1117798]
+custom_minimum_size = Vector2(0, 162)
+clip_contents = false
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_k8hyi")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 1 xIDxI81_8456;70_855x/InnerContainer")
+minSize = Vector2(0, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 1 xIDxI81_8456;70_855x" unique_id=832491928]
+layout_mode = 2
+
+[node name="image 22 xIDxI81_8456;70_856x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 1 xIDxI81_8456;70_855x/InnerContainer" unique_id=1311487085]
+material = SubResource("ShaderMaterial_0pi20")
+custom_minimum_size = Vector2(162, 162)
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4fdd2")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(162, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("7_1tj6b")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 23 xIDxI81_8456;70_857x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 1 xIDxI81_8456;70_855x/InnerContainer" unique_id=1997127953]
+material = SubResource("ShaderMaterial_hpcno")
+custom_minimum_size = Vector2(118, 118)
+layout_mode = 0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 140.0
+offset_bottom = 140.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xnfq7")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(118, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_buax0")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 2 xIDxI81_8456;70_858x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer" unique_id=1164692520]
+material = SubResource("ShaderMaterial_likb4")
+custom_minimum_size = Vector2(0, 56)
+clip_contents = false
+layout_mode = 0
+offset_top = 129.0
+offset_right = 162.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6vk6s")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 2 xIDxI81_8456;70_858x/InnerContainer")
+minSize = Vector2(0, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("9_s6io5")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 2 xIDxI81_8456;70_858x" unique_id=1826625178]
+layout_mode = 2
+
+[node name="等待加入  xIDxI81_8456;70_859x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer/Frame 3 xIDxI81_8456;70_854x/InnerContainer/Frame 2 xIDxI81_8456;70_858x/InnerContainer" unique_id=123183279]
+layout_mode = 0
+offset_left = 25.5
+offset_top = 9.0
+offset_right = 136.5
+offset_bottom = 47.0
+text = "等待加入"
+label_settings = SubResource("LabelSettings_f5ijf")
+clip_text = true
+
+[node name="image 35 xIDxI81_8456;70_860x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8456x/InnerContainer" unique_id=1614105510]
+material = SubResource("ShaderMaterial_y00ap")
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 0
+offset_top = 193.0
+offset_right = 256.0
+offset_bottom = 273.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8wwjc")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(0, 80)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("11_60tvj")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 8 xIDx81_8457x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=824294092]
+material = SubResource("ShaderMaterial_6gbqh")
+custom_minimum_size = Vector2(528, 69)
+clip_contents = false
+layout_mode = 0
+offset_left = 696.0
+offset_top = 36.0
+offset_right = 1224.0
+offset_bottom = 105.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ynfja")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer")
+minSize = Vector2(528, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("12_mwfnc")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x" unique_id=2126705655]
+layout_mode = 2
+
+[node name="Frame 7 xIDx81_8458x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer" unique_id=1658347239]
+clip_contents = false
+layout_mode = 0
+offset_left = 142.0
+offset_top = 12.5
+offset_right = 386.0
+offset_bottom = 56.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kjibk")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x" unique_id=1187188707]
+layout_mode = 2
+
+[node name="蒋天林的房间  xIDx81_8459x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer" unique_id=1033329815]
+material = SubResource("ShaderMaterial_2a0ac")
+layout_mode = 0
+offset_right = 196.0
+offset_bottom = 44.0
+text = "蒋天林的房间"
+label_settings = SubResource("LabelSettings_6r3jo")
+clip_text = true
+
+[node name="Frame xIDx81_8460x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer" unique_id=178242935]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 212.0
+offset_top = 6.0
+offset_right = 244.0
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7v52q")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer")
+minSize = Vector2(32, 32)
+maxSize = Vector2(100000, 100000)
+clipFrameContents = true
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x" unique_id=581732285]
+layout_mode = 2
+
+[node name="Vector xIDx81_8461x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer" unique_id=955370716]
+material = SubResource("ShaderMaterial_w0ect")
+custom_minimum_size = Vector2(17.978127, 21.974998)
+layout_mode = 0
+offset_left = 4.015625
+offset_top = 8.009377
+offset_right = 21.993752
+offset_bottom = 29.984375
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rfo3x")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer/Vector xIDx81_8461x/InnerContainer")
+minSize = Vector2(17.978127, 21.974998)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_beff862f54b42712")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer/Vector xIDx81_8461x" unique_id=1812027075]
+layout_mode = 2
+
+[node name="Vector xIDx81_8462x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer" unique_id=1762424431]
+material = SubResource("ShaderMaterial_36vjk")
+custom_minimum_size = Vector2(17.978134, 21.974998)
+layout_mode = 0
+offset_left = 10.006348
+offset_top = 2.015625
+offset_right = 27.984482
+offset_bottom = 23.990623
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ita2q")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer/Vector xIDx81_8462x/InnerContainer")
+minSize = Vector2(17.978134, 21.974998)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_e86cc93e6f8663e4")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 8 xIDx81_8457x/InnerContainer/Frame 7 xIDx81_8458x/InnerContainer/Frame xIDx81_8460x/InnerContainer/Vector xIDx81_8462x" unique_id=850482551]
+layout_mode = 2
+
+[node name="Frame 49 xIDx81_8463x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=827761855]
+custom_minimum_size = Vector2(722, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 599.0
+offset_top = 428.0
+offset_right = 1321.0
+offset_bottom = 870.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_56vib")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer")
+minSize = Vector2(722, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x" unique_id=1781275959]
+layout_mode = 2
+
+[node name="image 62 xIDx81_8464x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer" unique_id=1430879247]
+material = SubResource("ShaderMaterial_ej0fu")
+custom_minimum_size = Vector2(600, 215)
+layout_mode = 0
+offset_left = 61.0
+offset_right = 661.0
+offset_bottom = 215.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_55vl4")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(600, 215)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("14_xahu6")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 18 xIDx81_8465x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer" unique_id=1198092242]
+clip_contents = false
+layout_mode = 0
+offset_top = 231.0
+offset_right = 722.0
+offset_bottom = 269.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyhc3")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x" unique_id=493912035]
+layout_mode = 2
+
+[node name="Frame 15 xIDx81_8466x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer" unique_id=1686593601]
+custom_minimum_size = Vector2(169, 0)
+clip_contents = false
+layout_mode = 0
+offset_top = 10.514709
+offset_right = 169.0
+offset_bottom = 27.485271
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dyd7k")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer")
+minSize = Vector2(169, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x" unique_id=813391691]
+layout_mode = 2
+
+[node name="Rectangle 8 xIDx81_8467x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer" unique_id=1433561100]
+material = SubResource("ShaderMaterial_4hw3b")
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 7.4852905
+offset_right = 148.02943
+offset_bottom = 9.485291
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ddy43")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Rectangle 8 xIDx81_8467x/InnerContainer")
+minSize = Vector2(0, 2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_f070292e5c28f2f8")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Rectangle 8 xIDx81_8467x" unique_id=1141924777]
+layout_mode = 2
+
+[node name="Union xIDx81_8468x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer" unique_id=38422559]
+material = SubResource("ShaderMaterial_s76i2")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_left = 152.0293
+offset_top = 8.485291
+offset_right = 164.0293
+offset_bottom = 20.48529
+rotation = -0.7853982
+scale = Vector2(0.99999994, 0.99999994)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wf8tf")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_fc5d881768f2f210")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x" unique_id=1430662265]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 7 xIDx81_8469x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer" unique_id=1461208459]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 0
+offset_left = 3.9995117
+offset_top = 3.9995117
+offset_right = 7.9995117
+offset_bottom = 7.9995117
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4of4b")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(4, 4)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Subtract xIDx81_8470x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer" unique_id=744244198]
+material = SubResource("ShaderMaterial_hk0c5")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x5v0i")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer/Subtract xIDx81_8470x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_35a0805cab7a0d15")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer/Subtract xIDx81_8470x" unique_id=482723615]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 5 xIDx81_8471x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer/Subtract xIDx81_8470x/InnerContainer" unique_id=1871094500]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_740wj")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle 6 xIDx81_8472x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 15 xIDx81_8466x/InnerContainer/Union xIDx81_8468x/InnerContainer/Subtract xIDx81_8470x/InnerContainer" unique_id=1540957808]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g08wj")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(8, 8)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 13 xIDx81_8473x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer" unique_id=121030965]
+clip_contents = false
+layout_mode = 0
+offset_left = 183.0
+offset_right = 527.0
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xwg4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x" unique_id=780076349]
+layout_mode = 2
+
+[node name="四人场  xIDx81_8474x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer" unique_id=1749480833]
+layout_mode = 0
+offset_right = 85.0
+offset_bottom = 38.0
+text = "四人场"
+label_settings = SubResource("LabelSettings_xtsay")
+clip_text = true
+
+[node name="·  xIDx81_8475x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer" unique_id=1666852795]
+layout_mode = 0
+offset_left = 89.0
+offset_right = 100.0
+offset_bottom = 38.0
+text = "·"
+label_settings = SubResource("LabelSettings_guj0r")
+clip_text = true
+
+[node name="Frame 14 xIDx81_8476x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer" unique_id=1464369575]
+clip_contents = false
+layout_mode = 0
+offset_left = 104.0
+offset_right = 344.0
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aawhi")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x" unique_id=863661577]
+layout_mode = 2
+
+[node name="每人需投入  xIDx81_8477x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer" unique_id=2110909225]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 38.0
+text = "每人需投入  "
+label_settings = SubResource("LabelSettings_wb0rq")
+clip_text = true
+
+[node name="Frame 54 xIDx81_8478x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer" unique_id=1239171408]
+clip_contents = false
+layout_mode = 0
+offset_left = 152.0
+offset_right = 240.0
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kqx22")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer/Frame 54 xIDx81_8478x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer/Frame 54 xIDx81_8478x" unique_id=1656242161]
+layout_mode = 2
+
+[node name="image 61 xIDx81_8479x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer/Frame 54 xIDx81_8478x/InnerContainer" unique_id=1146928376]
+material = SubResource("ShaderMaterial_i7dnk")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_top = 3.0
+offset_right = 32.0
+offset_bottom = 35.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ihxe8")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(32, 32)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("15_jiukj")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="100  xIDx81_8480x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 13 xIDx81_8473x/InnerContainer/Frame 14 xIDx81_8476x/InnerContainer/Frame 54 xIDx81_8478x/InnerContainer" unique_id=801295264]
+material = SubResource("ShaderMaterial_c7m3w")
+layout_mode = 0
+offset_left = 36.0
+offset_right = 88.0
+offset_bottom = 38.0
+text = "100"
+label_settings = SubResource("LabelSettings_hwy6w")
+clip_text = true
+
+[node name="Frame 17 xIDx81_8481x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer" unique_id=642114433]
+custom_minimum_size = Vector2(169, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 710.0
+offset_top = 10.514709
+offset_right = 879.0
+offset_bottom = 27.485271
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5qejm")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer")
+minSize = Vector2(169, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x" unique_id=301208750]
+layout_mode = 2
+
+[node name="Rectangle 8 xIDx81_8482x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer" unique_id=58306554]
+material = SubResource("ShaderMaterial_nouod")
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 7.4852905
+offset_right = 148.02943
+offset_bottom = 9.485291
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_axd1i")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Rectangle 8 xIDx81_8482x/InnerContainer")
+minSize = Vector2(0, 2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_f070292e5c28f2f8")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Rectangle 8 xIDx81_8482x" unique_id=1002204196]
+layout_mode = 2
+
+[node name="Union xIDx81_8483x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer" unique_id=839374278]
+material = SubResource("ShaderMaterial_824td")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_left = 152.0293
+offset_top = 8.485291
+offset_right = 164.0293
+offset_bottom = 20.48529
+rotation = -0.7853982
+scale = Vector2(0.99999994, 0.99999994)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tx1ms")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_fc5d881768f2f210")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x" unique_id=866646534]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 7 xIDx81_8484x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer" unique_id=196310983]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 0
+offset_left = 3.9997559
+offset_top = 4.0
+offset_right = 7.999756
+offset_bottom = 8.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_drk3b")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(4, 4)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Subtract xIDx81_8485x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer" unique_id=758508389]
+material = SubResource("ShaderMaterial_gi5mm")
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cd37a")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer/Subtract xIDx81_8485x/InnerContainer")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_35a0805cab7a0d15")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer/Subtract xIDx81_8485x" unique_id=817023253]
+visible = false
+layout_mode = 2
+
+[node name="Rectangle 5 xIDx81_8486x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer/Subtract xIDx81_8485x/InnerContainer" unique_id=2058329619]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7082v")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(12, 12)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle 6 xIDx81_8487x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 18 xIDx81_8465x/InnerContainer/Frame 17 xIDx81_8481x/InnerContainer/Union xIDx81_8483x/InnerContainer/Subtract xIDx81_8485x/InnerContainer" unique_id=1913281393]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_m0hin")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(8, 8)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+use_solid_fill = true
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 38 xIDx81_8488x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer" unique_id=2111460060]
+custom_minimum_size = Vector2(476, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 123.0
+offset_top = 285.0
+offset_right = 599.0
+offset_bottom = 442.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7mnde")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer")
+minSize = Vector2(476, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x" unique_id=1146693794]
+layout_mode = 2
+
+[node name="Frame 37 xIDx81_8489x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer" unique_id=1716342162]
+custom_minimum_size = Vector2(0, 108)
+clip_contents = false
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vvbqx")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer")
+minSize = Vector2(0, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x" unique_id=683246917]
+layout_mode = 2
+
+[node name="按钮样式 xIDxI81_8489;70_596x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer" unique_id=2019247102]
+material = SubResource("ShaderMaterial_yhbei")
+custom_minimum_size = Vector2(476, 108)
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d6dej")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(476, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_84e04563a27e4808")
+textureSizeMode = "Stretch"
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+metadata/figma_slice_children = PackedStringArray("I81:8489;70:596;70:553", "I81:8489;70:596;70:554", "I81:8489;70:596;70:555")
+
+[node name="Frame 35 xIDxI81_8489;70_597x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer" unique_id=274342212]
+clip_contents = false
+layout_mode = 0
+offset_left = 83.5
+offset_top = 13.0
+offset_right = 392.5
+offset_bottom = 95.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6u3jt")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x" unique_id=1077883582]
+layout_mode = 2
+
+[node name="Frame xIDxI81_8489;70_598x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer" unique_id=1389432968]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 0
+offset_top = 5.0
+offset_right = 72.0
+offset_bottom = 77.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ixmo6")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer")
+minSize = Vector2(72, 72)
+maxSize = Vector2(100000, 100000)
+clipFrameContents = true
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x" unique_id=851616872]
+layout_mode = 2
+
+[node name="Vector xIDxI81_8489;70_599x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer" unique_id=1283800872]
+material = SubResource("ShaderMaterial_sqkjb")
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 60.0
+offset_bottom = 60.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ikfif")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_599x/InnerContainer")
+minSize = Vector2(48, 48)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_7b9a446c62e06593")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_599x" unique_id=877915848]
+layout_mode = 2
+
+[node name="Vector xIDxI81_8489;70_600x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer" unique_id=1588489843]
+material = SubResource("ShaderMaterial_4e3vy")
+custom_minimum_size = Vector2(36.344997, 32.643)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 27.356995
+offset_right = 48.344997
+offset_bottom = 59.999996
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fnc6")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_600x/InnerContainer")
+minSize = Vector2(36.344997, 32.643)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_1d2897e463f044e9")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_600x" unique_id=1760466871]
+layout_mode = 2
+
+[node name="Vector xIDxI81_8489;70_601x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer" unique_id=446380544]
+material = SubResource("ShaderMaterial_d0yov")
+custom_minimum_size = Vector2(24.085438, 24.085176)
+layout_mode = 0
+offset_left = 35.91455
+offset_top = 12.0
+offset_right = 59.99999
+offset_bottom = 36.085175
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_88ra4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_601x/InnerContainer")
+minSize = Vector2(24.085438, 24.085176)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("png_6391edf33540fb82")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer/Frame xIDxI81_8489;70_598x/InnerContainer/Vector xIDxI81_8489;70_601x" unique_id=545219993]
+layout_mode = 2
+
+[node name="邀请好友  xIDxI81_8489;70_602x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 37 xIDx81_8489x/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer" unique_id=1092355990]
+material = SubResource("ShaderMaterial_dmhle")
+layout_mode = 0
+offset_left = 72.0
+offset_right = 309.0
+offset_bottom = 82.0
+text = "邀请好友"
+label_settings = SubResource("LabelSettings_qpypx")
+clip_text = true
+
+[node name="Frame 34 xIDx81_8490x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer" unique_id=1940002401]
+clip_contents = false
+layout_mode = 0
+offset_top = 124.0
+offset_right = 476.0
+offset_bottom = 157.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_oamki")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x" unique_id=449941867]
+layout_mode = 2
+
+[node name="Frame 37 xIDx81_8491x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer" unique_id=742162904]
+visible = false
+custom_minimum_size = Vector2(476, 108)
+clip_contents = false
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dfq6f")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer")
+minSize = Vector2(476, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x" unique_id=1941470248]
+layout_mode = 2
+
+[node name="image 7 xIDxI81_8491;70_586x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer" unique_id=1130626998]
+custom_minimum_size = Vector2(476, 108)
+clip_contents = false
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_erfut")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer/image 7 xIDxI81_8491;70_586x/InnerContainer")
+minSize = Vector2(476, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer/image 7 xIDxI81_8491;70_586x" unique_id=1485251969]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8491;70_586;65_305x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer/image 7 xIDxI81_8491;70_586x/InnerContainer" unique_id=891290919]
+material = SubResource("ShaderMaterial_daykr")
+custom_minimum_size = Vector2(205.4, 118)
+layout_mode = 0
+offset_left = -37.0
+offset_top = -5.0
+offset_right = 168.4
+offset_bottom = 113.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1muoq")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(205.4, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("17_mqnrp")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8491;70_586;65_306x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer/image 7 xIDxI81_8491;70_586x/InnerContainer" unique_id=442552561]
+material = SubResource("ShaderMaterial_hjvtl")
+custom_minimum_size = Vector2(119.8, 118)
+layout_mode = 0
+offset_left = 168.40039
+offset_top = -5.0
+offset_right = 288.20038
+offset_bottom = 113.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qba45")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(119.8, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("18_t7wrm")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8491;70_586;65_307x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer/image 7 xIDxI81_8491;70_586x/InnerContainer" unique_id=1175188191]
+material = SubResource("ShaderMaterial_mfl3y")
+custom_minimum_size = Vector2(245.8, 118)
+layout_mode = 0
+offset_left = 288.2002
+offset_top = -5.0
+offset_right = 534.0002
+offset_bottom = 113.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lt3g5")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(245.8, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("19_46rn8")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="开始游戏  xIDxI81_8491;70_592x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer/Frame 37 xIDx81_8491x/InnerContainer" unique_id=533331891]
+layout_mode = 0
+offset_left = 119.5
+offset_top = 13.0
+offset_right = 356.5
+offset_bottom = 95.0
+text = "开始游戏"
+label_settings = SubResource("LabelSettings_myj2h")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="需满4人才可开始游戏，目前1_4  xIDx81_8492x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 49 xIDx81_8463x/InnerContainer/Frame 38 xIDx81_8488x/InnerContainer/Frame 34 xIDx81_8490x/InnerContainer" unique_id=96771429]
+layout_mode = 0
+offset_left = 61.5
+offset_right = 414.5
+offset_bottom = 33.0
+text = "需满4人才可开始游戏，目前1/4"
+label_settings = SubResource("LabelSettings_8sb76")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Frame 25 xIDx81_8493x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=122866100]
+custom_minimum_size = Vector2(72, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 48.0
+offset_top = 36.0
+offset_right = 120.0
+offset_bottom = 145.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_neif6")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer")
+minSize = Vector2(72, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x" unique_id=1863575145]
+layout_mode = 2
+
+[node name="Frame 22 xIDx81_8494x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer" unique_id=923578197]
+material = SubResource("ShaderMaterial_ccxdy")
+custom_minimum_size = Vector2(72, 72)
+clip_contents = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rcbq3")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer/Frame 22 xIDx81_8494x/InnerContainer")
+minSize = Vector2(72, 72)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("20_8um3f")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer/Frame 22 xIDx81_8494x" unique_id=440231704]
+layout_mode = 2
+
+[node name="image 49 xIDx81_8495x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer/Frame 22 xIDx81_8494x/InnerContainer" unique_id=1249387518]
+material = SubResource("ShaderMaterial_gwotq")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kql70")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("21_up640")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="退出  xIDx81_8496x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 25 xIDx81_8493x/InnerContainer" unique_id=164109743]
+layout_mode = 0
+offset_top = 76.0
+offset_right = 72.0
+offset_bottom = 109.0
+text = "退出"
+label_settings = SubResource("LabelSettings_1gbp6")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Frame 48 xIDx81_8497x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=2092699811]
+clip_contents = false
+layout_mode = 0
+offset_left = 1586.0
+offset_top = 36.0
+offset_right = 1872.0
+offset_bottom = 145.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fqrj8")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x" unique_id=775773775]
+layout_mode = 2
+
+[node name="Frame 22 xIDxI81_8497;71_1791x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer" unique_id=284457473]
+custom_minimum_size = Vector2(72, 0)
+clip_contents = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 109.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r67jw")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer")
+minSize = Vector2(72, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x" unique_id=105827537]
+layout_mode = 2
+
+[node name="Frame 21 xIDxI81_8497;71_1792x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer" unique_id=1265532852]
+material = SubResource("ShaderMaterial_n8wo3")
+custom_minimum_size = Vector2(0, 72)
+clip_contents = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_07fns")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer/Frame 21 xIDxI81_8497;71_1792x/InnerContainer")
+minSize = Vector2(0, 72)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("20_8um3f")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer/Frame 21 xIDxI81_8497;71_1792x" unique_id=753837319]
+layout_mode = 2
+
+[node name="image 46 xIDxI81_8497;71_1793x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer/Frame 21 xIDxI81_8497;71_1792x/InnerContainer" unique_id=635366844]
+material = SubResource("ShaderMaterial_n1kj3")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r45p0")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("22_cqn6v")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="声音  xIDxI81_8497;71_1794x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 22 xIDxI81_8497;71_1791x/InnerContainer" unique_id=1489448263]
+layout_mode = 0
+offset_top = 76.0
+offset_right = 72.0
+offset_bottom = 109.0
+text = "声音"
+label_settings = SubResource("LabelSettings_iuhql")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Frame 23 xIDxI81_8497;71_1795x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer" unique_id=335069408]
+custom_minimum_size = Vector2(72, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 107.0
+offset_right = 179.0
+offset_bottom = 109.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cxd2i")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer")
+minSize = Vector2(72, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x" unique_id=698036233]
+layout_mode = 2
+
+[node name="Frame 21 xIDxI81_8497;71_1796x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer" unique_id=231917900]
+material = SubResource("ShaderMaterial_c7rkn")
+custom_minimum_size = Vector2(0, 72)
+clip_contents = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jc23l")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer/Frame 21 xIDxI81_8497;71_1796x/InnerContainer")
+minSize = Vector2(0, 72)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("20_8um3f")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer/Frame 21 xIDxI81_8497;71_1796x" unique_id=1339801021]
+layout_mode = 2
+
+[node name="image 47 xIDxI81_8497;71_1797x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer/Frame 21 xIDxI81_8497;71_1796x/InnerContainer" unique_id=1558787409]
+material = SubResource("ShaderMaterial_infcl")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4eae4")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("23_lb8bt")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="规则  xIDxI81_8497;71_1798x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 23 xIDxI81_8497;71_1795x/InnerContainer" unique_id=1651917829]
+layout_mode = 0
+offset_top = 76.0
+offset_right = 72.0
+offset_bottom = 109.0
+text = "规则"
+label_settings = SubResource("LabelSettings_p2nr2")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Frame 24 xIDxI81_8497;71_1799x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer" unique_id=701139354]
+custom_minimum_size = Vector2(72, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 214.0
+offset_right = 286.0
+offset_bottom = 109.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1bkux")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer")
+minSize = Vector2(72, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x" unique_id=578236588]
+layout_mode = 2
+
+[node name="Frame 21 xIDxI81_8497;71_1800x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer" unique_id=1998032151]
+material = SubResource("ShaderMaterial_ki6vk")
+custom_minimum_size = Vector2(0, 72)
+clip_contents = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wc21")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer/Frame 21 xIDxI81_8497;71_1800x/InnerContainer")
+minSize = Vector2(0, 72)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("20_8um3f")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer/Frame 21 xIDxI81_8497;71_1800x" unique_id=883511484]
+layout_mode = 2
+
+[node name="image 13 xIDxI81_8497;71_1801x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer/Frame 21 xIDxI81_8497;71_1800x/InnerContainer" unique_id=911491785]
+material = SubResource("ShaderMaterial_4oid6")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s6uc")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("24_ek6t6")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="设置  xIDxI81_8497;71_1802x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Frame 48 xIDx81_8497x/InnerContainer/Frame 24 xIDxI81_8497;71_1799x/InnerContainer" unique_id=118537177]
+layout_mode = 0
+offset_top = 76.0
+offset_right = 72.0
+offset_bottom = 109.0
+text = "设置"
+label_settings = SubResource("LabelSettings_7doyy")
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Component 2 xIDx81_8498x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer" unique_id=1075686550]
+custom_minimum_size = Vector2(256, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 33.0
+offset_top = 709.0
+offset_right = 289.0
+offset_bottom = 984.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1cje8")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer")
+minSize = Vector2(256, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x" unique_id=1393255084]
+layout_mode = 2
+
+[node name="身份 xIDxI81_8498;76_4791x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer" unique_id=1212577688]
+clip_contents = false
+layout_mode = 0
+offset_left = 39.0
+offset_right = 217.0
+offset_bottom = 178.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cd27g")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x" unique_id=274194023]
+layout_mode = 2
+
+[node name="image 78 xIDxI81_8498;76_4791;76_4776x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer" unique_id=1386107607]
+material = SubResource("ShaderMaterial_yl4ag")
+custom_minimum_size = Vector2(162, 162)
+layout_mode = 0
+offset_left = 8.0
+offset_right = 170.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fta6m")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(162, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("25_ckbsh")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 31 xIDxI81_8498;76_4791;76_4777x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer" unique_id=196475053]
+material = SubResource("ShaderMaterial_701c2")
+custom_minimum_size = Vector2(178, 46)
+clip_contents = false
+layout_mode = 0
+offset_top = 132.0
+offset_right = 178.0
+offset_bottom = 178.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mfbno")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x/InnerContainer")
+minSize = Vector2(178, 46)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("26_88ot7")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x" unique_id=1752660293]
+layout_mode = 2
+
+[node name="玩家1 (你)  xIDxI81_8498;76_4791;76_4778x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x/InnerContainer" unique_id=486774170]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 6.5
+offset_right = 147.0
+offset_bottom = 39.5
+text = "玩家1 (你)"
+label_settings = SubResource("LabelSettings_uyf25")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="对局中状态状态 xIDxI81_8498;75_3267x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer" unique_id=1333891364]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_left = 39.0
+offset_top = 186.0
+offset_right = 217.0
+offset_bottom = 230.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nhv71")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x" unique_id=2075033015]
+layout_mode = 2
+
+[node name="信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer" unique_id=1915934021]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7cirw")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" unique_id=62521429]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8498;75_3267;75_3246;39_5x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=892769834]
+custom_minimum_size = Vector2(178, 44)
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rfd1e")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.15239862, 0.027963052, 0, 0.8)
+use_solid_fill = true
+border_weights = [2.0, 2.0, 2.0, 2.0]
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="image 61 xIDxI81_8498;75_3267;75_3247x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer" unique_id=1993986117]
+material = SubResource("ShaderMaterial_yu51p")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 18.5
+offset_top = 6.0
+offset_right = 50.5
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_de1he")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(32, 32)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("15_jiukj")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="3600W  xIDxI81_8498;75_3267;75_3248x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer" unique_id=1262193420]
+layout_mode = 0
+offset_left = 62.5
+offset_top = 3.0
+offset_right = 159.5
+offset_bottom = 41.0
+text = "3600W"
+label_settings = SubResource("LabelSettings_6ooiv")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="身份标签 xIDxI81_8498;70_870x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer" unique_id=1501861448]
+custom_minimum_size = Vector2(116, 37)
+clip_contents = false
+layout_mode = 0
+offset_left = 70.0
+offset_top = 238.0
+offset_right = 186.0
+offset_bottom = 275.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0pglc")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x" unique_id=25304784]
+layout_mode = 2
+
+[node name="信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x" type="ScrollContainer" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer" unique_id=978780352]
+custom_minimum_size = Vector2(116, 37)
+clip_contents = false
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3c64l")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x/InnerContainer")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x" unique_id=781456999]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8498;70_870;70_729;39_5x" type="Panel" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x/InnerContainer" unique_id=1395655801]
+custom_minimum_size = Vector2(116, 37)
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xi5mc")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0.8)
+use_solid_fill = true
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="房主  xIDxI81_8498;70_870;70_730x" type="Label" parent="局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer" unique_id=1442206895]
+material = SubResource("ShaderMaterial_rhmmb")
+layout_mode = 0
+offset_left = 33.5
+offset_top = 2.0
+offset_right = 82.5
+offset_bottom = 35.0
+text = "房主"
+label_settings = SubResource("LabelSettings_18vx1")
+horizontal_alignment = 1
+clip_text = true

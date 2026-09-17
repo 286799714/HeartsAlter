@@ -12,4 +12,24 @@ public readonly record struct CardPose2D(
 	Transform2D CanvasTransform,
 	Vector2 Size,
 	bool IsFaceUp
-);
+)
+{
+	/// <summary>
+	/// Captures the rendered pose, including Control pixel snapping. Godot's
+	/// GetGlobalTransformWithCanvas returns the unsnapped logical transform.
+	/// </summary>
+	public static Transform2D GetRenderedCanvasTransform(CanvasItem item)
+	{
+		Transform2D local = item.GetTransform();
+		if (item is Control control &&
+			control.GetViewport().GuiSnapControlsToPixels &&
+			Mathf.Abs(Mathf.Sin(control.Rotation * 4.0f)) < 0.00001f)
+		{
+			local.Origin = (local.Origin + Vector2.One * 0.5f).Floor();
+		}
+
+		return !item.TopLevel && item.GetParent() is CanvasItem parent
+			? GetRenderedCanvasTransform(parent) * local
+			: item.GetCanvasTransform() * local;
+	}
+}

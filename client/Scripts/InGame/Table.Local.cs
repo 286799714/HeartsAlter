@@ -92,7 +92,7 @@ public partial class Table
 			{
 				CardControl card = seat == 0 ? FindMainCard(CardRules.Id(outgoing[index])) : GetCardAt(GetOtherHand(seat), index);
 				if (card is null) return false;
-				var source = new CardPose2D(card.GetGlobalTransformWithCanvas(), new Vector2(card.CardWidth, card.CardHeight), card.IsFaceUp);
+				var source = new CardPose2D(CardPose2D.GetRenderedCanvasTransform(card), new Vector2(card.CardWidth, card.CardHeight), card.IsFaceUp);
 				if (seat == 3) card.Setup(incoming[index], startFaceUp: false);
 				flights.Add(new PassingFlight(card, destination, source, GetReceivePose(destination, card)));
 			}

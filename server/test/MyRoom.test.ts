@@ -76,12 +76,250 @@ describe("authoritative Hearts room", () => {
     return { client, room: colyseus.getRoomById<MyRoomState>(reservation.roomId) };
   };
 
+  it("manages fixed waiting seats, rejects unauthorized actions and releases kicked profiles", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    const host = await colyseus.connectTo(room, { deviceId: "seat-host" });
+    const guest = await colyseus.connectTo(room, { deviceId: "seat-guest" });
+    const reject = async (client: any, type: string, payload: unknown, reason: RegExp) => {
+      const error = client.waitForMessage("invalid_play");
+      client.send(type, payload);
+      assert.match((await error).reason, reason);
+    };
+    await reject(guest, "add_bot", { seat: 3 }, /只有房主/);
+    await reject(guest, "kick_player", { playerId: host.sessionId }, /只有房主/);
+    for (const seat of [-1, 4, 1.5, "2", null, 0, 1]) {
+      await reject(host, "add_bot", { seat }, /空席位/);
+    }
+    host.send("add_bot", { seat: 3 });
+    await room.waitForMessage("add_bot");
+    const botId = [...room.state.players.keys()].find((id) => room.state.players.get(id)!.isBot)!;
+    assert.equal(room.state.players.get(botId)!.seat, 3);
+    assert.equal(room.state.players.get(botId)!.ready, true);
+    assert.equal(room.metadata.playerCount, 3);
+    await reject(host, "kick_player", { playerId: host.sessionId }, /不能移除/);
+    await reject(host, "kick_player", { playerId: "missing" }, /不能移除/);
+    await reject(host, "kick_player", { playerId: 1 }, /不能移除/);
+
+    const guestLeft = new Promise<number>((resolve) => guest.onLeave(resolve));
+    host.send("kick_player", { playerId: guest.sessionId });
+    assert.equal(await guestLeft, 4000);
+    assert.equal(room.state.players.has(guest.sessionId), false);
+    assert.equal(room.state.players.get(botId)!.seat, 3, "removal must not move other seats");
+    // A kicked profile is released and a new connection takes the first vacancy.
+    const replacement = await colyseus.connectTo(room, { deviceId: "seat-guest" });
+    assert.equal(room.state.players.get(replacement.sessionId)!.seat, 1);
+    host.send("kick_player", { playerId: botId });
+    await room.waitForMessage("kick_player");
+    assert.equal(room.state.players.has(botId), false);
+    assert.equal(room.metadata.playerCount, 2);
+    host.send("add_bot", { seat: 3 });
+    await room.waitForMessage("add_bot");
+    host.send("add_bot", { seat: 2 });
+    await room.waitForMessage("add_bot");
+    assert.deepEqual(room.state.playerOrder.map((id) => room.state.players.get(id)!.seat), [0, 1, 2, 3]);
+    await reject(host, "add_bot", undefined, /没有空席位/);
+    await reject(host, "start_game", undefined, /未准备/);
+    replacement.send("ready", { ready: true });
+    await room.waitForMessage("ready");
+    // The asynchronous lock window is still phase=waiting but must freeze seats.
+    (room as any).starting = true;
+    await reject(host, "add_bot", { seat: 2 }, /只有房主/);
+    await reject(host, "kick_player", { playerId: replacement.sessionId }, /准备阶段/);
+    (room as any).starting = false;
+    host.send("start_game");
+    await room.waitForMessage("start_game");
+    await room.waitForNextPatch();
+    assert.equal(room.state.phase, "table_ready");
+    await reject(host, "kick_player", { playerId: replacement.sessionId }, /准备阶段/);
+    await reject(host, "add_bot", { seat: 2 }, /只有房主/);
+    for (const timer of [...room.clock.delayed]) timer.tick(31_000);
+    assert.equal(room.state.phase, "waiting");
+    const left = replacement.waitForMessage("player_left");
+    await host.leave();
+    await left;
+    assert.equal(room.state.hostId, replacement.sessionId);
+    assert.equal(room.state.players.get(replacement.sessionId)!.seat, 1);
+    replacement.send("add_bot", { seat: 0 });
+    await room.waitForMessage("add_bot");
+    assert.deepEqual(room.state.playerOrder.map((id) => room.state.players.get(id)!.seat), [0, 1, 2, 3]);
+    assert.equal(room.state.players.get(replacement.sessionId)!.ready, true);
+  });
+
+  for (const phase of ["table_ready", "dealing", "passing", "playing", "finished"]) {
+    it(`replaces a consenting guest with a bot during ${phase} without losing the seat or stalling the room`, async () => {
+      const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+      const host = await colyseus.connectTo(room, { deviceId: `exit-host-${phase}` });
+      const guest = await colyseus.connectTo(room, { deviceId: `exit-guest-${phase}` });
+      for (const seat of [2, 3]) {
+        host.send("add_bot", { seat });
+        await room.waitForMessage("add_bot");
+      }
+      guest.send("ready", { ready: true });
+      await room.waitForMessage("ready");
+      host.send("start_game");
+      await room.waitForMessage("start_game");
+      await room.waitForNextPatch();
+      host.send("table_ready");
+      await room.waitForMessage("table_ready");
+      if (phase !== "table_ready") {
+        guest.send("table_ready");
+        await room.waitForMessage("table_ready");
+        host.send("deal_ready");
+        await room.waitForMessage("deal_ready");
+      }
+      if (["passing", "playing", "finished"].includes(phase)) {
+        guest.send("deal_ready");
+        await room.waitForMessage("deal_ready");
+      }
+      if (["playing", "finished"].includes(phase)) await completePassing(room, [host, guest]);
+      if (phase === "finished") {
+        for (let play = 0; room.state.phase === "playing" && play < 52; play++) (room as any).autoPlayCurrentTurn();
+      }
+      assert.equal(room.state.phase, phase);
+      // Preserve a non-active guest hand so takeover itself need not play a card.
+      if (phase === "playing" && room.state.currentTurn === guest.sessionId) (room as any).autoPlayCurrentTurn();
+      const player = room.state.players.get(guest.sessionId)!;
+      const previous = { seat: player.seat, score: player.score, chips: player.chips, handCount: player.handCount };
+      const departed = host.waitForMessage("player_disconnected");
+      await guest.leave();
+      const notification = await departed;
+      assert.equal(notification.automated, true);
+      assert.equal(room.state.players.size, 4);
+      assert.equal(room.state.hostId, host.sessionId);
+      assert.equal(player.isBot, true);
+      assert.equal(player.connected, true);
+      assert.equal(player.ready, true);
+      assert.equal(player.seat, previous.seat);
+      assert.equal(player.profileId, "");
+      assert.equal(player.score, previous.score);
+      if (!["table_ready"].includes(phase)) assert.equal(player.chips, previous.chips);
+      if (["playing", "finished"].includes(phase)) assert.equal(player.handCount, previous.handCount);
+      assert.equal(room.state.phase, phase === "table_ready" ? "dealing" : phase === "dealing" ? "passing" : phase);
+      if (phase === "passing") assert.ok((room as any).passingSelections.has(guest.sessionId), "replacement bot must select passing cards");
+      assert.equal(getPlayerProfileStore().getByDevice(`exit-guest-${phase}`).chips, previous.chips,
+        "exit must immediately persist the balance excluding any paid ante");
+      const another = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+      const returnedGuest = await colyseus.connectTo(another, { deviceId: `exit-guest-${phase}` });
+      const returnedPlayer = another.state.players.get(returnedGuest.sessionId)!;
+      assert.equal(returnedPlayer.isBot, false, "exit must immediately release the profile");
+      assert.equal(returnedPlayer.chips, previous.chips);
+      if (phase === "playing") {
+        // A newer room can save a different balance before this round ends.
+        const newerBalance = previous.chips - 37;
+        getPlayerProfileStore().saveBalances([{
+          playerId: returnedPlayer.profileId, chips: newerBalance,
+          owner: `${another.roomId}:${returnedGuest.sessionId}`,
+        }]);
+        for (let play = 0; room.state.phase === "playing" && play < 52; play++) (room as any).autoPlayCurrentTurn();
+        assert.equal(room.state.phase, "finished");
+        assert.equal(getPlayerProfileStore().getByDevice(`exit-guest-${phase}`).chips, newerBalance,
+          "the old room must not overwrite the newer room's save");
+        host.send("next_round");
+        await room.waitForMessage("next_round");
+        assert.equal(room.state.phase, "table_ready", "next round must not wait for the departed guest");
+      }
+    });
+  }
+
+  it("dissolves an active room when its host leaves and preserves unfinished saved balances", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    const host = await colyseus.connectTo(room, { deviceId: "disband-host" });
+    const guest = await colyseus.connectTo(room, { deviceId: "disband-guest" });
+    const rejected = guest.waitForMessage("invalid_play");
+    guest.send("disband_room");
+    assert.match((await rejected).reason, /只有房主/);
+    for (const seat of [2, 3]) {
+      host.send("add_bot", { seat });
+      await room.waitForMessage("add_bot");
+    }
+    guest.send("ready", { ready: true });
+    await room.waitForMessage("ready");
+    host.send("start_game");
+    await room.waitForMessage("start_game");
+    await room.waitForNextPatch();
+    for (const client of [host, guest]) {
+      client.send("table_ready");
+      await room.waitForMessage("table_ready");
+    }
+    assert.equal(room.state.phase, "dealing");
+    const guestLeft = new Promise<number>((resolve) => guest.onLeave(resolve));
+    await host.leave();
+    assert.equal(await guestLeft, 4000);
+    assert.equal(getPlayerProfileStore().getByDevice("disband-host").chips, 1000);
+    assert.equal(getPlayerProfileStore().getByDevice("disband-guest").chips, 1000);
+    const another = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    await colyseus.connectTo(another, { deviceId: "disband-host" });
+    await colyseus.connectTo(another, { deviceId: "disband-guest" });
+    assert.equal(another.state.players.size, 2, "disbanding must release every profile claim");
+  });
+
+  for (const finished of [false, true]) {
+    it(`${finished ? "preserves settled balances" : "refunds all four paid antes exactly once"} when the host dissolves a four-human room`, async () => {
+      const room = await colyseus.createRoom<MyRoomState>("hearts");
+      const clients: any[] = [];
+      for (let seat = 0; seat < 4; seat++) {
+        clients.push(await colyseus.connectTo(room, { deviceId: `refund-${finished}-${seat}` }));
+      }
+      assert.ok([...room.state.players.values()].every((player) => player.chips === 900 && player.stake === 100));
+      if (finished) {
+        await completePassing(room, clients);
+        for (let play = 0; room.state.phase === "playing" && play < 52; play++) (room as any).autoPlayCurrentTurn();
+        assert.equal(room.state.phase, "finished");
+      }
+      const saved = clients.map((_, seat) => getPlayerProfileStore().getByDevice(`refund-${finished}-${seat}`).chips);
+      const left = clients.slice(1).map((client) => new Promise((resolve) => client.onLeave(resolve)));
+      await clients[0].leave();
+      await Promise.all(left);
+      for (let seat = 0; seat < 4; seat++) {
+        assert.equal(getPlayerProfileStore().getByDevice(`refund-${finished}-${seat}`).chips, saved[seat]);
+        assert.equal(room.state.players.get(clients[seat].sessionId)!.chips, saved[seat]);
+        if (!finished) assert.equal(room.state.players.get(clients[seat].sessionId)!.stake, 0);
+      }
+      if (!finished) assert.equal(room.state.pot, 0);
+      await room.disconnect();
+      for (let seat = 0; seat < 4; seat++) assert.equal(room.state.players.get(clients[seat].sessionId)!.chips, saved[seat]);
+    });
+  }
+
+  it("keeps a guest's forfeiture final when the old room refunds its remaining players", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts", { ante: 250 });
+    const clients: any[] = [];
+    for (let seat = 0; seat < 4; seat++) clients.push(await colyseus.connectTo(room, { deviceId: `forfeit-refund-${seat}` }));
+    const departed = clients[0].waitForMessage("player_disconnected");
+    await clients[1].leave();
+    await departed;
+    assert.equal(getPlayerProfileStore().getByDevice("forfeit-refund-1").chips, 750);
+    const another = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    const newClient = await colyseus.connectTo(another, { deviceId: "forfeit-refund-1" });
+    assert.equal(another.state.players.get(newClient.sessionId)!.chips, 750);
+    const left = [clients[2], clients[3]].map((client) => new Promise((resolve) => client.onLeave(resolve)));
+    await clients[0].leave();
+    await Promise.all(left);
+    for (const seat of [0, 2, 3]) assert.equal(getPlayerProfileStore().getByDevice(`forfeit-refund-${seat}`).chips, 1000);
+    assert.equal(getPlayerProfileStore().getByDevice("forfeit-refund-1").chips, 750, "old-room refund must not credit the departed guest");
+  });
+
+  it("cancels and refunds the round if an exit forfeiture cannot be saved", async () => {
+    const room = await colyseus.createRoom<MyRoomState>("hearts");
+    const clients: any[] = [];
+    for (let seat = 0; seat < 4; seat++) clients.push(await colyseus.connectTo(room, { deviceId: `forfeit-failure-${seat}` }));
+    const save = mock.method(getPlayerProfileStore(), "saveBalances", () => { throw new Error("test write failure"); });
+    const reset = clients[0].waitForMessage("room_reset");
+    await clients[1].leave();
+    await reset;
+    assert.equal(room.state.phase, "waiting");
+    assert.equal(room.state.players.has(clients[1].sessionId), false);
+    assert.match(room.state.message, /保存失败/);
+    for (let seat = 0; seat < 4; seat++) assert.equal(getPlayerProfileStore().getByDevice(`forfeit-failure-${seat}`).chips, 1000);
+    save.mock.restore();
+    const another = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
+    await colyseus.connectTo(another, { deviceId: "forfeit-failure-1" });
+  });
+
   it("defaults room rules on and syncs validated host-only changes before starting", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
     const host = await colyseus.connectTo(room, { deviceId: "rules-host" });
     const guest = await colyseus.connectTo(room, { deviceId: "rules-guest" });
-    await host.waitForInitialState();
-    await guest.waitForInitialState();
     assert.equal(host.state.heartsBreakingEnabled, true);
     assert.equal(guest.state.mustDiscardPointsWhenVoid, true);
     const reject = async (client: any, payload: unknown, reason: RegExp) => {

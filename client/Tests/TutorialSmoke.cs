@@ -49,7 +49,7 @@ public partial class TutorialSmoke : Node
 					await WaitForInput();
 					if (_tutorial.Phase == TutorialPhase.Pass)
 					{
-						var hand = _tutorial.ActiveTable.GetNode<MainHandLayout>("MainHandLayout");
+						var hand = _tutorial.ActiveTable.GetNode<MainHandLayout>("InGame/MainHandLayout");
 						hand.ApplyPassSelection(_tutorial.Round.Hands[0].Take(2).Select(CardRules.Id), false);
 						Check(!hand.SubmitPassSelection(), "Two-card pass was accepted.");
 						if (_tutorial.Step.MakeClubVoid)
@@ -84,7 +84,7 @@ public partial class TutorialSmoke : Node
 					{
 						Check(_tutorial.Phase == TutorialPhase.Play, "Lesson did not wait for player input.");
 						var legal = _tutorial.Round.LegalCards();
-						var layout = _tutorial.ActiveTable.GetNode<MainHandLayout>("MainHandLayout");
+						var layout = _tutorial.ActiveTable.GetNode<MainHandLayout>("InGame/MainHandLayout");
 						Check(layout.PlayableCardIds.ToHashSet().SetEquals(legal.Select(CardRules.Id)), "Wrong card highlights.");
 						var illegal = _tutorial.Round.Hands[0].Where(card => !legal.Contains(card)).ToArray();
 						if (illegal.Length > 0)
@@ -177,7 +177,7 @@ public partial class TutorialSmoke : Node
 			if (_tutorial.Phase != TutorialPhase.Guiding) continue;
 			Check(++pages < 20, "Guidance did not finish.");
 			var guide = _tutorial.GetNode<TutorialSpotlight>("%GuideOverlay");
-			var hand = _tutorial.ActiveTable.GetNode<MainHandLayout>("MainHandLayout");
+			var hand = _tutorial.ActiveTable.GetNode<MainHandLayout>("InGame/MainHandLayout");
 			Check(!hand.SelectionEnabled && !_tutorial.ActiveTable.CanMainPlayerPlay, "Cards are interactive during guidance.");
 			Check(guide.Visible && guide.FocusRects.Count > 0 && guide.FocusRects.All(rect => rect.Size.X > 0 && rect.Size.Y > 0),
 				"The highlighted region is missing or empty.");
@@ -213,7 +213,7 @@ public partial class TutorialSmoke : Node
 		}
 		Check(_tutorial.Phase != TutorialPhase.Error, "Tutorial reported an error.");
 		Check(!_tutorial.GetNode<Control>("%InstructionPanel").IsVisibleInTree(), "Instruction panel stayed visible after guidance.");
-		var layout = _tutorial.ActiveTable?.GetNode<MainHandLayout>("MainHandLayout");
+		var layout = _tutorial.ActiveTable?.GetNode<MainHandLayout>("InGame/MainHandLayout");
 		if (layout is not null)
 		{
 			Check(layout.SelectedCard is null, "The final guidance click leaked into hand selection.");

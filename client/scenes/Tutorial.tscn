@@ -104,8 +104,11 @@ DealInterval = 0.025
 ArrangeDelay = 0.05
 TrickCollectDelay = 0.25
 
-[node name="Overlay" type="Control" parent="Game" unique_id=1342063206]
-z_index = 200
+[node name="InterfaceLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Overlay" type="Control" parent="InterfaceLayer" unique_id=1342063206]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,8 +116,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = SubResource("Theme_tutorial")
 
-[node name="Navigation" type="PanelContainer" parent="Game/Overlay" unique_id=1073342314]
+[node name="Navigation" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1073342314]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -128,28 +132,28 @@ offset_bottom = -27.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Column" type="VBoxContainer" parent="Game/Overlay/Navigation" unique_id=1552269115]
+[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/Navigation" unique_id=1552269115]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Heading" type="Label" parent="Game/Overlay/Navigation/Column" unique_id=1556266255]
+[node name="Heading" type="Label" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=1556266255]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 text = "第 1 关 · 跟牌与吃墩"
 autowrap_mode = 3
 
-[node name="LessonMenu" type="Button" parent="Game/Overlay/Navigation/Column" unique_id=1421688818]
+[node name="LessonMenu" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=1421688818]
 unique_name_in_owner = true
 layout_mode = 2
 text = "回到选关"
 
-[node name="Retry" type="Button" parent="Game/Overlay/Navigation/Column" unique_id=568205210]
+[node name="Retry" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=568205210]
 unique_name_in_owner = true
 layout_mode = 2
 text = "重玩本步"
 
-[node name="StepPanel" type="PanelContainer" parent="Game/Overlay" unique_id=1593141162]
+[node name="StepPanel" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1593141162]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -163,11 +167,11 @@ offset_bottom = -34.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Column" type="VBoxContainer" parent="Game/Overlay/StepPanel" unique_id=1932273021]
+[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/StepPanel" unique_id=1932273021]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="StepTitle" type="Label" parent="Game/Overlay/StepPanel/Column" unique_id=48022527]
+[node name="StepTitle" type="Label" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=48022527]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -175,7 +179,7 @@ theme_override_font_sizes/font_size = 20
 text = "1 / 3  有方块，必须跟方块"
 autowrap_mode = 3
 
-[node name="Status" type="Label" parent="Game/Overlay/StepPanel/Column" unique_id=371661190]
+[node name="Status" type="Label" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=371661190]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
@@ -183,30 +187,30 @@ theme_override_font_sizes/font_size = 16
 text = "轮到你"
 autowrap_mode = 3
 
-[node name="Choices" type="HBoxContainer" parent="Game/Overlay/StepPanel/Column" unique_id=1444412658]
+[node name="Choices" type="HBoxContainer" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=1444412658]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ChooseNine" type="Button" parent="Game/Overlay/StepPanel/Column/Choices" unique_id=1402473233]
+[node name="ChooseNine" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column/Choices" unique_id=1402473233]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "我最终拿 9 分"
 
-[node name="ChooseThirteen" type="Button" parent="Game/Overlay/StepPanel/Column/Choices" unique_id=1210237962]
+[node name="ChooseThirteen" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column/Choices" unique_id=1210237962]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "我最终拿 13 分"
 
-[node name="Next" type="Button" parent="Game/Overlay/StepPanel/Column" unique_id=1184496715]
+[node name="Next" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=1184496715]
 unique_name_in_owner = true
 layout_mode = 2
 text = "明白了，下一步"
 
-[node name="GuideOverlay" type="Control" parent="Game/Overlay" unique_id=1423013242]
+[node name="GuideOverlay" type="Control" parent="InterfaceLayer/Overlay" unique_id=1423013242]
 unique_name_in_owner = true
 visible = false
 z_index = 20
@@ -218,7 +222,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_spotlight")
 
-[node name="Shade" type="ColorRect" parent="Game/Overlay/GuideOverlay" unique_id=761007604]
+[node name="Shade" type="ColorRect" parent="InterfaceLayer/Overlay/GuideOverlay" unique_id=761007604]
 material = SubResource("Material_spotlight")
 layout_mode = 1
 anchors_preset = 15
@@ -227,7 +231,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TopSlot" type="Control" parent="Game/Overlay/GuideOverlay" unique_id=2135501615]
+[node name="TopSlot" type="Control" parent="InterfaceLayer/Overlay/GuideOverlay" unique_id=2135501615]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -239,7 +243,7 @@ offset_bottom = 196.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="InstructionPanel" type="PanelContainer" parent="Game/Overlay/GuideOverlay/TopSlot" unique_id=1220390374]
+[node name="InstructionPanel" type="PanelContainer" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot" unique_id=1220390374]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -250,18 +254,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Column" type="VBoxContainer" parent="Game/Overlay/GuideOverlay/TopSlot/InstructionPanel" unique_id=2103409751]
+[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel" unique_id=2103409751]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="GuideProgress" type="Label" parent="Game/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=576994839]
+[node name="GuideProgress" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=576994839]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
 theme_override_font_sizes/font_size = 17
 text = "讲解 1 / 3"
 
-[node name="Instruction" type="Label" parent="Game/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1105584774]
+[node name="Instruction" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1105584774]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -270,14 +274,14 @@ text = "小岚先出♦9，即领出花色为♦。"
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="GuideContinue" type="Label" parent="Game/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1485989249]
+[node name="GuideContinue" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1485989249]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.82, 0.82, 0.82, 1)
 theme_override_font_sizes/font_size = 17
 text = "点击屏幕，继续讲解"
 horizontal_alignment = 2
 
-[node name="BottomSlot" type="Control" parent="Game/Overlay/GuideOverlay" unique_id=444053380]
+[node name="BottomSlot" type="Control" parent="InterfaceLayer/Overlay/GuideOverlay" unique_id=444053380]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -292,7 +296,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Menu" type="Control" parent="." unique_id=1269254852]
+[node name="Menu" type="Control" parent="InterfaceLayer" unique_id=1269254852]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -301,8 +305,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_tutorial")
 
-[node name="Background" type="ColorRect" parent="Menu" unique_id=316675266]
+[node name="Background" type="ColorRect" parent="InterfaceLayer/Menu" unique_id=316675266]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -311,7 +316,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.11, 0.067, 0.11, 1)
 
-[node name="Margin" type="MarginContainer" parent="Menu" unique_id=681377673]
+[node name="Margin" type="MarginContainer" parent="InterfaceLayer/Menu" unique_id=681377673]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -323,128 +328,128 @@ theme_override_constants/margin_top = 36
 theme_override_constants/margin_right = 48
 theme_override_constants/margin_bottom = 36
 
-[node name="Scroll" type="ScrollContainer" parent="Menu/Margin" unique_id=1844747521]
+[node name="Scroll" type="ScrollContainer" parent="InterfaceLayer/Menu/Margin" unique_id=1844747521]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Column" type="VBoxContainer" parent="Menu/Margin/Scroll" unique_id=1016244910]
+[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll" unique_id=1016244910]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Menu/Margin/Scroll/Column" unique_id=1101303402]
+[node name="Title" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1101303402]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "红心大战 · 教学关"
 
-[node name="Description" type="Label" parent="Menu/Margin/Scroll/Column" unique_id=849872184]
+[node name="Description" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=849872184]
 layout_mode = 2
 text = "独立情景，使用精简的预设手牌，可以随时重玩。"
 autowrap_mode = 3
 
-[node name="LessonCard0" type="PanelContainer" parent="Menu/Margin/Scroll/Column" unique_id=544285533]
+[node name="LessonCard0" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=544285533]
 custom_minimum_size = Vector2(0, 116)
 layout_mode = 2
 
-[node name="Row" type="HBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard0" unique_id=959411875]
+[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0" unique_id=959411875]
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Text" type="VBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=1183380177]
+[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=1183380177]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LessonTitle0" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=1543725935]
+[node name="LessonTitle0" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=1543725935]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "01  跟花色、吃墩与缺门"
 autowrap_mode = 3
 
-[node name="LessonDescription0" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=480070615]
+[node name="LessonDescription0" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=480070615]
 unique_name_in_owner = true
 layout_mode = 2
 text = "看懂谁领出、谁收走这一墩，亲手试一次缺门。"
 autowrap_mode = 3
 
-[node name="Lesson0" type="Button" parent="Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=96371672]
+[node name="Lesson0" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=96371672]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 64)
 layout_mode = 2
 size_flags_vertical = 4
 text = "开始这一关"
 
-[node name="LessonCard1" type="PanelContainer" parent="Menu/Margin/Scroll/Column" unique_id=104125234]
+[node name="LessonCard1" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=104125234]
 custom_minimum_size = Vector2(0, 116)
 layout_mode = 2
 
-[node name="Row" type="HBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard1" unique_id=1396035567]
+[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1" unique_id=1396035567]
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Text" type="VBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=687093487]
+[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=687093487]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LessonTitle1" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=1047545813]
+[node name="LessonTitle1" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=1047545813]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "02  分牌、破心与争第二"
 autowrap_mode = 3
 
-[node name="LessonDescription1" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=609565401]
+[node name="LessonDescription1" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=609565401]
 unique_name_in_owner = true
 layout_mode = 2
 text = "区分黑桃 Q 和普通黑桃，按出牌时机计分，再看奖池怎么分。"
 autowrap_mode = 3
 
-[node name="Lesson1" type="Button" parent="Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=156637574]
+[node name="Lesson1" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=156637574]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 64)
 layout_mode = 2
 size_flags_vertical = 4
 text = "开始这一关"
 
-[node name="LessonCard2" type="PanelContainer" parent="Menu/Margin/Scroll/Column" unique_id=1641233893]
+[node name="LessonCard2" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1641233893]
 custom_minimum_size = Vector2(0, 116)
 layout_mode = 2
 
-[node name="Row" type="HBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard2" unique_id=293136186]
+[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2" unique_id=293136186]
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Text" type="VBoxContainer" parent="Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=1683031980]
+[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=1683031980]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LessonTitle2" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=81861644]
+[node name="LessonTitle2" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=81861644]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "03  传牌、先手与手牌计划"
 autowrap_mode = 3
 
-[node name="LessonDescription2" type="Label" parent="Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=695096783]
+[node name="LessonDescription2" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=695096783]
 unique_name_in_owner = true
 layout_mode = 2
 text = "实际传出三张，观察缺门和先手变化，尝试保留大小牌。"
 autowrap_mode = 3
 
-[node name="Lesson2" type="Button" parent="Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=840277684]
+[node name="Lesson2" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=840277684]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 64)
 layout_mode = 2
 size_flags_vertical = 4
 text = "开始这一关"
 
-[node name="BackToLobby" type="Button" parent="Menu/Margin/Scroll/Column" unique_id=1547710830]
+[node name="BackToLobby" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1547710830]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2

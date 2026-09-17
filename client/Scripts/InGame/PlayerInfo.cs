@@ -11,6 +11,22 @@ namespace HeartsAlter.Scripts.InGame;
 /// </summary>
 public partial class PlayerInfo : Control
 {
+	public event Action AddBotRequested;
+	public event Action KickPlayerRequested;
+	private Control _waitingLayout;
+	private Control _joinedAvatar;
+	private Control _joinedInfo;
+	private Control _waitingStatus;
+	private Control _gameScore;
+	private Control _gameChips;
+	private BaseButton _addBotButton;
+	private BaseButton _kickButton;
+	private CanvasItem _readyText;
+	private CanvasItem _notReadyText;
+	private bool _occupied = true;
+	private bool _waiting;
+	private bool _ready;
+	private bool _canManage;
 	private const string DisconnectedPlayerText = "未连接";
 	private static readonly Texture2D[] ProfileAvatars = new Texture2D[4];
 
@@ -62,6 +78,39 @@ public partial class PlayerInfo : Control
 		}
 	}
 
+	[Export]
+	public bool IsHost
+	{
+		get => _isHost;
+		set
+		{
+			_isHost = value;
+			RefreshRole();
+		}
+	}
+
+	[Export]
+	public bool IsLocalPlayer
+	{
+		get => _isLocalPlayer;
+		set
+		{
+			_isLocalPlayer = value;
+			RefreshRole();
+		}
+	}
+
+	[Export]
+	public bool IsBot
+	{
+		get => _isBot;
+		set
+		{
+			_isBot = value;
+			RefreshRole();
+		}
+	}
+
 	[ExportGroup("Collection")]
 
 	[Export(PropertyHint.Range, "1,200,1,or_greater,suffix:px")]
@@ -90,6 +139,9 @@ public partial class PlayerInfo : Control
 	private Label _playerIdLabel = null!;
 
 	[Export]
+	private Label _roleLabel = null!;
+
+	[Export]
 	private Label _chipCountLabel = null!;
 
 	[Export]
@@ -101,24 +153,21 @@ public partial class PlayerInfo : Control
 	[Export]
 	private Marker2D _collectPoseMarker = null!;
 
-	[Export]
-	private Label _turnStatusLabel = null!;
-
-	[Export]
-	private Label _turnCountdownLabel = null!;
-
 	private Texture2D _avatarTexture = null!;
 	private Texture2D _fallbackAvatar = null!;
 	private string _playerId = string.Empty;
 	private int _chipCount;
 	private int _roundScore;
+	private bool _isHost;
+	private bool _isLocalPlayer;
+	private bool _isBot;
 	private Tween _scoreRollTween = null!;
 	private Tween _scoreDeltaTween = null!;
-	private double _turnDeadlineMsec;
 
 	public override void _Ready()
 	{
 		ResolveSceneReferences();
+		BindWaitingUi();
 
 		if (IsValid(_avatarTextureRect))
 			_fallbackAvatar = _avatarTextureRect.Texture;
@@ -126,23 +175,60 @@ public partial class PlayerInfo : Control
 		RefreshDisplay();
 	}
 
+	private void BindWaitingUi()
+	{
+		_waitingLayout = GetNodeOrNull<Control>("WaitingLayout");
+		_joinedAvatar = GetNodeOrNull<Control>("JoinedPlayerAvatar");
+		_joinedInfo = GetNodeOrNull<Control>("JoinedPlayerInfo");
+		_waitingStatus = GetNodeOrNull<Control>("JoinedPlayerInfo/InnerContainer/Waiting_准备状态");
+		_gameScore = GetNodeOrNull<Control>("JoinedPlayerInfo/InnerContainer/InGame_得分");
+		_gameChips = GetNodeOrNull<Control>("JoinedPlayerInfo/InnerContainer/InGame_金币");
+		_addBotButton = GetNodeOrNull<BaseButton>("WaitingLayout/InnerContainer/添加机器人按钮");
+		_kickButton = GetNodeOrNull<BaseButton>("JoinedPlayerInfo/InnerContainer/Waiting_踢出房间");
+		_readyText = _waitingStatus?.FindChild("已准备Text", true, false) as CanvasItem;
+		_notReadyText = _waitingStatus?.FindChild("未准备Text", true, false) as CanvasItem;
+		IgnoreDecorativeMouseInput(this);
+		if (_addBotButton is not null) _addBotButton.Pressed += () => AddBotRequested?.Invoke();
+		if (_kickButton is not null) _kickButton.Pressed += () => KickPlayerRequested?.Invoke();
+		RefreshSeatState();
+	}
+
+	/// <summary>Public room state controls occupancy, stage, readiness and host actions.</summary>
+	public void SetSeatState(bool occupied, bool waiting, bool ready, bool canManage)
+	{
+		_occupied = occupied;
+		_waiting = waiting;
+		_ready = ready;
+		_canManage = canManage;
+		RefreshSeatState();
+	}
+
+	private void RefreshSeatState()
+	{
+		if (_waitingLayout is not null) _waitingLayout.Visible = !_occupied;
+		if (_joinedAvatar is not null) _joinedAvatar.Visible = _occupied;
+		if (_joinedInfo is not null) _joinedInfo.Visible = _occupied;
+		if (_waitingStatus is not null) _waitingStatus.Visible = _waiting;
+		if (_gameScore is not null) _gameScore.Visible = !_waiting;
+		if (_gameChips is not null) _gameChips.Visible = !_waiting;
+		if (_readyText is not null) _readyText.Visible = _ready;
+		if (_notReadyText is not null) _notReadyText.Visible = !_ready;
+		if (_addBotButton is not null)
+			_addBotButton.Visible = _waiting && !_occupied && _canManage;
+		if (_kickButton is not null)
+			_kickButton.Visible = _waiting && _occupied && _canManage && !_isHost && !_isLocalPlayer;
+	}
+
+	private static void IgnoreDecorativeMouseInput(Node node)
+	{
+		if (node is Control control && node is not BaseButton)
+			control.MouseFilter = MouseFilterEnum.Ignore;
+		foreach (Node child in node.GetChildren()) IgnoreDecorativeMouseInput(child);
+	}
+
 	public override void _ExitTree()
 	{
 		CancelScoreAnimations();
-	}
-
-	public override void _Process(double delta)
-	{
-		if (_turnDeadlineMsec <= 0.0 || !IsValid(_turnCountdownLabel))
-			return;
-		double remaining = _turnDeadlineMsec - Time.GetTicksMsec();
-		if (remaining <= 0.0)
-		{
-			ClearTurnCountdown();
-			return;
-		}
-		int seconds = Math.Max(0, (int)Math.Ceiling(remaining / 1000.0));
-		_turnCountdownLabel.Text = $"剩余时间：{seconds} 秒";
 	}
 
 	/// <summary>
@@ -166,8 +252,8 @@ public partial class PlayerInfo : Control
 		);
 
 		Transform2D centerTransform = IsValid(_collectPoseMarker)
-			? _collectPoseMarker.GetGlobalTransformWithCanvas()
-			: GetGlobalTransformWithCanvas() * new Transform2D(0.0f, Size * 0.5f);
+			? Card.CardPose2D.GetRenderedCanvasTransform(_collectPoseMarker)
+			: Card.CardPose2D.GetRenderedCanvasTransform(this) * new Transform2D(0.0f, Size * 0.5f);
 		Transform2D topLeftTransform = centerTransform * new Transform2D(
 			0.0f,
 			-targetSize * 0.5f
@@ -207,7 +293,7 @@ public partial class PlayerInfo : Control
 					int displayedScore = Mathf.RoundToInt(
 						Mathf.Lerp(previousScore, nextScore, progress)
 					);
-					_scoreValueLabel.Text = $"{displayedScore} 分";
+					_scoreValueLabel.Text = $"{displayedScore}";
 				}),
 				0.0f,
 				1.0f,
@@ -228,41 +314,6 @@ public partial class PlayerInfo : Control
 		}
 
 		ShowScoreDelta(appliedDelta);
-	}
-
-	/// <summary>Starts the local countdown shown when this is the active seat.</summary>
-	public void StartTurnCountdown(int durationMilliseconds)
-	{
-		StartCountdown(durationMilliseconds, "到你出牌");
-	}
-
-	/// <summary>Starts the shared countdown with the passing-stage label.</summary>
-	public void StartPassCountdown(int durationMilliseconds)
-	{
-		StartCountdown(durationMilliseconds, "选择传牌");
-	}
-
-	private void StartCountdown(int durationMilliseconds, string status)
-	{
-		ResolveSceneReferences();
-		_turnDeadlineMsec = (double)Time.GetTicksMsec() + Math.Max(0, durationMilliseconds);
-		if (IsValid(_turnStatusLabel))
-		{
-			_turnStatusLabel.Text = status;
-			_turnStatusLabel.Visible = true;
-		}
-		if (IsValid(_turnCountdownLabel))
-		{
-			_turnCountdownLabel.Visible = true;
-			_turnCountdownLabel.Text = $"剩余时间：{Math.Max(0, (int)Math.Ceiling(durationMilliseconds / 1000.0))} 秒";
-		}
-	}
-
-	public void ClearTurnCountdown()
-	{
-		_turnDeadlineMsec = 0.0;
-		if (IsValid(_turnStatusLabel)) _turnStatusLabel.Visible = false;
-		if (IsValid(_turnCountdownLabel)) _turnCountdownLabel.Visible = false;
 	}
 
 	/// <summary>
@@ -388,16 +439,15 @@ public partial class PlayerInfo : Control
 
 		if (!IsValid(_collectPoseMarker))
 			_collectPoseMarker = GetNodeOrNull<Marker2D>("CollectPoseMarker");
-		if (!IsValid(_turnStatusLabel))
-			_turnStatusLabel = GetNodeOrNull<Label>("TurnStatusLabel");
-		if (!IsValid(_turnCountdownLabel))
-			_turnCountdownLabel = GetNodeOrNull<Label>("TurnCountdownLabel");
+		if (!IsValid(_roleLabel))
+			_roleLabel = GetNodeOrNull<Label>("RoleLabel");
 	}
 
 	private void RefreshDisplay()
 	{
 		RefreshAvatar();
 		RefreshPlayerId();
+		RefreshRole();
 		RefreshChipCount();
 		RefreshRoundScore();
 	}
@@ -425,13 +475,26 @@ public partial class PlayerInfo : Control
 		_playerIdLabel.TooltipText = displayText;
 	}
 
+	private void RefreshRole()
+	{
+		if (!IsValid(_roleLabel)) return;
+		_roleLabel.Text = (_isBot, _isLocalPlayer, _isHost) switch
+		{
+			(true, _, _) => "机器人",
+			(_, true, true) => "你·房主",
+			(_, true, false) => "你",
+			(_, false, true) => "房主",
+			_ => "房客",
+		};
+	}
+
 	private void RefreshChipCount()
 	{
 		if (IsValid(_chipCountLabel))
 		{
 			_chipCountLabel.Text = string.Format(
 				CultureInfo.InvariantCulture,
-				"{0:N0} 筹码",
+				"{0:N0}",
 				_chipCount
 			);
 		}
@@ -440,7 +503,7 @@ public partial class PlayerInfo : Control
 	private void RefreshRoundScore()
 	{
 		if (IsValid(_scoreValueLabel))
-			_scoreValueLabel.Text = $"{_roundScore} 分";
+			_scoreValueLabel.Text = $"{_roundScore}";
 	}
 
 	private void ShowScoreDelta(int scoreDelta)

@@ -342,7 +342,7 @@ public partial class Intro : Node
 		_status.Text = "已锁定席位，正在进入准备房间…";
 		_backButton.Disabled = true;
 		RefreshActions();
-		_ = ChangeSceneAsync("res://scenes/ReadyRoom.tscn");
+		_ = ChangeSceneAsync("res://scenes/in_game/Table.tscn");
 	}
 
 	private async Task ReturnToConnectionAsync()

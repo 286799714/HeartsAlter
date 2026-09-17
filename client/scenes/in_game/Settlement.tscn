@@ -18,6 +18,10 @@
 [ext_resource type="Texture2D" uid="uid://belmg1mc87ql6" path="res://assets/textures/ui/in_game/generated/Frame 138.png" id="22_qs4lv"]
 [ext_resource type="Texture2D" uid="uid://7nwhpg86u1te" path="res://assets/textures/ui/in_game/generated/Frame 101.png" id="22_ybp5g"]
 [ext_resource type="Texture2D" uid="uid://cbo6ocytt2yax" path="res://assets/textures/ui/in_game/generated/Frame 76.png" id="24_jg048"]
+[ext_resource type="Texture2D" uid="uid://bxv5qwklmaosw" path="res://assets/textures/ui/in_game/8351177cec37f83b53d50d18bfbc87b8ddc1084b21f282e27bf573d238f8a4fb.png" id="25_22r0p"]
+[ext_resource type="Texture2D" uid="uid://c4g2xkab1vf8g" path="res://assets/textures/ui/in_game/e6041941b04c899d34e7cf9a5fdd0cacb72801bfe1d0579bfee0b4fb990d7aec.png" id="26_lstdj"]
+[ext_resource type="Texture2D" uid="uid://cimifv107ao3n" path="res://assets/textures/ui/in_game/2c6fd36888779fb74a4c7ac84488f3bf1d5e7920100f7a349f4c29020893ed8c.png" id="27_0g4hv"]
+[ext_resource type="Texture2D" uid="uid://ct4p86ro65sso" path="res://assets/textures/ui/in_game/7ef2541087f6e0b285cae2a1f42b26b535933d4f76ec98e11f5e1b11d12dcc18.png" id="28_un8fe"]
 [ext_resource type="Texture2D" uid="uid://d1vwc7oxcq40s" path="res://assets/textures/ui/in_game/generated/rgba-296x4-2e51344d5c185b67.png" id="png_2e51344d5c185b67"]
 [ext_resource type="Texture2D" uid="uid://ciji7ltcjsal1" path="res://assets/textures/ui/in_game/generated/rgba-24x24-35a0805cab7a0d15.png" id="png_35a0805cab7a0d15"]
 [ext_resource type="Texture2D" uid="uid://ddu1rtj0211ik" path="res://assets/textures/ui/in_game/generated/rgba-24x24-513d6f681db1ba88.png" id="png_513d6f681db1ba88"]
@@ -551,7 +555,7 @@ font = SubResource("FontVariation_s15jt")
 font_size = 32
 font_color = Color(1, 0.026315803, 0, 1)
 
-[sub_resource type="Shader" id="Shader_h66ak"]
+[sub_resource type="Shader" id="Shader_hp68h"]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -562,7 +566,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_alusc"]
-shader = SubResource("Shader_h66ak")
+shader = SubResource("Shader_hp68h")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhdas"]
 content_margin_left = 0.0
@@ -1337,30 +1341,6 @@ line_spacing = 0.0
 font = SubResource("FontVariation_v164g")
 font_size = 40
 font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close"]
-bg_color = Color(0.68, 0.06, 0.07, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.74, 0.38, 1)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_hover"]
-bg_color = Color(0.88, 0.13, 0.1, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.87, 0.54, 1)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
 
 [node name="Settlement" type="Control" unique_id=40988795]
 layout_mode = 3
@@ -3743,22 +3723,97 @@ offset_bottom = 232.65666
 texture = ExtResource("24_jg048")
 expand_mode = 1
 
-[node name="CloseButton" type="Button" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1454487544]
+[node name="NextGame" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=2055174739]
+anchors_preset = 0
+offset_left = 195.80206
+offset_top = -7.0464764
+offset_right = 266.26685
+offset_bottom = 90.404785
+
+[node name="NextRoundButton" type="TextureButton" parent="Frame 56 xIDx81_8847x/InnerContainer/NextGame" unique_id=698046305]
+unique_name_in_owner = true
+mouse_default_cursor_shape = 2
+tooltip_text = "下一局"
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
+grow_horizontal = 2
+texture_normal = ExtResource("25_22r0p")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/NextGame" unique_id=148318176]
+mouse_filter = 2
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.644196
+offset_top = -25.487305
+offset_right = 48.644196
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("26_lstdj")
+expand_mode = 1
+
+[node name="Quit" type="Control" parent="Frame 56 xIDx81_8847x/InnerContainer" unique_id=1513879635]
+anchors_preset = 0
+offset_left = 75.86204
+offset_top = -7.0464954
+offset_right = 146.32681
+offset_bottom = 90.40477
+
+[node name="ReturnToLobbyButton" type="TextureButton" parent="Frame 56 xIDx81_8847x/InnerContainer/Quit" unique_id=611313178]
+unique_name_in_owner = true
+mouse_default_cursor_shape = 2
+tooltip_text = "退出到大厅"
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
+grow_horizontal = 2
+texture_normal = ExtResource("27_0g4hv")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="Frame 56 xIDx81_8847x/InnerContainer/Quit" unique_id=1502317629]
+mouse_filter = 2
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.912651
+offset_top = -23.988037
+offset_right = 22.912651
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("28_un8fe")
+expand_mode = 1
+
+[node name="RoundStatus" type="Label" parent="Frame 56 xIDx81_8847x/InnerContainer"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 1720.5397
-offset_top = 76.91153
-offset_right = 1784.5397
-offset_bottom = 143.16153
-tooltip_text = "关闭结算"
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(1, 0.93, 0.75, 1)
-theme_override_colors/font_focus_color = Color(1, 0.93, 0.75, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.93, 0.75, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
-theme_override_font_sizes/font_size = 36
-theme_override_styles/normal = SubResource("StyleBoxFlat_close")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_close_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_close_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_close_hover")
-text = "×"
+offset_left = 420.0
+offset_top = 872.0
+offset_right = 1650.0
+offset_bottom = 906.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.55, 0.22, 0.17, 1)
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+clip_text = true

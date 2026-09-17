@@ -2,6 +2,7 @@
 
 Example (from the repository root):
     python tools/externalize_scene_images.py client/scenes/Intro.tscn
+    python tools/externalize_scene_images.py client/scenes/NewTable.tscn --output client/assets/textures/ui/in_game/generated
 
 Uses only the Python standard library. Run after a Figma reimport if it embeds
 images again; Godot imports the emitted PNGs losslessly with unchanged pixels.
@@ -56,12 +57,15 @@ detect_3d/compress_to=0
 '''
 
 
-def externalize(scene: Path) -> None:
+def externalize(scene: Path, destination: Path | None = None) -> None:
     scene = scene.resolve()
     project = next((p for p in scene.parents if (p / "project.godot").is_file()), None)
     if project is None:
         raise ValueError("Scene must be inside a Godot project")
-    destination = project / "assets/textures/ui" / scene.stem.lower() / "generated"
+    destination = (destination.resolve() if destination is not None else
+                   project / "assets/textures/ui" / scene.stem.lower() / "generated")
+    if not destination.is_relative_to(project):
+        raise ValueError("Output directory must be inside the Godot project")
     # Keep line endings and every node/property outside the replaced resources intact.
     original_bytes = scene.read_bytes()
     original = original_bytes.decode("utf-8")
@@ -129,7 +133,8 @@ def externalize(scene: Path) -> None:
         asset = destination / name
         if asset.exists() and asset.read_bytes() != data:
             raise ValueError(f"Refusing to overwrite different asset: {asset}")
-        asset.write_bytes(data)
+        if not asset.exists():
+            asset.write_bytes(data)
         settings = asset.with_suffix(".png.import")
         if not settings.exists():
             resource_path = "res://" + asset.relative_to(project).as_posix()
@@ -145,5 +150,6 @@ def externalize(scene: Path) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("scene", type=Path)
+    parser.add_argument("--output", type=Path, help="PNG directory inside the Godot project (relative to the working directory or absolute)")
     args = parser.parse_args()
-    externalize(args.scene)
+    externalize(args.scene, args.output)

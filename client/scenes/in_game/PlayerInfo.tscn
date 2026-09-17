@@ -3,21 +3,156 @@
 [ext_resource type="Script" uid="uid://b6w8e8hrwy4rh" path="res://Scripts/InGame/PlayerInfo.cs" id="1_player_info"]
 [ext_resource type="Texture2D" uid="uid://bdn140738so8q" path="res://assets/textures/ui/profile_icon_1.jpg" id="2_8bcv7"]
 [ext_resource type="Texture2D" uid="uid://dkpixwn7te1rw" path="res://assets/textures/ui/avatar_ring_2.png" id="3_hshwk"]
+[ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_mc6l1"]
+[ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="5_y8dd1"]
+[ext_resource type="Texture2D" uid="uid://lqhhmwygqyda" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_52dcbf7d1f6c5c93.png" id="6_cffnr"]
+[ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="7_cffnr"]
+[ext_resource type="Texture2D" uid="uid://b6sajsh6sy4qc" path="res://assets/textures/ui/in_game/08d41c41c0c05ef850718cf9523abc2c92f66c55_d30e005738b05c6d.png" id="8_fvtd7"]
+[ext_resource type="Texture2D" uid="uid://c7foqttcih0pc" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_f712a0caa4f36e14.png" id="8_xev1v"]
+[ext_resource type="Texture2D" uid="uid://baoxpb7msv521" path="res://assets/textures/ui/in_game/00cbb37905cc7d8b8c14efc6c715c40cefd53b27_8d866cc86b813714.png" id="9_pe5dx"]
+[ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="9_xev1v"]
+[ext_resource type="Texture2D" uid="uid://cgib1loe22uo6" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004.png" id="10_fvtd7"]
+[ext_resource type="Texture2D" uid="uid://dqtp1kglyhihy" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3_543714234a8e9e11.png" id="10_pe5dx"]
+[ext_resource type="Texture2D" uid="uid://7o4ttfdhyrt1" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004_75f0845aed04ef02.png" id="11_4p063"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="11_xr5ue"]
+[ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="12_4p063"]
+[ext_resource type="FontVariation" uid="uid://jw46yql2w7ym" path="res://assets/fonts/NotoSansCombine.tres" id="16_xev1v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pr66r"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
 bg_color = Color(0, 0, 0, 0)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 0)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0)
-shadow_size = 8
-shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwrx5"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvbtc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ybcl"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("6_cffnr")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 162)
+shader_parameter/texture_size = Vector2(162, 162)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70mia"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ketws"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("8_xev1v")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(118, 118)
+shader_parameter/texture_size = Vector2(118, 118)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwrk5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b4c13"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("9_pe5dx")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(162, 56)
+shader_parameter/texture_size = Vector2(162, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mkrw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_xjxv2"]
+base_font = ExtResource("9_xev1v")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_dx0fn"]
+line_spacing = 0.0
+font = SubResource("FontVariation_xjxv2")
+font_size = 28
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6w7qr"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("11_4p063")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(256, 80)
+shader_parameter/texture_size = Vector2(256, 80)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
 
 [sub_resource type="Shader" id="Shader_circle_crop"]
 code = "shader_type canvas_item;
@@ -32,14 +167,301 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_circle_crop"]
 shader = SubResource("Shader_circle_crop")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score"]
-bg_color = Color(0.0784314, 0.384314, 0.494118, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gygtu"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
 
-[node name="PlayerInfo" type="Control" unique_id=618743409 node_paths=PackedStringArray("_avatarTextureRect", "_playerIdLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8pcpy"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fvbtc"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("8_fvtd7")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(178, 46)
+shader_parameter/texture_size = Vector2(178, 46)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ybcl"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_70mia"]
+base_font = ExtResource("9_xev1v")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_d5bxq"]
+base_font = SubResource("FontVariation_70mia")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_ketws"]
+line_spacing = 0.0
+font = SubResource("FontVariation_d5bxq")
+font_size = 24
+font_color = Color(0.32941177, 0.007843138, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_336jv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mrr8j"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_16ahy"]
+bg_color = Color(0.15239862, 0.027963052, 0, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="Shader" id="Shader_fwcmj"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
+uniform vec2 label_size = vec2(1.0);
+varying vec2 label_uv;
+varying vec4 glyph_color;
+
+void vertex() {
+    // Font UV addresses the glyph atlas; gradients need the label's local coordinates.
+    label_uv = VERTEX / max(label_size, vec2(1.0));
+    glyph_color = COLOR;
+}
+
+void fragment() {
+    // Gradient glyphs are white. Preserve the independently colored text outline.
+    if (distance(glyph_color.rgb, vec3(1.0)) < 0.001) {
+        vec4 gradient = texture(gradient_texture, label_uv);
+        COLOR.rgb = gradient.rgb;
+        COLOR.a *= gradient.a;
+    }
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_mc6l1"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.9818012, 0.22884509, 0.18577135, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_y8dd1"]
+gradient = SubResource("Gradient_mc6l1")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("12_4p063")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xdjxp"]
+shader = SubResource("Shader_fwcmj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_y8dd1")
+shader_parameter/label_size = Vector2(49, 33)
+
+[sub_resource type="FontVariation" id="FontVariation_q8xpw"]
+base_font = ExtResource("9_xev1v")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ry1pl"]
+base_font = SubResource("FontVariation_q8xpw")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_vk65a"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ry1pl")
+font_size = 24
+
+[sub_resource type="FontVariation" id="FontVariation_6mkrw"]
+base_font = ExtResource("9_xev1v")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1laqs"]
+base_font = SubResource("FontVariation_6mkrw")
+spacing_bottom = -2
+
+[sub_resource type="LabelSettings" id="LabelSettings_viid4"]
+line_spacing = 0.0
+font = SubResource("FontVariation_1laqs")
+font_size = 28
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nwrk5"]
+shader = ExtResource("5_y8dd1")
+shader_parameter/image_texture = ExtResource("10_pe5dx")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(32, 32)
+shader_parameter/texture_size = Vector2(32, 32)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b4c13"]
+
+[sub_resource type="Shader" id="Shader_fvtd7"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
+uniform vec2 label_size = vec2(1.0);
+varying vec2 label_uv;
+varying vec4 glyph_color;
+
+void vertex() {
+    // Font UV addresses the glyph atlas; gradients need the label's local coordinates.
+    label_uv = VERTEX / max(label_size, vec2(1.0));
+    glyph_color = COLOR;
+}
+
+void fragment() {
+    // Gradient glyphs are white. Preserve the independently colored text outline.
+    if (distance(glyph_color.rgb, vec3(1.0)) < 0.001) {
+        vec4 gradient = texture(gradient_texture, label_uv);
+        COLOR.rgb = gradient.rgb;
+        COLOR.a *= gradient.a;
+    }
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_xev1v"]
+offsets = PackedFloat32Array(0, 0.67474747, 1)
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.5855193, 0.9156488, 0.5525204, 1, 0.3251055, 0.8626518, 0.27876526, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pe5dx"]
+gradient = SubResource("Gradient_xev1v")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("12_4p063")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xr5ue"]
+shader = SubResource("Shader_fvtd7")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_pe5dx")
+shader_parameter/label_size = Vector2(49, 33)
+
+[sub_resource type="Shader" id="Shader_cffnr"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
+uniform vec2 label_size = vec2(1.0);
+varying vec2 label_uv;
+varying vec4 glyph_color;
+
+void vertex() {
+    // Font UV addresses the glyph atlas; gradients need the label's local coordinates.
+    label_uv = VERTEX / max(label_size, vec2(1.0));
+    glyph_color = COLOR;
+}
+
+void fragment() {
+    // Gradient glyphs are white. Preserve the independently colored text outline.
+    if (distance(glyph_color.rgb, vec3(1.0)) < 0.001) {
+        vec4 gradient = texture(gradient_texture, label_uv);
+        COLOR.rgb = gradient.rgb;
+        COLOR.a *= gradient.a;
+    }
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_fvtd7"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.50742906, 0.50742906, 0.50742906, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xev1v"]
+gradient = SubResource("Gradient_fvtd7")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("12_4p063")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pe5dx"]
+shader = SubResource("Shader_cffnr")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_xev1v")
+shader_parameter/label_size = Vector2(49, 33)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx0fn"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6w7qr"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gf3n"]
+bg_color = Color(0, 0, 0, 0.5686275)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="Gradient" id="Gradient_i8b28"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwnj7"]
+gradient = SubResource("Gradient_i8b28")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("12_4p063")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnrno"]
+shader = ExtResource("11_xr5ue")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_nwnj7")
+shader_parameter/label_size = Vector2(100, 33)
+
+[node name="PlayerInfo" type="Control" unique_id=618743409 node_paths=PackedStringArray("_avatarTextureRect", "_playerIdLabel", "_roleLabel", "_chipCountLabel", "_scoreValueLabel", "_scoreDeltaLabel", "_collectPoseMarker")]
 custom_minimum_size = Vector2(168, 232)
 layout_mode = 3
 anchors_preset = 0
@@ -49,56 +471,177 @@ mouse_filter = 2
 script = ExtResource("1_player_info")
 PlayerId = "玩家 1001"
 ChipCount = 10000
-_avatarTextureRect = NodePath("Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding/AvatarTexture")
-_playerIdLabel = NodePath("Card/Content/Column/PlayerIdLabel")
-_chipCountLabel = NodePath("Card/Content/Column/ChipCountLabel")
-_scoreValueLabel = NodePath("Card/Content/Column/ScoreRow/ScoreBadge/ScorePadding/ScoreValueLabel")
-_scoreDeltaLabel = NodePath("ScoreDeltaLabel")
-_collectPoseMarker = NodePath("CollectPoseMarker")
+_avatarTextureRect = NodePath("JoinedPlayerAvatar/AvatarFrame/AvatarPadding/AvatarTexture")
+_playerIdLabel = NodePath("JoinedPlayerInfo/InnerContainer/玩家昵称/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x/InnerContainer/玩家id")
+_roleLabel = NodePath("JoinedPlayerInfo/InnerContainer/身份标签/InnerContainer/身份文本")
+_chipCountLabel = NodePath("JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer/金币数量")
+_scoreValueLabel = NodePath("JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer/得分")
+_scoreDeltaLabel = NodePath("JoinedPlayerInfo/InnerContainer/ScoreDeltaLabel")
+_collectPoseMarker = NodePath("JoinedPlayerInfo/InnerContainer/CollectPoseMarker")
 
-[node name="Card" type="PanelContainer" parent="." unique_id=2066978570]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+[node name="WaitingLayout" type="ScrollContainer" parent="." unique_id=1813680432]
+visible = false
+custom_minimum_size = Vector2(256, 275)
+clip_contents = false
+layout_mode = 0
+offset_top = 10.0
+offset_right = 256.0
+offset_bottom = 285.0
+scale = Vector2(0.667, 0.667)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pr66r")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer")
+minSize = Vector2(256, 275)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
 
-[node name="Content" type="MarginContainer" parent="Card" unique_id=932438051]
+[node name="InnerContainer" type="Control" parent="WaitingLayout" unique_id=370224454]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
 
-[node name="Column" type="VBoxContainer" parent="Card/Content" unique_id=1371379134]
+[node name="Frame 3 xIDxI81_8454;70_854x" type="ScrollContainer" parent="WaitingLayout/InnerContainer" unique_id=2126953254]
+custom_minimum_size = Vector2(162, 0)
+clip_contents = false
+layout_mode = 0
+offset_left = 47.0
+offset_right = 209.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hwrx5")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer")
+minSize = Vector2(162, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x" unique_id=469958776]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 5
-alignment = 1
 
-[node name="PlayerIdLabel" type="Label" parent="Card/Content/Column" unique_id=838336029]
-unique_name_in_owner = true
+[node name="Frame 1 xIDxI81_8454;70_855x" type="ScrollContainer" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer" unique_id=997050433]
+custom_minimum_size = Vector2(0, 162)
+clip_contents = false
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fvbtc")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer")
+minSize = Vector2(0, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x" unique_id=943661909]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.721569, 0.792157, 0.862745, 1)
-theme_override_font_sizes/font_size = 14
-text = "玩家 1001"
-horizontal_alignment = 1
-text_overrun_behavior = 3
 
-[node name="AvatarBlock" type="Control" parent="Card/Content/Column" unique_id=1681863026]
+[node name="image 22 xIDxI81_8454;70_856x" type="Panel" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer" unique_id=701110277]
+material = SubResource("ShaderMaterial_2ybcl")
+custom_minimum_size = Vector2(162, 162)
+layout_mode = 0
+offset_right = 162.0
+offset_bottom = 162.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_70mia")
+script = ExtResource("7_cffnr")
+minSize = Vector2(162, 162)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("6_cffnr")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="image 23 xIDxI81_8454;70_857x" type="Panel" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 1 xIDxI81_8454;70_855x/InnerContainer" unique_id=594054583]
+material = SubResource("ShaderMaterial_ketws")
+custom_minimum_size = Vector2(118, 118)
+layout_mode = 0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 140.0
+offset_bottom = 140.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nwrk5")
+script = ExtResource("7_cffnr")
+minSize = Vector2(118, 118)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_xev1v")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 2 xIDxI81_8454;70_858x" type="ScrollContainer" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer" unique_id=869768854]
+material = SubResource("ShaderMaterial_b4c13")
+custom_minimum_size = Vector2(0, 56)
+clip_contents = false
+layout_mode = 0
+offset_top = 129.0
+offset_right = 162.0
+offset_bottom = 185.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6mkrw")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8454x/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x/InnerContainer")
+minSize = Vector2(0, 56)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("9_pe5dx")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x" unique_id=1884532369]
+layout_mode = 2
+
+[node name="等待加入  xIDxI81_8454;70_859x" type="Label" parent="WaitingLayout/InnerContainer/Frame 3 xIDxI81_8454;70_854x/InnerContainer/Frame 2 xIDxI81_8454;70_858x/InnerContainer" unique_id=1998834249]
+layout_mode = 0
+offset_left = 25.5
+offset_top = 9.0
+offset_right = 136.5
+offset_bottom = 47.0
+text = "等待加入"
+label_settings = SubResource("LabelSettings_dx0fn")
+clip_text = true
+
+[node name="添加机器人按钮" type="TextureButton" parent="WaitingLayout/InnerContainer" unique_id=752674708]
+material = SubResource("ShaderMaterial_6w7qr")
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 0
+offset_top = 193.0
+offset_right = 256.0
+offset_bottom = 273.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("10_fvtd7")
+
+[node name="JoinedPlayerAvatar" type="Control" parent="." unique_id=1681863026]
 custom_minimum_size = Vector2(112, 120)
-layout_mode = 2
+anchors_preset = 0
+offset_left = 29.0
+offset_top = 11.0
+offset_right = 141.0
+offset_bottom = 131.0
 size_flags_horizontal = 4
 offset_transform_enabled = true
 offset_transform_scale = Vector2(0.95, 0.95)
 mouse_filter = 2
 
-[node name="AvatarFrame" type="Control" parent="Card/Content/Column/AvatarBlock" unique_id=2020796956]
+[node name="AvatarFrame" type="Control" parent="JoinedPlayerAvatar" unique_id=2020796956]
 anchors_preset = 0
 anchor_left = 0.5
 anchor_right = 0.5
@@ -108,7 +651,7 @@ offset_bottom = 104.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="AvatarPadding" type="MarginContainer" parent="Card/Content/Column/AvatarBlock/AvatarFrame" unique_id=1153277219]
+[node name="AvatarPadding" type="MarginContainer" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=1153277219]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,7 +664,7 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="AvatarTexture" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame/AvatarPadding" unique_id=1998404419]
+[node name="AvatarTexture" type="TextureRect" parent="JoinedPlayerAvatar/AvatarFrame/AvatarPadding" unique_id=1998404419]
 unique_name_in_owner = true
 texture_filter = 4
 material = SubResource("ShaderMaterial_circle_crop")
@@ -131,7 +674,7 @@ texture = ExtResource("2_8bcv7")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="AvatarRing" type="TextureRect" parent="Card/Content/Column/AvatarBlock/AvatarFrame" unique_id=2103892678]
+[node name="AvatarRing" type="TextureRect" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=2103892678]
 texture_filter = 4
 layout_mode = 1
 anchors_preset = 15
@@ -148,59 +691,471 @@ texture = ExtResource("3_hshwk")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ChipCountLabel" type="Label" parent="Card/Content/Column" unique_id=1965349158]
+[node name="JoinedPlayerInfo" type="ScrollContainer" parent="." unique_id=2097630893]
+custom_minimum_size = Vector2(256, 0)
+clip_contents = false
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 275.0
+scale = Vector2(0.667, 0.667)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gygtu")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer")
+minSize = Vector2(256, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo" unique_id=273201683]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 17
-text = "10,000 筹码"
+
+[node name="玩家昵称" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer" unique_id=754048065]
+clip_contents = false
+layout_mode = 0
+offset_left = 37.500744
+offset_top = 23.988007
+offset_right = 215.50075
+offset_bottom = 201.988
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8pcpy")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/玩家昵称" unique_id=209899483]
+layout_mode = 2
+
+[node name="Frame 31 xIDxI81_8498;76_4791;76_4777x" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer/玩家昵称/InnerContainer" unique_id=479840238]
+material = SubResource("ShaderMaterial_fvbtc")
+custom_minimum_size = Vector2(178, 46)
+clip_contents = false
+layout_mode = 0
+offset_top = 132.0
+offset_right = 178.0
+offset_bottom = 178.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ybcl")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份 xIDxI81_8498;76_4791x/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x/InnerContainer")
+minSize = Vector2(178, 46)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("8_fvtd7")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/玩家昵称/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x" unique_id=1147642199]
+layout_mode = 2
+
+[node name="玩家id" type="Label" parent="JoinedPlayerInfo/InnerContainer/玩家昵称/InnerContainer/Frame 31 xIDxI81_8498;76_4791;76_4777x/InnerContainer" unique_id=895062833]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 6.5
+offset_right = 147.0
+offset_bottom = 39.5
+text = "玩家1 "
+label_settings = SubResource("LabelSettings_ketws")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="InGame_得分" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer" unique_id=1828809023]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_left = 37.481266
+offset_top = 265.3673
+offset_right = 215.48126
+offset_bottom = 309.36734
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_336jv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/InGame_得分" unique_id=265533308]
+layout_mode = 2
+
+[node name="信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer" unique_id=1018701719]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mrr8j")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" unique_id=1388358344]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8498;75_3267;75_3246;39_5x" type="Panel" parent="JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=237279281]
+custom_minimum_size = Vector2(178, 44)
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_16ahy")
+script = ExtResource("7_cffnr")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.15239862, 0.027963052, 0, 0.8)
+use_solid_fill = true
+border_weights = [2.0, 2.0, 2.0, 2.0]
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="房主  xIDxI81_8498;70_870;70_730x" type="Label" parent="JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=1028197262]
+material = SubResource("ShaderMaterial_xdjxp")
+layout_mode = 0
+offset_left = 14.992506
+offset_top = 4.497751
+offset_right = 63.992508
+offset_bottom = 37.49775
+text = "得分"
+label_settings = SubResource("LabelSettings_vk65a")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="得分" type="Label" parent="JoinedPlayerInfo/InnerContainer/InGame_得分/InnerContainer" unique_id=1597237887]
+layout_mode = 0
+offset_left = 83.958015
+offset_top = 1.4992647
+offset_right = 121.43927
+offset_bottom = 39.499264
+text = "10"
+label_settings = SubResource("LabelSettings_viid4")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="InGame_金币" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer" unique_id=2085161799]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_left = 37.500744
+offset_top = 209.988
+offset_right = 215.50075
+offset_bottom = 253.988
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_336jv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/InGame_金币" unique_id=553436140]
+layout_mode = 2
+
+[node name="信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer" unique_id=1428580427]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mrr8j")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" unique_id=2095408303]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8498;75_3267;75_3246;39_5x" type="Panel" parent="JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=381409317]
+custom_minimum_size = Vector2(178, 44)
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_16ahy")
+script = ExtResource("7_cffnr")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.15239862, 0.027963052, 0, 0.8)
+use_solid_fill = true
+border_weights = [2.0, 2.0, 2.0, 2.0]
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="image 61 xIDxI81_8498;75_3267;75_3247x" type="Panel" parent="JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer" unique_id=1724543063]
+material = SubResource("ShaderMaterial_nwrk5")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 18.5
+offset_top = 6.0
+offset_right = 50.5
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b4c13")
+script = ExtResource("7_cffnr")
+minSize = Vector2(32, 32)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("10_pe5dx")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="金币数量" type="Label" parent="JoinedPlayerInfo/InnerContainer/InGame_金币/InnerContainer" unique_id=578141146]
+layout_mode = 0
+offset_left = 62.500008
+offset_top = 0.0014953613
+offset_right = 159.5
+offset_bottom = 38.001495
+text = "3600"
+label_settings = SubResource("LabelSettings_viid4")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Waiting_准备状态" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer" unique_id=1867517555]
+visible = false
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_left = 38.980515
+offset_top = 211.39433
+offset_right = 216.98051
+offset_bottom = 255.39436
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_336jv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态" unique_id=271175324]
+layout_mode = 2
+
+[node name="信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态/InnerContainer" unique_id=1443764835]
+custom_minimum_size = Vector2(178, 44)
+clip_contents = false
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mrr8j")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/对局中状态状态 xIDxI81_8498;75_3267x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x" unique_id=1998011108]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8498;75_3267;75_3246;39_5x" type="Panel" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=2075053811]
+custom_minimum_size = Vector2(178, 44)
+layout_mode = 0
+offset_right = 178.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_16ahy")
+script = ExtResource("7_cffnr")
+minSize = Vector2(178, 44)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.15239862, 0.027963052, 0, 0.8)
+use_solid_fill = true
+border_weights = [2.0, 2.0, 2.0, 2.0]
+border_color = Color(0.47582537, 0.10962166, 0.02741265, 1)
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="已准备Text" type="Label" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=1649980037]
+material = SubResource("ShaderMaterial_xr5ue")
+layout_mode = 0
+offset_left = 37.481262
+offset_top = 4.497711
+offset_right = 143.92802
+offset_bottom = 37.49771
+text = "已准备"
+label_settings = SubResource("LabelSettings_vk65a")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="未准备Text" type="Label" parent="JoinedPlayerInfo/InnerContainer/Waiting_准备状态/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;75_3267;75_3246x/InnerContainer" unique_id=452864039]
+visible = false
+material = SubResource("ShaderMaterial_pe5dx")
+layout_mode = 0
+offset_left = 35.982006
+offset_top = 4.4977264
+offset_right = 142.42877
+offset_bottom = 37.497726
+text = "未准备"
+label_settings = SubResource("LabelSettings_vk65a")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Waiting_踢出房间" type="TextureButton" parent="JoinedPlayerInfo/InnerContainer" unique_id=1706683398]
+visible = false
+material = SubResource("ShaderMaterial_6w7qr")
+layout_mode = 0
+offset_left = 47.976013
+offset_top = 262.3688
+offset_right = 209.97601
+offset_bottom = 318.3688
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("9_pe5dx")
+
+[node name="Label" type="Label" parent="JoinedPlayerInfo/InnerContainer/Waiting_踢出房间" unique_id=495263459]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -13.833334
+offset_right = 40.0
+offset_bottom = 13.833334
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.65831584, 0.6376538, 1)
+theme_override_fonts/font = ExtResource("16_xev1v")
+theme_override_font_sizes/font_size = 23
+text = "踢出房间"
 horizontal_alignment = 1
 
-[node name="ScoreRow" type="HBoxContainer" parent="Card/Content/Column" unique_id=1958368034]
-custom_minimum_size = Vector2(0, 27)
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-alignment = 1
+[node name="身份标签" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer" unique_id=1188118120]
+custom_minimum_size = Vector2(116, 37)
+clip_contents = false
+layout_mode = 0
+offset_left = 67.46631
+offset_top = 1.4992504
+offset_right = 183.46632
+offset_bottom = 38.499252
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dx0fn")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
 
-[node name="ScoreCaption" type="Label" parent="Card/Content/Column/ScoreRow" unique_id=1626974621]
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/身份标签" unique_id=358151116]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.721569, 0.792157, 0.862745, 1)
-theme_override_font_sizes/font_size = 12
-text = "红包点数"
 
-[node name="ScoreBadge" type="PanelContainer" parent="Card/Content/Column/ScoreRow" unique_id=1018542425]
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_score")
+[node name="信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x" type="ScrollContainer" parent="JoinedPlayerInfo/InnerContainer/身份标签/InnerContainer" unique_id=75110571]
+custom_minimum_size = Vector2(116, 37)
+clip_contents = false
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6w7qr")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_mc6l1")
+inner_container = NodePath("/root/@EditorNode@19544/@Panel@14/@VBoxContainer@15/DockVSplitMain/DockHSplitMain/@VBoxContainer@37/DockVSplitCenter/@VSplitContainer@101/@VBoxContainer@102/@EditorMainScreen@160/MainScreen/@CanvasItemEditor@10138/@VSplitContainer@9897/@HSplitContainer@9899/@HSplitContainer@9901/@Control@9902/@SubViewportContainer@9903/@SubViewport@9904/NewTable/局内-创建房间-人未满 xIDx81_8451x/InnerContainer/Component 2 xIDx81_8498x/InnerContainer/身份标签 xIDxI81_8498;70_870x/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x/InnerContainer")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
 
-[node name="ScorePadding" type="MarginContainer" parent="Card/Content/Column/ScoreRow/ScoreBadge" unique_id=870050717]
+[node name="InnerContainer" type="Control" parent="JoinedPlayerInfo/InnerContainer/身份标签/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x" unique_id=1564325585]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 2
 
-[node name="ScoreValueLabel" type="Label" parent="Card/Content/Column/ScoreRow/ScoreBadge/ScorePadding" unique_id=215298269]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 13
-text = "0 分"
+[node name="Rectangle xIDxI81_8498;70_870;70_729;39_5x" type="Panel" parent="JoinedPlayerInfo/InnerContainer/身份标签/InnerContainer/信息底板 _ 红色状态 xIDxI81_8498;70_870;70_729x/InnerContainer" unique_id=1987314174]
+custom_minimum_size = Vector2(116, 37)
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8gf3n")
+script = ExtResource("7_cffnr")
+minSize = Vector2(116, 37)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0.8)
+use_solid_fill = true
+corner_radius = [22.0, 22.0, 22.0, 22.0]
+
+[node name="身份文本" type="Label" parent="JoinedPlayerInfo/InnerContainer/身份标签/InnerContainer" unique_id=200259733]
+material = SubResource("ShaderMaterial_hnrno")
+layout_mode = 0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 108.0
+offset_bottom = 35.0
+text = "房客"
+label_settings = SubResource("LabelSettings_vk65a")
 horizontal_alignment = 1
+clip_text = true
 
-[node name="ScoreDeltaLabel" type="Label" parent="." unique_id=1815011116]
+[node name="ScoreDeltaLabel" type="Label" parent="JoinedPlayerInfo/InnerContainer" unique_id=1815011116]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 0
-offset_left = 134.0
-offset_top = 197.0
-offset_right = 164.0
-offset_bottom = 215.0
+offset_left = 163.41832
+offset_top = 265.3672
+offset_right = 193.41832
+offset_bottom = 303.40884
 theme_override_colors/font_color = Color(0.32549, 0.901961, 0.478431, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 22
 text = "+0"
 
-[node name="CollectPoseMarker" type="Marker2D" parent="." unique_id=1600411257]
-position = Vector2(84, 88)
+[node name="CollectPoseMarker" type="Marker2D" parent="JoinedPlayerInfo/InnerContainer" unique_id=1600411257]
+position = Vector2(127.43629, 97.45128)
+scale = Vector2(1.4992504, 1.4992504)

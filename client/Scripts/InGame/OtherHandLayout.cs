@@ -113,10 +113,12 @@ public partial class OtherHandLayout : Control
 			targetSize.X,
 			targetSize.Y
 		);
+		if (GetViewport().GuiSnapControlsToPixels)
+			localPosition = (localPosition + Vector2.One * 0.5f).Floor();
 		Transform2D localTransform = new(0.0f, localPosition);
 
 		return new CardPose2D(
-			GetGlobalTransformWithCanvas() * localTransform,
+			CardPose2D.GetRenderedCanvasTransform(this) * localTransform,
 			targetSize,
 			IsFaceUp: false
 		);
@@ -211,7 +213,7 @@ public partial class OtherHandLayout : Control
 
 		card.Setup(cardData, startFaceUp: false);
 		CardPose2D sourcePose = new(
-			card.GetGlobalTransformWithCanvas(),
+			CardPose2D.GetRenderedCanvasTransform(card),
 			new Vector2(card.CardWidth, card.CardHeight),
 			IsFaceUp: false
 		);

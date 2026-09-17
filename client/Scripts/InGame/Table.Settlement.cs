@@ -9,44 +9,64 @@ namespace HeartsAlter.Scripts.InGame;
 public partial class Table
 {
 	private Settlement _settlement;
-	private Control _roundActions;
 	private Label _roundStatus;
-	private Button _nextRoundButton;
-	private Button _lobbyButton;
-	private Button _viewSettlementButton;
+	private TextureButton _nextRoundButton;
+	private TextureButton _lobbyButton;
+	private BaseButton _exitButton;
+	private ConfirmationDialog _exitConfirmation;
 	private bool _returningToLobby;
 	private bool _nextRoundPending;
 
 	private void BindSettlementUi()
 	{
 		_settlement = GetNode<Settlement>("SettlementLayer/Settlement");
-		_roundActions = GetNode<Control>("RoundActions");
-		_roundStatus = GetNode<Label>("RoundActions/Status");
-		_nextRoundButton = GetNode<Button>("RoundActions/Buttons/NextRound");
-		_lobbyButton = GetNode<Button>("RoundActions/Buttons/ReturnToLobby");
-		_viewSettlementButton = GetNode<Button>("RoundActions/Buttons/ViewSettlement");
+		_roundStatus = _settlement.GetNode<Label>("%RoundStatus");
+		_nextRoundButton = _settlement.GetNode<TextureButton>("%NextRoundButton");
+		_lobbyButton = _settlement.GetNode<TextureButton>("%ReturnToLobbyButton");
 		_nextRoundButton.Pressed += () => _ = AgreeNextRoundAsync();
-		_lobbyButton.Pressed += () => _ = ReturnToLobbyAsync();
-		_viewSettlementButton.Pressed += _settlement.Open;
-		_settlement.VisibilityChanged += () =>
-		{
-			var focus = _settlement.Visible ? FocusModeEnum.None : FocusModeEnum.All;
-			_nextRoundButton.FocusMode = _lobbyButton.FocusMode = _viewSettlementButton.FocusMode = focus;
-		};
-		_settlement.Closed += () =>
-		{
-			if (!_nextRoundButton.Disabled) _nextRoundButton.GrabFocus();
-			else _viewSettlementButton.GrabFocus();
-		};
+		_lobbyButton.Pressed += ConfirmExitRoom;
+		UpdateSettlementButtons();
+	}
+
+	private void BindExitUi()
+	{
+		_exitButton = GetNode<BaseButton>("%ReturnToLobbyButton");
+		_exitConfirmation = GetNode<ConfirmationDialog>("ExitConfirmation");
+		_exitButton.Pressed += ConfirmExitRoom;
+		_exitConfirmation.Confirmed += () => _ = ReturnToLobbyAsync();
+		GetNode<CanvasLayer>("TableActions").Visible = UseNetworkSession;
+	}
+
+	private void ConfirmExitRoom()
+	{
+		if (!UseNetworkSession || _returningToLobby || _networkTransitioning || _exitConfirmation.Visible) return;
+		UpdateExitConfirmation();
+		_exitConfirmation.PopupCentered(new Vector2I(520, 180));
+	}
+
+	private void UpdateExitConfirmation()
+	{
+		MyRoomState state = _networkAdapter?.State;
+		Player local = state?.players.TryGetValue(_networkAdapter.SessionId, out Player current) == true ? current : null;
+		bool host = local?.isHost == true;
+		int stake = local?.stake ?? 0;
+		_exitConfirmation.DialogText = state is null ? "确定退出并返回大厅吗？"
+			: state.phase == "waiting" ? host
+				? "确定退出房间并返回大厅吗？房主将转交给其他玩家。"
+				: "确定退出房间并返回大厅吗？"
+			: host ? state.phase != "finished" && stake > 0
+				? $"退出后将解散房间，各席位拿回本局投入的 {stake} 金币，所有玩家返回大厅。确定退出吗？"
+				: "你是房主，退出后将解散房间，所有玩家都会返回大厅。确定退出吗？"
+				: state.phase == "finished" ? "确定退出并返回大厅吗？机器人将接替你的席位。"
+				: stake > 0 ? $"退出将放弃本局投入的 {stake} 金币，由机器人接替。无需等待结算，可立即加入其他房间。确定退出吗？"
+				: "退出后由机器人接替，你尚未投入底注，可立即加入其他房间。确定退出吗？";
+		_exitConfirmation.OkButtonText = host && state?.phase != "waiting" ? "解散并退出" : "确认退出";
 	}
 
 	private void UpdateSettlementUi(MyRoomState state)
 	{
 		_settlement.Render(state, _networkAdapter.SessionId);
-		Player local = state.players.TryGetValue(_networkAdapter.SessionId, out Player current) ? current : null;
-		_nextRoundButton.Disabled = local is null || local.nextRoundReady || _nextRoundPending || _returningToLobby;
-		_nextRoundButton.Text = local?.nextRoundReady == true ? "已同意下一局" : "下一局";
-		_lobbyButton.TooltipText = local?.isHost == true ? "房主退出将解散房间并返回大厅" : "离开房间并返回大厅";
+		UpdateSettlementButtons();
 		var humans = state.players.Keys.Cast<string>().Select(id => state.players[id]).Where(player => !player.isBot).ToList();
 		_roundStatus.Text = $"{state.message}  ·  下一局 {humans.Count(player => player.nextRoundReady)}/{humans.Count} 人已同意";
 		foreach (Player player in state.players.Keys.Cast<string>().Select(id => state.players[id]))
@@ -54,54 +74,71 @@ public partial class Table
 			int seat = (player.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
 			PlayerInfo info = GetPlayerInfo(seat);
 			UpdateSeatIdentity(info, player);
-			if (_roundActions.Visible && !IsCollectingTrick) info?.SetRoundScore(player.score);
+			if (_settlement.Visible && !IsCollectingTrick) info?.SetRoundScore(player.score);
 		}
+	}
+
+	private void UpdateSettlementButtons()
+	{
+		MyRoomState state = _networkAdapter?.State;
+		Player local = state?.players.TryGetValue(_networkAdapter.SessionId, out Player current) == true ? current : null;
+		_nextRoundButton.Disabled = state?.phase != "finished" || local is null || local.nextRoundReady || _nextRoundPending || _returningToLobby;
+		_nextRoundButton.TooltipText = local?.nextRoundReady == true ? "已同意下一局，等待其他玩家"
+			: _nextRoundPending ? "正在同意下一局…" : "下一局";
+		_lobbyButton.Disabled = _networkAdapter is null || _returningToLobby;
+		_lobbyButton.TooltipText = local?.isHost == true ? "房主退出将解散房间并返回大厅" : "退出到大厅";
+		_nextRoundButton.SelfModulate = _nextRoundButton.Disabled ? new Color(0.55f, 0.55f, 0.55f) : Colors.White;
+		_lobbyButton.SelfModulate = _lobbyButton.Disabled ? new Color(0.55f, 0.55f, 0.55f) : Colors.White;
 	}
 
 	private async Task AgreeNextRoundAsync()
 	{
 		if (_networkAdapter?.State?.phase != "finished" || _nextRoundButton.Disabled) return;
 		_nextRoundPending = true;
-		_nextRoundButton.Disabled = true;
+		UpdateSettlementButtons();
 		try { await _networkAdapter.NextRoundAsync(); }
 		catch (Exception exception) { HandleNetworkStatus($"无法同意下一局：{exception.Message}"); }
 		finally
 		{
 			_nextRoundPending = false;
 			if (IsInsideTree() && !_networkTransitioning && _networkAdapter?.State?.phase == "finished")
-				_nextRoundButton.Disabled = _returningToLobby ||
-					!_networkAdapter.State.players.TryGetValue(_networkAdapter.SessionId, out Player local) || local.nextRoundReady;
+				UpdateSettlementButtons();
 		}
 	}
 
 	private async Task ReturnToLobbyAsync()
 	{
-		if (_returningToLobby || _networkTransitioning || _networkAdapter is null) return;
+		if (_returningToLobby || _networkTransitioning) return;
 		_returningToLobby = true;
-		_lobbyButton.Disabled = _nextRoundButton.Disabled = true;
+		_exitButton.Disabled = true;
+		UpdateSettlementButtons();
+		HandleNetworkStatus("正在离开房间…");
 		try
 		{
-			if (_networkAdapter.State?.players.TryGetValue(_networkAdapter.SessionId, out Player local) == true && local.isHost)
+			if (_networkAdapter?.State is MyRoomState state && state.phase != "waiting" &&
+				state.players.TryGetValue(_networkAdapter.SessionId, out Player local) && local.isHost)
 			{
-				_roundStatus.Text = "正在解散房间…";
+				HandleNetworkStatus("正在解散房间…");
 				await _networkAdapter.DisbandRoomAsync();
 			}
-			await _networkAdapter.DisconnectAsync();
+			if (_networkAdapter is not null) await _networkAdapter.DisconnectAsync();
 			TransitionToLobby();
 		}
 		catch (Exception exception)
 		{
 			if (!IsInsideTree() || _networkTransitioning) return;
 			_returningToLobby = false;
-			_lobbyButton.Disabled = false;
-			UpdateSettlementUi(_networkAdapter.State);
+			_exitButton.Disabled = false;
+			UpdateSettlementButtons();
 			HandleNetworkStatus($"无法退出房间：{exception.Message}");
 		}
 	}
 
 	private void HandleNetworkStatus(string message)
 	{
-		if (IsInsideTree() && !_networkTransitioning) _roundStatus.Text = message;
+		if (!IsInsideTree() || _networkTransitioning) return;
+		_roundStatus.Text = message;
+		if (_waitingStatus is not null) _waitingStatus.Text = message;
 	}
 
 	private void HandleNetworkError(int code, string message) => HandleNetworkStatus($"错误：{message}");

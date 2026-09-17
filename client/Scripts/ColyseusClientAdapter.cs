@@ -54,6 +54,7 @@ public sealed class ColyseusClientAdapter
 
     public bool IsConnected => _room != null;
     public string SessionId => _room?.SessionId ?? string.Empty;
+    public string RoomId => _room?.RoomId ?? string.Empty;
     public MyRoomState State => _room?.State;
 
     /// <summary>
@@ -166,9 +167,17 @@ public sealed class ColyseusClientAdapter
         return _room.Send("set_rules", options);
     }
 
-    public Task AddBotAsync()
+    public Task AddBotAsync(int? seat = null)
     {
-        return _room == null ? Task.CompletedTask : _room.Send("add_bot");
+        return _room == null ? Task.CompletedTask : seat.HasValue
+            ? _room.Send("add_bot", new Dictionary<string, object> { ["seat"] = seat.Value })
+            : _room.Send("add_bot");
+    }
+
+    public Task KickPlayerAsync(string playerId)
+    {
+        return _room == null ? Task.CompletedTask : _room.Send("kick_player",
+            new Dictionary<string, object> { ["playerId"] = playerId });
     }
 
     public Task StartGameAsync()

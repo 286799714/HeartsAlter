@@ -82,7 +82,7 @@ public partial class CardDeck : Control
 		}
 
 		topPose = new CardPose2D(
-			_topCard.GetGlobalTransformWithCanvas(),
+			CardPose2D.GetRenderedCanvasTransform(_topCard),
 			new Vector2(_topCard.CardWidth, _topCard.CardHeight),
 			_topCard.IsFaceUp
 		);

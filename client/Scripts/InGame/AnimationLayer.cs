@@ -12,8 +12,8 @@ namespace HeartsAlter.Scripts.InGame;
 /// A pose is expressed in canvas coordinates. Every flight converts its two
 /// poses into this layer's local coordinate system and animates a small Node2D
 /// carrier. The carrier keeps the complete Transform2D (including rotation and
-/// scale), with its origin aligned to the card center while the Card itself
-/// remains an ordinary, top-left anchored Control. Multiple carriers are
+/// scale). Poses interpolate around the card center; the carrier applies the
+/// top-left offset so the Card can stay at local zero. Multiple carriers are
 /// independent, so rapid draw requests can be shown at the same time.
 /// </summary>
 public partial class AnimationLayer : Control
@@ -343,7 +343,7 @@ public partial class AnimationLayer : Control
 
 		card.Visible = true;
 		ApplyPose(carrier, card, sourceTransform, sourcePose.Size);
-		ApplySpin(spinCarrier, settings.ClockwiseTurns, 0.0f);
+		ApplySpin(spinCarrier, settings.ClockwiseTurns, 0.0f, sourcePose.Size);
 
 		float delay = Mathf.Max(0.0f, startDelay);
 		if (!state.FlipFinished && delay <= 0.0f)
@@ -397,7 +397,7 @@ public partial class AnimationLayer : Control
 							progress
 						);
 						ApplyPose(carrier, card, interpolated, interpolatedSize);
-						ApplySpin(spinCarrier, settings.ClockwiseTurns, progress);
+						ApplySpin(spinCarrier, settings.ClockwiseTurns, progress, interpolatedSize);
 					}),
 					0.0f,
 					1.0f,
@@ -667,7 +667,7 @@ public partial class AnimationLayer : Control
 
 	private Transform2D CanvasToLocal(Transform2D canvasTransform)
 	{
-		Transform2D layerCanvasTransform = GetGlobalTransformWithCanvas();
+		Transform2D layerCanvasTransform = CardPose2D.GetRenderedCanvasTransform(this);
 		return layerCanvasTransform.AffineInverse() * canvasTransform;
 	}
 
@@ -692,30 +692,31 @@ public partial class AnimationLayer : Control
 			return;
 		}
 
-		// The incoming transform describes the card center. Keep the Card's local
-		// origin at its top-left by offsetting it from the carrier; recompute this
-		// offset on every frame because the flight may also interpolate its size.
+		// Keep the Control at zero so GUI pixel snapping cannot round its
+		// fractional half-size offset. The Node2D carrier owns that translation.
 		card.ResizeToSize(size);
-		Vector2 halfSize = size * 0.5f;
-		card.Position = -halfSize;
-		carrier.Transform = localTransform;
+		card.Position = Vector2.Zero;
+		carrier.Transform = localTransform * new Transform2D(0.0f, -size * 0.5f);
 	}
 
 	private static void ApplySpin(
 		Node2D spinCarrier,
 		int clockwiseTurns,
-		float progress)
+		float progress,
+		Vector2 size)
 	{
 		if (!GodotObject.IsInstanceValid(spinCarrier))
 			return;
 
-		spinCarrier.Rotation = Mathf.Tau * clockwiseTurns * progress;
+		Vector2 center = size * 0.5f;
+		spinCarrier.Transform = new Transform2D(Mathf.Tau * clockwiseTurns * progress, center)
+			* new Transform2D(0.0f, -center);
 	}
 
 	private static void ResetSpin(Node2D spinCarrier)
 	{
 		if (GodotObject.IsInstanceValid(spinCarrier))
-			spinCarrier.Rotation = 0.0f;
+			spinCarrier.Transform = Transform2D.Identity;
 	}
 
 	private static Transform2D ToCenterTransform(

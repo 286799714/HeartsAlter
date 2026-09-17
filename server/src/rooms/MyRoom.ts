@@ -95,6 +95,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   private displayName = "房间";
   private lobbyManaged = false;
   private starting = false;
+  private disbanding = false;
   private phaseTimeout?: Delayed;
   private passingTimeout?: Delayed;
   private readonly passingSelections = new Map<string, Card[]>();
@@ -148,8 +149,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     },
 
     /** The owner adds one synthetic seat to an empty slot. */
-    add_bot: (client: Client) => {
-      if (this.state.phase !== "waiting" || client.sessionId !== this.state.hostId) {
+    add_bot: (client: Client, message?: { seat?: unknown }) => {
+      if (this.state.phase !== "waiting" || this.starting || client.sessionId !== this.state.hostId) {
         this.sendError(client, "只有房主可以添加机器人");
         return;
       }
@@ -157,15 +158,40 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
         this.sendError(client, "房间没有空席位");
         return;
       }
-      this.addBot();
+      const seat = message?.seat === undefined ? this.findEmptySeat() : message.seat;
+      if (typeof seat !== "number" || !Number.isInteger(seat) || seat < 0 || seat >= MAX_PLAYERS ||
+        [...this.state.players.values()].some((player) => player.seat === seat)) {
+        this.sendError(client, "请选择有效的空席位");
+        return;
+      }
+      this.addBot(seat);
       this.state.message = "已添加机器人（机器人自动准备）";
       this.publishRoomMetadata();
     },
-    add_robot: (client: Client) => {
-      this.messages.add_bot(client);
+    add_robot: (client: Client, message?: { seat?: unknown }) => {
+      this.messages.add_bot(client, message);
     },
 
-    /** The owner can dissolve the room from the settlement screen. */
+    /** Remove exactly the selected occupant, without moving the other seats. */
+    kick_player: (client: Client, message?: { playerId?: unknown }) => {
+      if (this.state.phase !== "waiting" || this.starting || client.sessionId !== this.state.hostId) {
+        this.sendError(client, "只有房主可以在准备阶段移除玩家或机器人");
+        return;
+      }
+      const playerId = message?.playerId;
+      const player = typeof playerId === "string" ? this.state.players.get(playerId) : undefined;
+      if (!player || typeof playerId !== "string" || player.isHost) {
+        this.sendError(client, "不能移除房主或不存在的玩家");
+        return;
+      }
+      const target = this.clients.find((candidate) => candidate.sessionId === playerId);
+      this.removeWaitingPlayer(playerId);
+      this.state.message = `已移除 ${player.name}`;
+      this.publishRoomMetadata();
+      target?.leave(4000);
+    },
+
+    /** The owner can dissolve the room while playing or from settlement. */
     disband_room: (client: Client) => {
       if (client.sessionId !== this.state.hostId) {
         this.sendError(client, "只有房主可以解散房间");
@@ -330,9 +356,11 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
   }
 
   onJoin(client: Client, options: Record<string, unknown> = {}) {
-    if (this.state.phase !== "waiting") {
+    if (this.state.phase !== "waiting" || this.starting) {
       throw new Error("本房间已经开始一局牌");
     }
+    const seat = this.findEmptySeat();
+    if (seat < 0) throw new Error("房间没有空席位");
 
     const player = new Player();
     const safeOptions = options && typeof options === "object" ? options : {};
@@ -348,7 +376,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       player.avatarId = profile.avatarId;
     }
     player.name = profile?.name ?? this.readName(safeOptions.name, this.state.players.size + 1);
-    player.seat = this.state.players.size;
+    player.seat = seat;
     player.chips = profile?.chips ?? this.startingChips;
     player.connected = true;
     player.isTreating = false;
@@ -359,7 +387,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       this.state.hostId = client.sessionId;
     }
     this.state.players.set(client.sessionId, player);
-    this.state.playerOrder.push(client.sessionId);
+    this.insertPlayerOrder(client.sessionId);
     this.hands.set(client.sessionId, []);
     this.sendHand(client.sessionId);
     this.scheduleHandResend(client.sessionId);
@@ -387,8 +415,12 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
 
   onLeave(client: Client, code: CloseCode) {
     const player = this.state.players.get(client.sessionId);
-    if (!player) {
+    if (!player || this.disbanding) {
       this.releaseProfileSeat(client.sessionId);
+      return;
+    }
+    if (code === CloseCode.CONSENTED && this.state.phase !== "waiting" && player.isHost) {
+      void this.disconnect().catch(() => {});
       return;
     }
     this.departedPlayers.add(client.sessionId);
@@ -397,21 +429,10 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     }
 
     // Before a round starts, a vacant seat can be filled by another player.
-    // Once cards are dealt, retain the seat and let the timeout play for it so
-    // the other three players can always finish the round.
+    // An explicit guest exit becomes a bot; temporary connection loss keeps
+    // the human seat available for reconnection and timeout play.
     if (this.state.phase === "waiting") {
-      this.state.players.delete(client.sessionId);
-      this.hands.delete(client.sessionId);
-      const orderIndex = this.state.playerOrder.indexOf(client.sessionId);
-      if (orderIndex >= 0) {
-        this.state.playerOrder.splice(orderIndex, 1);
-      }
-      this.state.playerOrder.forEach((playerId, seat) => {
-        const remaining = this.state.players.get(playerId);
-        if (remaining) {
-          remaining.seat = seat;
-        }
-      });
+      this.removeWaitingPlayer(client.sessionId);
       this.state.message = this.botsEnabled
         ? "等待一名玩家加入（机器人演示）"
         : `${this.state.players.size}/${MAX_PLAYERS} 名玩家已就位`;
@@ -426,8 +447,32 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
           }
         });
       }
-      this.broadcast("player_left", { playerId: client.sessionId });
       this.publishRoomMetadata();
+      return;
+    }
+
+    if (code === CloseCode.CONSENTED) {
+      try {
+        const profileId = this.profileSeats.get(client.sessionId);
+        if (profileId && player.stake > 0) {
+          // The in-room balance already excludes this round's ante. Commit
+          // that forfeiture now, before another room can claim the profile.
+          getPlayerProfileStore().saveBalances([{
+            playerId: profileId, chips: player.chips, owner: this.profileOwner(client.sessionId),
+          }]);
+        }
+        this.releaseProfileSeat(client.sessionId);
+      } catch (error) {
+        console.error("Failed to persist exit forfeiture", error);
+        // The socket is already leaving. If the debit cannot be committed,
+        // cancel the unfinished round and release its claims without charging.
+        const message = "退出结算保存失败，本局已取消并退还底注";
+        this.returnToWaiting(message);
+        this.onLeave(client, code);
+        this.state.message = message;
+        return;
+      }
+      this.replaceDepartedPlayerWithBot(client.sessionId, player);
       return;
     }
 
@@ -455,10 +500,66 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
 
   onReconnect(client: Client) {
     const player = this.state.players.get(client.sessionId);
-    if (player) {
-      player.connected = true;
-      this.state.message = `${player.name} 已重新连接`;
-      this.sendHand(client.sessionId);
+    if (!player || this.isBotPlayer(client.sessionId)) {
+      client.leave(4000);
+      return;
+    }
+    player.connected = true;
+    this.state.message = `${player.name} 已重新连接`;
+    this.sendHand(client.sessionId);
+  }
+
+  override disconnect(closeCode: CloseCode = CloseCode.CONSENTED) {
+    if (!this.disbanding && this.state.phase !== "finished") {
+      // Active humans' saved balances still include their uncommitted ante.
+      // Restore the in-room balances to match those saves, exactly once.
+      // Former guests forfeited and detached their profiles when they left;
+      // refunding their replacement bots must not touch those human saves.
+      for (const player of this.state.players.values()) {
+        player.chips += player.stake;
+        player.stake = 0;
+      }
+      this.state.pot = 0;
+    }
+    // Closing every socket must not create bots or advance the round.
+    this.disbanding = true;
+    this.turnTimeout?.clear();
+    this.phaseTimeout?.clear();
+    this.passingTimeout?.clear();
+    return super.disconnect(closeCode);
+  }
+
+  private replaceDepartedPlayerWithBot(playerId: string, player: Player) {
+    const previousName = player.name;
+    player.name = `机器人 ${player.seat + 1}`;
+    player.avatarId = player.seat % AVATAR_COUNT + 1;
+    player.profileId = "";
+    player.isBot = true;
+    player.connected = true;
+    player.ready = player.tableReady = player.dealReady = player.nextRoundReady = true;
+    this.botPlayerIds.add(playerId);
+    // Retain the id, hand, score and balance for the bot. The departed human
+    // has already forfeited the ante and released their profile, so neither
+    // this round's payout nor a later refund can change that human's save.
+    this.state.message = `${previousName} 已退出，由机器人接替`;
+    this.broadcast("player_disconnected", { playerId, automated: true, message: this.state.message });
+    this.publishRoomMetadata();
+    switch (this.state.phase) {
+      case "table_ready":
+        if (this.allRealPlayersHave((candidate) => candidate.tableReady)) this.startManagedDeal();
+        break;
+      case "dealing":
+        if (this.allRealPlayersHave((candidate) => candidate.dealReady)) this.beginPlayingAfterDeal();
+        break;
+      case "passing":
+        this.autoSelectPassingCards(playerId);
+        break;
+      case "playing":
+        if (this.state.currentTurn === playerId) this.autoPlayCurrentTurn();
+        break;
+      case "finished":
+        if (this.allRealPlayersHave((candidate) => candidate.nextRoundReady)) this.enterTableReady();
+        break;
     }
   }
 
@@ -1038,7 +1139,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       player.nextRoundReady = this.isBotPlayer(playerId);
       payouts[playerId] = payout;
     }
-    this.state.message = "本局结束：最高分玩家共同请客";
+    this.state.message = "本局结束";
     for (const sessionId of this.departedPlayers) this.releaseProfileSeat(sessionId);
     this.publishRoomMetadata();
     this.broadcast("round_finished", {
@@ -1122,8 +1223,32 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     }
   }
 
-  private addBot() {
-    const seat = this.state.players.size;
+  private findEmptySeat(): number {
+    const occupied = new Set([...this.state.players.values()].map((player) => player.seat));
+    for (let seat = 0; seat < MAX_PLAYERS; seat++) {
+      if (!occupied.has(seat)) return seat;
+    }
+    return -1;
+  }
+
+  private insertPlayerOrder(playerId: string) {
+    const seat = this.state.players.get(playerId)!.seat;
+    const index = this.state.playerOrder.findIndex((id) => this.state.players.get(id)!.seat > seat);
+    this.state.playerOrder.splice(index < 0 ? this.state.playerOrder.length : index, 0, playerId);
+  }
+
+  private removeWaitingPlayer(playerId: string) {
+    this.releaseProfileSeat(playerId);
+    this.state.players.delete(playerId);
+    this.hands.delete(playerId);
+    this.botPlayerIds.delete(playerId);
+    this.departedPlayers.delete(playerId);
+    const index = this.state.playerOrder.indexOf(playerId);
+    if (index >= 0) this.state.playerOrder.splice(index, 1);
+    this.broadcast("player_left", { playerId });
+  }
+
+  private addBot(seat = this.findEmptySeat()) {
     const playerId = this.createBotId(seat);
     const player = new Player();
     player.name = `机器人 ${seat + 1}`;
@@ -1136,7 +1261,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     player.isBot = true;
     player.isHost = false;
     this.state.players.set(playerId, player);
-    this.state.playerOrder.push(playerId);
+    this.insertPlayerOrder(playerId);
     this.hands.set(playerId, []);
     this.botPlayerIds.add(playerId);
     this.broadcast("player_joined", {

@@ -88,7 +88,7 @@ export class PlayerProfileStore {
     if (this.activeSeats.get(playerId) === owner) this.activeSeats.delete(playerId);
   }
 
-  /** Commit all real players together, only after a complete round. */
+  /** Atomically commit settlement balances or a departing player's forfeiture. */
   saveBalances(balances: { playerId: string; chips: number; owner: string }[]) {
     for (const balance of balances) {
       if (this.activeSeats.get(balance.playerId) !== balance.owner) throw new Error("玩家席位已失效");
