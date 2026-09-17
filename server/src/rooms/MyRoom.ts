@@ -341,8 +341,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.botsEnabled = safeOptions.bots === true;
     this.lobbyManaged = safeOptions.lobbyManaged === true;
     this.state.lobbyManaged = this.lobbyManaged;
-    this.state.heartsBreakingEnabled = safeOptions.heartsBreakingEnabled !== false;
-    this.state.mustDiscardPointsWhenVoid = safeOptions.mustDiscardPointsWhenVoid !== false;
+    this.state.heartsBreakingEnabled = safeOptions.heartsBreakingEnabled === true;
+    this.state.mustDiscardPointsWhenVoid = safeOptions.mustDiscardPointsWhenVoid === true;
     this.displayName = this.readRoomName(safeOptions.roomName);
     // A demo room has one real client and three synthetic seats.  Limiting
     // matchmaking to one connection makes the room's intent explicit and

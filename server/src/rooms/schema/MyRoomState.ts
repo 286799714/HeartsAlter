@@ -68,8 +68,8 @@ export const MyRoomState = schema({
   /** Deadline for a phase-level handshake (table/deal), in server ms. */
   phaseDeadline: t.float64().default(0),
   /** Room rules remain fixed from the start handshake through settlement. */
-  heartsBreakingEnabled: t.boolean().default(true),
-  mustDiscardPointsWhenVoid: t.boolean().default(true),
+  heartsBreakingEnabled: t.boolean().default(false),
+  mustDiscardPointsWhenVoid: t.boolean().default(false),
 });
 export type MyRoomState = SchemaType<typeof MyRoomState>;
 

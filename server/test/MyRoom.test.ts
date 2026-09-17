@@ -316,47 +316,47 @@ describe("authoritative Hearts room", () => {
     await colyseus.connectTo(another, { deviceId: "forfeit-failure-1" });
   });
 
-  it("defaults room rules on and syncs validated host-only changes before starting", async () => {
+  it("defaults room rules off and syncs validated host-only changes before starting", async () => {
     const room = await colyseus.createRoom<MyRoomState>("hearts", { lobbyManaged: true });
     const host = await colyseus.connectTo(room, { deviceId: "rules-host" });
     const guest = await colyseus.connectTo(room, { deviceId: "rules-guest" });
-    assert.equal(host.state.heartsBreakingEnabled, true);
-    assert.equal(guest.state.mustDiscardPointsWhenVoid, true);
+    assert.equal(host.state.heartsBreakingEnabled, false);
+    assert.equal(guest.state.mustDiscardPointsWhenVoid, false);
     const reject = async (client: any, payload: unknown, reason: RegExp) => {
       const rejected = client.waitForMessage("invalid_play");
       client.send("set_rules", payload);
       assert.match((await rejected).reason, reason);
     };
-    await reject(guest, { heartsBreakingEnabled: false }, /只有房主/);
+    await reject(guest, { heartsBreakingEnabled: true }, /只有房主/);
     for (const payload of [undefined, {}, { heartsBreakingEnabled: "false" },
       { heartsBreakingEnabled: false, mustDiscardPointsWhenVoid: 0 }, { mustDiscardPointsWhenVoid: null }]) {
       await reject(host, payload, /布尔值/);
-      assert.equal(room.state.heartsBreakingEnabled, true);
-      assert.equal(room.state.mustDiscardPointsWhenVoid, true);
+      assert.equal(room.state.heartsBreakingEnabled, false);
+      assert.equal(room.state.mustDiscardPointsWhenVoid, false);
     }
     guest.send("ready", { ready: true });
     await room.waitForMessage("ready");
-    host.send("set_rules", { heartsBreakingEnabled: true });
+    host.send("set_rules", { heartsBreakingEnabled: false });
     await room.waitForMessage("set_rules");
     assert.equal(room.state.players.get(guest.sessionId)!.ready, true, "no-op changes preserve readiness");
-    host.send("set_rules", { heartsBreakingEnabled: false });
+    host.send("set_rules", { heartsBreakingEnabled: true });
     await room.waitForMessage("set_rules");
     await room.waitForNextPatch();
     for (const client of [host, guest]) {
-      assert.equal(client.state.heartsBreakingEnabled, false);
-      assert.equal(client.state.mustDiscardPointsWhenVoid, true);
+      assert.equal(client.state.heartsBreakingEnabled, true);
+      assert.equal(client.state.mustDiscardPointsWhenVoid, false);
       assert.equal(client.state.players.get(guest.sessionId)!.ready, false);
       assert.equal(client.state.players.get(host.sessionId)!.ready, true);
     }
     host.send("add_bot");
     await room.waitForMessage("add_bot");
-    host.send("set_rules", { mustDiscardPointsWhenVoid: false });
+    host.send("set_rules", { mustDiscardPointsWhenVoid: true });
     await room.waitForMessage("set_rules");
     assert.ok([...room.state.players.values()].filter((player) => player.isBot).every((player) => player.ready));
     const lateGuest = await colyseus.connectTo(room, { deviceId: "rules-late-guest" });
     await lateGuest.waitForInitialState();
-    assert.equal(lateGuest.state.heartsBreakingEnabled, false);
-    assert.equal(lateGuest.state.mustDiscardPointsWhenVoid, false);
+    assert.equal(lateGuest.state.heartsBreakingEnabled, true);
+    assert.equal(lateGuest.state.mustDiscardPointsWhenVoid, true);
     for (const client of [guest, lateGuest]) {
       client.send("ready", { ready: true });
       await room.waitForMessage("ready");
@@ -365,21 +365,21 @@ describe("authoritative Hearts room", () => {
     await room.waitForMessage("start_game");
     await room.waitForNextPatch();
     assert.equal(room.state.phase, "table_ready");
-    await reject(host, { heartsBreakingEnabled: true }, /游戏开始后/);
-    assert.equal(room.state.heartsBreakingEnabled, false);
+    await reject(host, { heartsBreakingEnabled: false }, /游戏开始后/);
+    assert.equal(room.state.heartsBreakingEnabled, true);
     // A failed handshake returns to waiting without forgetting either setting.
     for (const timer of [...room.clock.delayed]) timer.tick(31_000);
     assert.equal(room.state.phase, "waiting");
-    assert.equal(room.state.heartsBreakingEnabled, false);
-    assert.equal(room.state.mustDiscardPointsWhenVoid, false);
+    assert.equal(room.state.heartsBreakingEnabled, true);
+    assert.equal(room.state.mustDiscardPointsWhenVoid, true);
     const left = guest.waitForMessage("player_left");
     await host.leave();
     await left;
-    guest.send("set_rules", { heartsBreakingEnabled: true, mustDiscardPointsWhenVoid: true });
+    guest.send("set_rules", { heartsBreakingEnabled: false, mustDiscardPointsWhenVoid: false });
     await room.waitForMessage("set_rules");
     assert.equal(room.state.hostId, guest.sessionId);
-    assert.equal(room.state.heartsBreakingEnabled, true);
-    assert.equal(room.state.mustDiscardPointsWhenVoid, true);
+    assert.equal(room.state.heartsBreakingEnabled, false);
+    assert.equal(room.state.mustDiscardPointsWhenVoid, false);
   });
 
   for (const heartsBreakingEnabled of [false, true]) {
@@ -785,7 +785,9 @@ describe("authoritative Hearts room", () => {
 
   it("enforces point discards, scores every trick, and resets scoring on the next round", async () => {
     mock.method(Math, "random", () => 0.37);
-    const room = await colyseus.createRoom<MyRoomState>("hearts", {});
+    const room = await colyseus.createRoom<MyRoomState>("hearts", {
+      heartsBreakingEnabled: true, mustDiscardPointsWhenVoid: true,
+    });
     const clients: any[] = [];
     for (let index = 0; index < MAX_PLAYERS; index += 1) {
       clients.push(await colyseus.connectTo(room, { deviceId: `settlement-device-${index}` }));

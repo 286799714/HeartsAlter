@@ -98,7 +98,7 @@ public partial class Intro : Node
 		}
 		else
 		{
-			_status.Text = "请先返回连接页面，连接服务器";
+			_status.Text = "请先返回标题页面，连接服务器";
 		}
 	}
 
@@ -120,7 +120,6 @@ public partial class Intro : Node
 	{
 		_status.Text = "正在连接大厅并同步玩家信息…";
 		_backButton.Disabled = true;
-		_adapter.PlayerName = GameSession.Profile?.Name ?? "玩家 1";
 		bool connected = await _adapter.ConnectAsync(GameSession.ServerEndpoint);
 		if (!IsInstanceValid(this) || !IsInsideTree())
 		{
@@ -234,7 +233,7 @@ public partial class Intro : Node
 	{
 		if (_savingName) return;
 		_editingName = false;
-		_status.Text = _adapter.IsConnected ? "大厅已连接" : "大厅连接已断开，请返回连接页面重试";
+		_status.Text = _adapter.IsConnected ? "大厅已连接" : "大厅连接已断开，请返回标题页面重试";
 		RefreshActions();
 		_editNameButton.GrabFocus();
 	}
@@ -307,7 +306,7 @@ public partial class Intro : Node
 			// Drop the connection before allowing another request: a late reservation
 			// cannot otherwise be distinguished from the user's next attempt.
 			await _adapter.DisconnectAsync();
-			HandleError("房间请求超时，请返回连接页面重试");
+			HandleError("房间请求超时，请返回标题页面重试");
 		}
 		catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
 		catch (Exception exception)
@@ -330,7 +329,7 @@ public partial class Intro : Node
 		if (!IsInsideTree() || _transitioning) return;
 		_requestPending = false;
 		_requestVersion++;
-		_status.Text = "大厅连接已断开，请返回连接页面重试";
+		_status.Text = "大厅连接已断开，请返回标题页面重试";
 		RefreshActions();
 	}
 
@@ -363,7 +362,7 @@ public partial class Intro : Node
 		GameSession.PendingReservation = null;
 		_transitioning = false;
 		_backButton.Disabled = false;
-		HandleError($"无法切换场景：{error}，请返回连接页面重试");
+		HandleError($"无法切换场景：{error}，请返回标题页面重试");
 	}
 
 	private static T Find<T>(Node parent, string name) where T : Node => (T)parent.FindChild(name, true, false);

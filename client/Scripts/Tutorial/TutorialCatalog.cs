@@ -31,7 +31,7 @@ public static class TutorialCatalog
 				Hands("DiamondJ ClubA Spade5", "Diamond9 Club2 Spade4", "Diamond3 Club4 Spade6", "Diamond7 Club5 Spade8"),
 				BotCards: new[] { "", "Diamond9", "Diamond3", "Diamond7" }),
 			new TutorialStep("control", "吃墩",
-				"目前最大的领出花色牌是阿澈的 ♦J。出 ♦K 会吃墩，出 ♦2 会让阿澈吃墩。两张都可以出，选择你想要的结果。",
+				"目前最大的领出花色牌是阿澈的 ♦J。出 ♦K 会吃墩，出 ♦2 会让阿澈吃墩。在本游戏中，2是最小的点数，A是最大的点数。",
 				"点数更大的玩家将首下这墩牌，其中如果有分数牌，收下的玩家将获得分数。得分的机制将在下一关讲解。",
 				Hands("Diamond2 DiamondK ClubA", "Diamond9 Club2 Spade4", "DiamondJ Club4 Spade6", "Diamond7 Club5 Spade8"),
 				BotCards: new[] { "", "Diamond9", "DiamondJ", "Diamond7" }),
@@ -62,7 +62,7 @@ public static class TutorialCatalog
 				Hands("SpadeA Club4 Heart7", "Spade8 Club2 Diamond4", "SpadeJ Club5 Diamond5", "Spade10 Club6 Diamond6"),
 				BotCards: new[] { "", "Spade8", "SpadeJ", "Spade10" }),
 			new TutorialStep("break-hearts", "缺门垫牌、触发心碎",
-				"领出花色是♣，你缺门。手里有♥5，是得分牌，必须优先垫出。",
+				"领出花色是♣，你缺门。现在你的手里有♥5，你可以打出它来让对手加分。",
 				"♥5是全场第一张打出的♥牌，它让小岚加了1分，并触发心碎，接下来每墩第一张牌可以领♥。",
 				Hands("Heart5 Diamond2 SpadeA", "ClubA Club2 Diamond4", "Club3 Club5 Diamond5", "Club4 Club6 Diamond6"),
 				BotCards: new[] { "", "ClubA", "Club3", "Club4" }, FirstTrick: true),
@@ -83,7 +83,7 @@ public static class TutorialCatalog
 				BotCards: new[] { "", "DiamondA", "Diamond3", "Diamond7" }),
 			new TutorialStep("settlement", "奖池瓜分",
 				"每人投入 100，奖池 400。",
-				"尽可能拿更高分，但不要拿最高分，你将分到更多奖励。",
+				"尽可能争夺第二名吧~",
 				Hands("", "", "", ""), Kind: TutorialKind.Settlement)
 		}),
 		new("传牌、先手与手牌计划", "实际传出三张，观察缺门和先手变化，尝试保留大小牌。", new[]

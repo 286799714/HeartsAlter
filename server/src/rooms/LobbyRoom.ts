@@ -45,8 +45,8 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
           bots: options?.bots === true,
           roomName: this.readRoomName(options?.name ?? options?.roomName),
           ante: this.readAnte(options?.ante),
-          heartsBreakingEnabled: options?.heartsBreakingEnabled !== false,
-          mustDiscardPointsWhenVoid: options?.mustDiscardPointsWhenVoid !== false,
+          heartsBreakingEnabled: options?.heartsBreakingEnabled === true,
+          mustDiscardPointsWhenVoid: options?.mustDiscardPointsWhenVoid === true,
           deviceId,
         });
         this.sendReservation(client, reservation, "created");

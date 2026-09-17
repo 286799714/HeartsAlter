@@ -38,11 +38,12 @@ public partial class IntroSmoke : Node
 			var uri = new Uri(endpoint);
 			Find<LineEdit>(Scene, "HostInput").Text = uri.Host;
 			Find<LineEdit>(Scene, "PortInput").Text = uri.Port.ToString();
-			Find<LineEdit>(Scene, "PlayerNameInput").Text = "大厅测试玩家";
+			await Capture("connection");
 			await Click(Find<Button>(Scene, "ConnectButton"));
 			await IntroReady();
 			var lobby = GameSession.LobbyAdapter;
 			Check(lobby.IsConnected, "Lobby did not hand off a live connection");
+			Check(lobby.Profile.Name == $"玩家 {lobby.Profile.PlayerId[..4]}", "Server-assigned nickname missing");
 			Check(U<Label>("PlayerName").Text == lobby.Profile.Name, "Saved name not displayed");
 			Check(U<Label>("PlayerChips").Text == lobby.Profile.Chips.ToString("N0", CultureInfo.InvariantCulture), "Saved balance not displayed");
 			Check(U<TextureRect>("PlayerAvatar").Texture.ResourcePath.EndsWith($"profile_icon_{lobby.Profile.AvatarId}.jpg"), "Wrong profile avatar");
@@ -102,16 +103,16 @@ public partial class IntroSmoke : Node
 			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].name == "回车提交昵称", "Room did not use saved nickname");
 			var heartsToggle = Find<CheckButton>(Scene, "HeartsBreakingToggle");
 			var discardToggle = Find<CheckButton>(Scene, "PointDiscardToggle");
-			Check(heartsToggle.ButtonPressed && discardToggle.ButtonPressed && !heartsToggle.Disabled && !discardToggle.Disabled,
-				"Room rules must default on and be editable by the host");
+			Check(!heartsToggle.ButtonPressed && !discardToggle.ButtonPressed && !heartsToggle.Disabled && !discardToggle.Disabled,
+				"Room rules must default off and be editable by the host");
 			await Click(heartsToggle);
-			await Until(() => !GameSession.GameAdapter.State.heartsBreakingEnabled, "hearts rule disabled");
-			Check(GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "Hearts toggle changed the discard rule");
+			await Until(() => GameSession.GameAdapter.State.heartsBreakingEnabled, "hearts rule enabled");
+			Check(!GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "Hearts toggle changed the discard rule");
 			await Click(discardToggle);
-			await Until(() => !GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "discard rule disabled");
+			await Until(() => GameSession.GameAdapter.State.mustDiscardPointsWhenVoid, "discard rule enabled");
 			await Click(heartsToggle);
-			await Until(() => GameSession.GameAdapter.State.heartsBreakingEnabled && heartsToggle.ButtonPressed, "hearts rule enabled again");
-			Check(!discardToggle.ButtonPressed, "Discard toggle did not retain its independent value");
+			await Until(() => !GameSession.GameAdapter.State.heartsBreakingEnabled && !heartsToggle.ButtonPressed, "hearts rule disabled again");
+			Check(discardToggle.ButtonPressed, "Discard toggle did not retain its independent value");
 			await Capture("ready-room-rules");
 			await ExerciseWaitingTable(endpoint);
 			await ConfirmTableExit("解散房间");
@@ -158,9 +159,9 @@ public partial class IntroSmoke : Node
 			Check(heartsToggle.Disabled && discardToggle.Disabled, "Guest can edit room rules");
 			await _hosts[3].Send("set_rules", new Dictionary<string, object>
 			{
-				["heartsBreakingEnabled"] = false, ["mustDiscardPointsWhenVoid"] = false,
+				["heartsBreakingEnabled"] = true, ["mustDiscardPointsWhenVoid"] = true,
 			});
-			await Until(() => !heartsToggle.ButtonPressed && !discardToggle.ButtonPressed, "guest sees changed rules");
+			await Until(() => heartsToggle.ButtonPressed && discardToggle.ButtonPressed, "guest sees changed rules");
 			var guestTable = (Table)Scene;
 			Check(!Find<Button>(Scene, "StartGameButton").IsVisibleInTree(), "Guest can see start action");
 			Check(!Find<BaseButton>(guestTable.GetLocalPlayerInfo(1), "添加机器人按钮").IsVisibleInTree(), "Guest can add bots");

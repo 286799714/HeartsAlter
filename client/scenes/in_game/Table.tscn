@@ -465,7 +465,6 @@ texture = ExtResource("5_lkouh")
 expand_mode = 1
 
 [node name="Waiting" type="CanvasLayer" parent="." unique_id=1706886494]
-visible = false
 
 [node name="TitleImage" type="Panel" parent="Waiting" unique_id=1686185972]
 material = SubResource("ShaderMaterial_r0ebq")
@@ -981,25 +980,30 @@ label_settings = SubResource("LabelSettings_fs2xw")
 horizontal_alignment = 1
 clip_text = true
 
-[node name="WaitingOptions" type="VBoxContainer" parent="Waiting"]
-offset_left = 20.0
-offset_top = 110.0
-offset_right = 260.0
-offset_bottom = 190.0
+[node name="WaitingOptions" type="VBoxContainer" parent="Waiting" unique_id=490071749]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -267.0
+offset_top = -109.0
+offset_right = -27.0
+offset_bottom = -29.0
+grow_horizontal = 0
+grow_vertical = 0
 mouse_filter = 2
 
-[node name="HeartsBreakingToggle" type="CheckButton" parent="Waiting/WaitingOptions"]
+[node name="HeartsBreakingToggle" type="CheckButton" parent="Waiting/WaitingOptions" unique_id=2143603085]
 layout_mode = 2
 tooltip_text = "开启：红心未破时不能领出红桃，除非手中只剩红桃。首墩避免分牌的限制仍适用。"
 disabled = true
-button_pressed = true
 text = "启用碎心规则"
 
-[node name="PointDiscardToggle" type="CheckButton" parent="Waiting/WaitingOptions"]
+[node name="PointDiscardToggle" type="CheckButton" parent="Waiting/WaitingOptions" unique_id=173472669]
 layout_mode = 2
 tooltip_text = "开启：缺门时有红桃或黑桃 Q 必须先出分牌，首墩也适用。修改规则后其他玩家需要重新准备。"
 disabled = true
-button_pressed = true
 text = "缺门时必须优先垫得分牌"
 
 [node name="InGame" type="CanvasLayer" parent="." unique_id=407706701]

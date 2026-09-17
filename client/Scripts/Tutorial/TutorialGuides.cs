@@ -46,7 +46,7 @@ public static class TutorialGuides
 				Cards("你有♠A，必须跟出它。", "SpadeA") },
 			"break-hearts" => new[] {
 				Played("小岚先出♣A，领出花色为♣。", 1),
-				Cards("你没有♣牌（缺门），而手牌有得分牌（♥5），必须先出它。", "Heart5") },
+				Cards("你没有♣牌（缺门），而手牌有得分牌（♥5），试着打出它。", "Heart5") },
 			"heart-lead" => new[] {
 				Cards("如果本局已经触发过碎心，你可以主动领出♥牌。", "Heart9"),
 				Cards("请试出♥9。", "Heart9") },
@@ -56,12 +56,15 @@ public static class TutorialGuides
 				Cards("你缺梅花，必须先出♥9。它在♠Q之后打出，计2分。", "Heart9") },
 			"queen-not-heart" => new[] {
 				Played("小岚领出♦A，你手里没有方块。", 1),
-				Cards("缺门时必须先出分牌。这里只有♠Q是分牌，它计6分。", "SpadeQ"),
-				Cards("♠Q会让后续红桃翻倍，但它不是红桃，不会触发心碎。现在请出♠Q。", "SpadeQ") },
+				Cards("你的手牌里只有♠Q是得分牌。", "SpadeQ"),
+				Cards("♠Q会让后续红桃翻倍，但它不是红桃，不会触发心碎。现在请试着出♠Q。", "SpadeQ") },
 			"settlement" => new[] {
 				Player("小岚12分最高（要请客），分不到奖池。", 1),
-				Player("你9分排第二，阿澈6分、小满0分。", 0),
-				new TutorialGuidePage("比较两个结算结果：你停在 9 分，或你最终拿到 13 分，哪种分到的奖池更多？", TutorialFocus.Choices) },
+				Player("你9分，排第二。", 0),
+				Player("阿澈6分，排第三。", 2),
+				Player("小满0分，排第四。", 3),
+				Player("按照规则，你、阿澈、小满三人将按得分高低瓜分奖池。你能够拿到 400×9÷(9+6)=240 的奖励。", 0),
+				new TutorialGuidePage("比较两个结算结果：你停在 9 分，或拿到 13 分，你认为应该怎么选？", TutorialFocus.Choices) },
 			"pass-void" => new[] {
 				Hand("发牌后，每人选3张同时传给下家，再接到上家的3张牌。"),
 				Cards("你只有这3张梅花。把♣2、♣5、♣K一起传走，就有机会制造梅花缺门。", "Club2", "Club5", "ClubK"),

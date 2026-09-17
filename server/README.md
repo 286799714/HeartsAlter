@@ -18,7 +18,7 @@ npm start
 
 主房间名是 `hearts`；`my_room` 仅作为旧示例的兼容别名保留。普通房间固定四个真人座位，满员后自动收取默认 100 底注并发牌；创建房间时可通过 `ante` 选项配置其他正整数底注（服务端会限制在 schema 可表示的范围内）。
 
-大厅房间名是 `lobby`。客户端先 `joinOrCreate("lobby", { deviceId, name })`，等待私有 `player_profile` 存档后，通过 `create_room`/`join_room` 获取具体 `hearts` 房间的 SeatReservation；大厅列表来自每个房间的公开 matchmaking metadata。大厅创建的房间进入准备阶段：房主固定准备，普通玩家发送 `ready`，房主可发送 `add_bot` 补齐空席位，并在四个席位全部准备后发送 `start_game`。
+大厅房间名是 `lobby`。客户端先 `joinOrCreate("lobby", { deviceId })`，等待私有 `player_profile` 存档后，通过 `create_room`/`join_room` 获取具体 `hearts` 房间的 SeatReservation；大厅列表来自每个房间的公开 matchmaking metadata。大厅创建的房间进入准备阶段：房主固定准备，普通玩家发送 `ready`，房主可发送 `add_bot` 补齐空席位，并在四个席位全部准备后发送 `start_game`。
 
 房主开始后，房间依次等待 `table_ready` 和 `deal_ready` 两轮客户端握手，各自超时 30 秒会广播 `room_reset` 并回到准备阶段。发牌完成后进入 `passing`，每名玩家通过 `pass_cards` 选择三张牌传给下家；传牌阶段固定等待 30 秒，超时由服务端随机补选。四名玩家的选择齐全后服务端直接交换手牌并进入 `playing`。进入 `playing` 后真人座位的出牌时限为 15 秒，机器人席位使用短延迟自动出牌；真人超时和异常情况会从合法牌中随机代打。`trick_resolved` 提供本墩赢家和点数，结算后用 `next_round` 等待所有真实玩家同意下一局。
 
@@ -30,7 +30,7 @@ npm start
 
 ## 使用设备存档
 
-首次连接会自动建档，初始筹码为 1000，头像随机分配为 1～4，对应客户端的 `profile_icon_1.jpg`～`profile_icon_4.jpg`。之后用相同设备标识连接会恢复同一玩家 ID、首次昵称、头像和最近结算的筹码。首版没有注册、密码、改名或头像选择界面。
+首次连接会自动建档，由服务器分配昵称（“玩家 ”加玩家 ID 前四位），初始筹码为 1000，头像随机分配为 1～4，对应客户端的 `profile_icon_1.jpg`～`profile_icon_4.jpg`。之后用相同设备标识连接会恢复同一玩家 ID、已保存昵称、头像和最近结算的筹码。可在大厅编辑昵称；没有注册、密码或头像选择界面。
 
 默认数据库为 `server/data/players.sqlite`，开发和编译后启动使用同一路径。目录和表会自动创建；部署时应把这个目录保留在持久磁盘上。可以通过 `PLAYER_DB_PATH` 设置其他路径，例如 PowerShell：
 
@@ -44,7 +44,7 @@ npm start
 | 数据或消息 | 用途 |
 | --- | --- |
 | 加入大厅的 `deviceId` | 客户端安装 ID 的摘要，沿用此协议字段名；允许 1～128 个字母、数字、下划线或连字符，作为 SQLite 唯一索引；缺失或无效时拒绝连接 |
-| 加入大厅的 `name` | 仅用于首次建档，最多 24 字符；再次连接不覆盖已有昵称 |
+| 加入大厅的 `name` | 可选的旧客户端兼容字段，当前客户端不发送；省略时由服务器生成昵称，再次连接不覆盖已有昵称 |
 | 私有 `player_profile` | `{ playerId, name, avatarId, chips }`，仅发送给本人；`chips` 为最近完成对局的余额 |
 | `request_profile` | 重新请求本人存档，客户端注册处理器后发送一次，避免遗漏入大厅的首条消息 |
 | 游戏公开状态 `Player.profileId` / `avatarId` | 各座位的持久玩家 ID 和头像编号；设备标识不进入公开状态或房间摘要 |

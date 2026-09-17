@@ -25,7 +25,7 @@ public sealed class ColyseusLobbyAdapter
 	public LobbyState State => _room?.State;
 	public RoomReservation PendingReservation { get; private set; }
 	public PlayerProfile Profile { get; private set; }
-	public string PlayerName { get; set; } = "玩家 1";
+	public string PlayerName { get; private set; } = string.Empty;
 
 	public async Task<bool> ConnectAsync(string endpoint = DefaultEndpoint)
 	{
@@ -38,7 +38,6 @@ public sealed class ColyseusLobbyAdapter
 			_client = new Client(endpoint);
 			_room = await _client.JoinOrCreate<LobbyState>("lobby", new Dictionary<string, object>
 			{
-				["name"] = PlayerName,
 				["deviceId"] = DeviceIdentity.GetDeviceId(),
 			});
 			_room.OnStateChange += (state, first) => StateChanged?.Invoke(state, first);
@@ -93,7 +92,7 @@ public sealed class ColyseusLobbyAdapter
 	}
 
 	public Task CreateRoomAsync(string name, int ante = 100, bool bots = false,
-		bool heartsBreakingEnabled = true, bool mustDiscardPointsWhenVoid = true)
+		bool heartsBreakingEnabled = false, bool mustDiscardPointsWhenVoid = false)
 	{
 		return _room == null || Profile == null ? Task.CompletedTask : _room.Send("create_room", new Dictionary<string, object>
 		{

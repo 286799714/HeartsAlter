@@ -453,4 +453,4 @@ text = "开始这一关"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-text = "返回大厅"
+text = "返回主界面"
