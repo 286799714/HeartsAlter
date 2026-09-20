@@ -12,7 +12,7 @@ import {
   type Card,
   type PlayedCard,
 } from "../game/rules.js";
-import { MyRoomState, Player, TrickCard } from "./schema/MyRoomState.js";
+import { MyRoomState, Player, ResolvedTrick, TrickCard } from "./schema/MyRoomState.js";
 import { AVATAR_COUNT, getPlayerProfileStore, readDeviceId } from "../persistence/PlayerProfileStore.js";
 
 /** How long a connected or disconnected seat has to act before the server plays for it. */
@@ -612,6 +612,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.turnDeadline = 0;
     this.state.trick.clear();
     this.state.lastTrick.clear();
+    this.state.playHistory.clear();
+    this.state.trickHistory.clear();
     this.state.lastTrickWinner = "";
     this.state.lastTrickPoints = 0;
     this.state.leadSuit = "";
@@ -666,6 +668,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.queenOfSpadesCaptured = false;
     this.state.trick.clear();
     this.state.lastTrick.clear();
+    this.state.playHistory.clear();
+    this.state.trickHistory.clear();
     this.state.lastTrickWinner = "";
     this.state.lastTrickPoints = 0;
     this.state.pot = 0;
@@ -937,6 +941,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     this.state.turnDeadline = 0;
     this.state.trick.clear();
     this.state.lastTrick.clear();
+    this.state.playHistory.clear();
+    this.state.trickHistory.clear();
     this.state.lastTrickWinner = "";
     this.state.lastTrickPoints = 0;
     this.state.leadSuit = "";
@@ -1038,6 +1044,11 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     played.playerId = playerId;
     played.cardId = card.id;
     this.state.trick.push(played);
+    const historyEntry = new TrickCard();
+    historyEntry.playerId = playerId;
+    historyEntry.cardId = card.id;
+    this.state.playHistory.push(historyEntry);
+    const playSequence = this.state.playHistory.length;
     this.broadcast("card_played", {
       playerId,
       cardId: card.id,
@@ -1045,6 +1056,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       suit: card.suit,
       rank: card.rank,
       roundNumber: this.state.roundNumber,
+      playSequence,
       trickIndex: this.state.trick.length - 1,
     });
 
@@ -1084,6 +1096,11 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     }
     this.state.lastTrickWinner = winnerId;
     this.state.lastTrickPoints = points;
+    const resolved = new ResolvedTrick();
+    resolved.winnerId = winnerId;
+    resolved.points = points;
+    resolved.playSequence = this.state.playHistory.length;
+    this.state.trickHistory.push(resolved);
     this.state.trick.clear();
     this.state.leadSuit = "";
     this.state.trickNumber += 1;
@@ -1091,6 +1108,8 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       winnerId,
       points,
       trickNumber: this.state.trickNumber,
+      roundNumber: this.state.roundNumber,
+      playSequence: this.state.playHistory.length,
       cards: plays.map((play) => ({ playerId: play.playerId, cardId: play.card.id })),
     });
 

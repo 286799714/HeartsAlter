@@ -544,6 +544,16 @@ public partial class MainHandLayout : Control
 	/// </summary>
 	public bool TryPlayCard(int cardIndex)
 	{
+		return TryPlayCard(cardIndex, completed: null);
+	}
+
+	/// <summary>
+	/// Internal table seam that reports when the card has landed in the play
+	/// area. Network progress uses this callback to serialize authoritative plays
+	/// even when several server messages arrive in one frame.
+	/// </summary>
+	internal bool TryPlayCard(int cardIndex, Action<CardControl> completed)
+	{
 		PruneInvalidCards();
 		if (cardIndex < 0 || cardIndex >= _cards.Count ||
 			_animationLayer is null || !IsInstanceValid(_animationLayer) ||
@@ -579,7 +589,11 @@ public partial class MainHandLayout : Control
 			card,
 			sourcePose,
 			targetPose,
-			playedCard => _playArea.ReceiveCard(playedCard)
+			playedCard =>
+			{
+				_playArea.ReceiveCard(playedCard);
+				completed?.Invoke(playedCard);
+			}
 		);
 
 		if (!started && IsInstanceValid(card))

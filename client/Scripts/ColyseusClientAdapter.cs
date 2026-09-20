@@ -16,7 +16,8 @@ namespace HeartsAlter.Scripts;
 /// room's typed state and small message payloads into events that Main can
 /// consume, while keeping the Colyseus SDK out of the view classes.  The room
 /// server is authoritative: a card is removed from the view only after the
-/// corresponding <c>card_played</c> message arrives.
+/// corresponding sequenced <c>card_played</c> event has been accepted by the
+/// table progress reconciler.
 /// </summary>
 public sealed class ColyseusClientAdapter
 {
@@ -34,17 +35,17 @@ public sealed class ColyseusClientAdapter
     /// </summary>
     public event Action<IReadOnlyList<string>, int> HandReceived;
     /// <summary>
-    /// Public play notification plus its authoritative round number.
+    /// Public play notification plus its authoritative round and play sequence.
     /// A negative round means a legacy server omitted the field.
     /// </summary>
-    public event Action<string, string, int> CardPlayed;
-    public event Action<string, string, int, int> CardPlayedDetailed;
+    public event Action<string, string, int, int> CardPlayed;
+    public event Action<string, string, int, int, int> CardPlayedDetailed;
     public event Action<string, int, int> TurnStarted;
     public event Action<int, int, int> PassingStarted;
     public event Action<string, IReadOnlyList<string>, IReadOnlyList<int>, int> PassingSelected;
     public event Action<string, IReadOnlyList<string>, IReadOnlyList<string>, IReadOnlyList<int>, int> PassingReceived;
     public event Action PassingCompleted;
-    public event Action<string, int, int> TrickResolved;
+    public event Action<string, int, int, int, int> TrickResolved;
     public event Action RoundFinished;
     public event Action<string> RoomReset;
     public event Action<string> ServerMessage;
@@ -363,8 +364,9 @@ public sealed class ColyseusClientAdapter
         if (!string.IsNullOrEmpty(cardId))
         {
             var roundNumber = ReadInt(payload, "roundNumber", -1);
-            CardPlayed?.Invoke(playerId, cardId, roundNumber);
-            CardPlayedDetailed?.Invoke(playerId, cardId, ReadInt(payload, "cardIndex", -1), roundNumber);
+            var playSequence = ReadInt(payload, "playSequence", -1);
+            CardPlayed?.Invoke(playerId, cardId, roundNumber, playSequence);
+            CardPlayedDetailed?.Invoke(playerId, cardId, ReadInt(payload, "cardIndex", -1), roundNumber, playSequence);
         }
     }
 
@@ -414,7 +416,9 @@ public sealed class ColyseusClientAdapter
         TrickResolved?.Invoke(
             ReadString(payload, "winnerId"),
             ReadInt(payload, "points", 0),
-            ReadInt(payload, "trickNumber", 0));
+            ReadInt(payload, "trickNumber", 0),
+            ReadInt(payload, "roundNumber", -1),
+            ReadInt(payload, "playSequence", -1));
     }
 
     private void OnRoundFinishedMessage(Dictionary<string, object> payload)

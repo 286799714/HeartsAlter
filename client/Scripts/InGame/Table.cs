@@ -34,6 +34,21 @@ public partial class Table : Control
 		CardPose2D TargetPose
 	);
 
+	private readonly record struct NetworkPlay(
+		string PlayerId,
+		string CardId,
+		int RoundNumber,
+		int PlaySequence
+	);
+
+	private readonly record struct NetworkTrickResolution(
+		string WinnerId,
+		int Points,
+		int TrickNumber,
+		int RoundNumber,
+		int PlaySequence
+	);
+
 	public const int MainPlayerIndex = 0;
 	public const int LeftPlayerIndex = 1;
 	public const int OppositePlayerIndex = 2;
@@ -120,7 +135,12 @@ public partial class Table : Control
 	private bool _rightPlayerPlayCompleted;
 	private ColyseusClientAdapter _networkAdapter;
 	private bool _networkDealStarted;
-	private readonly Queue<(string PlayerId, string CardId)> _pendingNetworkPlays = new();
+	private readonly SortedDictionary<int, NetworkPlay> _pendingNetworkPlays = new();
+	private readonly SortedDictionary<int, NetworkTrickResolution> _pendingNetworkTrickResolutions = new();
+	private int _networkProgressRound = -1;
+	private int _networkLastPlaySequence;
+	private int _networkLastResolvedTrick;
+	private bool _networkPlayAnimating;
 	private readonly List<CardData> _networkHandCards = new();
 	private bool _networkTableReadySent;
 	private bool _networkDealReadySent;
@@ -308,6 +328,7 @@ public partial class Table : Control
 		if (state is null || _networkAdapter is null || _networkTransitioning || _returningToLobby) return;
 		if (_exitConfirmation.Visible) UpdateExitConfirmation();
 		UpdateWaitingUi(state);
+		ReconcileNetworkProgress(state);
 		if (_networkSettlementScheduled && state.phase is ("table_ready" or "dealing" or "passing" or "playing"))
 		{
 			// A fresh table resets all deal/pass animation state and repeats the ready handshake.
@@ -634,6 +655,7 @@ public partial class Table : Control
 		if (_networkAdapter?.State?.phase == "playing")
 			UpdateNetworkTurn(_networkAdapter.State.currentTurn, _networkAdapter.State.turnDuration > 0
 				? _networkAdapter.State.turnDuration : 15_000, _networkAdapter.State);
+		DrainNetworkProgress();
 	}
 
 	private bool DetachPassingSourceCard(CardControl card)
@@ -672,48 +694,9 @@ public partial class Table : Control
 		return string.Empty;
 	}
 
-	private void HandleNetworkCardPlayed(string playerId, string cardId, int roundNumber)
+	private void HandleNetworkCardPlayed(string playerId, string cardId, int roundNumber, int playSequence)
 	{
-		if (_networkAdapter is null || !TryParseCardId(cardId, out CardData card))
-			return;
-		if (playerId == _networkAdapter.SessionId)
-		{
-			int visualIndex = -1;
-			_mainHandLayout?.ClearCountdown();
-			if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
-			{
-				for (int index = 0; index < _mainHandLayout.Cards.Count; index++)
-				{
-					if (ToCardId(_mainHandLayout.Cards[index].Data) == cardId)
-					{
-						visualIndex = index;
-						break;
-					}
-				}
-			}
-			if (visualIndex >= 0 && !PlayMainPlayerCard(visualIndex))
-				_mainHandLayout.TryPlayCard(visualIndex);
-			int localIndex = _networkHandCards.FindIndex(candidate => ToCardId(candidate) == cardId);
-			if (localIndex >= 0) _networkHandCards.RemoveAt(localIndex);
-			return;
-		}
-		if (IsDealing)
-		{
-			_pendingNetworkPlays.Enqueue((playerId, cardId));
-			return;
-		}
-		ApplyNetworkOpponentPlay(playerId, card);
-	}
-
-	private void ApplyNetworkOpponentPlay(string playerId, CardData card)
-	{
-		if (!_networkAdapter.State.players.TryGetValue(playerId, out Player player)) return;
-		int seat = (player.seat - GetLocalSeat(_networkAdapter.State) + PlayerCount) % PlayerCount;
-		if (seat == MainPlayerIndex) return;
-		// Opponent hands intentionally contain backs only. The authoritative
-		// notification reveals the played card and removes the first remaining
-		// back from that seat's layout.
-		PlayCard(seat, 0, card);
+		QueueNetworkPlay(new NetworkPlay(playerId, cardId, roundNumber, playSequence));
 	}
 
 	private void HandleNetworkTurnStarted(string playerId, int duration, int trickNumber)
@@ -729,6 +712,13 @@ public partial class Table : Control
 	private void UpdateNetworkTurn(string playerId, int duration, MyRoomState state)
 	{
 		if (_networkPassAnimating)
+		{
+			SetMainPlayerPlayEnabled(false);
+			_mainHandLayout?.SetSelectionEnabled(false);
+			return;
+		}
+		if (IsCollectingTrick || _networkPlayAnimating || _pendingNetworkPlays.Count > 0 ||
+			_pendingNetworkTrickResolutions.Count > 0)
 		{
 			SetMainPlayerPlayEnabled(false);
 			_mainHandLayout?.SetSelectionEnabled(false);
@@ -776,14 +766,19 @@ public partial class Table : Control
 		_ => PokerSuit.Spade,
 	};
 
-	private void HandleNetworkTrickResolved(string winnerId, int points, int trickNumber)
+	private void HandleNetworkTrickResolved(
+		string winnerId,
+		int points,
+		int trickNumber,
+		int roundNumber,
+		int playSequence)
 	{
-		if (trickNumber >= 13)
-			_networkFinalTrickReceived = true;
-		if (_networkAdapter?.State is not MyRoomState state ||
-			!state.players.TryGetValue(winnerId, out Player winner)) return;
-		int seat = (winner.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
-		CollectTrick(seat, points);
+		QueueNetworkTrickResolution(new NetworkTrickResolution(
+			winnerId,
+			points,
+			trickNumber,
+			roundNumber,
+			playSequence));
 	}
 
 	private void HandleNetworkRoundFinished()
@@ -841,14 +836,199 @@ public partial class Table : Control
 			? local.seat : 0;
 	}
 
-	private void FlushPendingNetworkPlays()
+	private void ReconcileNetworkProgress(MyRoomState state)
 	{
-		while (!IsDealing && _pendingNetworkPlays.Count > 0)
+		if (state is null || !EnsureNetworkProgressRound(state.roundNumber))
+			return;
+
+		if (state.playHistory is not null)
 		{
-			var pending = _pendingNetworkPlays.Dequeue();
-			if (TryParseCardId(pending.CardId, out CardData card))
-				ApplyNetworkOpponentPlay(pending.PlayerId, card);
+			for (int index = 0; index < state.playHistory.Count; index++)
+			{
+				TrickCard play = state.playHistory[index];
+				if (play is null) continue;
+				QueueNetworkPlay(new NetworkPlay(
+					play.playerId,
+					play.cardId,
+					state.roundNumber,
+					index + 1));
+			}
 		}
+
+		if (state.trickHistory is not null)
+		{
+			for (int index = 0; index < state.trickHistory.Count; index++)
+			{
+				ResolvedTrick trick = state.trickHistory[index];
+				if (trick is null) continue;
+				QueueNetworkTrickResolution(new NetworkTrickResolution(
+					trick.winnerId,
+					trick.points,
+					index + 1,
+					state.roundNumber,
+					trick.playSequence));
+			}
+		}
+
+		DrainNetworkProgress();
+	}
+
+	private void QueueNetworkPlay(NetworkPlay play)
+	{
+		if (string.IsNullOrEmpty(play.PlayerId) ||
+			string.IsNullOrEmpty(play.CardId) ||
+			play.PlaySequence < 1 ||
+			!EnsureNetworkProgressRound(play.RoundNumber) ||
+			play.PlaySequence <= _networkLastPlaySequence)
+		{
+			return;
+		}
+
+		_pendingNetworkPlays.TryAdd(play.PlaySequence, play);
+		DrainNetworkProgress();
+	}
+
+	private void QueueNetworkTrickResolution(NetworkTrickResolution resolution)
+	{
+		if (string.IsNullOrEmpty(resolution.WinnerId) ||
+			resolution.TrickNumber < 1 ||
+			resolution.PlaySequence < PlayerCount ||
+			!EnsureNetworkProgressRound(resolution.RoundNumber) ||
+			resolution.TrickNumber <= _networkLastResolvedTrick)
+		{
+			return;
+		}
+
+		_pendingNetworkTrickResolutions.TryAdd(resolution.TrickNumber, resolution);
+		DrainNetworkProgress();
+	}
+
+	private bool EnsureNetworkProgressRound(int roundNumber)
+	{
+		if (roundNumber < 0)
+			roundNumber = _networkAdapter?.State?.roundNumber ?? -1;
+		if (roundNumber < 0 || roundNumber < _networkProgressRound)
+			return false;
+		if (roundNumber == _networkProgressRound)
+			return true;
+
+		_networkProgressRound = roundNumber;
+		_networkLastPlaySequence = 0;
+		_networkLastResolvedTrick = 0;
+		_networkPlayAnimating = false;
+		_pendingNetworkPlays.Clear();
+		_pendingNetworkTrickResolutions.Clear();
+		return true;
+	}
+
+	private void DrainNetworkProgress()
+	{
+		if (_networkAdapter?.State is not MyRoomState state ||
+			_networkPlayAnimating ||
+			IsDealing ||
+			_networkPassAnimating ||
+			IsCollectingTrick)
+		{
+			return;
+		}
+
+		int nextTrickNumber = _networkLastResolvedTrick + 1;
+		if (_pendingNetworkTrickResolutions.TryGetValue(
+			nextTrickNumber,
+			out NetworkTrickResolution resolution) &&
+			resolution.PlaySequence <= _networkLastPlaySequence)
+		{
+			if (!state.players.TryGetValue(resolution.WinnerId, out Player winner))
+				return;
+			int seat = (winner.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
+			if (!CollectTrick(seat, resolution.Points))
+				return;
+			_pendingNetworkTrickResolutions.Remove(nextTrickNumber);
+			_networkLastResolvedTrick = nextTrickNumber;
+			if (nextTrickNumber >= 13)
+				_networkFinalTrickReceived = true;
+			return;
+		}
+
+		// Never let the first play of the next trick replace a card before the
+		// preceding trick has been authoritatively collected.
+		if (_networkLastResolvedTrick < _networkLastPlaySequence / PlayerCount)
+			return;
+
+		int nextPlaySequence = _networkLastPlaySequence + 1;
+		if (!_pendingNetworkPlays.TryGetValue(nextPlaySequence, out NetworkPlay play) ||
+			!TryStartNetworkPlay(play))
+		{
+			return;
+		}
+
+		_pendingNetworkPlays.Remove(nextPlaySequence);
+		_networkLastPlaySequence = nextPlaySequence;
+	}
+
+	private bool TryStartNetworkPlay(NetworkPlay play)
+	{
+		if (_networkAdapter?.State is not MyRoomState state ||
+			!TryParseCardId(play.CardId, out CardData card))
+		{
+			return false;
+		}
+
+		_networkPlayAnimating = true;
+		Action<CardControl> completed = _ => HandleNetworkPlayAnimationCompleted(play.RoundNumber);
+		bool started;
+		if (play.PlayerId == _networkAdapter.SessionId)
+		{
+			_mainHandLayout?.ClearCountdown();
+			int visualIndex = -1;
+			if (_mainHandLayout is not null && IsInstanceValid(_mainHandLayout))
+			{
+				for (int index = 0; index < _mainHandLayout.Cards.Count; index++)
+				{
+					if (ToCardId(_mainHandLayout.Cards[index].Data) != play.CardId) continue;
+					visualIndex = index;
+					break;
+				}
+			}
+			started = visualIndex >= 0 && _mainHandLayout.TryPlayCard(visualIndex, completed);
+			if (started)
+			{
+				SetMainPlayerPlayEnabled(false);
+				_mainHandLayout.SetSelectionEnabled(false);
+				int localIndex = _networkHandCards.FindIndex(candidate => ToCardId(candidate) == play.CardId);
+				if (localIndex >= 0) _networkHandCards.RemoveAt(localIndex);
+			}
+		}
+		else if (state.players.TryGetValue(play.PlayerId, out Player player))
+		{
+			int seat = (player.seat - GetLocalSeat(state) + PlayerCount) % PlayerCount;
+			started = seat != MainPlayerIndex && TryPlayOpponentCard(seat, GetOtherHand(seat), 0, card, completed);
+		}
+		else
+		{
+			started = false;
+		}
+
+		if (started)
+		{
+			SetMainPlayerPlayEnabled(false);
+			_mainHandLayout?.SetSelectionEnabled(false);
+		}
+		if (!started)
+			_networkPlayAnimating = false;
+		return started;
+	}
+
+	private void HandleNetworkPlayAnimationCompleted(int roundNumber)
+	{
+		if (roundNumber != _networkProgressRound)
+			return;
+		_networkPlayAnimating = false;
+		SetMainPlayerPlayEnabled(false);
+		_mainHandLayout?.SetSelectionEnabled(false);
+		DrainNetworkProgress();
+		if (_networkAdapter?.State is MyRoomState state && state.phase == "playing")
+			UpdateNetworkTurn(state.currentTurn, state.turnDuration > 0 ? state.turnDuration : 15_000, state);
 	}
 
 	private static string ToCardId(CardData card)
@@ -1091,6 +1271,9 @@ public partial class Table : Control
 		{
 			SetMainPlayerPlayEnabled(true);
 		}
+		if (_networkAdapter?.State is MyRoomState state && state.phase == "playing")
+			UpdateNetworkTurn(state.currentTurn, state.turnDuration > 0 ? state.turnDuration : 15_000, state);
+		DrainNetworkProgress();
 	}
 
 	private bool TryPrepareCollectTrickCards(int generation)
@@ -1439,7 +1622,7 @@ public partial class Table : Control
 			SetMainPlayerPlayEnabled(true);
 			_mainHandLayout.SetSelectionEnabled(true);
 		}
-		FlushPendingNetworkPlays();
+		DrainNetworkProgress();
 	}
 
 	private void ApplyStoredPassingSelectionsToHands()
@@ -1659,14 +1842,19 @@ public partial class Table : Control
 		int playerIndex,
 		OtherHandLayout hand,
 		int cardIndex,
-		CardData cardData)
+		CardData cardData,
+		Action<CardControl> completed = null)
 	{
 		return hand is not null &&
 			IsInstanceValid(hand) &&
-			hand.TryPlayCard(
+				hand.TryPlayCard(
 				cardIndex,
 				cardData,
-				playedCard => HandleOpponentPlayCompleted(playerIndex, playedCard)
+				playedCard =>
+				{
+					HandleOpponentPlayCompleted(playerIndex, playedCard);
+					completed?.Invoke(playedCard);
+				}
 			);
 	}
 

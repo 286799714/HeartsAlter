@@ -183,6 +183,11 @@ public partial class Table
 		_networkPassingRound = -1;
 		_networkHandCards.Clear();
 		_pendingNetworkPlays.Clear();
+		_pendingNetworkTrickResolutions.Clear();
+		_networkProgressRound = -1;
+		_networkLastPlaySequence = 0;
+		_networkLastResolvedTrick = 0;
+		_networkPlayAnimating = false;
 		_networkTableReadySent = _networkDealReadySent = _networkDealStarted = false;
 		_networkSettlementScheduled = _networkFinalTrickReceived = _rightPlayerPlayCompleted = false;
 		_networkScoreRound = ushort.MaxValue;

@@ -696,8 +696,12 @@ describe("authoritative Hearts room", () => {
     starter!.send("play", { cardId: "Club2" });
     const playPayload = await playMessage;
     assert.equal(playPayload.roundNumber, expectedRound);
+    assert.equal(playPayload.playSequence, 1);
     assert.equal(playPayload.playerId, starter!.sessionId);
     assert.equal(playPayload.cardId, "Club2");
+    assert.equal(room.state.playHistory.length, 1);
+    assert.equal(room.state.playHistory[0].playerId, starter!.sessionId);
+    assert.equal(room.state.playHistory[0].cardId, "Club2");
   });
 
   it("normalizes untrusted chip options to schema-safe values", async () => {
@@ -891,6 +895,9 @@ describe("authoritative Hearts room", () => {
 
       assert.equal(room.state.phase, "finished");
       assert.equal(room.state.trickNumber, 13);
+      assert.equal(room.state.playHistory.length, 52);
+      assert.equal(room.state.trickHistory.length, 13);
+      assert.equal(room.state.trickHistory[12].playSequence, 52);
       assert.ok(rejectedVoidDiscard, "the fixture must exercise rejecting a non-point void discard");
       assert.ok(heartsBeforeQueen > 0 && heartsAfterQueen > 0, "the fixture must exercise both heart values");
       assert.equal(heartsBeforeQueen + heartsAfterQueen, 13);
@@ -912,6 +919,8 @@ describe("authoritative Hearts room", () => {
     assert.equal(room.state.roundNumber, finishedRound + 1);
     assert.equal(room.state.phase, "passing");
     assert.equal(room.state.pot, 400);
+    assert.equal(room.state.playHistory.length, 0);
+    assert.equal(room.state.trickHistory.length, 0);
     assert.ok([...room.state.players.values()].every((player) => player.handCount === 13));
     await completePassing(room, clients);
 

@@ -84,5 +84,11 @@ public MyRoomState() { }
 
 		[Type(22, "boolean")]
 		public bool mustDiscardPointsWhenVoid = default(bool);
+
+		[Type(23, "array", typeof(ArraySchema<TrickCard>))]
+		public ArraySchema<TrickCard> playHistory = null;
+
+		[Type(24, "array", typeof(ArraySchema<ResolvedTrick>))]
+		public ArraySchema<ResolvedTrick> trickHistory = null;
 	}
 }

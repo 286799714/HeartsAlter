@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bjiw4ci20mioy" path="res://assets/textures/ui/in_game/generated/rgba-24x24-fc5d881768f2f210.png" id="9_owo3o"]
 [ext_resource type="PackedScene" uid="uid://cmgyniaqt02p4" path="res://scenes/in_game/Settlement.tscn" id="9_settlement"]
 [ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="11_aagb7"]
-[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="13_bo5dh"]
+[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="13_bo5dh"]
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="14_0cgkh"]
 [ext_resource type="Texture2D" uid="uid://c6qd4h7pct1kr" path="res://assets/textures/ui/in_game/generated/rgba-476x108-84e04563a27e4808.png" id="15_875fr"]
 [ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="19_wgpfo"]
@@ -380,11 +380,15 @@ texture = ExtResource("2_04syn")
 expand_mode = 1
 
 [node name="MainPlayerInfo" parent="." unique_id=618743409 instance=ExtResource("5_g6j7s")]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 500.0
-offset_right = 194.0
-offset_bottom = 732.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 69.0
+offset_top = -232.0
+offset_right = 237.0
+offset_bottom = 0.0
+grow_vertical = 0
 
 [node name="PlayerInfo" parent="." unique_id=959319698 instance=ExtResource("5_g6j7s")]
 layout_mode = 1

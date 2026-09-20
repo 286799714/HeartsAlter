@@ -7,6 +7,15 @@ export const TrickCard = schema({
 });
 export type TrickCard = SchemaType<typeof TrickCard>;
 
+/** A completed trick checkpoint in the public round progress journal. */
+export const ResolvedTrick = schema({
+  winnerId: t.string(),
+  points: t.uint8(),
+  /** Sequence of the fourth play that completed this trick. */
+  playSequence: t.uint8(),
+});
+export type ResolvedTrick = SchemaType<typeof ResolvedTrick>;
+
 /** Public scoreboard entry for one seat. */
 export const Player = schema({
   name: t.string().default("玩家"),
@@ -70,6 +79,12 @@ export const MyRoomState = schema({
   /** Room rules remain fixed from the start handshake through settlement. */
   heartsBreakingEnabled: t.boolean().default(false),
   mustDiscardPointsWhenVoid: t.boolean().default(false),
+  /**
+   * Append-only public progress for the active round. Clients use these
+   * journals to fill message gaps after a delayed patch or reconnection.
+   */
+  playHistory: t.array(TrickCard),
+  trickHistory: t.array(ResolvedTrick),
 });
 export type MyRoomState = SchemaType<typeof MyRoomState>;
 
