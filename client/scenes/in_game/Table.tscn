@@ -22,6 +22,18 @@
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="14_0cgkh"]
 [ext_resource type="Texture2D" uid="uid://c6qd4h7pct1kr" path="res://assets/textures/ui/in_game/generated/rgba-476x108-84e04563a27e4808.png" id="15_875fr"]
 [ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="19_wgpfo"]
+[ext_resource type="Texture2D" uid="uid://b7bpp14sw1hle" path="res://assets/textures/ui/in_game/c9dc1a62b8f5ccffaabe0f7df21e81ebac752022.png" id="22_ftmjl"]
+[ext_resource type="Texture2D" uid="uid://bulm3m71eeybp" path="res://assets/textures/ui/in_game/6d18ba70a90969011f5b5c1b9f3f4035b7c4dda9.png" id="23_8cjyu"]
+[ext_resource type="Texture2D" uid="uid://cpw1xtt4tncxq" path="res://assets/textures/ui/in_game/498e936bee92ee50083e7e60549dd20098ed1a63.png" id="24_6tqa2"]
+[ext_resource type="Texture2D" uid="uid://cwblmogrp3b48" path="res://assets/textures/ui/in_game/1f55331bcbe4fa7f18a783640b629433d72d7f21.png" id="25_b5tj2"]
+[ext_resource type="Texture2D" uid="uid://vlc6lfsjep33" path="res://assets/textures/ui/in_game/c8aaed2d06023aac59d74868e059e2de630672d3.png" id="26_qnm65"]
+[ext_resource type="Texture2D" uid="uid://r5qadg2yp5cw" path="res://assets/textures/ui/in_game/aa25cf4ece6519ab103815451137b2a875db7c85.png" id="27_k16kl"]
+[ext_resource type="Texture2D" uid="uid://x1xsyyjalt04" path="res://assets/textures/ui/in_game/b39bb5c70981a0e8e6504e471d97331147b31c54.png" id="28_8kj6c"]
+[ext_resource type="Texture2D" uid="uid://14x6tyit2f1e" path="res://assets/textures/ui/in_game/32b0f3900a26d586f66ecae611f8ea3c70478348.png" id="29_oe438"]
+[ext_resource type="Texture2D" uid="uid://ratnvueyeds1" path="res://assets/textures/ui/in_game/78913adccb5b361f4048973bc932808c6eeb2018.png" id="30_mmq25"]
+[ext_resource type="Texture2D" uid="uid://dhxg0invavf4f" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3.png" id="31_72oqo"]
+[ext_resource type="Texture2D" uid="uid://c0ho3t5wydxki" path="res://assets/textures/ui/in_game/d52f13774127a0ce78e08547e3dec931cf963f60.png" id="32_0676t"]
+[ext_resource type="FontVariation" uid="uid://jw46yql2w7ym" path="res://assets/fonts/NotoSansCombine.tres" id="33_8cjyu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r0ebq"]
 shader = ExtResource("4_gck3u")
@@ -346,6 +358,686 @@ shader_parameter/tile_texture = false
 shader_parameter/manual_scale = false
 shader_parameter/vert_offset = Vector2(0, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qc3p4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_naqb2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b87b"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4gjj7"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("22_ftmjl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7upse"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fk54h"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("23_8cjyu")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxawl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vpeq6"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("24_6tqa2")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhrup"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a0y0w"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("25_b5tj2")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 55.2)
+shader_parameter/texture_size = Vector2(157, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jlt3x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h4230"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("26_qnm65")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 55.2)
+shader_parameter/texture_size = Vector2(8, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xklty"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnnkf"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("27_k16kl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 55.2)
+shader_parameter/texture_size = Vector2(161, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0dtba"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmscs"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("28_8kj6c")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_excst"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2u7r3"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("29_oe438")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l5c8v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cu8b1"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("30_mmq25")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fb7t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r33od"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_wfmyo"]
+base_font = ExtResource("11_aagb7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ij88r"]
+base_font = SubResource("FontVariation_wfmyo")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_banyn"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ij88r")
+font_size = 32
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c0vdj"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_sh2so"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2j440"]
+gradient = SubResource("Gradient_sh2so")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("14_0cgkh")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hxmn3"]
+shader = ExtResource("13_bo5dh")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_2j440")
+shader_parameter/label_size = Vector2(59, 44)
+
+[sub_resource type="FontVariation" id="FontVariation_eji7r"]
+base_font = ExtResource("11_aagb7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_d0j5t"]
+base_font = SubResource("FontVariation_eji7r")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_jn44d"]
+line_spacing = 0.0
+font = SubResource("FontVariation_d0j5t")
+font_size = 32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k606i"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("31_72oqo")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_14pkn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_upwge"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("32_0676t")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(528, 69)
+shader_parameter/texture_size = Vector2(528, 69)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gut2h"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4x4i6"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_a6kbt"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r3rhd"]
+gradient = SubResource("Gradient_a6kbt")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("14_0cgkh")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_euh01"]
+shader = ExtResource("13_bo5dh")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_r3rhd")
+shader_parameter/label_size = Vector2(255, 44)
+
+[sub_resource type="FontVariation" id="FontVariation_jpqiw"]
+base_font = ExtResource("11_aagb7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_cp472"]
+base_font = SubResource("FontVariation_jpqiw")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_i5prf"]
+line_spacing = 0.0
+font = SubResource("FontVariation_cp472")
+font_size = 32
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3055"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aclc0"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cnhhy"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("22_ftmjl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1vcc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u170l"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("23_8cjyu")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hxb6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vpq52"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("24_6tqa2")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hc52q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mav6g"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("25_b5tj2")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 55.2)
+shader_parameter/texture_size = Vector2(157, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_31umo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rmt1t"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("26_qnm65")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 55.2)
+shader_parameter/texture_size = Vector2(8, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgqyf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nmekw"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("27_k16kl")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 55.2)
+shader_parameter/texture_size = Vector2(161, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dalv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qf7ta"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("28_8kj6c")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa8ut"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dxlcv"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("29_oe438")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mbjhy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_27xe4"]
+shader = ExtResource("4_gck3u")
+shader_parameter/image_texture = ExtResource("30_mmq25")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grptv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6gp6"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_4ix5s"]
+base_font = ExtResource("11_aagb7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ydsr3"]
+base_font = SubResource("FontVariation_4ix5s")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_np6gb"]
+line_spacing = 0.0
+font = SubResource("FontVariation_ydsr3")
+font_size = 32
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l86gc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
 [node name="Table" type="Control" unique_id=1748159373 node_paths=PackedStringArray("_cardDeck", "_mainHandLayout", "_otherHandLayout", "_otherHandLayout2", "_otherHandLayout3", "_animationLayer", "_mainPlayArea", "_leftPlayArea", "_oppositePlayArea", "_rightPlayArea", "_mainPlayerInfo", "_nextPlayerInfo", "_oppositePlayerInfo", "_previousPlayerInfo")]
 layout_mode = 3
 anchors_preset = 15
@@ -402,11 +1094,14 @@ offset_bottom = 116.0
 grow_vertical = 2
 
 [node name="PlayerInfo2" parent="." unique_id=225493771 instance=ExtResource("5_g6j7s")]
-layout_mode = 0
-offset_left = 305.0
-offset_top = 2.0
-offset_right = 473.0
-offset_bottom = 234.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.30400002
+anchor_right = 0.30400002
+offset_left = -84.120026
+offset_top = 51.0
+offset_right = 83.879974
+offset_bottom = 283.0
 
 [node name="PlayerInfo3" parent="." unique_id=1903632260 instance=ExtResource("5_g6j7s")]
 layout_mode = 1
@@ -1013,32 +1708,38 @@ text = "缺门时必须优先垫得分牌"
 [node name="InGame" type="CanvasLayer" parent="." unique_id=407706701]
 
 [node name="CardDeck" parent="InGame" unique_id=2072646441 instance=ExtResource("2_deck")]
-anchors_preset = 8
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -35.0
-offset_top = -83.0
-offset_right = 85.0
-offset_bottom = 84.0
+anchors_preset = -1
+anchor_left = 0.46600002
+anchor_top = 0.37800002
+anchor_right = 0.559
+anchor_bottom = 0.61
+offset_left = -0.4800415
+offset_top = -0.16000366
+offset_right = 0.47998047
+offset_bottom = -0.2000122
 grow_vertical = 2
-scale = Vector2(0.75, 0.75)
+scale = Vector2(0.8, 0.8)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="MainHandLayout" parent="InGame" unique_id=1404605166 instance=ExtResource("3_hand")]
 anchors_preset = -1
 anchor_left = 0.25
-anchor_top = 0.68
-anchor_right = 0.75
-anchor_bottom = 0.88
-offset_top = 0.0
+anchor_top = 0.8
+anchor_right = 0.75000006
+anchor_bottom = 0.92100006
+offset_top = -86.399994
+offset_right = -6.1035156e-05
+offset_bottom = -0.12005615
 
 [node name="OtherHandLayout" parent="InGame" unique_id=1103025311 instance=ExtResource("4_mshro")]
 anchors_preset = -1
-anchor_top = 0.5
-anchor_right = 0.0
+anchor_left = 0.056
+anchor_top = 0.42700002
+anchor_right = 0.34500003
 anchor_bottom = 0.5
-offset_left = 71.5
-offset_top = -52.5
-offset_right = 441.5
+offset_left = -0.1800003
+offset_top = 0.05999756
+offset_right = -0.10003662
 offset_bottom = 52.5
 grow_horizontal = 1
 grow_vertical = 2
@@ -1047,26 +1748,27 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="OtherHandLayout2" parent="InGame" unique_id=686643706 instance=ExtResource("4_mshro")]
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.0
-anchor_right = 0.5
-anchor_bottom = 0.0
-offset_left = -172.0
-offset_top = 25.0
-offset_right = 198.0
-offset_bottom = 130.0
+anchor_left = 0.36600003
+anchor_top = 0.086
+anchor_right = 0.65500003
+anchor_bottom = 0.15900001
+offset_left = -0.4800415
+offset_top = 0.07999802
+offset_right = -0.4000244
+offset_bottom = 52.519997
 grow_vertical = 1
 rotation = 3.1415927
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="OtherHandLayout3" parent="InGame" unique_id=1351662359 instance=ExtResource("4_mshro")]
 anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.5
+anchor_left = 0.65500003
+anchor_top = 0.42700002
+anchor_right = 0.94400007
 anchor_bottom = 0.5
-offset_left = -441.5
-offset_top = -52.5
-offset_right = -71.5
+offset_left = 0.099975586
+offset_top = 0.05999756
+offset_right = 0.17993164
 offset_bottom = 52.5
 grow_horizontal = 0
 grow_vertical = 2
@@ -1074,65 +1776,714 @@ rotation = -1.5707964
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="LeftPlayArea" parent="InGame" unique_id=427039902 instance=ExtResource("7_play_area")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -106.00012
-offset_top = -108.999985
-offset_right = -14.000122
-offset_bottom = 19.0
+anchors_preset = -1
+anchor_left = 0.4171874
+anchor_top = 0.349
+anchor_right = 0.505
+anchor_bottom = 0.57600003
+offset_top = -0.27999878
+offset_right = -0.40014648
+offset_bottom = 0.27996826
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 0.40142572
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="OppositePlayArea" parent="InGame" unique_id=1096746104 instance=ExtResource("7_play_area")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -51.0
-offset_top = -160.5
-offset_right = 41.0
-offset_bottom = -32.5
+anchors_preset = -1
+anchor_left = 0.46015626
+anchor_top = 0.2770833
+anchor_right = 0.54800004
+anchor_bottom = 0.505
+offset_top = 1.5258789e-05
+offset_right = -0.44006348
+offset_bottom = -0.1000061
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 3.1415927
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="RightPlayArea" parent="InGame" unique_id=1341435489 instance=ExtResource("7_play_area")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 7.999939
-offset_top = -111.0
-offset_right = 99.99994
-offset_bottom = 17.0
+anchors_preset = -1
+anchor_left = 0.50600004
+anchor_top = 0.34600002
+anchor_right = 0.59400004
+anchor_bottom = 0.574
+offset_left = 0.31988525
+offset_top = -0.120010376
+offset_right = -0.3201294
+offset_bottom = -0.27999878
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -0.34906584
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="MainPlayArea" parent="InGame" unique_id=1474710837 instance=ExtResource("7_play_area")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -51.0
-offset_top = -72.5
-offset_right = 41.0
-offset_bottom = 55.5
+anchors_preset = -1
+anchor_left = 0.46015626
+anchor_top = 0.39930555
+anchor_right = 0.54800004
+anchor_bottom = 0.62700003
+offset_right = -0.44006348
+offset_bottom = 0.05996704
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="AnimationLayer" parent="InGame" unique_id=1574247879 instance=ExtResource("4_animation")]
+offset_left = 4.0
+offset_top = -12.0
+offset_right = 4.0
+offset_bottom = -12.0
+DrawFlipDuration = 0.5
+DrawFlipTransition = 7
+CollectFlipDuration = 0.55
+
+[node name="对局中状态" type="ScrollContainer" parent="InGame" unique_id=582103730]
+clip_contents = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -603.0
+offset_top = 5.0
+offset_right = 603.0
+offset_bottom = 74.0
+grow_horizontal = 2
+scale = Vector2(0.667, 0.667)
+pivot_offset_ratio = Vector2(0.5, 0)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qc3p4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态" unique_id=391498027]
+layout_mode = 2
+
+[node name="Frame 73 xIDx81_8620x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer" unique_id=1527827067]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_naqb2")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x" unique_id=1988837792]
+layout_mode = 2
+
+[node name="image 123 xIDx81_8621x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer" unique_id=1863004680]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0b87b")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x" unique_id=1450655208]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8621;77_5248x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1551821234]
+material = SubResource("ShaderMaterial_4gjj7")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_right = 156.3
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7upse")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("22_ftmjl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5249x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=573749731]
+material = SubResource("ShaderMaterial_fk54h")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_right = 164.10005
+offset_bottom = 6.9
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sxawl")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("23_8cjyu")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5250x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=986448826]
+material = SubResource("ShaderMaterial_vpeq6")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_right = 309.0
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bhrup")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("24_6tqa2")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5251x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=511841897]
+material = SubResource("ShaderMaterial_a0y0w")
+custom_minimum_size = Vector2(156.3, 55.2)
+layout_mode = 0
+offset_top = 6.9000244
+offset_right = 156.3
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jlt3x")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("25_b5tj2")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5252x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=2126425604]
+material = SubResource("ShaderMaterial_h4230")
+custom_minimum_size = Vector2(7.800003, 55.2)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 6.9000244
+offset_right = 164.10005
+offset_bottom = 62.100025
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xklty")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("26_qnm65")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5253x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1545854088]
+material = SubResource("ShaderMaterial_jnnkf")
+custom_minimum_size = Vector2(160.5, 55.2)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 6.9000244
+offset_right = 309.0
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0dtba")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("27_k16kl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5254x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=76328627]
+material = SubResource("ShaderMaterial_fmscs")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_top = 62.099976
+offset_right = 156.3
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_excst")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("28_8kj6c")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5255x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=682667672]
+material = SubResource("ShaderMaterial_2u7r3")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 62.099976
+offset_right = 164.10005
+offset_bottom = 68.99998
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_l5c8v")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("29_oe438")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5256x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1962064230]
+material = SubResource("ShaderMaterial_cu8b1")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 62.099976
+offset_right = 309.0
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fb7t")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("30_mmq25")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 67 xIDx81_8622x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer" unique_id=1464547731]
+clip_contents = false
+layout_mode = 0
+offset_left = 62.5
+offset_top = 12.5
+offset_right = 246.5
+offset_bottom = 56.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r33od")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x" unique_id=104847703]
+layout_mode = 2
+
+[node name="奖池  xIDx81_8623x" type="Label" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer" unique_id=1253967046]
+layout_mode = 0
+offset_right = 65.0
+offset_bottom = 44.0
+text = "奖池"
+label_settings = SubResource("LabelSettings_banyn")
+clip_text = true
+
+[node name="Frame 75 xIDx81_8624x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer" unique_id=1738976038]
+clip_contents = false
+layout_mode = 0
+offset_left = 81.0
+offset_right = 184.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c0vdj")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x" unique_id=555510669]
+layout_mode = 2
+
+[node name="奖池数量" type="Label" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x/InnerContainer" unique_id=1440216106]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_hxmn3")
+layout_mode = 0
+offset_right = 59.0
+offset_bottom = 44.0
+text = "400"
+label_settings = SubResource("LabelSettings_jn44d")
+clip_text = true
+
+[node name="image 61 xIDx81_8626x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x/InnerContainer" unique_id=1733256528]
+material = SubResource("ShaderMaterial_k606i")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 63.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 42.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_14pkn")
+script = ExtResource("6_1gv78")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("31_72oqo")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 49 xIDx81_8627x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer" unique_id=2145077551]
+material = SubResource("ShaderMaterial_upwge")
+custom_minimum_size = Vector2(528, 69)
+clip_contents = false
+layout_mode = 0
+offset_left = 339.0
+offset_right = 867.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gut2h")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(528, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("32_0676t")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 49 xIDx81_8627x" unique_id=1478951567]
+layout_mode = 2
+
+[node name="Frame 7 xIDx81_8628x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer" unique_id=1363355610]
+clip_contents = false
+layout_mode = 0
+offset_left = 136.5
+offset_top = 12.5
+offset_right = 391.5
+offset_bottom = 56.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4x4i6")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer/Frame 7 xIDx81_8628x" unique_id=451835859]
+layout_mode = 2
+
+[node name="回合数" type="Label" parent="InGame/对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer/Frame 7 xIDx81_8628x/InnerContainer" unique_id=1101348903]
+material = SubResource("ShaderMaterial_euh01")
+layout_mode = 0
+offset_right = 263.93176
+offset_bottom = 44.0
+text = "第      墩 / 共 13 墩"
+label_settings = SubResource("LabelSettings_i5prf")
+clip_text = true
+
+[node name="当前回合数" type="Label" parent="InGame/对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer/Frame 7 xIDx81_8628x/InnerContainer/回合数" unique_id=837948353]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_euh01")
+layout_mode = 0
+offset_left = 37.544983
+offset_right = 70.5285
+offset_bottom = 47.470016
+text = "6"
+label_settings = SubResource("LabelSettings_i5prf")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Frame 73 xIDx81_8630x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer" unique_id=315779009]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_left = 897.0
+offset_right = 1206.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_v3055")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x" unique_id=2028957006]
+layout_mode = 2
+
+[node name="image 123 xIDx81_8631x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer" unique_id=708349051]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aclc0")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x" unique_id=1793894191]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8631;77_5248x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1748086603]
+material = SubResource("ShaderMaterial_cnhhy")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_right = 156.3
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_p1vcc")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("22_ftmjl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5249x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=415118229]
+material = SubResource("ShaderMaterial_u170l")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_right = 164.10005
+offset_bottom = 6.9
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4hxb6")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("23_8cjyu")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5250x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=821555906]
+material = SubResource("ShaderMaterial_vpq52")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_right = 309.0
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hc52q")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("24_6tqa2")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5251x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=462228013]
+material = SubResource("ShaderMaterial_mav6g")
+custom_minimum_size = Vector2(156.3, 55.2)
+layout_mode = 0
+offset_top = 6.9000244
+offset_right = 156.3
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_31umo")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("25_b5tj2")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5252x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=325324049]
+material = SubResource("ShaderMaterial_rmt1t")
+custom_minimum_size = Vector2(7.800003, 55.2)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 6.9000244
+offset_right = 164.10005
+offset_bottom = 62.100025
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qgqyf")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("26_qnm65")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5253x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=770040239]
+material = SubResource("ShaderMaterial_nmekw")
+custom_minimum_size = Vector2(160.5, 55.2)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 6.9000244
+offset_right = 309.0
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dalv")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("27_k16kl")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5254x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1797702603]
+material = SubResource("ShaderMaterial_qf7ta")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_top = 62.099976
+offset_right = 156.3
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa8ut")
+script = ExtResource("6_1gv78")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("28_8kj6c")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5255x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1705560008]
+material = SubResource("ShaderMaterial_dxlcv")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 62.099976
+offset_right = 164.10005
+offset_bottom = 68.99998
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mbjhy")
+script = ExtResource("6_1gv78")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("29_oe438")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5256x" type="Panel" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=107934800]
+material = SubResource("ShaderMaterial_27xe4")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 62.099976
+offset_right = 309.0
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_grptv")
+script = ExtResource("6_1gv78")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("30_mmq25")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 67 xIDx81_8632x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer" unique_id=303815979]
+clip_contents = false
+layout_mode = 0
+offset_left = 57.5
+offset_top = 10.5
+offset_right = 251.5
+offset_bottom = 58.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_s6gp6")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x" unique_id=1539154858]
+layout_mode = 2
+
+[node name="本墩花色" type="Label" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer" unique_id=918419184]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 2.0
+offset_right = 179.23462
+offset_bottom = 47.0
+theme_override_fonts/font = ExtResource("33_8cjyu")
+text = "本墩花色  ♦"
+label_settings = SubResource("LabelSettings_np6gb")
+clip_text = true
+
+[node name="Frame xIDx81_8634x" type="ScrollContainer" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer" unique_id=859064561]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 146.0
+offset_right = 194.0
+offset_bottom = 48.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_l86gc")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("7_g0t0d")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(48, 48)
+maxSize = Vector2(100000, 100000)
+clipFrameContents = true
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer/Frame xIDx81_8634x" unique_id=1864597171]
+layout_mode = 2
 
 [node name="SettlementLayer" type="CanvasLayer" parent="." unique_id=1142712030]
 layer = 10

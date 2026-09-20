@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://b6w8e8hrwy4rh" path="res://Scripts/InGame/PlayerInfo.cs" id="1_player_info"]
 [ext_resource type="Texture2D" uid="uid://bdn140738so8q" path="res://assets/textures/ui/profile_icon_1.jpg" id="2_8bcv7"]
-[ext_resource type="Texture2D" uid="uid://dkpixwn7te1rw" path="res://assets/textures/ui/avatar_ring_2.png" id="3_hshwk"]
 [ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_mc6l1"]
 [ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="5_y8dd1"]
 [ext_resource type="Texture2D" uid="uid://lqhhmwygqyda" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_52dcbf7d1f6c5c93.png" id="6_cffnr"]
@@ -14,7 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://cgib1loe22uo6" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004.png" id="10_fvtd7"]
 [ext_resource type="Texture2D" uid="uid://dqtp1kglyhihy" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3_543714234a8e9e11.png" id="10_pe5dx"]
 [ext_resource type="Texture2D" uid="uid://7o4ttfdhyrt1" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004_75f0845aed04ef02.png" id="11_4p063"]
-[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="11_xr5ue"]
+[ext_resource type="Texture2D" uid="uid://b0ac84yu2jsdh" path="res://assets/textures/ui/avatar_ring.png" id="11_xev1v"]
+[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="11_xr5ue"]
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="12_4p063"]
 [ext_resource type="FontVariation" uid="uid://jw46yql2w7ym" path="res://assets/fonts/NotoSansCombine.tres" id="16_xev1v"]
 
@@ -651,11 +651,28 @@ offset_bottom = 104.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="AvatarPadding" type="MarginContainer" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=1153277219]
+[node name="AvatarRing" type="TextureRect" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=2103892678]
+texture_filter = 4
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_xev1v")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AvatarPadding" type="MarginContainer" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=1153277219]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -673,23 +690,6 @@ mouse_filter = 2
 texture = ExtResource("2_8bcv7")
 expand_mode = 1
 stretch_mode = 6
-
-[node name="AvatarRing" type="TextureRect" parent="JoinedPlayerAvatar/AvatarFrame" unique_id=2103892678]
-texture_filter = 4
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -18.0
-offset_top = -18.0
-offset_right = 18.0
-offset_bottom = 18.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("3_hshwk")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="JoinedPlayerInfo" type="ScrollContainer" parent="." unique_id=2097630893]
 custom_minimum_size = Vector2(256, 0)

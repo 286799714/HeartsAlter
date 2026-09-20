@@ -82,13 +82,13 @@ public partial class IntroSmoke : Node
 			GetViewport().PushInput(new InputEventKey { Keycode = Key.Enter, Pressed = false }, true);
 			await Until(() => U<Label>("PlayerName").Visible && U<Label>("PlayerName").Text == "回车提交昵称", "nickname submitted with Enter");
 			await Capture("intro-name-saved");
-			await Click(Find<Button>(U<Control>("CreatePage"), "HistoryTab"));
+			await Click(Find<Button>(U<Control>("Sidebar"), "HistoryTab"));
 			Check(U<Control>("HistoryPage").Visible && U<Label>("EmptyHistory").IsVisibleInTree(), "History tab did not open its empty state");
 			Check(!Find<Control>(U<Control>("HistoryPage"), "战绩列表项").IsVisibleInTree(), "Sample history is still visible");
 			await Capture("intro-history");
-			await Click(Find<Button>(U<Control>("HistoryPage"), "JoinTab"));
+			await Click(Find<Button>(U<Control>("Sidebar"), "JoinTab"));
 			Check(U<Control>("JoinPage").Visible && U<Label>("EmptyRooms").Visible, "Empty room directory missing");
-			await Click(Find<Button>(U<Control>("JoinPage"), "CreateTab"));
+			await Click(Find<Button>(U<Control>("Sidebar"), "CreateTab"));
 			var input = U<LineEdit>("RoomNameInput");
 			await Click(input);
 			Check(input.HasFocus(), "Room-name input cannot receive mouse focus");
@@ -138,7 +138,7 @@ public partial class IntroSmoke : Node
 				await host.WaitForFirstState();
 			}
 			await Until(() => U<Label>("RoomCount").Text == "4个房间在线", "room directory refresh");
-			await Click(Find<Button>(U<Control>("CreatePage"), "JoinTab"));
+			await Click(Find<Button>(U<Control>("Sidebar"), "JoinTab"));
 			var fullRow = U<VBoxContainer>("RoomList").GetNode<Control>($"Room_{_hosts[0].RoomId}");
 			Check(Find<Button>(fullRow, "JoinButton").Disabled, "Full room is joinable");
 			Check(Find<Label>(fullRow, "Occupancy").Text == "4/4人", "Room occupancy did not update");
@@ -181,7 +181,7 @@ public partial class IntroSmoke : Node
 				GameSession.GameAdapter.State.players[id] is { isBot: true, seat: 0 }), "Relative seat mapped to wrong server seat");
 			await ConfirmTableExit("房主将转交");
 			await IntroReady();
-			await Click(Find<Button>(U<Control>("CreatePage"), "JoinTab"));
+			await Click(Find<Button>(U<Control>("Sidebar"), "JoinTab"));
 			_hosts.RemoveAt(3);
 			await Until(() => U<Label>("RoomCount").Text == "3个房间在线", "closed room removed");
 			// A server-side rejection must release the action lock for a retry.

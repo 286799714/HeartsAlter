@@ -8,12 +8,13 @@ using HeartsAlter.Scripts.InGame.Card;
 
 namespace HeartsAlter.Scripts.Tutorial;
 
-public enum TutorialPhase { Menu, Animating, Guiding, Play, Pass, Choice, Complete, Error }
+public enum TutorialPhase { Menu, Animating, Guiding, Play, Pass, Complete, Error }
 
 /// <summary>Drives the real table locally with authored hands and cancellable lesson steps.</summary>
 public partial class TutorialController : Control
 {
 	private const string ProgressPath = "user://tutorial_progress.cfg";
+	private const string ProgressSection = "beginner_document_v1";
 	private readonly ConfigFile _progress = new();
 	private Control _menu;
 	private Control _game;
@@ -22,9 +23,8 @@ public partial class TutorialController : Control
 	private TutorialSpotlight _guide;
 	private IReadOnlyList<TutorialGuidePage> _guidePages = Array.Empty<TutorialGuidePage>();
 	private Label _heading, _title, _status;
-	private BoxContainer _choices;
 	private TutorialPhase _resumePhase;
-	private Button _next, _retry;
+	private Button _retry;
 	private int _generation;
 	public int GuidePageIndex { get; private set; }
 	public int GuidePageCount => _guidePages.Count;
@@ -67,8 +67,8 @@ public partial class TutorialController : Control
 		for (int index = 0; index < TutorialCatalog.Lessons.Length; index++)
 		{
 			var button = _menu.FindChild($"Lesson{index}", true, false) as Button;
-			bool completed = _progress.GetValue("lessons", index.ToString(), false).AsBool();
-			if (button is not null) button.Text = completed ? "已完成 · 再练一次" : "开始这一关";
+			bool completed = _progress.GetValue(ProgressSection, index.ToString(), false).AsBool();
+			if (button is not null) button.Text = completed ? "已完成 · 再看一次" : "开始教程";
 		}
 	}
 
@@ -78,48 +78,42 @@ public partial class TutorialController : Control
 			stepIndex < 0 || stepIndex >= TutorialCatalog.Lessons[lessonIndex].Steps.Length)
 			throw new ArgumentOutOfRangeException(nameof(lessonIndex));
 		int generation = ++_generation;
-		ResetTable();
+		bool needsDeal = TutorialCatalog.Lessons[lessonIndex].Steps[stepIndex].Hands[0].Length > 0;
+		ResetTable(preserveGuide: _guide.Visible && !needsDeal);
 		LessonIndex = lessonIndex;
 		StepIndex = stepIndex;
 		Phase = TutorialPhase.Animating;
 		_menu.Hide();
 		_game.Show();
 		_overlay.Show();
-		_next.Hide();
-		_choices.Hide();
 
 		_heading.Text = $"第 {lessonIndex + 1} 关 · {TutorialCatalog.Lessons[lessonIndex].Title}";
 		_title.Text = $"{stepIndex + 1} / {TutorialCatalog.Lessons[lessonIndex].Steps.Length}  {Step.Title}";
-		_title.TooltipText = Step.Instruction;
+		_title.TooltipText = Step.Title;
 
-		_status.Text = "情景练习 · 预设手牌 · 无出牌倒计时";
+		_status.Text = "跟随讲解，了解玩法";
 		ActiveTable = _table;
 		ActiveTable.InitializePlayerInfo("你", null, 900, "小岚 · 下家", null, 900,
 			"阿澈 · 对家", null, 900, "小满 · 上家", null, 900);
 		Round = new TutorialRound(Step);
+		ActiveTable.SetLocalGameStatus(400, 0);
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		if (!Current(generation)) return;
-		if (Step.Kind == TutorialKind.Settlement)
+		if (needsDeal)
 		{
-			ActiveTable.SetLocalScores(TutorialCatalog.ExampleScores);
-			ActiveTable.SetLocalPlayableCards(Array.Empty<CardData>(), "", false);
-
-			_status.Text = "比较终局结果，选择更有利的一种";
-			_choices.Show();
-			BeginGuide(TutorialPhase.Choice, TutorialGuides.BeforeAction(Step, Round));
-			return;
+			if (!ActiveTable.StartDeal(Step.Hands[0])) throw new InvalidOperationException("无法初始化教学牌桌。");
+			if (!await WaitTableAsync(generation)) return;
 		}
-		if (!ActiveTable.StartDeal(Step.Hands[0])) throw new InvalidOperationException("无法初始化教学牌桌。");
-		if (!await WaitTableAsync(generation)) return;
 		if (Step.Kind == TutorialKind.Pass)
 		{
 			ActiveTable.SetLocalPassingEnabled(true);
 
-			BeginGuide(TutorialPhase.Pass, TutorialGuides.BeforeAction(Step, Round));
+			BeginGuide(TutorialPhase.Pass, TutorialGuides.Introduction(Step));
 
 			_status.Text = "请选择 3 张牌，再点击传牌箭头";
 		}
-		else await DriveAsync(generation);
+		else BeginGuide(Step.Kind == TutorialKind.Play ? TutorialPhase.Animating : TutorialPhase.Complete,
+			TutorialGuides.Introduction(Step));
 	}
 
 	private void HandlePlay(int cardIndex, CardData card) => TryPlay(card);
@@ -133,20 +127,17 @@ public partial class TutorialController : Control
 			SetFeedback("这张牌不符合本步出牌规则，请选择亮着的牌。");
 			return false;
 		}
-		if (Step.PracticeCard is string target && CardRules.Id(card) != target)
-		{
-			SetFeedback($"这张牌在正式对局里合法。本步专门练习领红桃，请试出 {CardRules.Display(CardRules.Parse(target))}。");
-			return false;
-		}
 		int index = ActiveTable.LocalHand.ToList().IndexOf(card);
 		if (index < 0 || !ActiveTable.PlayMainPlayerCard(index)) return false;
 		Round.Play(card);
+		ActiveTable.SetLocalGameStatus(400, 0, Round.Trick[0].Card.Suit);
 		Phase = TutorialPhase.Animating;
 
 		int generation = _generation;
 		_ = RunSafely(async () =>
 		{
-			if (await WaitTableAsync(generation)) await DriveAsync(generation);
+			if (!await WaitTableAsync(generation)) return;
+			if (!TryBeginAfterPlayGuide()) await DriveAsync(generation);
 		});
 		return true;
 	}
@@ -160,12 +151,6 @@ public partial class TutorialController : Control
 			SetFeedback("请选择自己手里 3 张不同的牌。");
 			return false;
 		}
-		if (Step.MakeClubVoid && cards.Any(card => card.Suit != PokerSuit.Club))
-		{
-			ActiveTable.SetLocalPassingEnabled(true);
-			SetFeedback("这组传牌在正式对局里合法。本步练习制造缺门，请把仅有的 3 张梅花一起传走。");
-			return false;
-		}
 		CardData[] incoming = Round.Hands[3].Take(3).ToArray();
 		if (!ActiveTable.StartLocalPassing(cards, incoming))
 		{
@@ -175,28 +160,14 @@ public partial class TutorialController : Control
 		Round.Pass(cards);
 		Phase = TutorialPhase.Animating;
 
-		_status.Text = "四家同时传牌，接到手牌后继续试打一墩";
+		_status.Text = "正在换牌";
 		int generation = _generation;
 		_ = RunSafely(async () =>
 		{
-			if (await WaitTableAsync(generation)) await DriveAsync(generation);
+			if (!await WaitTableAsync(generation)) return;
+			_status.Text = "";
+			CompleteStep();
 		});
-		return true;
-	}
-
-	public bool ChooseSettlement(bool stayAtNine)
-	{
-		if (Phase != TutorialPhase.Choice) return false;
-		if (!stayAtNine)
-		{
-			SetFeedback("你若拿到 13 分，就超过小岚的 12 分，成为最高分请客者，分不到奖池。再比较一下 9 分的结果。");
-			return false;
-		}
-		SetFeedback("你答对啦。");
-		int[] payouts = CardRules.Payouts(TutorialCatalog.ExampleScores, 400);
-		ActiveTable.SetLocalScores(TutorialCatalog.ExampleScores, payouts.Select(value => 900 + value).ToArray());
-		_choices.Hide();
-		CompleteStep();
 		return true;
 	}
 
@@ -212,14 +183,14 @@ public partial class TutorialController : Control
 			if (!Current(generation)) return;
 			int seat = Round.CurrentSeat;
 			var legal = Round.LegalCards();
-			CardData card = Step.BotCards is not null ? CardRules.Parse(Step.BotCards[seat]) :
-				Step.MakeClubVoid && Round.Trick.Count == 0 ? CardRules.Parse("Club5") :
-				legal.FirstOrDefault(candidate => CardRules.Id(candidate) != "Club2", legal[0]);
+			CardData card = legal[0];
 			if (!legal.Contains(card)) throw new InvalidOperationException($"教学预设出牌不合法：{Step.Id} / {CardRules.Id(card)}");
 			if (!ActiveTable.PlayCard(seat, 0, card)) throw new InvalidOperationException("无法播放对手出牌动画。");
 			Round.Play(card);
+			ActiveTable.SetLocalGameStatus(400, 0, Round.Trick[0].Card.Suit);
 
 			if (!await WaitTableAsync(generation)) return;
+			if (TryBeginAfterPlayGuide()) return;
 		}
 		if (!Round.Complete)
 		{
@@ -235,7 +206,19 @@ public partial class TutorialController : Control
 			throw new InvalidOperationException("无法播放收墩动画。");
 		if (!await WaitTableAsync(generation)) return;
 		ActiveTable.SetLocalPlayableCards(Array.Empty<CardData>(), "", false);
+		ActiveTable.SetLocalGameStatus(400, 1);
 		CompleteStep();
+	}
+
+	private bool TryBeginAfterPlayGuide()
+	{
+		var pages = TutorialGuides.AfterPlay(Step, Round);
+		if (pages.Count == 0) return false;
+		_status.Text = "";
+		// The played card has landed. End this drive before scheduling another
+		// player; dismissing the guide resumes from Round.CurrentSeat.
+		BeginGuide(TutorialPhase.Animating, pages);
+		return true;
 	}
 
 	private void CompleteStep() => BeginGuide(TutorialPhase.Complete, TutorialGuides.Result(Step, Round));
@@ -264,12 +247,12 @@ public partial class TutorialController : Control
 			TutorialFocus.Hand => ActiveTable.LocalCardViews.Cast<Control>(),
 			TutorialFocus.Cards => ActiveTable.LocalCardViews.Where(card => page.CardIds.Contains(CardRules.Id(card.Data))).Cast<Control>(),
 			TutorialFocus.Player => new Control[] { ActiveTable.GetLocalPlayerInfo(page.Seat) },
-			TutorialFocus.Choices => new Control[] { _choices },
+			TutorialFocus.None => Array.Empty<Control>(),
 			_ => throw new ArgumentOutOfRangeException()
 		};
-		bool above = page.Focus is TutorialFocus.Hand or TutorialFocus.Cards ||
+		bool above = page.Focus is TutorialFocus.Hand or TutorialFocus.Cards or TutorialFocus.None ||
 			(page.Focus == TutorialFocus.Player && page.Seat == 0);
-		_guide.ShowPage(page.Text, GuidePageIndex, _guidePages.Count, targets, above);
+		_guide.ShowPage(page.Text, GuidePageIndex, _guidePages.Count, targets, above, allowEmptyTargets: page.Focus == TutorialFocus.None);
 	}
 
 	private void AdvanceGuide()
@@ -280,7 +263,8 @@ public partial class TutorialController : Control
 			ShowGuidePage();
 			return;
 		}
-		_guide.HideGuide();
+		// Keep the page through input dispatch. The next section removes it for
+		// dealing, or replaces it directly when no deal animation is needed.
 		Phase = TutorialPhase.Animating;
 		int generation = _generation;
 		// Unlock only after the advancing input event has finished dispatching.
@@ -293,30 +277,35 @@ public partial class TutorialController : Control
 		Phase = _resumePhase;
 		switch (Phase)
 		{
+			case TutorialPhase.Animating:
+				_guide.HideGuide();
+				_ = RunSafely(() => DriveAsync(generation));
+				break;
 			case TutorialPhase.Play:
+				_guide.HideGuide();
 				ActiveTable.SetLocalPlayableCards(Round.LegalCards(), "点一下选牌，再点同一张打出");
 				_status.Text = "轮到你";
 				break;
 			case TutorialPhase.Pass:
+				_guide.HideGuide();
 				ActiveTable.SetLocalInteractionEnabled(true);
 				_status.Text = "选择3张牌，点击传牌箭头";
 				break;
-			case TutorialPhase.Choice:
-				_status.Text = "比较终局结果，选择更有利的一种";
-				break;
 			case TutorialPhase.Complete:
-				_next.Show();
 				bool last = StepIndex == TutorialCatalog.Lessons[LessonIndex].Steps.Length - 1;
-				_next.Text = !last ? "下一步练习" : LessonIndex < 2 ? "进入下一关" : "完成，返回选关";
-				if (!last) break;
-				_status.Text = $"第 {LessonIndex + 1} 关完成";
-				_progress.SetValue("lessons", LessonIndex.ToString(), true);
-				if (SaveProgress && _progress.Save(ProgressPath) != Error.Ok)
-					_status.Text = "通关记录未能保存，但可以继续练习";
+				if (last)
+				{
+					_progress.SetValue(ProgressSection, LessonIndex.ToString(), true);
+					if (SaveProgress && _progress.Save(ProgressPath) != Error.Ok)
+						GD.PushWarning("通关记录未能保存，但可以继续练习。");
+				}
+				// The final dialogue click has already finished dispatching. Continue
+				// immediately, retaining the same cancellation guard as manual replay.
+				_ = RunSafely(NextAsync);
 				break;
 		}
 	}
-	public async Task NextAsync()
+	private async Task NextAsync()
 	{
 		if (Phase != TutorialPhase.Complete) return;
 		if (StepIndex + 1 < TutorialCatalog.Lessons[LessonIndex].Steps.Length)
@@ -332,7 +321,7 @@ public partial class TutorialController : Control
 		ulong started = Time.GetTicksMsec();
 		while (Current(generation) && ActiveTable.IsLocalAnimating)
 		{
-			if (Time.GetTicksMsec() - started > 15000) throw new TimeoutException("牌桌动画未能完成，请重玩本步。");
+			if (Time.GetTicksMsec() - started > 15000) throw new TimeoutException("牌桌动画未能完成，请重看本节。");
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		}
 		return Current(generation);
@@ -352,26 +341,24 @@ public partial class TutorialController : Control
 			if (!Current(generation)) return;
 			_guide.HideGuide();
 			Phase = TutorialPhase.Error;
-			_status.Text = "本步暂时无法继续，请点击“重玩本步”";
+			_status.Text = "本节暂时无法继续，请点击“重看本节”";
 			SetFeedback(exception.Message);
 			GD.PushError(exception.ToString());
 		}
 	}
 
-	private void ResetTable()
+	private void ResetTable(bool preserveGuide = false)
 	{
-		_guide.HideGuide();
+		if (preserveGuide) _guide.HoldForTransition();
+		else _guide.HideGuide();
 		_table.ResetLocalPresentation();
 		ActiveTable = null;
 	}
 
 	private void SetFeedback(string message)
 	{
-		if (Phase is TutorialPhase.Play or TutorialPhase.Pass or TutorialPhase.Choice)
-		{
-			var focus = Phase == TutorialPhase.Choice ? TutorialFocus.Choices : TutorialFocus.Hand;
-			BeginGuide(Phase, new[] { new TutorialGuidePage(message, focus) });
-		}
+		if (Phase is TutorialPhase.Play or TutorialPhase.Pass)
+			BeginGuide(Phase, new[] { new TutorialGuidePage(message, TutorialFocus.Hand) });
 		else _status.Text = message;
 	}
 	/// <summary>Only bind authored nodes and actions; all geometry and styling live in Tutorial.tscn.</summary>
@@ -388,9 +375,6 @@ public partial class TutorialController : Control
 
 		_status = GetNode<Label>("%Status");
 
-		_choices = GetNode<BoxContainer>("%Choices");
-
-		_next = GetNode<Button>("%Next");
 		_retry = GetNode<Button>("%Retry");
 
 		_table.MainPlayerCardPlayRequested += HandlePlay;
@@ -405,9 +389,6 @@ public partial class TutorialController : Control
 		GetNode<Button>("%BackToLobby").Pressed += () => SceneNavigation.Change(this, "res://scenes/Lobby.tscn");
 		GetNode<Button>("%LessonMenu").Pressed += ShowMenu;
 		_retry.Pressed += () => _ = RunSafely(() => StartLessonAsync(LessonIndex, StepIndex));
-		_next.Pressed += () => _ = RunSafely(NextAsync);
-		GetNode<Button>("%ChooseNine").Pressed += () => ChooseSettlement(true);
-		GetNode<Button>("%ChooseThirteen").Pressed += () => ChooseSettlement(false);
 
 	}
 }

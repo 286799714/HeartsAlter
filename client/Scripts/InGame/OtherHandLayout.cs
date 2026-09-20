@@ -233,11 +233,13 @@ public partial class OtherHandLayout : Control
 			card,
 			sourcePose,
 			targetPose,
+			_playArea,
 			playedCard =>
 			{
 				_playArea.ReceiveCard(playedCard);
 				completed?.Invoke(playedCard);
-			}
+			},
+			targetPoseProvider: () => _playArea.GetReceivePose(card)
 		);
 
 		if (!started && IsInstanceValid(card))

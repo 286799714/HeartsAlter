@@ -7,7 +7,8 @@ using CardPose2D = HeartsAlter.Scripts.InGame.Card.CardPose2D;
 namespace HeartsAlter.Scripts.InGame;
 
 /// <summary>
-/// Shared overlay for transient card animations.
+/// Coordinates transient card animations, using an overlay for draw/pass/collect
+/// and the destination play area's canvas order for played cards.
 ///
 /// A pose is expressed in canvas coordinates. Every flight converts its two
 /// poses into this layer's local coordinate system and animates a small Node2D
@@ -129,6 +130,8 @@ public partial class AnimationLayer : Control
 		public CardControl.FlipCompletedEventHandler FlipHandler = null!;
 		public Action<CardControl> Completion = null!;
 		public AnimationSettings Settings;
+		public CardPose2D TargetPose;
+		public Func<CardPose2D> TargetPoseProvider;
 		public bool FlightFinished;
 		public bool FlipFinished;
 	}
@@ -164,6 +167,15 @@ public partial class AnimationLayer : Control
 	/// <summary>True when one or more flights are still active.</summary>
 	public bool IsAnimating => _flights.Count > 0;
 
+	public override void _Process(double delta)
+	{
+		// A flight may reach its destination before the face flip finishes.
+		// Keep that held card attached to the destination as the window resizes.
+		foreach (FlightState state in _flights)
+			if (state.FlightFinished && state.TargetPoseProvider is not null)
+				ApplyTargetPose(state);
+	}
+
 	public override void _ExitTree()
 	{
 		// Stop all transient work if the table is removed while cards are moving.
@@ -191,20 +203,31 @@ public partial class AnimationLayer : Control
 		);
 	}
 
-	/// <summary>Animates a card played from a hand to its play area.</summary>
+	/// <summary>
+	/// Animates a card played from a hand to its play area. A target provider
+	/// follows responsive layout changes throughout the flight and face flip.
+	/// The carrier inherits the play area's order for the entire animation.
+	/// </summary>
 	public bool PlayCardToPose(
 		CardControl card,
 		CardPose2D sourcePose,
 		CardPose2D targetPose,
-		Action<CardControl> completed = null)
+		PlayArea playArea,
+		Action<CardControl> completed = null,
+		Func<CardPose2D> targetPoseProvider = null)
 	{
+		if (playArea is null || !IsInstanceValid(playArea) || !playArea.IsInsideTree())
+			return false;
+
 		return PlayToPose(
 			card,
 			sourcePose,
 			targetPose,
 			CreatePlaySettings(),
 			startDelay: 0.0f,
-			completed: completed
+			completed: completed,
+			targetPoseProvider: targetPoseProvider,
+			flightParent: playArea
 		);
 	}
 
@@ -272,7 +295,9 @@ public partial class AnimationLayer : Control
 		CardPose2D targetPose,
 		AnimationSettings settings,
 		float startDelay,
-		Action<CardControl> completed)
+		Action<CardControl> completed,
+		Func<CardPose2D> targetPoseProvider = null,
+		CanvasItem flightParent = null)
 	{
 		if (card is null ||
 			!GodotObject.IsInstanceValid(card) ||
@@ -319,9 +344,17 @@ public partial class AnimationLayer : Control
 		Node2D carrier = new()
 		{
 			Name = $"{card.Name}_Flight",
-			ZIndex = 1
+			ZIndex = flightParent is null ? 1 : 0
 		};
-		AddChild(carrier);
+		// A played card belongs to its area's draw order from the first frame,
+		// including any time spent waiting for its flip to finish. Clear the
+		// hand's per-card Z value before inheriting that order.
+		if (flightParent is not null)
+		{
+			card.ZAsRelative = true;
+			card.ZIndex = 0;
+		}
+		(flightParent ?? this).AddChild(carrier);
 		Node2D spinCarrier = new()
 		{
 			Name = $"{card.Name}_Spin"
@@ -336,6 +369,8 @@ public partial class AnimationLayer : Control
 			SpinCarrier = spinCarrier,
 			Completion = completed,
 			Settings = settings,
+			TargetPose = targetPose,
+			TargetPoseProvider = targetPoseProvider,
 			FlightFinished = false,
 			FlipFinished = card.IsFaceUp == targetPose.IsFaceUp
 		};
@@ -352,7 +387,7 @@ public partial class AnimationLayer : Control
 		float duration = Mathf.Max(0.0f, settings.FlightDuration);
 		if (duration <= 0.0f && delay <= 0.0f)
 		{
-			ApplyPose(carrier, card, targetTransform, targetPose.Size);
+			ApplyTargetPose(state);
 			ResetSpin(spinCarrier);
 			state.FlightFinished = true;
 		}
@@ -388,12 +423,16 @@ public partial class AnimationLayer : Control
 							return;
 						}
 
+						CardPose2D currentTarget = state.TargetPoseProvider?.Invoke() ?? state.TargetPose;
+						Transform2D currentTargetTransform = state.TargetPoseProvider is null
+							? targetTransform
+							: ToCenterTransform(CanvasToLocal(currentTarget.CanvasTransform), currentTarget.Size);
 						Transform2D interpolated = sourceTransform.InterpolateWith(
-							targetTransform,
+							currentTargetTransform,
 							progress
 						);
 						Vector2 interpolatedSize = sourcePose.Size.Lerp(
-							targetPose.Size,
+							currentTarget.Size,
 							progress
 						);
 						ApplyPose(carrier, card, interpolated, interpolatedSize);
@@ -410,8 +449,6 @@ public partial class AnimationLayer : Control
 			tween.TweenCallback(
 				Callable.From(() => HandleFlightCompleted(
 					state,
-					targetTransform,
-					targetPose.Size,
 					tween
 				))
 			);
@@ -533,8 +570,6 @@ public partial class AnimationLayer : Control
 
 	private void HandleFlightCompleted(
 		FlightState state,
-		Transform2D targetTransform,
-		Vector2 targetSize,
 		Tween tween)
 	{
 		if (!_flights.Contains(state) ||
@@ -543,8 +578,7 @@ public partial class AnimationLayer : Control
 			return;
 		}
 
-		if (GodotObject.IsInstanceValid(state.Card))
-			ApplyPose(state.Carrier, state.Card, targetTransform, targetSize);
+		ApplyTargetPose(state);
 		// A complete number of turns is visually identical to zero rotation.
 		// Normalize before the card is reparented into the play area so both sides
 		// of the hand-off use exactly the same transform.
@@ -553,6 +587,14 @@ public partial class AnimationLayer : Control
 		state.FlightFinished = true;
 		state.FlightTween = null;
 		TryComplete(state);
+	}
+
+	private void ApplyTargetPose(FlightState state)
+	{
+		if (!GodotObject.IsInstanceValid(state.Card)) return;
+		CardPose2D target = state.TargetPoseProvider?.Invoke() ?? state.TargetPose;
+		ApplyPose(state.Carrier, state.Card,
+			ToCenterTransform(CanvasToLocal(target.CanvasTransform), target.Size), target.Size);
 	}
 
 	private void TryComplete(FlightState state)
@@ -573,6 +615,7 @@ public partial class AnimationLayer : Control
 		}
 
 		DetachFlipListener(state);
+		if (state.TargetPoseProvider is not null) ApplyTargetPose(state);
 		_flights.Remove(state);
 		Action<CardControl> callback = state.Completion;
 		state.Completion = null;
@@ -679,7 +722,7 @@ public partial class AnimationLayer : Control
 			size.Y > 0.0f;
 	}
 
-	private static void ApplyPose(
+	private void ApplyPose(
 		Node2D carrier,
 		CardControl card,
 		Transform2D localTransform,
@@ -696,7 +739,16 @@ public partial class AnimationLayer : Control
 		// fractional half-size offset. The Node2D carrier owns that translation.
 		card.ResizeToSize(size);
 		card.Position = Vector2.Zero;
-		carrier.Transform = localTransform * new Transform2D(0.0f, -size * 0.5f);
+		Transform2D transform = localTransform * new Transform2D(0.0f, -size * 0.5f);
+		if (carrier.GetParent() is CanvasItem parent && parent != this)
+		{
+			// Interpolation stays in the animation layer's coordinates. Convert
+			// into the current play-area transform each frame so rotated areas
+			// and window resizes keep the same canvas-space flight path.
+			transform = CardPose2D.GetRenderedCanvasTransform(parent).AffineInverse()
+				* CardPose2D.GetRenderedCanvasTransform(this) * transform;
+		}
+		carrier.Transform = transform;
 	}
 
 	private static void ApplySpin(

@@ -227,6 +227,7 @@ public partial class Table : Control
 	{
 		ResolveSceneReferences();
 		BindLayoutAnimations();
+		BindInGameStatusUi();
 		BindSettlementUi();
 		BindWaitingUi();
 		BindExitUi();
@@ -328,6 +329,7 @@ public partial class Table : Control
 		if (state is null || _networkAdapter is null || _networkTransitioning || _returningToLobby) return;
 		if (_exitConfirmation.Visible) UpdateExitConfirmation();
 		UpdateWaitingUi(state);
+		UpdateInGameStatus(state);
 		ReconcileNetworkProgress(state);
 		if (_networkSettlementScheduled && state.phase is ("table_ready" or "dealing" or "passing" or "playing"))
 		{
@@ -1379,15 +1381,27 @@ public partial class Table : Control
 			}
 		}
 
-		// Preserve play order through collection, with scene order as a tie-breaker.
+		// Preserve the play areas' rendered order when moving their cards under
+		// one animation parent. Equal canvas Z values follow scene-tree order.
 		flights.Sort((left, right) =>
 		{
-			int order = left.Card.ZIndex.CompareTo(right.Card.ZIndex);
+			int order = GetCanvasZIndex(left.Card).CompareTo(GetCanvasZIndex(right.Card));
 			return order != 0 ? order :
 				left.Card.GetParent().GetIndex().CompareTo(right.Card.GetParent().GetIndex());
 		});
 
 		return flights.Count == PlayerCount;
+	}
+
+	private static int GetCanvasZIndex(CanvasItem item)
+	{
+		int zIndex = item.ZIndex;
+		while (item.ZAsRelative && item.GetParent() is CanvasItem parent)
+		{
+			item = parent;
+			zIndex += item.ZIndex;
+		}
+		return zIndex;
 	}
 
 	private bool IsCollectOperationCurrent(int generation)

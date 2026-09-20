@@ -63,6 +63,7 @@ Button/styles/hover = SubResource("Style_hover")
 Button/styles/normal = SubResource("Style_button")
 Button/styles/pressed = SubResource("Style_hover")
 Label/colors/font_color = Color(0.965, 0.92, 0.85, 1)
+RichTextLabel/colors/default_color = Color(0.965, 0.92, 0.85, 1)
 PanelContainer/styles/panel = SubResource("Style_panel")
 
 [sub_resource type="ShaderMaterial" id="Material_spotlight"]
@@ -120,17 +121,14 @@ theme = SubResource("Theme_tutorial")
 
 [node name="Navigation" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1073342314]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = -217.0
-offset_top = -210.0
+offset_top = 12.0
 offset_right = -25.0
-offset_bottom = -27.0
+offset_bottom = 195.0
 grow_horizontal = 0
-grow_vertical = 0
 
 [node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/Navigation" unique_id=1552269115]
 layout_mode = 2
@@ -140,32 +138,25 @@ theme_override_constants/separation = 6
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-text = "第 1 关 · 跟牌与吃墩"
+text = "第 1 关 · 新手教程"
 autowrap_mode = 3
 
 [node name="LessonMenu" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=1421688818]
 unique_name_in_owner = true
 layout_mode = 2
-text = "回到选关"
+text = "返回教程"
 
 [node name="Retry" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=568205210]
 unique_name_in_owner = true
 layout_mode = 2
-text = "重玩本步"
+text = "重看本节"
 
 [node name="StepPanel" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1593141162]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -423.0
-offset_top = -209.0
-offset_right = -240.0
-offset_bottom = -34.0
-grow_horizontal = 0
-grow_vertical = 0
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 217.0
+offset_bottom = 195.0
 
 [node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/StepPanel" unique_id=1932273021]
 layout_mode = 2
@@ -176,7 +167,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 20
-text = "1 / 3  有方块，必须跟方块"
+text = "1 / 5  游戏目标"
 autowrap_mode = 3
 
 [node name="Status" type="Label" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=371661190]
@@ -186,29 +177,6 @@ theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
 theme_override_font_sizes/font_size = 16
 text = "轮到你"
 autowrap_mode = 3
-
-[node name="Choices" type="HBoxContainer" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=1444412658]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="ChooseNine" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column/Choices" unique_id=1402473233]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "我最终拿 9 分"
-
-[node name="ChooseThirteen" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column/Choices" unique_id=1210237962]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "我最终拿 13 分"
-
-[node name="Next" type="Button" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=1184496715]
-unique_name_in_owner = true
-layout_mode = 2
-text = "明白了，下一步"
 
 [node name="GuideOverlay" type="Control" parent="InterfaceLayer/Overlay" unique_id=1423013242]
 unique_name_in_owner = true
@@ -239,7 +207,7 @@ anchor_right = 0.5
 offset_left = -380.0
 offset_top = 12.0
 offset_right = 380.0
-offset_bottom = 196.0
+offset_bottom = 232.0
 grow_horizontal = 2
 mouse_filter = 2
 
@@ -265,13 +233,16 @@ theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
 theme_override_font_sizes/font_size = 17
 text = "讲解 1 / 3"
 
-[node name="Instruction" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1105584774]
+[node name="Instruction" type="RichTextLabel" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1105584774]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "小岚先出♦9，即领出花色为♦。"
-vertical_alignment = 1
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "有[color=#FFD987]领出花色[/color]，就必须跟牌。"
+fit_content = true
+scroll_active = false
 autowrap_mode = 3
 
 [node name="GuideContinue" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1485989249]
@@ -289,7 +260,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -380.0
-offset_top = -196.0
+offset_top = -232.0
 offset_right = 380.0
 offset_bottom = -12.0
 grow_horizontal = 2
@@ -340,11 +311,16 @@ theme_override_constants/separation = 18
 [node name="Title" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1101303402]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "红心大战 · 教学关"
+text = "新手教程"
 
-[node name="Description" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=849872184]
+[node name="Description" type="RichTextLabel" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=849872184]
 layout_mode = 2
-text = "独立情景，使用精简的预设手牌，可以随时重玩。"
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "从游戏目标开始，动手练习出牌和得分，再学习传牌与小技巧。"
+fit_content = true
+scroll_active = false
 autowrap_mode = 3
 
 [node name="LessonCard0" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=544285533]
@@ -365,13 +341,13 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "01  跟花色、吃墩与缺门"
+text = "01  新手教程"
 autowrap_mode = 3
 
 [node name="LessonDescription0" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=480070615]
 unique_name_in_owner = true
 layout_mode = 2
-text = "看懂谁领出、谁收走这一墩，亲手试一次缺门。"
+text = "游戏目标 → 出牌规则 → 得分牌与实战 → 传牌与小技巧"
 autowrap_mode = 3
 
 [node name="Lesson0" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=96371672]
@@ -379,75 +355,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 64)
 layout_mode = 2
 size_flags_vertical = 4
-text = "开始这一关"
-
-[node name="LessonCard1" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=104125234]
-custom_minimum_size = Vector2(0, 116)
-layout_mode = 2
-
-[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1" unique_id=1396035567]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=687093487]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="LessonTitle1" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=1047545813]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "02  分牌、破心与争第二"
-autowrap_mode = 3
-
-[node name="LessonDescription1" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row/Text" unique_id=609565401]
-unique_name_in_owner = true
-layout_mode = 2
-text = "区分黑桃 Q 和普通黑桃，按出牌时机计分，再看奖池怎么分。"
-autowrap_mode = 3
-
-[node name="Lesson1" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard1/Row" unique_id=156637574]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(190, 64)
-layout_mode = 2
-size_flags_vertical = 4
-text = "开始这一关"
-
-[node name="LessonCard2" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1641233893]
-custom_minimum_size = Vector2(0, 116)
-layout_mode = 2
-
-[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2" unique_id=293136186]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=1683031980]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="LessonTitle2" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=81861644]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "03  传牌、先手与手牌计划"
-autowrap_mode = 3
-
-[node name="LessonDescription2" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row/Text" unique_id=695096783]
-unique_name_in_owner = true
-layout_mode = 2
-text = "实际传出三张，观察缺门和先手变化，尝试保留大小牌。"
-autowrap_mode = 3
-
-[node name="Lesson2" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard2/Row" unique_id=840277684]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(190, 64)
-layout_mode = 2
-size_flags_vertical = 4
-text = "开始这一关"
+text = "开始教程"
 
 [node name="BackToLobby" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1547710830]
 unique_name_in_owner = true

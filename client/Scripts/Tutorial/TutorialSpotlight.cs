@@ -14,12 +14,13 @@ public partial class TutorialSpotlight : Control
 	private ColorRect _shade;
 	private ShaderMaterial _material;
 	private Control _panel, _topSlot, _bottomSlot;
-	private Label _text, _progress, _continue;
+	private RichTextLabel _text;
+	private Label _progress, _continue;
 	private Control[] _targets = Array.Empty<Control>();
 	private readonly Dictionary<CardControl, int> _raisedCards = new();
 	public IReadOnlyList<Control> Targets => _targets;
 	public IReadOnlyList<Rect2> FocusRects { get; private set; } = Array.Empty<Rect2>();
-	public string CurrentText => _text.Text;
+	public string CurrentText => _text.GetParsedText();
 
 	public override void _Ready()
 	{
@@ -28,17 +29,17 @@ public partial class TutorialSpotlight : Control
 		_panel = GetNode<Control>("TopSlot/InstructionPanel");
 		_topSlot = GetNode<Control>("TopSlot");
 		_bottomSlot = GetNode<Control>("BottomSlot");
-		_text = _panel.GetNode<Label>("Column/Instruction");
+		_text = _panel.GetNode<RichTextLabel>("Column/Instruction");
 		_progress = _panel.GetNode<Label>("Column/GuideProgress");
 		_continue = _panel.GetNode<Label>("Column/GuideContinue");
 		HideGuide();
 	}
 
-	public void ShowPage(string text, int index, int count, IEnumerable<Control> targets, bool above)
+	public void ShowPage(string text, int index, int count, IEnumerable<Control> targets, bool above, bool allowEmptyTargets = false)
 	{
 		RestoreCardOrder();
 		_targets = targets.Where(target => target is not null && IsInstanceValid(target)).Take(16).ToArray();
-		if (_targets.Length == 0) throw new InvalidOperationException("教学聚焦目标不存在。");
+		if (_targets.Length == 0 && !allowEmptyTargets) throw new InvalidOperationException("教学聚焦目标不存在。");
 		// Show the face of a focused hand card above its neighbours, without
 		// moving or selecting it. Restore the original stacking after the page.
 		foreach (CardControl card in _targets.OfType<CardControl>())
@@ -61,14 +62,20 @@ public partial class TutorialSpotlight : Control
 
 	public void HideGuide()
 	{
-		RestoreCardOrder();
+		HoldForTransition();
 		Hide();
 		_panel.Hide();
+		SetProcess(false);
+		SetProcessInput(false);
+	}
+
+	/// <summary>Retain the page and shade across a section change without a deal animation.</summary>
+	public void HoldForTransition()
+	{
+		RestoreCardOrder();
 		_targets = Array.Empty<Control>();
 		FocusRects = Array.Empty<Rect2>();
 		_material.SetShaderParameter("focus_count", 0);
-		SetProcess(false);
-		SetProcessInput(false);
 	}
 
 	public override void _ExitTree() => RestoreCardOrder();

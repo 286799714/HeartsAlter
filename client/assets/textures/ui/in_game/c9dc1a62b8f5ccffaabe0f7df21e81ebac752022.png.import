@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdsodk6a68oe7"
-path="res://.godot/imported/CardK.png-4896c113b5435045f40d0aaa68d30360.ctex"
+uid="uid://b7bpp14sw1hle"
+path="res://.godot/imported/c9dc1a62b8f5ccffaabe0f7df21e81ebac752022.png-3dd2201bb7dd33b158747f95602b0334.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/cards/CardK.png"
-dest_files=["res://.godot/imported/CardK.png-4896c113b5435045f40d0aaa68d30360.ctex"]
+source_file="res://assets/textures/ui/in_game/c9dc1a62b8f5ccffaabe0f7df21e81ebac752022.png"
+dest_files=["res://.godot/imported/c9dc1a62b8f5ccffaabe0f7df21e81ebac752022.png-3dd2201bb7dd33b158747f95602b0334.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

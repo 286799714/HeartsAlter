@@ -10,14 +10,12 @@ namespace HeartsAlter.Scripts.InGame;
 /// </summary>
 public partial class PlayArea : Control
 {
-	[Export]
-	public float PlayedCardHeight = 117.0f;
-
 	public CardControl PlayedCard { get; private set; }
 
 	public override void _Ready()
 	{
 		ChildExitingTree += HandleChildExitingTree;
+		Resized += LayoutPlayedCard;
 
 		foreach (Node child in GetChildren())
 		{
@@ -32,12 +30,14 @@ public partial class PlayArea : Control
 	public override void _ExitTree()
 	{
 		ChildExitingTree -= HandleChildExitingTree;
+		Resized -= LayoutPlayedCard;
 		PlayedCard = null;
 	}
 
 	/// <summary>
-	/// Returns the face-up pose at the center of this area. The area's own
-	/// rotation is part of the transform, so all four seats can reuse this scene.
+	/// Returns the face-up pose with the card pivot aligned to this area's pivot.
+	/// The area's own rotation is part of the transform, so all four seats can
+	/// reuse this scene.
 	/// </summary>
 	public CardPose2D GetReceivePose(CardControl card)
 	{
@@ -46,7 +46,7 @@ public partial class PlayArea : Control
 			throw new ArgumentException("Card must be a valid Godot instance.", nameof(card));
 
 		Vector2 targetSize = CalculateCardSize(card);
-		Vector2 localPosition = (Size - targetSize) * 0.5f;
+		Vector2 localPosition = CalculateCardPosition(targetSize);
 		if (GetViewport().GuiSnapControlsToPixels)
 			localPosition = (localPosition + Vector2.One * 0.5f).Floor();
 		Transform2D localTransform = new(0.0f, localPosition);
@@ -84,28 +84,20 @@ public partial class PlayArea : Control
 		}
 
 		Vector2 targetSize = CalculateCardSize(card);
-		Vector2 targetPosition = (Size - targetSize) * 0.5f;
 
 		card.SetAnchorsPreset(LayoutPreset.TopLeft, keepOffsets: false);
 		card.Rotation = 0.0f;
 		card.Scale = Vector2.One;
 		card.ResizeToSize(targetSize);
+		card.PivotOffset = Vector2.Zero;
+		card.PivotOffsetRatio = Vector2.One * 0.5f;
 		card.SetSelectionLift(0.0f);
-		card.SetLayoutPosition(targetPosition);
+		card.SetLayoutPosition(CalculateCardPosition(targetSize));
 		card.SetFace(front: true);
-		// Assign an explicit order: MoveChild updates canvas order a frame later
-		// when called from the flight tween, briefly putting this card underneath.
-		int zIndex = 1;
-		if (GetParent() is Node parent)
-		{
-			foreach (Node sibling in parent.GetChildren())
-			{
-				if (sibling is PlayArea area && area != this &&
-					area.PlayedCard is CardControl previous && IsInstanceValid(previous))
-					zIndex = Math.Max(zIndex, previous.ZIndex + 1);
-			}
-		}
-		card.ZIndex = zIndex;
+		// Discard the hand/flight order and inherit the editor-authored play area
+		// order. Arrival time must not change which seat's card covers another.
+		card.ZAsRelative = true;
+		card.ZIndex = 0;
 
 		if (card.Interaction is not null && IsInstanceValid(card.Interaction))
 			card.Interaction.MouseFilter = MouseFilterEnum.Ignore;
@@ -124,11 +116,26 @@ public partial class PlayArea : Control
 
 	private Vector2 CalculateCardSize(CardControl card)
 	{
-		float targetHeight = PlayedCardHeight > 0.0f
-			? PlayedCardHeight
-			: Mathf.Max(1.0f, Size.Y);
-		float sourceHeight = Mathf.Max(1.0f, card.CardHeight);
-		return new Vector2(card.CardWidth * targetHeight / sourceHeight, targetHeight);
+		// The editor-authored area controls the played card's size. Fit both
+		// dimensions without stretching the artwork when the aspect ratio changes.
+		Vector2 sourceSize = new(card.CardWidth, card.CardHeight);
+		Vector2 availableSize = Size.Max(Vector2.One);
+		float fit = Mathf.Min(availableSize.X / sourceSize.X, availableSize.Y / sourceSize.Y);
+		return sourceSize * fit;
+	}
+
+	private Vector2 CalculateCardPosition(Vector2 cardSize) =>
+		// The scene's proportional pivot is added to its fixed pixel offset.
+		GetCombinedPivotOffset() - cardSize * 0.5f;
+
+	private void LayoutPlayedCard()
+	{
+		if (PlayedCard is not CardControl card || !IsInstanceValid(card) || card.GetParent() != this)
+			return;
+
+		Vector2 targetSize = CalculateCardSize(card);
+		card.ResizeToSize(targetSize);
+		card.SetLayoutPosition(CalculateCardPosition(targetSize));
 	}
 
 	private void HandleChildExitingTree(Node node)

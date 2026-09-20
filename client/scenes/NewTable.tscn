@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b3h8esfh3ccr"]
 
-[ext_resource type="Script" uid="uid://c1rvs6bx7t5ck" path="res://addons/figma_importer/figma_importer.gd" id="1_c2qun"]
+[ext_resource type="Script" uid="uid://sxoq6g456uj8" path="res://addons/figma_importer/figma_importer.gd" id="1_c2qun"]
 [ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="2_ke4u5"]
 [ext_resource type="Texture2D" uid="uid://iyfm7dnixh4u" path="res://assets/textures/ui/in_game/019a21a4a04346af0673e03c9231b8e035fee9c6_5b782391243da3af.png" id="3_g7x3a"]
 [ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_krwpx"]
@@ -11,7 +11,7 @@
 [ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="9_60tvj"]
 [ext_resource type="Texture2D" uid="uid://baoxpb7msv521" path="res://assets/textures/ui/in_game/00cbb37905cc7d8b8c14efc6c715c40cefd53b27_8d866cc86b813714.png" id="9_s6io5"]
 [ext_resource type="Texture2D" uid="uid://7o4ttfdhyrt1" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004_75f0845aed04ef02.png" id="11_60tvj"]
-[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="12_jiukj"]
+[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="12_jiukj"]
 [ext_resource type="Texture2D" uid="uid://bjjt60mdhhfsb" path="res://assets/textures/ui/in_game/d52f13774127a0ce78e08547e3dec931cf963f60_f48cacb036aab3f4.png" id="12_mwfnc"]
 [ext_resource type="Texture2D" uid="uid://dlst72bwi4n0v" path="res://assets/textures/ui/in_game/2f4cf8ee6280d96afc522b005367a74cb0648a4d_795af5083afabc4e.png" id="14_xahu6"]
 [ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="15_46rn8"]
@@ -26,6 +26,17 @@
 [ext_resource type="Texture2D" uid="uid://dfrx0qvhf2jaj" path="res://assets/textures/ui/in_game/e9007d392d8264d658a9331e15fd2f59245a3bc1_d182c8864192ff64.png" id="24_ek6t6"]
 [ext_resource type="Texture2D" uid="uid://dya6ws811wbrg" path="res://assets/textures/ui/in_game/76c6dbade0deda4431cec07f9946ddf8c56b0f02_3d08e702fd1cb41e.png" id="25_ckbsh"]
 [ext_resource type="Texture2D" uid="uid://b6sajsh6sy4qc" path="res://assets/textures/ui/in_game/08d41c41c0c05ef850718cf9523abc2c92f66c55_d30e005738b05c6d.png" id="26_88ot7"]
+[ext_resource type="Texture2D" uid="uid://b7bpp14sw1hle" path="res://assets/textures/ui/in_game/c9dc1a62b8f5ccffaabe0f7df21e81ebac752022.png" id="36_d5ft7"]
+[ext_resource type="Texture2D" uid="uid://bulm3m71eeybp" path="res://assets/textures/ui/in_game/6d18ba70a90969011f5b5c1b9f3f4035b7c4dda9.png" id="37_nuppq"]
+[ext_resource type="Texture2D" uid="uid://cpw1xtt4tncxq" path="res://assets/textures/ui/in_game/498e936bee92ee50083e7e60549dd20098ed1a63.png" id="38_cm2v5"]
+[ext_resource type="Texture2D" uid="uid://cwblmogrp3b48" path="res://assets/textures/ui/in_game/1f55331bcbe4fa7f18a783640b629433d72d7f21.png" id="39_l7u1b"]
+[ext_resource type="Texture2D" uid="uid://vlc6lfsjep33" path="res://assets/textures/ui/in_game/c8aaed2d06023aac59d74868e059e2de630672d3.png" id="40_wm03i"]
+[ext_resource type="Texture2D" uid="uid://r5qadg2yp5cw" path="res://assets/textures/ui/in_game/aa25cf4ece6519ab103815451137b2a875db7c85.png" id="41_cr35r"]
+[ext_resource type="Texture2D" uid="uid://x1xsyyjalt04" path="res://assets/textures/ui/in_game/b39bb5c70981a0e8e6504e471d97331147b31c54.png" id="42_1kdmu"]
+[ext_resource type="Texture2D" uid="uid://14x6tyit2f1e" path="res://assets/textures/ui/in_game/32b0f3900a26d586f66ecae611f8ea3c70478348.png" id="43_u5105"]
+[ext_resource type="Texture2D" uid="uid://ratnvueyeds1" path="res://assets/textures/ui/in_game/78913adccb5b361f4048973bc932808c6eeb2018.png" id="44_8kr1p"]
+[ext_resource type="Texture2D" uid="uid://dhxg0invavf4f" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3.png" id="45_bmjbh"]
+[ext_resource type="Texture2D" uid="uid://c0ho3t5wydxki" path="res://assets/textures/ui/in_game/d52f13774127a0ce78e08547e3dec931cf963f60.png" id="46_80h7x"]
 [ext_resource type="Texture2D" uid="uid://d24m4hndqfi03" path="res://assets/textures/ui/in_game/generated/rgba-73x65-1d2897e463f044e9.png" id="png_1d2897e463f044e9"]
 [ext_resource type="Texture2D" uid="uid://g4sq21llinwx" path="res://assets/textures/ui/in_game/generated/rgba-96x96-7b9a446c62e06593.png" id="png_7b9a446c62e06593"]
 [ext_resource type="Texture2D" uid="uid://ciji7ltcjsal1" path="res://assets/textures/ui/in_game/generated/rgba-24x24-35a0805cab7a0d15.png" id="png_35a0805cab7a0d15"]
@@ -1874,17 +1885,738 @@ line_spacing = 0.0
 font = SubResource("FontVariation_ry1pl")
 font_size = 24
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3fe2i"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kq8am"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kakvk"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2noni"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("36_d5ft7")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjxv2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vlhih"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("37_nuppq")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x063q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdlm8"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("38_cm2v5")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_km75x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xb7ow"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("39_l7u1b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 55.2)
+shader_parameter/texture_size = Vector2(157, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fh2ea"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ch52"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("40_wm03i")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 55.2)
+shader_parameter/texture_size = Vector2(8, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trgx3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ccv1"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("41_cr35r")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 55.2)
+shader_parameter/texture_size = Vector2(161, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_akyjr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_50w8q"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("42_1kdmu")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3eb7i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7nxqp"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("43_u5105")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pi20"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4fdd2"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("44_8kr1p")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpcno"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_likb4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_6vk6s"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_f5ijf"]
+base_font = SubResource("FontVariation_6vk6s")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_y00ap"]
+line_spacing = 0.0
+font = SubResource("FontVariation_f5ijf")
+font_size = 32
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6gbqh"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_ynfja"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kjibk"]
+gradient = SubResource("Gradient_ynfja")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6jt"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_kjibk")
+shader_parameter/label_size = Vector2(59, 44)
+
+[sub_resource type="FontVariation" id="FontVariation_3ia13"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_2a0ac"]
+base_font = SubResource("FontVariation_3ia13")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_35ucd"]
+line_spacing = 0.0
+font = SubResource("FontVariation_2a0ac")
+font_size = 32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_34aob"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("45_bmjbh")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(40, 40)
+shader_parameter/texture_size = Vector2(40, 40)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6r3jo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7v52q"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("46_80h7x")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(528, 69)
+shader_parameter/texture_size = Vector2(528, 69)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55o4x"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lccr5"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_w0ect"]
+colors = PackedColorArray(1, 1, 0.9882353, 1, 0.99607843, 0.972549, 0.49411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rfo3x"]
+gradient = SubResource("Gradient_w0ect")
+fill_from = Vector2(0.49999997, 0.11842105)
+fill_to = Vector2(0.49999997, 0.8815789)
+script = ExtResource("5_g7x3a")
+figma_transform = Transform2D(-1.156827e-13, -1.3103448, 1.3103448, -2.5114003e-14, -0.15517241, 1.1551723)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkws1"]
+shader = ExtResource("12_jiukj")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_rfo3x")
+shader_parameter/label_size = Vector2(255, 44)
+
+[sub_resource type="FontVariation" id="FontVariation_v35ce"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_36vjk"]
+base_font = SubResource("FontVariation_v35ce")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_ita2q"]
+line_spacing = 0.0
+font = SubResource("FontVariation_36vjk")
+font_size = 32
+outline_size = 1
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ej0fu"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f02ml"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_otojx"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("36_d5ft7")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hw3b"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ddy43"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("37_nuppq")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgepq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrkqc"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("38_cm2v5")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s76i2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wf8tf"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("39_l7u1b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 55.2)
+shader_parameter/texture_size = Vector2(157, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70af8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eb5xt"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("40_wm03i")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 55.2)
+shader_parameter/texture_size = Vector2(8, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk0c5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x5v0i"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("41_cr35r")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 55.2)
+shader_parameter/texture_size = Vector2(161, 56)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1b7s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcn4g"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("42_1kdmu")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(156.3, 6.9)
+shader_parameter/texture_size = Vector2(157, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xtsay"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lawfo"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("43_u5105")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(7.800003, 6.9)
+shader_parameter/texture_size = Vector2(8, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_45f7q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_guj0r"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = ExtResource("44_8kr1p")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(160.5, 6.9)
+shader_parameter/texture_size = Vector2(161, 7)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihxhg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5dg4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_wb0rq"]
+base_font = ExtResource("9_60tvj")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_kqx22"]
+base_font = SubResource("FontVariation_wb0rq")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_i7dnk"]
+line_spacing = 0.0
+font = SubResource("FontVariation_kqx22")
+font_size = 32
+font_color = Color(1, 0.9411765, 0.7882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kde25"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Image" id="Image_svm6m"]
+data = {
+"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 6, 255, 255, 251, 73, 255, 255, 251, 149, 255, 255, 251, 193, 255, 255, 251, 218, 255, 255, 251, 243, 255, 255, 251, 243, 255, 255, 251, 218, 255, 255, 251, 193, 255, 255, 251, 148, 255, 255, 251, 71, 255, 255, 255, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 25, 255, 255, 251, 151, 255, 255, 251, 243, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 242, 255, 255, 251, 149, 255, 255, 255, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 8, 255, 255, 251, 136, 255, 255, 251, 245, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 244, 255, 255, 251, 133, 255, 255, 255, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 26, 255, 255, 251, 202, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 199, 255, 255, 255, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 49, 255, 255, 251, 230, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 228, 255, 255, 255, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 26, 255, 255, 251, 230, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 227, 255, 255, 255, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 8, 255, 255, 251, 202, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 199, 255, 255, 255, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 251, 136, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 26, 255, 255, 251, 245, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 252, 255, 255, 255, 251, 244, 255, 255, 255, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 248, 152, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 254, 254, 249, 255, 253, 253, 248, 148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 7, 253, 253, 246, 244, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 254, 254, 247, 255, 253, 253, 246, 241, 255, 255, 255, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 244, 75, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 254, 254, 245, 255, 255, 255, 243, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 241, 152, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 254, 254, 242, 255, 253, 253, 241, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 239, 196, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 254, 254, 240, 255, 253, 253, 240, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 237, 221, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 254, 254, 238, 255, 253, 253, 237, 216, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 234, 246, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 254, 254, 235, 255, 253, 253, 234, 241, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 252, 232, 246, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 254, 253, 233, 255, 253, 252, 232, 242, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 252, 230, 221, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 254, 253, 231, 255, 253, 252, 230, 216, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 252, 227, 196, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 254, 253, 228, 255, 253, 252, 228, 190, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 253, 226, 141, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 254, 253, 226, 255, 253, 253, 226, 135, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 223, 64, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 254, 253, 224, 255, 255, 255, 224, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 3, 253, 252, 220, 235, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 254, 253, 221, 255, 253, 252, 220, 232, 255, 255, 255, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 252, 219, 121, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 254, 253, 220, 255, 255, 252, 219, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 231, 11, 253, 252, 217, 235, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 254, 253, 217, 255, 253, 252, 216, 232, 255, 255, 226, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 212, 6, 255, 251, 216, 73, 253, 251, 213, 149, 253, 251, 214, 193, 253, 251, 214, 218, 253, 251, 214, 243, 253, 251, 214, 245, 253, 251, 214, 225, 253, 252, 214, 189, 253, 251, 215, 129, 255, 255, 215, 51, 0, 0, 0, 0, 255, 252, 215, 96, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 254, 252, 215, 255, 255, 252, 215, 91, 0, 0, 0, 0, 255, 255, 215, 52, 253, 251, 215, 130, 253, 252, 214, 190, 253, 251, 214, 225, 253, 251, 214, 245, 253, 251, 214, 243, 253, 251, 214, 218, 253, 251, 214, 193, 253, 251, 215, 148, 255, 251, 215, 71, 255, 255, 255, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 214, 25, 253, 251, 212, 151, 253, 251, 213, 243, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 253, 251, 212, 192, 255, 251, 214, 76, 253, 251, 212, 168, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 253, 251, 212, 163, 255, 251, 212, 78, 253, 251, 212, 194, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 254, 252, 213, 255, 253, 251, 212, 242, 253, 251, 212, 149, 255, 255, 210, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 223, 8, 253, 251, 210, 136, 253, 251, 209, 245, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 253, 251, 209, 228, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 253, 251, 209, 228, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 254, 252, 210, 255, 253, 251, 209, 244, 253, 251, 208, 133, 255, 255, 212, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 205, 26, 253, 251, 207, 202, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 254, 252, 208, 255, 253, 251, 207, 199, 255, 255, 212, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 208, 49, 253, 251, 205, 230, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 254, 252, 206, 255, 253, 251, 205, 228, 255, 255, 205, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 205, 26, 253, 251, 202, 230, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 254, 252, 203, 255, 253, 251, 202, 227, 255, 255, 201, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 223, 8, 253, 251, 200, 202, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 254, 252, 201, 255, 253, 251, 200, 198, 255, 255, 212, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 251, 198, 136, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 254, 252, 199, 255, 253, 251, 199, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 193, 25, 253, 250, 195, 245, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 254, 251, 196, 255, 253, 250, 195, 243, 255, 255, 197, 22, 0, 0, 0, 0, 0, 0, 0, 0, 253, 251, 194, 151, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 254, 251, 194, 255, 253, 251, 193, 146, 0, 0, 0, 0, 255, 255, 212, 6, 253, 250, 191, 242, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 254, 251, 192, 255, 253, 250, 191, 240, 255, 255, 191, 4, 255, 251, 187, 72, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 254, 251, 189, 255, 255, 251, 189, 66, 253, 251, 188, 149, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 254, 251, 188, 255, 253, 251, 188, 142, 253, 251, 184, 193, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 254, 251, 185, 255, 253, 250, 184, 187, 253, 250, 182, 218, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 254, 251, 183, 255, 253, 250, 182, 212, 253, 250, 180, 243, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 254, 251, 181, 255, 253, 250, 180, 237, 253, 249, 177, 243, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 254, 250, 178, 255, 253, 249, 177, 238, 253, 249, 175, 218, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 254, 250, 176, 255, 253, 250, 175, 212, 253, 249, 173, 193, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 254, 250, 174, 255, 253, 249, 174, 186, 253, 249, 170, 148, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 254, 250, 171, 255, 253, 249, 170, 141, 255, 251, 168, 71, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 254, 250, 169, 255, 255, 251, 167, 64, 255, 255, 153, 5, 253, 249, 166, 242, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 254, 250, 167, 255, 253, 249, 166, 239, 255, 255, 170, 3, 0, 0, 0, 0, 253, 249, 164, 149, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 254, 250, 164, 255, 253, 249, 162, 144, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 166, 23, 253, 249, 161, 244, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 254, 250, 162, 255, 253, 249, 161, 241, 255, 255, 165, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 249, 159, 133, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 254, 249, 160, 255, 255, 248, 159, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 170, 6, 253, 248, 156, 199, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 254, 249, 157, 255, 253, 248, 156, 195, 255, 255, 153, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 159, 24, 253, 248, 155, 228, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 254, 249, 156, 255, 253, 248, 155, 225, 255, 255, 157, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 249, 155, 46, 253, 248, 152, 227, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 253, 248, 152, 238, 253, 248, 152, 219, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 253, 248, 152, 219, 253, 248, 152, 238, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 254, 249, 153, 255, 253, 248, 153, 225, 255, 249, 150, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 148, 24, 253, 248, 149, 199, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 253, 248, 151, 211, 255, 255, 153, 35, 253, 249, 150, 217, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 253, 249, 149, 216, 255, 247, 148, 36, 253, 248, 150, 212, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 254, 249, 151, 255, 253, 248, 150, 195, 255, 255, 145, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 170, 6, 253, 249, 147, 131, 253, 248, 148, 244, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 253, 248, 148, 247, 253, 249, 148, 143, 255, 255, 139, 11, 255, 255, 149, 29, 253, 248, 148, 253, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 253, 248, 148, 253, 255, 255, 145, 28, 255, 255, 148, 12, 253, 249, 147, 145, 253, 248, 148, 248, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 254, 249, 149, 255, 253, 248, 148, 242, 253, 249, 149, 128, 255, 255, 153, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 144, 23, 253, 248, 144, 148, 253, 248, 146, 241, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 253, 248, 145, 245, 253, 248, 146, 157, 255, 255, 149, 29, 0, 0, 0, 0, 0, 0, 0, 0, 253, 249, 145, 128, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 255, 248, 145, 126, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 148, 31, 253, 248, 145, 159, 253, 248, 145, 246, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 254, 249, 146, 255, 253, 248, 145, 240, 253, 248, 144, 146, 255, 255, 145, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 153, 5, 255, 251, 142, 70, 253, 248, 143, 147, 253, 248, 144, 191, 253, 249, 144, 216, 253, 248, 143, 242, 253, 248, 143, 242, 253, 249, 143, 218, 253, 248, 144, 193, 253, 248, 143, 149, 255, 248, 144, 74, 255, 255, 159, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 127, 2, 253, 248, 143, 226, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 254, 249, 144, 255, 253, 248, 143, 224, 255, 255, 255, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 141, 9, 255, 248, 142, 75, 253, 248, 142, 150, 253, 248, 143, 194, 253, 249, 143, 218, 253, 248, 143, 242, 253, 248, 143, 242, 253, 249, 144, 216, 253, 248, 143, 190, 253, 249, 144, 145, 255, 251, 142, 68, 255, 255, 127, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 248, 141, 81, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 254, 248, 142, 255, 255, 248, 142, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 247, 138, 203, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 254, 248, 139, 255, 253, 247, 138, 201, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 247, 134, 70, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 254, 248, 137, 255, 255, 247, 135, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 247, 134, 195, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 254, 248, 135, 255, 253, 247, 134, 194, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 248, 132, 73, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 254, 248, 132, 255, 255, 247, 131, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 247, 129, 206, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 254, 248, 130, 255, 253, 247, 129, 206, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 249, 127, 86, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 254, 248, 128, 255, 255, 249, 129, 85, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 127, 2, 253, 247, 125, 216, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 215, 255, 255, 127, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 248, 125, 122, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 255, 248, 125, 122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 250, 127, 52, 253, 247, 125, 250, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 250, 255, 250, 127, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 248, 125, 187, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 248, 126, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 85, 3, 253, 247, 125, 249, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 247, 255, 255, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 247, 125, 248, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 244, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 247, 126, 178, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 173, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 248, 127, 38, 253, 247, 125, 238, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 236, 255, 247, 127, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 248, 124, 37, 253, 247, 125, 171, 253, 247, 125, 236, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 254, 248, 126, 255, 253, 247, 125, 236, 253, 247, 125, 169, 255, 247, 123, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGBA8",
+"height": 72,
+"mipmaps": false,
+"width": 72
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_18xyu"]
+image = SubResource("Image_svm6m")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3gd5"]
+shader = ExtResource("2_ke4u5")
+shader_parameter/image_texture = SubResource("ImageTexture_18xyu")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(36.002003, 36)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7m3w"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
 [node name="NewTable" type="Control" unique_id=1078052672]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_c2qun")
-document_json_file = "res://assets/figma_2_godot/new_table/figma_export.json"
+document_json_file = "res://assets/figma_2_godot/ingame_status/figma_export.json"
 SelectPage = "已完成部分 xIDx0:1x"
-SelectFrame = "局内-创建房间-人未满 xIDx81:8451x"
+SelectFrame = "Frame 74 xIDx81:8619x"
 fonts_folder = "res://assets/fonts"
 images_folder = "res://assets/textures/ui/in_game"
 autoPlaceImages = true
-metadata/_custom_type_script = "uid://c1rvs6bx7t5ck"
 
 [node name="局内-创建房间-人未满 xIDx81_8451x" type="ScrollContainer" parent="." unique_id=2083696508]
 material = SubResource("ShaderMaterial_i0q6c")
@@ -3961,3 +4693,655 @@ text = "房主"
 label_settings = SubResource("LabelSettings_18vx1")
 horizontal_alignment = 1
 clip_text = true
+
+[node name="对局中状态" type="ScrollContainer" parent="." unique_id=1111567501]
+clip_contents = false
+layout_mode = 0
+offset_right = 1206.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3fe2i")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态" unique_id=1261605687]
+layout_mode = 2
+
+[node name="Frame 73 xIDx81_8620x" type="ScrollContainer" parent="对局中状态/InnerContainer" unique_id=1646763230]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kq8am")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x" unique_id=140254342]
+layout_mode = 2
+
+[node name="image 123 xIDx81_8621x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer" unique_id=2042029661]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kakvk")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x" unique_id=1665981896]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8621;77_5248x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1725212894]
+material = SubResource("ShaderMaterial_2noni")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_right = 156.3
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xjxv2")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("36_d5ft7")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5249x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=598113692]
+material = SubResource("ShaderMaterial_vlhih")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_right = 164.10005
+offset_bottom = 6.9
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x063q")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("37_nuppq")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5250x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1678637934]
+material = SubResource("ShaderMaterial_wdlm8")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_right = 309.0
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_km75x")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("38_cm2v5")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5251x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1841034903]
+material = SubResource("ShaderMaterial_xb7ow")
+custom_minimum_size = Vector2(156.3, 55.2)
+layout_mode = 0
+offset_top = 6.9000244
+offset_right = 156.3
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fh2ea")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("39_l7u1b")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5252x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1775730340]
+material = SubResource("ShaderMaterial_8ch52")
+custom_minimum_size = Vector2(7.800003, 55.2)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 6.9000244
+offset_right = 164.10005
+offset_bottom = 62.100025
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_trgx3")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("40_wm03i")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5253x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=663321164]
+material = SubResource("ShaderMaterial_2ccv1")
+custom_minimum_size = Vector2(160.5, 55.2)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 6.9000244
+offset_right = 309.0
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_akyjr")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("41_cr35r")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5254x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=766895142]
+material = SubResource("ShaderMaterial_50w8q")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_top = 62.099976
+offset_right = 156.3
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3eb7i")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("42_1kdmu")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5255x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=2090131253]
+material = SubResource("ShaderMaterial_7nxqp")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 62.099976
+offset_right = 164.10005
+offset_bottom = 68.99998
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0pi20")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("43_u5105")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8621;77_5256x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/image 123 xIDx81_8621x/InnerContainer" unique_id=1936870420]
+material = SubResource("ShaderMaterial_4fdd2")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 62.099976
+offset_right = 309.0
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hpcno")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("44_8kr1p")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 67 xIDx81_8622x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer" unique_id=1379722994]
+clip_contents = false
+layout_mode = 0
+offset_left = 62.5
+offset_top = 12.5
+offset_right = 246.5
+offset_bottom = 56.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_likb4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x" unique_id=1251923378]
+layout_mode = 2
+
+[node name="奖池  xIDx81_8623x" type="Label" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer" unique_id=1709163136]
+layout_mode = 0
+offset_right = 65.0
+offset_bottom = 44.0
+text = "奖池"
+label_settings = SubResource("LabelSettings_y00ap")
+clip_text = true
+
+[node name="Frame 75 xIDx81_8624x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer" unique_id=245984989]
+clip_contents = false
+layout_mode = 0
+offset_left = 81.0
+offset_right = 184.0
+offset_bottom = 44.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6gbqh")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x" unique_id=1727796063]
+layout_mode = 2
+
+[node name="400  xIDx81_8625x" type="Label" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x/InnerContainer" unique_id=1364951458]
+material = SubResource("ShaderMaterial_5r6jt")
+layout_mode = 0
+offset_right = 59.0
+offset_bottom = 44.0
+text = "400"
+label_settings = SubResource("LabelSettings_35ucd")
+clip_text = true
+
+[node name="image 61 xIDx81_8626x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8620x/InnerContainer/Frame 67 xIDx81_8622x/InnerContainer/Frame 75 xIDx81_8624x/InnerContainer" unique_id=1855750374]
+material = SubResource("ShaderMaterial_34aob")
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 63.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 42.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6r3jo")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(40, 40)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("45_bmjbh")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 49 xIDx81_8627x" type="ScrollContainer" parent="对局中状态/InnerContainer" unique_id=1524021322]
+material = SubResource("ShaderMaterial_7v52q")
+custom_minimum_size = Vector2(528, 69)
+clip_contents = false
+layout_mode = 0
+offset_left = 339.0
+offset_right = 867.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_55o4x")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(528, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("46_80h7x")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 49 xIDx81_8627x" unique_id=890011910]
+layout_mode = 2
+
+[node name="Frame 7 xIDx81_8628x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer" unique_id=198368715]
+clip_contents = false
+layout_mode = 0
+offset_left = 136.5
+offset_top = 12.5
+offset_right = 391.5
+offset_bottom = 56.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lccr5")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer/Frame 7 xIDx81_8628x" unique_id=1133923226]
+layout_mode = 2
+
+[node name="第 6 墩 _ 共13 墩  xIDx81_8629x" type="Label" parent="对局中状态/InnerContainer/Frame 49 xIDx81_8627x/InnerContainer/Frame 7 xIDx81_8628x/InnerContainer" unique_id=1962152757]
+material = SubResource("ShaderMaterial_vkws1")
+layout_mode = 0
+offset_right = 255.0
+offset_bottom = 44.0
+text = "第 6 墩 / 共13 墩"
+label_settings = SubResource("LabelSettings_ita2q")
+clip_text = true
+
+[node name="Frame 73 xIDx81_8630x" type="ScrollContainer" parent="对局中状态/InnerContainer" unique_id=702519297]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_left = 897.0
+offset_right = 1206.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ej0fu")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x" unique_id=531275593]
+layout_mode = 2
+
+[node name="image 123 xIDx81_8631x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer" unique_id=1745672379]
+custom_minimum_size = Vector2(309, 69)
+clip_contents = false
+layout_mode = 0
+offset_right = 309.0
+offset_bottom = 69.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_f02ml")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(309, 69)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x" unique_id=736126210]
+layout_mode = 2
+
+[node name="Rectangle xIDxI81_8631;77_5248x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=315155077]
+material = SubResource("ShaderMaterial_otojx")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_right = 156.3
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4hw3b")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("36_d5ft7")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5249x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1941909654]
+material = SubResource("ShaderMaterial_ddy43")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_right = 164.10005
+offset_bottom = 6.9
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kgepq")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("37_nuppq")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5250x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=330735265]
+material = SubResource("ShaderMaterial_rrkqc")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_right = 309.0
+offset_bottom = 6.9
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_s76i2")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("38_cm2v5")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5251x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1628099845]
+material = SubResource("ShaderMaterial_wf8tf")
+custom_minimum_size = Vector2(156.3, 55.2)
+layout_mode = 0
+offset_top = 6.9000244
+offset_right = 156.3
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_70af8")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("39_l7u1b")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5252x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1372511263]
+material = SubResource("ShaderMaterial_eb5xt")
+custom_minimum_size = Vector2(7.800003, 55.2)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 6.9000244
+offset_right = 164.10005
+offset_bottom = 62.100025
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hk0c5")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("40_wm03i")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5253x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1693877370]
+material = SubResource("ShaderMaterial_x5v0i")
+custom_minimum_size = Vector2(160.5, 55.2)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 6.9000244
+offset_right = 309.0
+offset_bottom = 62.100025
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1b7s")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 55.2)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("41_cr35r")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5254x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=1438236685]
+material = SubResource("ShaderMaterial_tcn4g")
+custom_minimum_size = Vector2(156.3, 6.9)
+layout_mode = 0
+offset_top = 62.099976
+offset_right = 156.3
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xtsay")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(156.3, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("42_1kdmu")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5255x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=296825205]
+material = SubResource("ShaderMaterial_lawfo")
+custom_minimum_size = Vector2(7.800003, 6.9)
+layout_mode = 0
+offset_left = 156.30005
+offset_top = 62.099976
+offset_right = 164.10005
+offset_bottom = 68.99998
+rotation = 3.1415927
+scale = Vector2(1, -1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_45f7q")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(7.800003, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("43_u5105")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Rectangle xIDxI81_8631;77_5256x" type="Panel" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/image 123 xIDx81_8631x/InnerContainer" unique_id=741653427]
+material = SubResource("ShaderMaterial_guj0r")
+custom_minimum_size = Vector2(160.5, 6.9)
+layout_mode = 0
+offset_left = 148.5
+offset_top = 62.099976
+offset_right = 309.0
+offset_bottom = 68.99998
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ihxhg")
+script = ExtResource("6_1tj6b")
+minSize = Vector2(160.5, 6.9)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("44_8kr1p")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Frame 67 xIDx81_8632x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer" unique_id=1346128592]
+clip_contents = false
+layout_mode = 0
+offset_left = 57.5
+offset_top = 10.5
+offset_right = 251.5
+offset_bottom = 58.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dg4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x" unique_id=1933835809]
+layout_mode = 2
+
+[node name="本墩花色  xIDx81_8633x" type="Label" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer" unique_id=1944451591]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 130.0
+offset_bottom = 46.0
+text = "本墩花色"
+label_settings = SubResource("LabelSettings_i7dnk")
+clip_text = true
+
+[node name="Frame xIDx81_8634x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer" unique_id=261406852]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 146.0
+offset_right = 194.0
+offset_bottom = 48.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kde25")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(48, 48)
+maxSize = Vector2(100000, 100000)
+clipFrameContents = true
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer/Frame xIDx81_8634x" unique_id=2018729897]
+layout_mode = 2
+
+[node name="Vector xIDxI81_8634;76_3622x" type="ScrollContainer" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer/Frame xIDx81_8634x/InnerContainer" unique_id=1843904069]
+material = SubResource("ShaderMaterial_r3gd5")
+custom_minimum_size = Vector2(36.002003, 36)
+layout_mode = 0
+offset_left = 5.9799805
+offset_top = 5.8599854
+offset_right = 41.981983
+offset_bottom = 41.859985
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c7m3w")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_krwpx")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(36.002003, 36)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = SubResource("ImageTexture_18xyu")
+textureSizeMode = "Stretch"
+corner_radius = [null, null, null, null]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer/Frame xIDx81_8634x/InnerContainer/Vector xIDxI81_8634;76_3622x" unique_id=476856394]
+layout_mode = 2

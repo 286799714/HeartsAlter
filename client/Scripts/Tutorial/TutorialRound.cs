@@ -30,13 +30,13 @@ public sealed class TutorialRound
 			Hands.SelectMany(hand => hand).Distinct().Count() != Hands.Sum(hand => hand.Count))
 			throw new ArgumentException("A lesson must have four equal hands with unique cards.");
 		CurrentSeat = step.Leader;
-		HeartsBroken = step.HeartsBroken;
-		QueenPlayed = step.QueenPlayed;
 		FirstTrick = step.FirstTrick;
 	}
 
+	// Teach the default room rules; optional heart-breaking and forced discards stay off.
 	public List<CardData> LegalCards() => CardRules.LegalCards(Hands[CurrentSeat],
-		Trick.Count > 0 ? Trick[0].Card.Suit : null, FirstTrick, HeartsBroken, out _);
+		Trick.Count > 0 ? Trick[0].Card.Suit : null, FirstTrick, HeartsBroken, out _,
+		heartsBreakingEnabled: false, mustDiscardPointsWhenVoid: false);
 
 	public TutorialPlay Play(CardData card)
 	{

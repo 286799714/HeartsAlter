@@ -43,6 +43,14 @@ public partial class Table
 		SetMainPlayerPlayEnabled(false);
 		ClearHandsAndPlayAreas();
 		_cardDeck.ChangeCardCount(0);
+		SetInGameStatus(0, 0, null);
+	}
+
+	/// <summary>Show lesson state without reading or modifying a network session.</summary>
+	public void SetLocalGameStatus(int pot, int completedTricks, PokerSuit? leadSuit = null)
+	{
+		RequireLocalTable();
+		SetInGameStatus(pot, completedTricks, leadSuit);
 	}
 
 	public void SetLocalPlayableCards(IEnumerable<CardData> legal, string hint, bool enabled = true)

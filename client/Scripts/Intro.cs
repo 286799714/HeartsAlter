@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HeartsAlter.Scripts.Generated;
+using HeartsAlter.Scripts.UI;
 
 namespace HeartsAlter.Scripts;
 
@@ -15,6 +16,7 @@ public partial class Intro : Node
 	private Control _createPage;
 	private Control _joinPage;
 	private Control _historyPage;
+	private SidebarPanel _sidebar;
 	private Control _roomTemplate;
 	private VBoxContainer _roomList;
 	private Label _emptyRooms;
@@ -58,12 +60,8 @@ public partial class Intro : Node
 		_createButton = GetNode<Button>("%CreateRoomButton");
 		_backButton = GetNode<Button>("%BackToConnection");
 		_status = GetNode<Label>("%IntroStatus");
-		foreach (Control page in new[] { _createPage, _joinPage, _historyPage })
-		{
-			Find<Button>(page, "CreateTab").Pressed += () => ShowPage(_createPage);
-			Find<Button>(page, "JoinTab").Pressed += () => ShowPage(_joinPage);
-			Find<Button>(page, "HistoryTab").Pressed += () => ShowPage(_historyPage);
-		}
+		_sidebar = GetNode<SidebarPanel>("%Sidebar");
+		_sidebar.TabSelected += ShowPage;
 		_createButton.Pressed += CreateRoom;
 		_roomName.TextSubmitted += _ => CreateRoom();
 		_backButton.Pressed += () => _ = ReturnToConnectionAsync();
@@ -79,7 +77,7 @@ public partial class Intro : Node
 				_playerNameInput.AcceptEvent();
 			}
 		};
-		ShowPage(_createPage);
+		ShowPage(_sidebar.SelectedTab);
 		_adapter = GameSession.LobbyAdapter ?? new ColyseusLobbyAdapter();
 		GameSession.LobbyAdapter = _adapter;
 		_adapter.StateChanged += HandleStateChanged;
@@ -139,11 +137,11 @@ public partial class Intro : Node
 		RefreshActions();
 	}
 
-	private void ShowPage(Control selected)
+	private void ShowPage(StringName selectedTab)
 	{
-		_createPage.Visible = selected == _createPage;
-		_joinPage.Visible = selected == _joinPage;
-		_historyPage.Visible = selected == _historyPage;
+		_createPage.Visible = selectedTab == "CreateTab";
+		_joinPage.Visible = selectedTab == "JoinTab";
+		_historyPage.Visible = selectedTab == "HistoryTab";
 	}
 
 	private void HandleProfile(PlayerProfile profile)

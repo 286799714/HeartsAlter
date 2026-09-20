@@ -41,6 +41,7 @@ offset_right = 54.0
 offset_bottom = -6.0
 
 [node name="Layer5" parent="." unique_id=1829120295 instance=ExtResource("3_7cnn2")]
+visible = false
 layout_mode = 1
 offset_left = -68.0
 offset_top = -175.0

@@ -29,11 +29,18 @@ public partial class CardLandingSmoke : Node
 			foreach (bool snapping in new[] { true, false })
 			{
 				GetViewport().GuiSnapControlsToPixels = snapping;
-				for (int leader = 0; leader < 4; leader++)
+				using var reference = new Image();
+				for (int leader = 0; leader < 5; leader++)
 				{
 					var table = GD.Load<PackedScene>("res://scenes/in_game/Table.tscn").Instantiate<Table>();
 					table.UseNetworkSession = false;
 					AddChild(table);
+					if (leader == 4)
+					{
+						// Exercise explicit scene Z overrides during flight as well as collection.
+						table.GetNode<PlayArea>("InGame/LeftPlayArea").ZIndex = 3;
+						table.GetNode<PlayArea>("InGame/MainPlayArea").ZIndex = -2;
+					}
 					var layer = table.GetNode<AnimationLayer>("InGame/AnimationLayer");
 					layer.PlayFlightDuration = 0.3f;
 					layer.PlayClockwiseTurns = 0;
@@ -44,13 +51,18 @@ public partial class CardLandingSmoke : Node
 						int seat = (leader + play) % 4;
 						await CheckLanding(table, layer, seat, $"{prefix}-seat{seat}");
 					}
+					using (Image trick = ReadTrickImage())
+					{
+						if (leader == 0) reference.CopyFrom(trick);
+						else if (leader < 4) Compare(reference, trick, prefix + "-fixed-play-area-order");
+					}
 					await CheckCollection(table, prefix);
 					table.QueueFree();
 					await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 					GD.Print($"CARD_LANDING_CASE_OK: {prefix}");
 				}
 			}
-			GD.Print($"CARD_LANDING_SMOKE_OK: 32 landings, 8 collections, {_comparisons} frame comparisons");
+			GD.Print($"CARD_LANDING_SMOKE_OK: 40 landings, 10 collections, {_comparisons} frame comparisons");
 		}
 		catch (Exception exception) { exitCode = 1; GD.PushError(exception.ToString()); }
 		finally
@@ -68,11 +80,12 @@ public partial class CardLandingSmoke : Node
 		var card = GD.Load<PackedScene>("res://scenes/in_game/Card.tscn").Instantiate<CardControl>();
 		layer.AddChild(card);
 		card.Setup(CardRules.Parse(ids[seat]), true);
+		card.ZIndex = 7; // Simulate the ordering inherited from a hand.
 		CardPose2D pose = area.GetReceivePose(card);
 		bool landed = false;
-		// Hold at the endpoint so any pixel change comes from the hand-off,
-		// rather than the flight's intended movement or a flip.
-		Check(layer.PlayCardToPose(card, pose, pose, played =>
+		// Hold at the endpoint to isolate the hand-off. Flying and landed cards
+		// must use the same play-area order even where other cards overlap.
+		Check(layer.PlayCardToPose(card, pose, pose, area, played =>
 		{
 			area.ReceiveCard(played);
 			landed = true;
@@ -86,13 +99,20 @@ public partial class CardLandingSmoke : Node
 				Check(++frames < 600, "Flight did not finish.");
 				await NextRenderedFrame();
 				using Image frame = ReadTrickImage();
-				if (landed) Compare(before, frame, label + "-landing");
+				if (before is not null)
+					Compare(before, frame, label + (landed ? "-landing" : $"-flight{frames}"));
 				else
 				{
-					before?.Dispose();
 					before = (Image)frame.Duplicate();
 				}
 			}
+			Vector2 areaPivot = area.GetGlobalTransformWithCanvas() * area.GetCombinedPivotOffset();
+			Vector2 cardPivot = card.GetGlobalTransformWithCanvas() * card.GetCombinedPivotOffset();
+			Vector2 cardCenter = card.GetGlobalTransformWithCanvas() * (card.Size * 0.5f);
+			Check(cardPivot.IsEqualApprox(areaPivot),
+				$"{label}: canvas card pivot {cardPivot} does not match play-area pivot {areaPivot}.");
+			Check(cardCenter.IsEqualApprox(areaPivot),
+				$"{label}: visible card center {cardCenter} does not match play-area pivot {areaPivot}.");
 			for (int index = 0; index < 3; index++)
 			{
 				await NextRenderedFrame();
