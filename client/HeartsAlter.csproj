@@ -1,6 +1,8 @@
 <Project Sdk="Godot.NET.Sdk/4.7.1">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <!-- Android requires .NET 9 runtime libraries for 16 KB ELF page alignment. -->
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <ImplicitUsings>disable</ImplicitUsings>
     <!-- Colyseus schema-codegen emits default(null) fields by design.  Keep

@@ -41,8 +41,11 @@ public partial class SidebarPanel : Control
 		if (!_buttons.ContainsKey(tabName)) return false;
 		foreach (var (name, button) in _buttons)
 		{
-			button.SetPressedNoSignal(name == tabName);
-			button.Icon = name == tabName && SelectedIcon != null ? SelectedIcon : _normalIcons[button];
+			bool selected = name == tabName;
+			button.SetPressedNoSignal(selected);
+			// A held click also uses the pressed draw mode, so style the committed selection explicitly.
+			button.ThemeTypeVariation = selected ? "SelectedTab" : "";
+			button.Icon = selected && SelectedIcon != null ? SelectedIcon : _normalIcons[button];
 		}
 		bool changed = SelectedTab != tabName;
 		SelectedTab = tabName;

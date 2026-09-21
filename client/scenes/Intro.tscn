@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d3v7qimhkaph6"]
 
-[ext_resource type="Script" uid="uid://sxoq6g456uj8" path="res://addons/figma_importer/figma_importer.gd" id="1_45dpb"]
+[ext_resource type="Script" uid="uid://c1rvs6bx7t5ck" path="res://addons/figma_importer/figma_importer.gd" id="1_45dpb"]
 [ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="2_tb5gl"]
 [ext_resource type="Texture2D" uid="uid://c2wbj7id2xnhm" path="res://assets/textures/ui/intro/db49d7246da60945ded76b2dc368b4ad62906273.png" id="3_th2s1"]
 [ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="4_l6ho0"]
@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="15_8dv2j"]
 [ext_resource type="Texture2D" uid="uid://csprbfjvrlexy" path="res://assets/textures/ui/intro/6c58ad25b09768813fd28724fc6fce7b09f4c956.png" id="16_5ak73"]
 [ext_resource type="Texture2D" uid="uid://bcv2h235656qd" path="res://assets/textures/ui/intro/495ad3bd312b123b25f9602449e2a03c10d9e2a3.png" id="17_8yaw6"]
-[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="18_xhhg8"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="18_xhhg8"]
 [ext_resource type="Texture2D" uid="uid://cyf2g27ks6x3f" path="res://assets/textures/ui/intro/d7c179111cf787aaedb29abdbdf1e62a459412c7.png" id="19_xku4g"]
 [ext_resource type="Script" uid="uid://cj7sk512h2oh0" path="res://Scripts/Intro.cs" id="20_intro"]
 [ext_resource type="Texture2D" uid="uid://cdlaotvfbpuie" path="res://assets/textures/ui/intro/edit_name.svg" id="21_edit_name"]
@@ -3401,6 +3401,7 @@ theme_override_constants/separation = 16
 
 [node name="RoomRowTemplate" type="ScrollContainer" parent="JoinPage/InnerContainer/RoomScroll/RoomList" unique_id=1310449855]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(0, 167)
 clip_contents = false
 layout_mode = 2
@@ -3984,6 +3985,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="战绩列表项" type="ScrollContainer" parent="HistoryPage/InnerContainer/我的战绩 Panel/战绩列表 container" unique_id=1278910243]
+visible = false
 custom_minimum_size = Vector2(0, 167)
 clip_contents = false
 layout_mode = 0
@@ -4401,7 +4403,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_Intro")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_IntroHover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_IntroHover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_IntroFocus")
-text = "返回连接"
+text = "返回标题页面"
 
 [node name="Controller" type="Node" parent="." unique_id=1782243781]
 script = ExtResource("20_intro")
