@@ -52,6 +52,7 @@ public sealed class ColyseusClientAdapter
     public event Action<string> InvalidPlay;
     public event Action<int, string> Error;
     public event Action<int> Left;
+    public event Action RoomDisbanded;
 
     public bool IsConnected => _room != null;
     public string SessionId => _room?.SessionId ?? string.Empty;
@@ -327,6 +328,7 @@ public sealed class ColyseusClientAdapter
         room.OnMessage<Dictionary<string, object>>("round_finished", OnRoundFinishedMessage);
         room.OnMessage<Dictionary<string, object>>("trick_resolved", OnTrickResolvedMessage);
         room.OnMessage<Dictionary<string, object>>("room_reset", OnRoomResetMessage);
+        room.OnMessage<Dictionary<string, object>>("room_disbanded", _ => RoomDisbanded?.Invoke());
         room.OnMessage<Dictionary<string, object>>("deal_started", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("game_ready", OnInformationalMessage);
         room.OnMessage<Dictionary<string, object>>("invalid_play", OnInvalidPlayMessage);

@@ -14,6 +14,8 @@ public sealed class ColyseusLobbyAdapter
 	private Room<LobbyState> _room;
 	private TaskCompletionSource<PlayerProfile> _nameUpdate;
 	private string _nameUpdateId;
+	private TaskCompletionSource<PlayerProfile> _avatarUpdate;
+	private string _avatarUpdateId;
 
 	public event Action<LobbyState, bool> StateChanged;
 	public event Action<RoomReservation> RoomReservationReceived;
@@ -48,6 +50,7 @@ public sealed class ColyseusLobbyAdapter
 				if (_room != connectedRoom) return;
 				_room = null;
 				_nameUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
+				_avatarUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
 				profileReady.TrySetException(new InvalidOperationException("同步存档时大厅连接已断开"));
 				Left?.Invoke(code);
 			};
@@ -71,6 +74,18 @@ public sealed class ColyseusLobbyAdapter
 					_nameUpdate.TrySetResult(Profile);
 				}
 				catch (Exception exception) { _nameUpdate?.TrySetException(exception); }
+			});
+			_room.OnMessage<Dictionary<string, object>>("player_avatar_updated", payload =>
+			{
+				if (_room != connectedRoom || _avatarUpdate == null || ReadString(payload, "requestId") != _avatarUpdateId) return;
+				try
+				{
+					string error = ReadString(payload, "error");
+					if (error.Length > 0) throw new InvalidOperationException(error);
+					ApplyProfile(payload);
+					_avatarUpdate.TrySetResult(Profile);
+				}
+				catch (Exception exception) { _avatarUpdate?.TrySetException(exception); }
 			});
 			_room.OnMessage<Dictionary<string, object>>("lobby_ready", payload => ServerMessage?.Invoke("大厅已连接"));
 			_room.OnMessage<Dictionary<string, object>>("lobby_error", payload => Error?.Invoke(ReadString(payload, "message")));
@@ -135,6 +150,29 @@ public sealed class ColyseusLobbyAdapter
 		}
 	}
 
+	public async Task<PlayerProfile> UpdatePlayerAvatarAsync(int avatarId)
+	{
+		if (!IsConnected) throw new InvalidOperationException("请先连接大厅");
+		if (_avatarUpdate != null) throw new InvalidOperationException("头像正在保存，请稍候");
+		var completion = new TaskCompletionSource<PlayerProfile>(TaskCreationOptions.RunContinuationsAsynchronously);
+		_avatarUpdate = completion;
+		_avatarUpdateId = Guid.NewGuid().ToString("N");
+		try
+		{
+			await _room.Send("update_player_avatar", new Dictionary<string, object>
+			{
+				["avatarId"] = avatarId,
+				["requestId"] = _avatarUpdateId,
+			});
+			return await completion.Task.WaitAsync(TimeSpan.FromSeconds(10));
+		}
+		finally
+		{
+			_avatarUpdate = null;
+			_avatarUpdateId = null;
+		}
+	}
+
 	private void ApplyProfile(Dictionary<string, object> payload)
 	{
 		Profile = PlayerProfile.FromPayload(payload);
@@ -148,6 +186,7 @@ public sealed class ColyseusLobbyAdapter
 		var room = _room;
 		_room = null;
 		_nameUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
+		_avatarUpdate?.TrySetException(new InvalidOperationException("大厅连接已断开"));
 		if (room == null) return;
 		try { await room.Leave(true); } catch { }
 	}

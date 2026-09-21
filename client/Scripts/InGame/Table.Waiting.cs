@@ -187,6 +187,7 @@ public partial class Table
 		_networkProgressRound = -1;
 		_networkLastPlaySequence = 0;
 		_networkLastResolvedTrick = 0;
+		SetTrickStatus(0, null);
 		_networkPlayAnimating = false;
 		_networkTableReadySent = _networkDealReadySent = _networkDealStarted = false;
 		_networkSettlementScheduled = _networkFinalTrickReceived = _rightPlayerPlayCompleted = false;

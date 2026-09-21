@@ -52,13 +52,10 @@ public partial class SceneResidencySmoke : Node
 				}
 			}
 			await Swap("res://scenes/Lobby.tscn");
-			var tutorialButton = (Button)GetTree().CurrentScene.FindChild("TutorialButton", true, false);
-			tutorialButton.EmitSignal(BaseButton.SignalName.Pressed);
+			await Swap("res://scenes/Tutorial.tscn");
+			GetTree().CurrentScene.GetNode<BaseButton>("Game/Table/TableActions/Quit/ReturnToLobbyButton").EmitSignal(BaseButton.SignalName.Pressed);
 			await ToSignal(GetTree(), SceneTree.SignalName.SceneChanged);
-			Check(GetTree().CurrentScene.SceneFilePath == "res://scenes/Tutorial.tscn", "Tutorial navigation failed");
-			GetTree().CurrentScene.GetNode<Button>("%BackToLobby").EmitSignal(BaseButton.SignalName.Pressed);
-			await ToSignal(GetTree(), SceneTree.SignalName.SceneChanged);
-			Check(GetTree().CurrentScene is Lobby, "Tutorial return failed");
+			Check(GetTree().CurrentScene.SceneFilePath == "res://scenes/Intro.tscn", "Tutorial return failed");
 			GD.Print($"SCENE_RESIDENCY_OK resources={_resourceIds.Count}, round_trips=10, " +
 				$"lookup_median_ms={Median(_lookupMs):F3}, swap_call_median_ms={Median(_swapMs):F3}, " +
 				$"scene_ready_median_ms={Median(_readyMs):F3}, scene_ready_max_ms={_readyMs.Max():F3}");

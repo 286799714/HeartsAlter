@@ -10,13 +10,18 @@ public partial class Lobby : Control
 	[Export] public string Endpoint = ColyseusLobbyAdapter.DefaultEndpoint;
 	private const string DefaultHost = "ddns.maydaymemory.com";
 	private const string DefaultPort = "2567";
+	private const int PanelUnlockClickCount = 7;
+	private const ulong PanelUnlockClickIntervalMs = 1000;
 	private ColyseusLobbyAdapter _adapter;
 	private LineEdit _hostInput;
 	private LineEdit _portInput;
 	private OptionButton _endpointPreset;
 	private Label _status;
-	private Button _connectButton;
-	private Button _tutorialButton;
+	private Button _enterGameButton;
+	private Control _enterGameArt;
+	private Control _connectionPanel;
+	private int _panelUnlockClicks;
+	private ulong _lastPanelUnlockClick;
 	private bool _connecting;
 	private bool _transitioning;
 
@@ -79,6 +84,17 @@ public partial class Lobby : Control
 		_portInput.Text = DefaultPort;
 	}
 
+	private void HandlePanelUnlock()
+	{
+		if (_connectionPanel.Visible) return;
+		ulong now = Time.GetTicksMsec();
+		if (now - _lastPanelUnlockClick > PanelUnlockClickIntervalMs) _panelUnlockClicks = 0;
+		_lastPanelUnlockClick = now;
+		if (++_panelUnlockClicks < PanelUnlockClickCount) return;
+		_panelUnlockClicks = 0;
+		_connectionPanel.Show();
+	}
+
 	private bool TryBuildEndpoint(out string endpoint, out string error)
 	{
 		string host = _hostInput.Text.Trim();
@@ -107,16 +123,20 @@ public partial class Lobby : Control
 		_hostInput = GetNode<LineEdit>("%HostInput");
 		_portInput = GetNode<LineEdit>("%PortInput");
 		_endpointPreset = GetNode<OptionButton>("%EndpointPreset");
-		_connectButton = GetNode<Button>("%ConnectButton");
-		_tutorialButton = GetNode<Button>("%TutorialButton");
+		_enterGameButton = GetNode<Button>("%EnterGameButton");
+		_enterGameArt = GetNode<Control>("进入游戏按钮");
+		_connectionPanel = GetNode<Control>("ConnectionPanel");
+		_connectionPanel.Hide();
 		_status = GetNode<Label>("%ConnectionStatus");
 		_endpointPreset.ItemSelected += ApplyPreset;
-		_connectButton.Pressed += () => _ = ConnectAsync();
+		_enterGameButton.Pressed += () => _ = ConnectAsync();
 		_hostInput.TextSubmitted += text => _ = ConnectAsync();
 		_portInput.TextSubmitted += text => _ = ConnectAsync();
-		_tutorialButton.Pressed += () =>
+		GetNode<Button>("%ConnectionPanelUnlock").Pressed += HandlePanelUnlock;
+		GetNode<Button>("%HidePanelButton").Pressed += () =>
 		{
-			if (!_connecting && !_transitioning) SceneNavigation.Change(this, "res://scenes/Tutorial.tscn");
+			_connectionPanel.Hide();
+			_panelUnlockClicks = 0;
 		};
 		if (Uri.TryCreate(GameSession.ServerEndpoint, UriKind.Absolute, out var previous))
 		{
@@ -128,8 +148,8 @@ public partial class Lobby : Control
 	private void SetConnecting(bool connecting)
 	{
 		_connecting = connecting;
-		_connectButton.Disabled = connecting;
-		_tutorialButton.Disabled = connecting;
+		_enterGameButton.Disabled = connecting;
+		_enterGameArt.Modulate = connecting ? new Color(1, 1, 1, 0.55f) : Colors.White;
 		_endpointPreset.Disabled = connecting;
 		_hostInput.Editable = !connecting;
 		_portInput.Editable = !connecting;

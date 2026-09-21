@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HeartsAlter.Scripts.Generated;
+using HeartsAlter.Scripts.UI;
 
 namespace HeartsAlter.Scripts.InGame;
 
@@ -13,7 +14,9 @@ public partial class Table
 	private TextureButton _nextRoundButton;
 	private TextureButton _lobbyButton;
 	private BaseButton _exitButton;
-	private ConfirmationDialog _exitConfirmation;
+	private RoomDialog _exitConfirmation;
+	private RoomDialog _releaseRoomWindow;
+	private bool _roomDisbanded;
 	private bool _returningToLobby;
 	private bool _nextRoundPending;
 
@@ -31,9 +34,13 @@ public partial class Table
 	private void BindExitUi()
 	{
 		_exitButton = GetNode<BaseButton>("%ReturnToLobbyButton");
-		_exitConfirmation = GetNode<ConfirmationDialog>("ExitConfirmation");
+		_exitConfirmation = GetNode<RoomDialog>("RoomDialogs/QuitRoomWindow");
+		_releaseRoomWindow = GetNode<RoomDialog>("RoomDialogs/ReleaseRoomWindow");
 		_exitButton.Pressed += ConfirmExitRoom;
 		_exitConfirmation.Confirmed += () => _ = ReturnToLobbyAsync();
+		_exitConfirmation.Closed += () => _mainHandLayout.SetProcessInput(!_roomDisbanded);
+		_releaseRoomWindow.Confirmed += TransitionToLobby;
+		_releaseRoomWindow.Canceled += TransitionToLobby;
 		GetNode<CanvasLayer>("TableActions").Visible = UseNetworkSession;
 	}
 
@@ -41,7 +48,8 @@ public partial class Table
 	{
 		if (!UseNetworkSession || _returningToLobby || _networkTransitioning || _exitConfirmation.Visible) return;
 		UpdateExitConfirmation();
-		_exitConfirmation.PopupCentered(new Vector2I(520, 180));
+		_mainHandLayout.SetProcessInput(false);
+		_exitConfirmation.Open();
 	}
 
 	private void UpdateExitConfirmation()
@@ -50,7 +58,7 @@ public partial class Table
 		Player local = state?.players.TryGetValue(_networkAdapter.SessionId, out Player current) == true ? current : null;
 		bool host = local?.isHost == true;
 		int stake = local?.stake ?? 0;
-		_exitConfirmation.DialogText = state is null ? "确定退出并返回大厅吗？"
+		_exitConfirmation.Message = state is null ? "确定退出并返回大厅吗？"
 			: state.phase == "waiting" ? host
 				? "确定退出房间并返回大厅吗？房主将转交给其他玩家。"
 				: "确定退出房间并返回大厅吗？"
@@ -60,7 +68,7 @@ public partial class Table
 				: state.phase == "finished" ? "确定退出并返回大厅吗？机器人将接替你的席位。"
 				: stake > 0 ? $"退出将放弃本局投入的 {stake} 金币，由机器人接替。无需等待结算，可立即加入其他房间。确定退出吗？"
 				: "退出后由机器人接替，你尚未投入底注，可立即加入其他房间。确定退出吗？";
-		_exitConfirmation.OkButtonText = host && state?.phase != "waiting" ? "解散并退出" : "确认退出";
+		_exitConfirmation.ConfirmText = host && state?.phase != "waiting" ? "解散并退出" : "确定退出";
 	}
 
 	private void UpdateSettlementUi(MyRoomState state)
@@ -142,7 +150,25 @@ public partial class Table
 	}
 
 	private void HandleNetworkError(int code, string message) => HandleNetworkStatus($"错误：{message}");
-	private void HandleNetworkRoomLeft(int code) => TransitionToLobby();
+	private void HandleNetworkRoomDisbanded() => _roomDisbanded = true;
+
+	private void HandleNetworkRoomLeft(int code)
+	{
+		if (!_roomDisbanded || _returningToLobby)
+		{
+			TransitionToLobby();
+			return;
+		}
+		if (_networkTransitioning || !IsInsideTree()) return;
+		_returningToLobby = true;
+		_exitConfirmation.Close();
+		CancelLocalPassing();
+		CanMainPlayerPlay = false;
+		_mainHandLayout.SetProcessInput(false);
+		_exitButton.Disabled = true;
+		UpdateSettlementButtons();
+		_releaseRoomWindow.Open();
+	}
 
 	private void TransitionToLobby()
 	{

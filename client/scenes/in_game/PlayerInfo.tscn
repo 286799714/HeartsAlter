@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://dfyheemovxqsq"]
 
 [ext_resource type="Script" uid="uid://b6w8e8hrwy4rh" path="res://Scripts/InGame/PlayerInfo.cs" id="1_player_info"]
-[ext_resource type="Texture2D" uid="uid://bdn140738so8q" path="res://assets/textures/ui/profile_icon_1.jpg" id="2_8bcv7"]
+[ext_resource type="Script" path="res://Scripts/UI/ButtonSounds.cs" id="script_button_sounds"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="sound_button_click"]
+[ext_resource type="Texture2D" uid="uid://ctythfjxon5od" path="res://assets/textures/ui/profile_icon_1.jpg" id="2_8bcv7"]
 [ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_mc6l1"]
 [ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="5_y8dd1"]
 [ext_resource type="Texture2D" uid="uid://lqhhmwygqyda" path="res://assets/textures/ui/in_game/1f0c8eb5c6ee29d7f9755d353aea83f3d453e8f7_52dcbf7d1f6c5c93.png" id="6_cffnr"]
@@ -13,10 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://cgib1loe22uo6" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004.png" id="10_fvtd7"]
 [ext_resource type="Texture2D" uid="uid://dqtp1kglyhihy" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3_543714234a8e9e11.png" id="10_pe5dx"]
 [ext_resource type="Texture2D" uid="uid://7o4ttfdhyrt1" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380004_75f0845aed04ef02.png" id="11_4p063"]
+[ext_resource type="Texture2D" uid="uid://dnd5sweskktny" path="res://assets/textures/ui/in_game/afe2eed5173358a8fea93acdf08c2e7c1b380005.png" id="11_pe5dx"]
 [ext_resource type="Texture2D" uid="uid://b0ac84yu2jsdh" path="res://assets/textures/ui/avatar_ring.png" id="11_xev1v"]
-[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="11_xr5ue"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="11_xr5ue"]
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="12_4p063"]
 [ext_resource type="FontVariation" uid="uid://jw46yql2w7ym" path="res://assets/fonts/NotoSansCombine.tres" id="16_xev1v"]
+[ext_resource type="Texture2D" uid="uid://h2yl8i3pfoux" path="res://assets/textures/ui/in_game/00cbb37905cc7d8b8c14efc6c715c40cefd53b27_8d866cc86b813715.png" id="17_xr5ue"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pr66r"]
 content_margin_left = 0.0
@@ -154,7 +158,7 @@ shader_parameter/tile_texture = false
 shader_parameter/manual_scale = false
 shader_parameter/vert_offset = Vector2(0, 0)
 
-[sub_resource type="Shader" id="Shader_circle_crop"]
+[sub_resource type="Shader" id="Shader_xr5ue"]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -165,7 +169,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_circle_crop"]
-shader = SubResource("Shader_circle_crop")
+shader = SubResource("Shader_xr5ue")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gygtu"]
 content_margin_left = 0.0
@@ -628,6 +632,7 @@ offset_bottom = 273.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture_normal = ExtResource("10_fvtd7")
+texture_pressed = ExtResource("11_pe5dx")
 
 [node name="JoinedPlayerAvatar" type="Control" parent="." unique_id=1681863026]
 custom_minimum_size = Vector2(112, 120)
@@ -1051,6 +1056,7 @@ offset_bottom = 318.3688
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture_normal = ExtResource("9_pe5dx")
+texture_pressed = ExtResource("17_xr5ue")
 
 [node name="Label" type="Label" parent="JoinedPlayerInfo/InnerContainer/Waiting_踢出房间" unique_id=495263459]
 layout_mode = 1
@@ -1159,3 +1165,7 @@ text = "+0"
 [node name="CollectPoseMarker" type="Marker2D" parent="JoinedPlayerInfo/InnerContainer" unique_id=1600411257]
 position = Vector2(127.43629, 97.45128)
 scale = Vector2(1.4992504, 1.4992504)
+
+[node name="ButtonSounds" type="Node" parent="."]
+script = ExtResource("script_button_sounds")
+ClickSound = ExtResource("sound_button_click")

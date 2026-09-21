@@ -272,6 +272,12 @@ public partial class PlayerInfo : Control
 	/// </summary>
 	public void ApplyRoundScoreDelta(int scoreDelta)
 	{
+		ApplyRoundScoreDelta(scoreDelta, scoreTick: null);
+	}
+
+	/// <summary>Reports each visible score increase; true marks the final value.</summary>
+	internal void ApplyRoundScoreDelta(int scoreDelta, Action<bool> scoreTick)
+	{
 		ResolveSceneReferences();
 		CancelScoreAnimations();
 
@@ -283,6 +289,7 @@ public partial class PlayerInfo : Control
 
 		if (IsValid(_scoreValueLabel) && ScoreRollDuration > 0.0f)
 		{
+			int lastDisplayedScore = previousScore;
 			_scoreRollTween = CreateTween();
 			_scoreRollTween.TweenMethod(
 				Callable.From<float>(progress =>
@@ -293,7 +300,12 @@ public partial class PlayerInfo : Control
 					int displayedScore = Mathf.RoundToInt(
 						Mathf.Lerp(previousScore, nextScore, progress)
 					);
+					if (displayedScore == lastDisplayedScore)
+						return;
+					lastDisplayedScore = displayedScore;
 					_scoreValueLabel.Text = $"{displayedScore}";
+					if (appliedDelta > 0)
+						scoreTick?.Invoke(displayedScore == nextScore);
 				}),
 				0.0f,
 				1.0f,
@@ -306,6 +318,8 @@ public partial class PlayerInfo : Control
 		else
 		{
 			RefreshRoundScore();
+			if (appliedDelta > 0)
+				scoreTick?.Invoke(true);
 		}
 		if (appliedDelta == 0)
 		{

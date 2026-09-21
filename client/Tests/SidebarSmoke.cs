@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HeartsAlter.Scripts;
+using HeartsAlter.Scripts.Tutorial;
 using HeartsAlter.Scripts.UI;
 
 namespace HeartsAlter.Tests;
@@ -21,23 +22,24 @@ public partial class SidebarSmoke : Node
 			await Frames();
 			var sidebar = intro.GetNode<SidebarPanel>("%Sidebar");
 			var scroll = sidebar.GetNode<ScrollContainer>("TabScroll");
-			CheckSelection(sidebar, "CreateTab");
-			Check(!scroll.GetVScrollBar().Visible, "Three tabs should fit without a scrollbar");
+			CheckSelection(sidebar, "TutorialTab");
+			Check(intro.GetNode<Control>("%TutorialPage").Visible, "Intro must open on the tutorial page");
+			Check(!scroll.GetVScrollBar().Visible, "Four tabs should fit without a scrollbar");
 			int changes = 0;
 			sidebar.TabSelected += _ => changes++;
-			await Capture("sidebar-create");
-			foreach (string tab in new[] { "HistoryTab", "JoinTab", "CreateTab" })
+			await Capture("sidebar-tutorial-default");
+			foreach (string tab in new[] { "HistoryTab", "JoinTab", "CreateTab", "TutorialTab" })
 			{
 				await Click(Tab(sidebar, tab));
 				CheckSelection(sidebar, tab);
-				foreach (string page in new[] { "CreatePage", "JoinPage", "HistoryPage" })
+				foreach (string page in new[] { "CreatePage", "JoinPage", "HistoryPage", "TutorialPage" })
 					Check(intro.GetNode<Control>("%" + page).Visible == (page == tab.Replace("Tab", "Page")),
 						$"Page visibility did not follow {tab}: {page}");
 			}
-			await Click(Tab(sidebar, "CreateTab"));
-			CheckSelection(sidebar, "CreateTab");
-			Check(changes == 3, "Clicking the selected tab emitted a duplicate change");
-			Check(!sidebar.SelectTab("MissingTab") && sidebar.SelectedTab == "CreateTab", "Unknown tab changed selection");
+			await Click(Tab(sidebar, "TutorialTab"));
+			CheckSelection(sidebar, "TutorialTab");
+			Check(changes == 4, "Clicking the selected tab emitted a duplicate change");
+			Check(!sidebar.SelectTab("MissingTab") && sidebar.SelectedTab == "TutorialTab", "Unknown tab changed selection");
 			sidebar.SelectTab("JoinTab");
 			await Frames();
 			Check(intro.GetNode<Control>("%JoinPage").Visible, "Programmatic selection did not open its page");
@@ -80,12 +82,12 @@ public partial class SidebarSmoke : Node
 			CheckFullyVisible(scroll, Tab(many, "ExtraTab8"));
 			CheckSelection(many, "ExtraTab8");
 			CheckSelection(second, "CreateTab");
-			many.SelectTab("CreateTab");
+			many.SelectTab("TutorialTab");
 			await Frames();
 			Check(scroll.ScrollVertical == 0, "Selecting the first tab did not scroll back to the top");
 			await Wheel(scroll, MouseButton.WheelDown);
 			Check(scroll.ScrollVertical > 0, "Mouse wheel over a tab did not scroll down");
-			CheckSelection(many, "CreateTab");
+			CheckSelection(many, "TutorialTab");
 			await Wheel(scroll, MouseButton.WheelUp);
 			Check(scroll.ScrollVertical == 0, "Mouse wheel did not scroll up");
 			Tab(many, "ExtraTab8").GrabFocus();
@@ -95,7 +97,32 @@ public partial class SidebarSmoke : Node
 			CheckSelection(many, "ExtraTab8");
 			CheckSelection(second, "CreateTab");
 			await Capture("sidebar-overflow");
-			GD.Print("SIDEBAR_SMOKE_OK: page switching, selection, wheel scrolling, focus, overflow and independent instances");
+			many.QueueFree();
+			second.QueueFree();
+			await Frames();
+
+			// Keep the runner alive through the actual tutorial entry and return path.
+			GetTree().CurrentScene = null;
+			Check(SceneNavigation.Change(this, "res://scenes/Intro.tscn") == Error.Ok, "Could not open Intro");
+			await ToSignal(GetTree(), SceneTree.SignalName.SceneChanged);
+			await Frames();
+			intro = (Control)GetTree().CurrentScene;
+			sidebar = intro.GetNode<SidebarPanel>("%Sidebar");
+			await Click(Tab(sidebar, "TutorialTab"));
+			CheckSelection(sidebar, "TutorialTab");
+			var lessons = intro.GetNode<VBoxContainer>("%TutorialList").GetChildren().OfType<Control>()
+				.Where(row => row.Visible).ToArray();
+			Check(lessons.Length == TutorialCatalog.Lessons.Length, "Tutorial list does not match the lesson catalog");
+			await Capture("sidebar-tutorial");
+			await Click((Button)lessons[0].FindChild("StartTutorial", true, false));
+			Check(GetTree().CurrentScene is TutorialController { Phase: TutorialPhase.Guiding, LessonIndex: 0, StepIndex: 0 },
+				$"Tutorial entry did not start the selected lesson directly: {GetTree().CurrentScene?.SceneFilePath}, " +
+				$"phase={(GetTree().CurrentScene as TutorialController)?.Phase}");
+			await Click(GetTree().CurrentScene.GetNode<BaseButton>("Game/Table/TableActions/Quit/ReturnToLobbyButton"));
+			Check(GetTree().CurrentScene.SceneFilePath == "res://scenes/Intro.tscn", "Tutorial did not return to Intro");
+			CheckSelection(GetTree().CurrentScene.GetNode<SidebarPanel>("%Sidebar"), "TutorialTab");
+			Check(GetTree().CurrentScene.GetNode<Control>("%TutorialPage").Visible, "Return lost the tutorial page");
+			GD.Print("SIDEBAR_SMOKE_OK: four pages, selection, scrolling, focus, overflow, tutorial entry and return");
 		}
 		catch (Exception exception)
 		{

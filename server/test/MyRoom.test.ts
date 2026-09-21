@@ -242,8 +242,10 @@ describe("authoritative Hearts room", () => {
       await room.waitForMessage("table_ready");
     }
     assert.equal(room.state.phase, "dealing");
+    const disbanded = guest.waitForMessage("room_disbanded");
     const guestLeft = new Promise<number>((resolve) => guest.onLeave(resolve));
     await host.leave();
+    await disbanded;
     assert.equal(await guestLeft, 4000);
     assert.equal(getPlayerProfileStore().getByDevice("disband-host").chips, 1000);
     assert.equal(getPlayerProfileStore().getByDevice("disband-guest").chips, 1000);
@@ -519,6 +521,34 @@ describe("authoritative Hearts room", () => {
     assert.equal(room.state.players.get(client.sessionId)!.name, expected.name);
     await lobby.leave();
     const again = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "rename-a", name: "Overwrite" });
+    assert.deepEqual(await requestProfile(again), expected);
+  });
+
+  it("saves avatar edits only for the connected player and uses them in rooms and reconnects", async () => {
+    const lobby = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "avatar-a", name: "Alice" });
+    const original = await requestProfile(lobby);
+    const other = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "avatar-b", name: "Bob" });
+    const otherProfile = await requestProfile(other);
+    const avatarId = original.avatarId % 4 + 1;
+    const updated = lobby.waitForMessage("player_avatar_updated");
+    lobby.send("update_player_avatar", {
+      requestId: "avatar-1", avatarId, deviceId: "avatar-b",
+      playerId: otherProfile.playerId, chips: 99999, name: "Forged",
+    });
+    const expected = { ...original, avatarId };
+    assert.deepEqual(await updated, { ...expected, requestId: "avatar-1" });
+    assert.deepEqual(await requestProfile(lobby), expected);
+    assert.deepEqual(await requestProfile(other), otherProfile);
+    for (const invalid of [0, 5, 1.5, "2", null]) {
+      const rejected = lobby.waitForMessage("player_avatar_updated");
+      lobby.send("update_player_avatar", { requestId: "invalid-avatar", avatarId: invalid });
+      assert.match((await rejected).error, /头像/);
+      assert.deepEqual(await requestProfile(lobby), expected);
+    }
+    const { client, room } = await consumeReservation(lobby, "create_room", { name: "更换头像后建房" });
+    assert.equal(room.state.players.get(client.sessionId)!.avatarId, avatarId);
+    await lobby.leave();
+    const again = await colyseus.sdk.joinOrCreate("lobby", { deviceId: "avatar-a" });
     assert.deepEqual(await requestProfile(again), expected);
   });
 

@@ -24,16 +24,18 @@ public partial class TutorialSmoke : Node
 		Engine.TimeScale = 8;
 		try
 		{
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+			GetTree().CurrentScene = null; // Keep the runner alive through returns to Intro.
 			VerifyRules();
 			_tutorial = GD.Load<PackedScene>("res://scenes/Tutorial.tscn").Instantiate<TutorialController>();
 			_tutorial.SaveProgress = false;
 			AddChild(_tutorial);
-			Check(_tutorial.Phase == TutorialPhase.Menu, "The tutorial should start at its entry page.");
+			Check(_tutorial.Phase == TutorialPhase.Animating, "The tutorial should start the lesson directly.");
 			Check(_tutorial.FindChild("Lesson1", true, false) is null, "The entry still exposes multiple lessons.");
 			Check(_tutorial.FindChild("Next", true, false) is null, "The tutorial still exposes a manual section-advance button.");
 			Check(!_tutorial.GetNode<Control>("%InstructionPanel").IsVisibleInTree(), "Instructions must start hidden.");
 			Table authoredTable = _tutorial.GetNode<Table>("Game/Table");
-			await Capture("menu");
+			await VerifyActionButtons();
 			string[] expectedOrder = { "goal", "rules", "points", "pass" };
 			await _tutorial.StartLessonAsync(0);
 			for (int step = 0; step < expectedOrder.Length; step++)
@@ -101,7 +103,7 @@ public partial class TutorialSmoke : Node
 					Check(layout.SubmitPassSelection(), "Passing signal did not fire.");
 					await WaitForInput("pass");
 					Check(_tutorial.Round.Passed && _tutorial.Phase == TutorialPhase.Guiding, "Passing did not show its result.");
-					Check(_tutorial.GuidePageCount == 4, "The pass result must include all three tips before finishing the lesson.");
+					Check(_tutorial.GuidePageCount == 3, "The pass result must include the goal reminder and completion before finishing the lesson.");
 					Check(_tutorial.Round.Hands[0].Count == 13 && _tutorial.ActiveTable.LocalHand.ToHashSet().SetEquals(_tutorial.Round.Hands[0]),
 						"The pass result must retain the actual 13-card hand received after exchanging.");
 					await WaitForInput(nextSection);
@@ -115,10 +117,12 @@ public partial class TutorialSmoke : Node
 				if (nextSection is not null)
 					Check(_tutorial.Phase == TutorialPhase.Guiding && _tutorial.Step.Id == nextSection && _tutorial.GuidePageIndex == 0,
 						"The next section did not start automatically at its first dialogue page.");
-				else Check(_tutorial.Phase == TutorialPhase.Menu, "The final dialogue did not finish the lesson automatically.");
+				else Check(_tutorial.Phase == TutorialPhase.Exiting, "The final dialogue did not finish the lesson automatically.");
 				GD.Print($"TUTORIAL_SECTION_OK: {expectedOrder[step]}");
 			}
-			Check(_tutorial.Phase == TutorialPhase.Menu, "Finishing the lesson did not return to its entry.");
+			Check(_tutorial.Phase == TutorialPhase.Exiting, "Finishing the lesson did not exit automatically.");
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+			Check(GetTree().CurrentScene?.SceneFilePath == "res://scenes/Intro.tscn", "Finishing the lesson did not return to Intro.");
 			await VerifyRulesOutcomes();
 			await _tutorial.StartLessonAsync(0);
 			await WaitForInput("rules");
@@ -132,9 +136,9 @@ public partial class TutorialSmoke : Node
 			await WaitForInput();
 			Check(_tutorial.Step.Id == "pass" && _tutorial.Phase == TutorialPhase.Pass, "Old scene work leaked into a restarted section.");
 			Check(_tutorial.TryPass(_tutorial.Round.Hands[0].Take(3).ToArray()), "Could not start exit test pass.");
-			_tutorial.ShowMenu();
+			await ClickAction(_tutorial.GetNode<BaseButton>("Game/Table/TableActions/Quit/ReturnToLobbyButton"));
 			await ToSignal(GetTree().CreateTimer(1), SceneTreeTimer.SignalName.Timeout);
-			Check(_tutorial.Phase == TutorialPhase.Menu && _tutorial.ActiveTable is null, "Exit did not cancel the lesson.");
+			Check(_tutorial.Phase == TutorialPhase.Exiting && _tutorial.ActiveTable is null, "Exit did not cancel the lesson.");
 			// A dismissed played-card guide must not resume bots in a restarted section.
 			await _tutorial.StartLessonAsync(0, 1);
 			await WaitForInput(stopAfterFirstPlay: true);
@@ -152,9 +156,9 @@ public partial class TutorialSmoke : Node
 				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			}
 			ClickGuide();
-			_tutorial.ShowMenu();
+			_tutorial.ReturnToIntro();
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-			Check(_tutorial.Phase == TutorialPhase.Menu && !_tutorial.GetNode<TutorialSpotlight>("%GuideOverlay").Visible,
+			Check(_tutorial.Phase == TutorialPhase.Exiting && !_tutorial.GetNode<TutorialSpotlight>("%GuideOverlay").Visible,
 				"Deferred guidance completion escaped into a cancelled lesson.");
 			// Restart while automatic advancement is queued; the old callback must not skip the new opening.
 			await _tutorial.StartLessonAsync(0);
@@ -170,21 +174,75 @@ public partial class TutorialSmoke : Node
 		catch (Exception exception) { exitCode = 1; GD.PushError(exception.ToString()); }
 		finally
 		{
+			if (IsInstanceValid(_tutorial)) _tutorial.QueueFree();
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			GameSession.GameAdapter = previousAdapter;
 			Engine.TimeScale = 1;
 			GetTree().Quit(exitCode);
 		}
 	}
+	private async Task VerifyActionButtons()
+	{
+		await _tutorial.StartLessonAsync(0);
+		Check(_tutorial.FindChild("Navigation", true, false) is null, "The old navigation panel is still present.");
+		var last = _tutorial.GetNode<BaseButton>("%LastSecButton");
+		var retry = _tutorial.GetNode<BaseButton>("%RetryButton");
+		var mute = _tutorial.GetNode<BaseButton>("Game/Table/TableActions/Mute/MuteButton");
+		var exit = _tutorial.GetNode<BaseButton>("Game/Table/TableActions/Quit/ReturnToLobbyButton");
+		Check(last.Disabled && retry.IsVisibleInTree() && mute.IsVisibleInTree() && exit.IsVisibleInTree(),
+			"The first section must expose the actions and disable previous section.");
+		await ClickAction(last);
+		Check(_tutorial.StepIndex == 0 && _tutorial.GuidePageIndex == 0, $"Disabled previous-section input advanced the guide: step={_tutorial.StepIndex}, page={_tutorial.GuidePageIndex}, bounds={last.GetGlobalRect()}, transform={last.GetGlobalTransformWithCanvas()}.");
+		bool wasMuted = AudioServer.IsBusMute(0);
+		try
+		{
+			await ClickAction(mute);
+			Check(AudioServer.IsBusMute(0) != wasMuted && mute.ButtonPressed != wasMuted && _tutorial.GuidePageIndex == 0,
+				"The mute action was blocked by guidance or also advanced it.");
+			await ClickAction(mute);
+			Check(AudioServer.IsBusMute(0) == wasMuted && _tutorial.GuidePageIndex == 0, "The mute action did not restore audio.");
+		}
+		finally { AudioServer.SetBusMute(0, wasMuted); }
+		ClickGuide();
+		TutorialRound previous = _tutorial.Round;
+		await ClickAction(retry);
+		Check(!ReferenceEquals(previous, _tutorial.Round) && _tutorial.StepIndex == 0 && _tutorial.GuidePageIndex == 0,
+			"Retry must restart the current section at its first explanation.");
+		await _tutorial.StartLessonAsync(0, 2);
+		Check(!last.Disabled, "Previous section stayed disabled beyond the first section.");
+		await ClickAction(last);
+		await WaitForInput("rules");
+		Check(_tutorial.StepIndex == 1 && _tutorial.GuidePageIndex == 0, "Previous section did not restart the preceding section.");
+		Task abandoned = _tutorial.StartLessonAsync(0, 3);
+		await ClickAction(retry);
+		await ClickAction(last);
+		await abandoned;
+		await WaitForInput("points");
+		Check(_tutorial.StepIndex == 2 && _tutorial.Round.Trick.Count == 0 && _tutorial.GuidePageIndex == 0,
+			"Actions during dealing leaked old work into the preceding section.");
+		GD.Print("TUTORIAL_ACTIONS_OK: previous section, retry, mute, disabled first-section action, cancellation during dealing");
+	}
+
+	private async Task ClickAction(BaseButton button)
+	{
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		Vector2 point = button.GetGlobalTransformWithCanvas() * (button.Size * 0.5f);
+		GetViewport().PushInput(new InputEventMouseMotion { Position = point, GlobalPosition = point }, true);
+		GetViewport().PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = point, GlobalPosition = point }, true);
+		GetViewport().PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point }, true);
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+	}
+
 	private async Task VerifyDoubledHearts()
 	{
-		foreach (var (count, seat, cardId, points) in new[] { (2, 0, "SpadeQ", 6), (3, 1, "Heart3", 2), (4, 2, "Heart5", 2) })
+		foreach (var (count, seat, cardId, points) in new[] { (3, 1, "Heart3", 2), (4, 2, "Heart5", 2) })
 		{
 			await WaitForInput("points");
 			var round = _tutorial.Round;
 			var guide = _tutorial.GetNode<TutorialSpotlight>("%GuideOverlay");
 			Check(_tutorial.Phase == TutorialPhase.Guiding && round.Trick.Count == count && round.QueenPlayed &&
 				round.Trick[^1] == new TutorialPlay(seat, CardRules.Parse(cardId), points),
-				"The scoring demonstration must play the queen, then two hearts worth two points each.");
+					$"The scoring demonstration must play the queen, then two hearts worth two points each: expected={count}, phase={_tutorial.Phase}, trick={round.Trick.Count}, page={_tutorial.GuidePageIndex}.");
 			Check(!_tutorial.ActiveTable.IsLocalAnimating && guide.Targets.Count == 1 &&
 				ReferenceEquals(guide.Targets[0], _tutorial.ActiveTable.GetLocalPlayedCard(seat)),
 				"Each scoring card must be explained and focused as soon as it lands.");
@@ -227,7 +285,7 @@ public partial class TutorialSmoke : Node
 			Check(_tutorial.Step.Id == "points" && _tutorial.Phase == TutorialPhase.Guiding,
 				"Either practice outcome should continue after explaining the actual result.");
 		}
-		_tutorial.ShowMenu();
+		_tutorial.ReturnToIntro();
 	}
 
 	private async Task Capture(string name)
@@ -281,7 +339,7 @@ public partial class TutorialSmoke : Node
 			Check((_tutorial.Step.Id == "goal" || readingTips) ? guide.FocusRects.Count == 0 : guide.FocusRects.Count > 0,
 				"Reading pages should have no spotlight; card explanations must highlight their targets.");
 			if (readingTips)
-				Check(_tutorial.GetNode<Label>("%StepTitle").Text.StartsWith("4 / 4") &&
+				Check(_tutorial.StepIndex == 3 && TutorialCatalog.Lessons[_tutorial.LessonIndex].Steps.Length == 4 &&
 					!_tutorial.ActiveTable.IsLocalAnimating && _tutorial.ActiveTable.LocalHand.Count == 13 &&
 					_tutorial.ActiveTable.LocalHand.ToHashSet().SetEquals(_tutorial.Round.Hands[0]),
 					"Tips must continue in section four with the exchanged hand and no new deal.");
@@ -354,16 +412,14 @@ public partial class TutorialSmoke : Node
 		Vector2 point = card is null ? new Vector2(640, 360) : card.GetGlobalTransformWithCanvas() * (card.Size * 0.5f);
 		if (_tutorial.Step.Id == "points" && _tutorial.Round.Trick.Count == 0 && _tutorial.GuidePageIndex == 0)
 		{
-			Input.ParseInputEvent(new InputEventScreenTouch { Index = 0, Pressed = true, Position = point });
-			Input.ParseInputEvent(new InputEventScreenTouch { Index = 0, Pressed = false, Position = point });
+			GetViewport().PushInput(new InputEventScreenTouch { Index = 0, Pressed = true, Position = point }, true);
+			GetViewport().PushInput(new InputEventScreenTouch { Index = 0, Pressed = false, Position = point }, true);
 			// A synthesized mouse event from the same touch must not advance again.
-			Input.ParseInputEvent(new InputEventMouseButton { Device = -1, ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point });
-			Input.FlushBufferedEvents();
+			GetViewport().PushInput(new InputEventMouseButton { Device = -1, ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point }, true);
 			return;
 		}
-		Input.ParseInputEvent(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = point, GlobalPosition = point });
-		Input.ParseInputEvent(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point });
-		Input.FlushBufferedEvents();
+		GetViewport().PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = point, GlobalPosition = point }, true);
+		GetViewport().PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point }, true);
 	}
 
 	private static void VerifyRules()

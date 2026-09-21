@@ -19,6 +19,12 @@
 [ext_resource type="Script" uid="uid://cj7sk512h2oh0" path="res://Scripts/Intro.cs" id="20_intro"]
 [ext_resource type="Texture2D" uid="uid://cdlaotvfbpuie" path="res://assets/textures/ui/intro/edit_name.svg" id="21_edit_name"]
 [ext_resource type="PackedScene" path="res://scenes/ui/SidebarPanel.tscn" id="22_sidebar"]
+[ext_resource type="PackedScene" uid="uid://lqbs3gfbuxl5" path="res://scenes/ui/ChangeAvatarWindow.tscn" id="23_avatar_window"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="24_button_click"]
+[ext_resource type="AudioStream" uid="uid://bjfs2cg6jejy4" path="res://assets/sounds/intro_bgm.mp3" id="25_bgm"]
+[ext_resource type="Texture2D" uid="uid://1gs7slna54jk" path="res://assets/textures/ui/in_game/Frame 21.png" id="33_xhhg8"]
+[ext_resource type="Texture2D" uid="uid://bs2bsrfnlrpfg" path="res://assets/textures/ui/in_game/mmexport1790002884701-no-bg.png" id="34_xku4g"]
+[ext_resource type="Script" uid="uid://vwarp777esyi" path="res://Scripts/UI/MuteButton.cs" id="35_56mx5"]
 [ext_resource type="Texture2D" uid="uid://dww8i5lg6hwcj" path="res://assets/textures/ui/intro/generated/rgba-296x4-2e51344d5c185b67.png" id="png_2e51344d5c185b67"]
 [ext_resource type="Texture2D" uid="uid://b0eainbj68fqb" path="res://assets/textures/ui/intro/generated/rgba-1282x167-7b63c7ab873c20eb.png" id="png_7b63c7ab873c20eb"]
 [ext_resource type="Texture2D" uid="uid://c1eoymq2hmmqj" path="res://assets/textures/ui/intro/generated/rgba-24x24-35a0805cab7a0d15.png" id="png_35a0805cab7a0d15"]
@@ -87,6 +93,20 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w30yq"]
 shader = SubResource("Shader_circle_crop")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_Intro"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IntroFocus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.49, 0.2, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g63sr"]
 content_margin_left = 0.0
@@ -170,26 +190,12 @@ font = SubResource("FontVariation_bcpfc")
 font_size = 48
 font_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_Intro"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IntroHover"]
 bg_color = Color(1, 0.85, 0.55, 0.12)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IntroFocus"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.49, 0.2, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NameInput"]
 content_margin_left = 10.0
@@ -1829,6 +1835,23 @@ texture = ExtResource("6_l6ho0")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="EditPlayerAvatar" type="Button" parent="ProfilePanel/InnerContainer/Frame 114 xIDx81_9284x/InnerContainer/AvatarBlock/AvatarFrame" unique_id=1865890792]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "更换头像"
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/focus = SubResource("StyleBoxFlat_IntroFocus")
+
 [node name="Frame 116 xIDx81_9286x" type="ScrollContainer" parent="ProfilePanel/InnerContainer/Frame 114 xIDx81_9284x/InnerContainer" unique_id=1358546499]
 clip_contents = false
 layout_mode = 0
@@ -3401,7 +3424,6 @@ theme_override_constants/separation = 16
 
 [node name="RoomRowTemplate" type="ScrollContainer" parent="JoinPage/InnerContainer/RoomScroll/RoomList" unique_id=1310449855]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(0, 167)
 clip_contents = false
 layout_mode = 2
@@ -3420,6 +3442,7 @@ corner_radius = [0.0, 0.0, 0.0, 0.0]
 padding = [0, 0, 0, 0]
 
 [node name="房间列表项" type="Control" parent="JoinPage/InnerContainer/RoomScroll/RoomList/RoomRowTemplate" unique_id=1275517043]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
@@ -3776,9 +3799,9 @@ corner_radius = [59.0, 59.0, 59.0, 59.0]
 
 [node name="JoinText" type="Label" parent="JoinPage/InnerContainer/RoomScroll/RoomList/RoomRowTemplate/房间列表项/Frame 129 xIDx81_9370x/InnerContainer/JoinArt/InnerContainer" unique_id=611549055]
 layout_mode = 0
-offset_left = 90.0
+offset_left = 41.752563
 offset_top = 24.5
-offset_right = 171.0
+offset_right = 220.16345
 offset_bottom = 79.5
 text = "加入"
 label_settings = SubResource("LabelSettings_fckqj")
@@ -4330,6 +4353,186 @@ text = "暂无战绩"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TutorialPage" type="Control" parent="." unique_id=614377198]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.667, 0.667)
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="TutorialPage" unique_id=95930976]
+layout_mode = 0
+offset_left = 442.0
+offset_top = 354.0
+offset_right = 1781.0
+offset_bottom = 994.0
+mouse_filter = 2
+texture = ExtResource("png_201f376f296e86cc")
+expand_mode = 1
+
+[node name="HeaderIcon" type="TextureRect" parent="TutorialPage" unique_id=1110254787]
+layout_mode = 0
+offset_left = 471.0
+offset_top = 389.0
+offset_right = 526.0
+offset_bottom = 445.0
+mouse_filter = 2
+texture = ExtResource("19_xku4g")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="TutorialPage" unique_id=1465063815]
+layout_mode = 0
+offset_left = 542.0
+offset_top = 387.0
+offset_right = 1100.0
+offset_bottom = 447.0
+text = "新手教程"
+label_settings = SubResource("LabelSettings_b8qak")
+
+[node name="TutorialCount" type="Label" parent="TutorialPage" unique_id=995662623]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1513.0
+offset_top = 398.0
+offset_right = 1733.0
+offset_bottom = 436.0
+text = "共 1 关"
+label_settings = SubResource("LabelSettings_7hudx")
+horizontal_alignment = 2
+
+[node name="TutorialScroll" type="ScrollContainer" parent="TutorialPage" unique_id=201799192]
+layout_mode = 0
+offset_left = 471.0
+offset_top = 457.0
+offset_right = 1753.0
+offset_bottom = 963.0
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="TutorialList" type="VBoxContainer" parent="TutorialPage/TutorialScroll" unique_id=295424084]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="TutorialRowTemplate" type="Control" parent="TutorialPage/TutorialScroll/TutorialList" unique_id=950672097]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 167)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate" unique_id=1079517787]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("png_7b63c7ab873c20eb")
+expand_mode = 1
+
+[node name="LessonTitle" type="Label" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate" unique_id=667520193]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = -340.0
+offset_bottom = 85.0
+grow_horizontal = 2
+text = "第 1 关 · 新手教程"
+label_settings = SubResource("LabelSettings_jpphv")
+clip_text = true
+
+[node name="LessonDescription" type="Label" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate" unique_id=471723048]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 95.0
+offset_right = -340.0
+offset_bottom = 139.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.43529412, 0.21176471, 0.18431373, 1)
+theme_override_fonts/font = ExtResource("11_adwth")
+theme_override_font_sizes/font_size = 28
+text = "游戏目标 → 出牌规则 → 得分牌与实战 → 传牌与小技巧"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="StartArt" type="Control" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate" unique_id=1896999314]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -52.0
+offset_right = -40.0
+offset_bottom = 52.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outer" type="Panel" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate/StartArt" unique_id=1972595632]
+material = SubResource("ShaderMaterial_sbvbb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fn7nl")
+
+[node name="Inner" type="Panel" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate/StartArt" unique_id=1112942667]
+material = SubResource("ShaderMaterial_1oub0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_45cfb")
+
+[node name="StartTutorial" type="Button" parent="TutorialPage/TutorialScroll/TutorialList/TutorialRowTemplate/StartArt" unique_id=157149229]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = SubResource("FontVariation_id41f")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_IntroHover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_IntroHover")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_Intro")
+theme_override_styles/focus = SubResource("StyleBoxFlat_IntroFocus")
+text = "开始教程"
+
 [node name="Sidebar" parent="." unique_id=1489835052 instance=ExtResource("22_sidebar")]
 unique_name_in_owner = true
 layout_mode = 1
@@ -4345,6 +4548,7 @@ offset_bottom = 516.118
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.667, 0.667)
+InitialTab = &"TutorialTab"
 
 [node name="StatusBar" type="Panel" parent="." unique_id=1207431739]
 layout_mode = 1
@@ -4405,5 +4609,56 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_IntroHover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_IntroFocus")
 text = "返回标题页面"
 
+[node name="AvatarModal" type="CanvasLayer" parent="." unique_id=1029765590]
+layer = 10
+
+[node name="ChangeAvatarWindow" parent="AvatarModal" unique_id=1548915051 instance=ExtResource("23_avatar_window")]
+unique_name_in_owner = true
+visible = false
+
 [node name="Controller" type="Node" parent="." unique_id=1782243781]
 script = ExtResource("20_intro")
+ButtonClickSound = ExtResource("24_button_click")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=1108634584]
+stream = ExtResource("25_bgm")
+autoplay = true
+
+[node name="Mute" type="Control" parent="." unique_id=499518798]
+anchors_preset = 0
+offset_left = 38.000008
+offset_top = 17.0
+offset_right = 108.46479
+offset_bottom = 114.45126
+scale = Vector2(0.667, 0.667)
+
+[node name="MuteButton" type="TextureButton" parent="Mute" unique_id=1169552394]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
+grow_horizontal = 2
+tooltip_text = "静音"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("33_xhhg8")
+texture_pressed = ExtResource("34_xku4g")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("35_56mx5")
+
+[node name="Label" type="Label" parent="Mute" unique_id=1370263823]
+layout_mode = 0
+offset_left = 16.491756
+offset_top = 74.96252
+offset_right = 56.491756
+offset_bottom = 102.96252
+theme_override_fonts/font = ExtResource("8_kdtb6")
+theme_override_font_sizes/font_size = 20
+text = "声音"
+horizontal_alignment = 1
+vertical_alignment = 1

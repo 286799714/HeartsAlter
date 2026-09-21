@@ -9,6 +9,7 @@ using Godot;
 using HeartsAlter.Scripts;
 using HeartsAlter.Scripts.Generated;
 using HeartsAlter.Scripts.InGame;
+using HeartsAlter.Scripts.UI;
 
 namespace HeartsAlter.Tests;
 
@@ -17,6 +18,7 @@ public partial class IntroSmoke : Node
 {
 	private readonly List<Room<MyRoomState>> _hosts = new();
 	private string _captureDirectory;
+	private bool _avatarOnly;
 
 	public override async void _Ready()
 	{
@@ -25,6 +27,7 @@ public partial class IntroSmoke : Node
 		{
 			if (arg.StartsWith("--endpoint=")) endpoint = arg[11..];
 			if (arg.StartsWith("--capture-dir=")) _captureDirectory = arg[14..];
+			if (arg == "--avatar-only") _avatarOnly = true;
 		}
 		int exitCode = 0;
 		try
@@ -39,14 +42,14 @@ public partial class IntroSmoke : Node
 			Find<LineEdit>(Scene, "HostInput").Text = uri.Host;
 			Find<LineEdit>(Scene, "PortInput").Text = uri.Port.ToString();
 			await Capture("connection");
-			await Click(Find<Button>(Scene, "ConnectButton"));
+			await Click(Find<Button>(Scene, "EnterGameButton"));
 			await IntroReady();
 			var lobby = GameSession.LobbyAdapter;
 			Check(lobby.IsConnected, "Lobby did not hand off a live connection");
 			Check(lobby.Profile.Name == $"玩家 {lobby.Profile.PlayerId[..4]}", "Server-assigned nickname missing");
 			Check(U<Label>("PlayerName").Text == lobby.Profile.Name, "Saved name not displayed");
 			Check(U<Label>("PlayerChips").Text == lobby.Profile.Chips.ToString("N0", CultureInfo.InvariantCulture), "Saved balance not displayed");
-			Check(U<TextureRect>("PlayerAvatar").Texture.ResourcePath.EndsWith($"profile_icon_{lobby.Profile.AvatarId}.jpg"), "Wrong profile avatar");
+			Check(U<TextureRect>("AvatarTexture").Texture.ResourcePath.EndsWith($"profile_icon_{lobby.Profile.AvatarId}.jpg"), "Wrong profile avatar");
 			await Capture("intro-create");
 			var originalProfile = lobby.Profile;
 			await Click(U<Button>("EditPlayerName"));
@@ -82,6 +85,7 @@ public partial class IntroSmoke : Node
 			GetViewport().PushInput(new InputEventKey { Keycode = Key.Enter, Pressed = false }, true);
 			await Until(() => U<Label>("PlayerName").Visible && U<Label>("PlayerName").Text == "回车提交昵称", "nickname submitted with Enter");
 			await Capture("intro-name-saved");
+			int savedAvatarId = await ExerciseAvatarWindow(lobby);
 			await Click(Find<Button>(U<Control>("Sidebar"), "HistoryTab"));
 			Check(U<Control>("HistoryPage").Visible && U<Label>("EmptyHistory").IsVisibleInTree(), "History tab did not open its empty state");
 			Check(!Find<Control>(U<Control>("HistoryPage"), "战绩列表项").IsVisibleInTree(), "Sample history is still visible");
@@ -101,6 +105,16 @@ public partial class IntroSmoke : Node
 			Check(!lobby.IsConnected, "Intro leaked its lobby connection after entering a room");
 			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].isHost, "Room creator is not the host");
 			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].name == "回车提交昵称", "Room did not use saved nickname");
+			Check(GameSession.GameAdapter.State.players[GameSession.GameAdapter.SessionId].avatarId == savedAvatarId, "Room did not use saved avatar");
+			if (_avatarOnly)
+			{
+				await ConfirmTableExit("房主将转交");
+				Check(GameSession.Profile.AvatarId == savedAvatarId && U<TextureRect>("AvatarTexture").Texture.ResourcePath.EndsWith($"profile_icon_{savedAvatarId}.jpg"),
+					"Avatar did not persist after reconnecting");
+				await ExerciseAvatarSaveFailure(savedAvatarId);
+				GD.Print("AVATAR_SMOKE_OK: modal clicks, selection, keyboard focus, cancel, Escape, save, room identity, reconnect and disconnect failure");
+				return;
+			}
 			var heartsToggle = Find<CheckButton>(Scene, "HeartsBreakingToggle");
 			var discardToggle = Find<CheckButton>(Scene, "PointDiscardToggle");
 			Check(!heartsToggle.ButtonPressed && !discardToggle.ButtonPressed && !heartsToggle.Disabled && !discardToggle.Disabled,
@@ -119,6 +133,8 @@ public partial class IntroSmoke : Node
 			await IntroReady();
 			await Until(() => GameSession.LobbyAdapter.State.rooms.Count == 0, "created room removed after leaving");
 			Check(U<Label>("PlayerName").Text == "回车提交昵称", "Nickname did not persist after reconnecting");
+			Check(GameSession.Profile.AvatarId == savedAvatarId && U<TextureRect>("AvatarTexture").Texture.ResourcePath.EndsWith($"profile_icon_{savedAvatarId}.jpg"),
+				"Avatar did not persist after reconnecting");
 			await ExerciseGuestExit(endpoint);
 
 			// Seed enough real rooms to require scrolling; one is full and must not be joinable.
@@ -188,10 +204,11 @@ public partial class IntroSmoke : Node
 			await GameSession.LobbyAdapter.JoinRoomAsync("missing-room");
 			await Until(() => U<Label>("IntroStatus").Text.StartsWith("操作失败"), "server rejection surfaced");
 			Check(!U<Button>("CreateRoomButton").Disabled, "Server error left actions locked");
+			await ExerciseAvatarSaveFailure(savedAvatarId);
 			await Click(U<Button>("BackToConnection"));
 			await Until(() => Scene is Lobby, "return to connection screen");
 			Check(GameSession.LobbyAdapter == null, "Lobby connection was not released");
-			GD.Print("INTRO_SMOKE_OK: connection handoff, profile, nickname editing/validation/persistence, tab clicks, empty history, create/join, room rule toggles and guest synchronization, scrolling, live room updates, errors and return flow");
+			GD.Print("INTRO_SMOKE_OK: connection handoff, profile, nickname and avatar editing/validation/persistence, tab clicks, empty history, create/join, room rule toggles and guest synchronization, scrolling, live room updates, errors and return flow");
 		}
 		catch (Exception exception)
 		{
@@ -205,6 +222,60 @@ public partial class IntroSmoke : Node
 			foreach (var host in _hosts) await host.Leave(true);
 			GetTree().Quit(exitCode);
 		}
+	}
+
+	private async Task ExerciseAvatarSaveFailure(int savedAvatarId)
+	{
+		await Click(U<Button>("EditPlayerAvatar"));
+		var window = U<Control>("ChangeAvatarWindow");
+		await Click(window.GetNode<Button>($"%AvatarChoice{savedAvatarId % 4 + 1}"));
+		await GameSession.LobbyAdapter.DisconnectAsync();
+		await Click(window.GetNode<Button>("%ConfirmAvatar"));
+		await Until(() => window.GetNode<Label>("%AvatarStatus").Text.StartsWith("头像保存失败"), "avatar disconnect error");
+		Check(window.Visible && !window.GetNode<Button>("%ConfirmAvatar").Disabled, "Failed avatar save cannot be retried");
+		Check(GameSession.Profile.AvatarId == savedAvatarId, "Failed save changed the avatar");
+		await Click(window.GetNode<Button>("%CloseAvatar"));
+	}
+
+	private async Task<int> ExerciseAvatarWindow(ColyseusLobbyAdapter lobby)
+	{
+		var original = lobby.Profile;
+		int avatarId = original.AvatarId % 4 + 1;
+		var window = U<Control>("ChangeAvatarWindow");
+		Check(!window.Visible, "Avatar window opened before clicking the profile");
+		await Click(U<Button>("EditPlayerAvatar"));
+		Check(window.Visible && window.GetNode<Button>($"%AvatarChoice{original.AvatarId}").ButtonPressed, "Current avatar was not selected");
+		await Click(window.GetNode<Button>($"%AvatarChoice{avatarId}"));
+		Check(window.GetNode<Button>($"%AvatarChoice{avatarId}").ButtonPressed && !window.GetNode<Button>($"%AvatarChoice{original.AvatarId}").ButtonPressed,
+			"Avatar selection is not exclusive");
+		Check(lobby.Profile == original, "Selecting an avatar saved it before confirmation");
+		StringName selectedTab = U<SidebarPanel>("Sidebar").SelectedTab;
+		await Click(Find<Button>(U<Control>("Sidebar"), "HistoryTab"));
+		Check(U<SidebarPanel>("Sidebar").SelectedTab == selectedTab, "Modal click leaked into the sidebar");
+		for (int index = 0; index < 8; index++)
+		{
+			GetViewport().PushInput(new InputEventKey { Keycode = Key.Tab, Pressed = true }, true);
+			GetViewport().PushInput(new InputEventKey { Keycode = Key.Tab, Pressed = false }, true);
+			Check(window.IsAncestorOf(GetViewport().GuiGetFocusOwner()), "Keyboard focus escaped the avatar modal");
+		}
+		await Capture("intro-avatar-select");
+		await Click(window.GetNode<Button>("%CloseAvatar"));
+		Check(!window.Visible && lobby.Profile == original, "Closing saved the avatar draft");
+		await Click(U<Button>("EditPlayerAvatar"));
+		Check(window.GetNode<Button>($"%AvatarChoice{original.AvatarId}").ButtonPressed, "Reopening kept the cancelled draft");
+		GetViewport().PushInput(new InputEventKey { Keycode = Key.Escape, Pressed = true }, true);
+		GetViewport().PushInput(new InputEventKey { Keycode = Key.Escape, Pressed = false }, true);
+		Check(!window.Visible && U<Button>("EditPlayerAvatar").HasFocus(), "Escape did not close and restore focus");
+		await Click(U<Button>("EditPlayerAvatar"));
+		await Click(window.GetNode<Button>($"%AvatarChoice{avatarId}"));
+		await Click(window.GetNode<Button>("%ConfirmAvatar"), repeat: 2);
+		await Until(() => !window.Visible && lobby.Profile.AvatarId == avatarId, "avatar saved");
+		Check(GameSession.Profile.AvatarId == avatarId && U<TextureRect>("AvatarTexture").Texture.ResourcePath.EndsWith($"profile_icon_{avatarId}.jpg"),
+			"Saved avatar did not refresh the session and profile panel");
+		Check(lobby.Profile.Name == original.Name && lobby.Profile.Chips == original.Chips && lobby.Profile.PlayerId == original.PlayerId,
+			"Changing avatar modified unrelated profile fields");
+		await Capture("intro-avatar-saved");
+		return avatarId;
 	}
 
 	private async Task ExerciseWaitingTable(string endpoint)
@@ -330,13 +401,13 @@ public partial class IntroSmoke : Node
 		var table = (Table)Scene;
 		var adapter = GameSession.GameAdapter;
 		await Click(table.GetNode<BaseButton>("%ReturnToLobbyButton"));
-		var dialog = table.GetNode<ConfirmationDialog>("ExitConfirmation");
-		Check(dialog.Visible && dialog.DialogText.Contains(expectedMessage), "Exit confirmation did not explain the role-specific consequence");
-		dialog.GetCancelButton().EmitSignal(BaseButton.SignalName.Pressed);
+		var dialog = table.GetNode<RoomDialog>("RoomDialogs/QuitRoomWindow");
+		Check(dialog.Visible && dialog.Message.Contains(expectedMessage), "Exit confirmation did not explain the role-specific consequence");
+		dialog.GetNode<Button>("%CancelButton").EmitSignal(BaseButton.SignalName.Pressed);
 		await Frames();
 		Check(!dialog.Visible && ReferenceEquals(Scene, table) && adapter.IsConnected, "Cancel must keep the room connection and table");
 		await Click(table.GetNode<BaseButton>("%ReturnToLobbyButton"));
-		dialog.GetOkButton().EmitSignal(BaseButton.SignalName.Pressed);
+		dialog.GetNode<Button>("%ConfirmButton").EmitSignal(BaseButton.SignalName.Pressed);
 		await IntroReady();
 	}
 

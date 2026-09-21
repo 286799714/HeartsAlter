@@ -13,6 +13,7 @@ config_version=5
 config/name="HeartsAlter"
 run/main_scene="res://scenes/Lobby.tscn"
 config/features=PackedStringArray("4.7", "C#")
+boot_splash/image="uid://c61kshe22r210"
 config/icon="res://icon.svg"
 
 [autoload]

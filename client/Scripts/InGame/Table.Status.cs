@@ -21,20 +21,19 @@ public partial class Table
 
 	private void UpdateInGameStatus(MyRoomState state)
 	{
-		PokerSuit? leadSuit = state.trick?.Count > 0 ? state.leadSuit switch
-		{
-			"clubs" or "club" => PokerSuit.Club,
-			"diamonds" or "diamond" => PokerSuit.Diamond,
-			"hearts" or "heart" => PokerSuit.Heart,
-			"spades" or "spade" => PokerSuit.Spade,
-			_ => null,
-		} : null;
-		SetInGameStatus(state.pot, state.trickNumber, leadSuit);
+		_potAmount.Text = state.pot.ToString();
+		// Trick labels follow presented plays and completed collect animations;
+		// state patches can already describe a later trick while cards still fly.
 	}
 
 	private void SetInGameStatus(int pot, int completedTricks, PokerSuit? leadSuit)
 	{
 		_potAmount.Text = pot.ToString();
+		SetTrickStatus(completedTricks, leadSuit);
+	}
+
+	private void SetTrickStatus(int completedTricks, PokerSuit? leadSuit)
+	{
 		// The server counts completed tricks; roundNumber counts whole games.
 		_currentTrickNumber.Text = (Math.Clamp(completedTricks, 0, 12) + 1).ToString();
 		string symbol = leadSuit switch

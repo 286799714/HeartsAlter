@@ -1,0 +1,504 @@
+[gd_scene format=3 uid="uid://bvfrmaylsmy5e"]
+
+[ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="1_fwktw"]
+[ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="2_cbqvh"]
+[ext_resource type="Texture2D" uid="uid://bocc25ohyboqg" path="res://assets/textures/ui/intro/generated/rgba-1200x730-73001ab300284c48.png" id="3_mau2b"]
+[ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="4_0sirf"]
+[ext_resource type="Texture2D" uid="uid://c73hkrs3pxewg" path="res://assets/textures/ui/intro/f8a636c90d807831d48add416ec6830756f642bd_622c47a2be82ec80.png" id="5_kksk3"]
+[ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="6_aq0wv"]
+[ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="7_6aet7"]
+
+[ext_resource type="Script" path="res://Scripts/UI/RoomDialog.cs" id="script_room_dialog"]
+[ext_resource type="Script" path="res://Scripts/UI/ButtonSounds.cs" id="script_button_sounds"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="sound_button_click"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7xlv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_etyru"]
+shader = ExtResource("2_cbqvh")
+shader_parameter/image_texture = ExtResource("3_mau2b")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(1200, 730)
+shader_parameter/texture_size = Vector2(1200, 730)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1aioa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h4l2i"]
+shader = ExtResource("2_cbqvh")
+shader_parameter/image_texture = ExtResource("5_kksk3")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(72, 72)
+shader_parameter/texture_size = Vector2(72, 72)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81ks3"]
+
+[sub_resource type="FontVariation" id="FontVariation_4eh76"]
+base_font = ExtResource("6_aq0wv")
+spacing_glyph = 2
+
+[sub_resource type="FontVariation" id="FontVariation_bxmwl"]
+base_font = SubResource("FontVariation_4eh76")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_tac3s"]
+line_spacing = 0.0
+font = SubResource("FontVariation_bxmwl")
+font_size = 48
+outline_size = 2
+outline_color = Color(0.21577278, 0.034224175, 0.029317454, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mehia"]
+bg_color = Color(0.963136, 0.9314658, 0.8443731, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8123472, 0.8029898, 0.77608716, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f31nh"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_synxx"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 83
+corner_radius_top_right = 83
+corner_radius_bottom_right = 83
+corner_radius_bottom_left = 83
+
+[sub_resource type="Gradient" id="Gradient_4m8bl"]
+colors = PackedColorArray(0.53333336, 0.12941177, 0.043137256, 1, 0.29411766, 0.0627451, 0.019607844, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_esjd4"]
+gradient = SubResource("Gradient_4m8bl")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+script = ExtResource("7_6aet7")
+figma_transform = Transform2D(0, -1, 1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mc0ov"]
+shader = ExtResource("2_cbqvh")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_esjd4")
+shader_parameter/use_gradient = true
+shader_parameter/use_image = false
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(0, 0)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_po1em"]
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.7764706, 0.3137255, 1)
+corner_radius_top_left = 63
+corner_radius_top_right = 63
+corner_radius_bottom_right = 63
+corner_radius_bottom_left = 63
+
+[sub_resource type="Gradient" id="Gradient_uvewn"]
+colors = PackedColorArray(0.53333336, 0.12941177, 0.043137256, 1, 0.29411766, 0.0627451, 0.019607844, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_emw57"]
+gradient = SubResource("Gradient_uvewn")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+script = ExtResource("7_6aet7")
+figma_transform = Transform2D(0, -1, 1, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_bwmup"]
+colors = PackedColorArray(0.85490197, 0.19607843, 0.14901961, 1, 0.6509804, 0.12156863, 0.105882354, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kieu5"]
+gradient = SubResource("Gradient_bwmup")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+script = ExtResource("7_6aet7")
+figma_transform = Transform2D(0, -1, 1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysgbb"]
+shader = ExtResource("2_cbqvh")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_kieu5")
+shader_parameter/use_gradient = true
+shader_parameter/use_image = false
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(0, 0)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = true
+shader_parameter/fill_rect = true
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0khai"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.93333334, 0.60784316, 1)
+corner_radius_top_left = 59
+corner_radius_top_right = 59
+corner_radius_bottom_right = 59
+corner_radius_bottom_left = 59
+
+[sub_resource type="Gradient" id="Gradient_566gq"]
+colors = PackedColorArray(0.85490197, 0.19607843, 0.14901961, 1, 0.6509804, 0.12156863, 0.105882354, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nxtwp"]
+gradient = SubResource("Gradient_566gq")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+script = ExtResource("7_6aet7")
+figma_transform = Transform2D(0, -1, 1, 0, 0, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_le6y1"]
+base_font = ExtResource("6_aq0wv")
+spacing_glyph = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_vmmow"]
+line_spacing = 0.0
+font = SubResource("FontVariation_le6y1")
+font_size = 40
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5xo36"]
+
+[node name="ReleaseRoomWindow" type="Control" unique_id=1750392095]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("script_room_dialog")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0.5)
+
+[node name="DialogContent" type="ScrollContainer" parent="." unique_id=1519547874]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1200, 730)
+clip_contents = false
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 730.0
+scale = Vector2(0.667, 0.667)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k7xlv")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("1_fwktw")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(1200, 730)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="DialogContent" unique_id=204981233]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="外框" type="Panel" parent="DialogContent/InnerContainer" unique_id=1779351802]
+material = SubResource("ShaderMaterial_etyru")
+custom_minimum_size = Vector2(1200, 730)
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 730.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1aioa")
+script = ExtResource("4_0sirf")
+minSize = Vector2(1200, 730)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("3_mau2b")
+textureSizeMode = "Stretch"
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+metadata/figma_slice_children = PackedStringArray("I132:2518;132:2489", "I132:2518;132:2490", "I132:2518;132:2491", "I132:2518;132:2492", "I132:2518;132:2493", "I132:2518;132:2494", "I132:2518;132:2495", "I132:2518;132:2496", "I132:2518;132:2497")
+
+[node name="关闭按钮" type="Panel" parent="DialogContent/InnerContainer" unique_id=1223871989]
+material = SubResource("ShaderMaterial_h4l2i")
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 0
+offset_left = 1064.0
+offset_top = 64.0
+offset_right = 1136.0
+offset_bottom = 136.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_81ks3")
+script = ExtResource("4_0sirf")
+minSize = Vector2(72, 72)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("5_kksk3")
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+
+[node name="Title" type="Label" parent="DialogContent/InnerContainer" unique_id=6915757]
+layout_mode = 0
+offset_left = 503.0
+offset_top = 67.0
+offset_right = 698.0
+offset_bottom = 133.0
+text = "房间解散"
+label_settings = SubResource("LabelSettings_tac3s")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="列表遮罩" type="Panel" parent="DialogContent/InnerContainer" unique_id=1318212739]
+custom_minimum_size = Vector2(1035, 312)
+layout_mode = 0
+offset_left = 83.0
+offset_top = 191.0
+offset_right = 1118.0
+offset_bottom = 503.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mehia")
+script = ExtResource("4_0sirf")
+minSize = Vector2(1035, 312)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0.963136, 0.9314658, 0.8443731, 1)
+use_solid_fill = true
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(0.8123472, 0.8029898, 0.77608716, 1)
+corner_radius = [16.0, 16.0, 16.0, 16.0]
+
+[node name="ConfirmArt" type="ScrollContainer" parent="DialogContent/InnerContainer" unique_id=2098097072]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 0
+offset_left = 415.0
+offset_top = 543.0
+offset_right = 815.0
+offset_bottom = 647.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f31nh")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("1_fwktw")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="DialogContent/InnerContainer/ConfirmArt" unique_id=2024319432]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="按钮底板 _ 红金胶囊 xIDxI132_3436;132_3417x" type="ScrollContainer" parent="DialogContent/InnerContainer/ConfirmArt/InnerContainer" unique_id=1188807866]
+custom_minimum_size = Vector2(400, 104)
+clip_contents = false
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 104.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_synxx")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("1_fwktw")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(400, 104)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [83.0, 83.0, 83.0, 83.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="DialogContent/InnerContainer/ConfirmArt/InnerContainer/按钮底板 _ 红金胶囊 xIDxI132_3436;132_3417x" unique_id=1208056957]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Rectangle xIDxI132_3436;132_3418x" type="Panel" parent="DialogContent/InnerContainer/ConfirmArt/InnerContainer/按钮底板 _ 红金胶囊 xIDxI132_3436;132_3417x/InnerContainer" unique_id=1994491297]
+material = SubResource("ShaderMaterial_mc0ov")
+custom_minimum_size = Vector2(400, 104)
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 104.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_po1em")
+script = ExtResource("4_0sirf")
+minSize = Vector2(400, 104)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_gradient = SubResource("GradientTexture2D_emw57")
+border_weights = [3.0, 3.0, 3.0, 3.0]
+border_color = Color(1, 0.7764706, 0.3137255, 1)
+corner_radius = [63.0, 63.0, 63.0, 63.0]
+
+[node name="Rectangle xIDxI132_3436;132_3419x" type="Panel" parent="DialogContent/InnerContainer/ConfirmArt/InnerContainer/按钮底板 _ 红金胶囊 xIDxI132_3436;132_3417x/InnerContainer" unique_id=1519242021]
+material = SubResource("ShaderMaterial_ysgbb")
+custom_minimum_size = Vector2(392, 96)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 396.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0khai")
+script = ExtResource("4_0sirf")
+minSize = Vector2(392, 96)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_gradient = SubResource("GradientTexture2D_nxtwp")
+border_weights = [1.0, 1.0, 1.0, 1.0]
+border_color = Color(1, 0.93333334, 0.60784316, 1)
+corner_radius = [59.0, 59.0, 59.0, 59.0]
+
+[node name="ConfirmText" type="Label" parent="DialogContent/InnerContainer/ConfirmArt/InnerContainer/按钮底板 _ 红金胶囊 xIDxI132_3436;132_3417x/InnerContainer" unique_id=1319440661]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.5
+offset_right = 376.0
+offset_bottom = 79.5
+text = "返回大厅"
+label_settings = SubResource("LabelSettings_vmmow")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="CloseButton" type="Button" parent="DialogContent/InnerContainer" unique_id=674350103]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1064.0
+offset_top = 64.0
+offset_right = 1136.0
+offset_bottom = 136.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5xo36")
+
+[node name="ConfirmButton" type="Button" parent="DialogContent/InnerContainer" unique_id=1280796203]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 415.0
+offset_top = 543.0
+offset_right = 815.0
+offset_bottom = 647.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_5xo36")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5xo36")
+
+[node name="Message" type="Label" parent="DialogContent/InnerContainer" unique_id=1288960773]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 110.0
+offset_top = 203.89803
+offset_right = 1090.0
+offset_bottom = 495.0
+theme_override_colors/font_color = Color(0.4, 0.25, 0.15, 1)
+theme_override_font_sizes/font_size = 33
+text = "房主解散了当前房间，您可以返回大厅继续游玩。"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonSounds" type="Node" parent="."]
+script = ExtResource("script_button_sounds")
+ClickSound = ExtResource("sound_button_click")

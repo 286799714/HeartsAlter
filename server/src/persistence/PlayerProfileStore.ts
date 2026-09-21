@@ -78,6 +78,17 @@ export class PlayerProfileStore {
     return this.getByDevice(deviceId);
   }
 
+  updateAvatar(deviceId: string, value: unknown): PlayerProfile {
+    readDeviceId(deviceId);
+    if (typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > AVATAR_COUNT) {
+      throw new Error("请选择有效头像");
+    }
+    const result = this.database.prepare("UPDATE player_profiles SET avatar_id = ? WHERE device_id = ?")
+      .run(value, deviceId);
+    if (result.changes !== 1) throw new Error("玩家存档不存在");
+    return this.getByDevice(deviceId);
+  }
+
   claimSeat(playerId: string, owner: string) {
     const existing = this.activeSeats.get(playerId);
     if (existing && existing !== owner) throw new Error("此设备已在游戏房间中，请先离开原房间");

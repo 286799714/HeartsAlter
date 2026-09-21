@@ -105,6 +105,10 @@ public partial class Table : Control
 	[Export]
 	public float DealInterval = 0.12f;
 
+	/// <summary>Audio-clock spacing between deal sounds, independent of card flights.</summary>
+	[Export(PropertyHint.Range, "0.05,1,0.01,or_greater,suffix:s")]
+	public float DealSoundInterval = 0.12f;
+
 	/// <summary>Pause after the last dealt card lands before arranging the hand.</summary>
 	[Export]
 	public float ArrangeDelay = 0.2f;
@@ -120,6 +124,12 @@ public partial class Table : Control
 	public event Action<int, CardData> MainPlayerCardPlayRequested;
 
 	private readonly List<OtherHandLayout> _opponentHands = new();
+	private DealSoundPlayer _dealSound;
+	private AudioStreamPlayer _playSound;
+	private AudioStreamPlayer _collectSound;
+	private AudioStreamPlayer _passSound;
+	private AudioStreamPlayer _scoreSound;
+	private AudioStreamPlayer _scoreTickSound;
 	private readonly List<CollectFlight> _preparedCollectFlights = new(PlayerCount);
 	private int _dealGeneration;
 	private int _dealFlights;
@@ -268,6 +278,7 @@ public partial class Table : Control
 			_networkAdapter.InvalidPlay += HandleNetworkStatus;
 			_networkAdapter.Error += HandleNetworkError;
 			_networkAdapter.Left += HandleNetworkRoomLeft;
+			_networkAdapter.RoomDisbanded += HandleNetworkRoomDisbanded;
 			MainPlayerCardPlayRequested += HandleNetworkCardPlayRequested;
 			if (reservation is not null && !_networkAdapter.IsConnected)
 				_ = ConnectWaitingRoomAsync(reservation);
@@ -314,6 +325,7 @@ public partial class Table : Control
 			_networkAdapter.InvalidPlay -= HandleNetworkStatus;
 			_networkAdapter.Error -= HandleNetworkError;
 			_networkAdapter.Left -= HandleNetworkRoomLeft;
+			_networkAdapter.RoomDisbanded -= HandleNetworkRoomDisbanded;
 			MainPlayerCardPlayRequested -= HandleNetworkCardPlayRequested;
 			_networkHandCards.Clear();
 			_networkPassingSelections.Clear();
@@ -620,7 +632,9 @@ public partial class Table : Control
 					ReceiveCard(flight.Destination, flight.Card);
 			}
 		}
-		if (_networkPassFlights == 0)
+		if (_networkPassFlights > 0)
+			_passSound?.Play();
+		else
 			FinishNetworkPassingAnimation(generation);
 	}
 
@@ -917,6 +931,7 @@ public partial class Table : Control
 		_networkProgressRound = roundNumber;
 		_networkLastPlaySequence = 0;
 		_networkLastResolvedTrick = 0;
+		SetTrickStatus(0, null);
 		_networkPlayAnimating = false;
 		_pendingNetworkPlays.Clear();
 		_pendingNetworkTrickResolutions.Clear();
@@ -995,6 +1010,7 @@ public partial class Table : Control
 			started = visualIndex >= 0 && _mainHandLayout.TryPlayCard(visualIndex, completed);
 			if (started)
 			{
+				_playSound?.Play();
 				SetMainPlayerPlayEnabled(false);
 				_mainHandLayout.SetSelectionEnabled(false);
 				int localIndex = _networkHandCards.FindIndex(candidate => ToCardId(candidate) == play.CardId);
@@ -1013,6 +1029,8 @@ public partial class Table : Control
 
 		if (started)
 		{
+			if ((play.PlaySequence - 1) % PlayerCount == 0)
+				SetTrickStatus((play.PlaySequence - 1) / PlayerCount, card.Suit);
 			SetMainPlayerPlayEnabled(false);
 			_mainHandLayout?.SetSelectionEnabled(false);
 		}
@@ -1121,6 +1139,7 @@ public partial class Table : Control
 			return false;
 		}
 
+		_playSound?.Play();
 		_rightPlayerPlayCompleted = false;
 		SetMainPlayerPlayEnabled(false);
 		_mainHandLayout.SetSelectionEnabled(false);
@@ -1264,9 +1283,11 @@ public partial class Table : Control
 		int collectingPlayerIndex = _collectingPlayerIndex;
 		int roundScoreDelta = _pendingRoundScoreDelta;
 		ResetCollectTrickState();
+		if (_networkAdapter is not null)
+			SetTrickStatus(_networkLastPlaySequence / PlayerCount, null);
 
 		if (collector is not null && IsInstanceValid(collector))
-			collector.ApplyRoundScoreDelta(roundScoreDelta);
+			collector.ApplyRoundScoreDelta(roundScoreDelta, PlayScoreTick);
 
 		if (collectingPlayerIndex == MainPlayerIndex ||
 			(collectingPlayerIndex != MainPlayerIndex && _rightPlayerPlayCompleted))
@@ -1276,6 +1297,15 @@ public partial class Table : Control
 		if (_networkAdapter?.State is MyRoomState state && state.phase == "playing")
 			UpdateNetworkTurn(state.currentTurn, state.turnDuration > 0 ? state.turnDuration : 15_000, state);
 		DrainNetworkProgress();
+	}
+
+	private void PlayScoreTick(bool isFinal)
+	{
+		AudioStreamPlayer sound = isFinal ? _scoreSound : _scoreTickSound;
+		if (sound is null || !IsInstanceValid(sound) || !IsInsideTree())
+			return;
+		// Separate polyphonic players preserve each tail at its original volume.
+		sound.Play();
 	}
 
 	private bool TryPrepareCollectTrickCards(int generation)
@@ -1330,6 +1360,16 @@ public partial class Table : Control
 				if (IsInstanceValid(card))
 					card.QueueFree();
 			}
+		}
+
+		if (_collectFlights > 0 && _collectSound is not null)
+		{
+			// Match the shared flight delay and play once for the whole trick.
+			CreateTween().TweenCallback(Callable.From(() =>
+			{
+				if (generation == _collectGeneration)
+					_collectSound.Play();
+			})).SetDelay(Math.Max(0.0f, TrickCollectDelay));
 		}
 
 		_collectDispatchCompleted = true;
@@ -1487,6 +1527,7 @@ public partial class Table : Control
 			return;
 
 		_dealDispatchCompleted = true;
+		_dealSound?.EndSequence();
 		TryCompleteDeal(generation);
 	}
 
@@ -1541,6 +1582,7 @@ public partial class Table : Control
 		}
 
 		_cardDeck.ChangeCardCount(_cardDeck.CardCount - 1);
+		_dealSound?.BeginSequence(DealSoundInterval);
 		return true;
 	}
 
@@ -1690,6 +1732,12 @@ public partial class Table : Control
 
 	private void ResolveSceneReferences()
 	{
+		_dealSound = GetNodeOrNull<DealSoundPlayer>("Sounds/Deal");
+		_playSound = GetNodeOrNull<AudioStreamPlayer>("Sounds/Play");
+		_collectSound = GetNodeOrNull<AudioStreamPlayer>("Sounds/Collect");
+		_passSound = GetNodeOrNull<AudioStreamPlayer>("Sounds/Pass");
+		_scoreSound = GetNodeOrNull<AudioStreamPlayer>("Sounds/Score");
+		_scoreTickSound = GetNodeOrNull<AudioStreamPlayer>("Sounds/ScoreTicks");
 		_cardDeck = Resolve(_cardDeck, "CardDeck");
 		_mainHandLayout = Resolve(_mainHandLayout, "MainHandLayout");
 		_otherHandLayout = Resolve(_otherHandLayout, "OtherHandLayout");
@@ -1774,6 +1822,19 @@ public partial class Table : Control
 
 	private void ClearHandsAndPlayAreas()
 	{
+		_dealSound?.ResetSequence();
+		_playSound?.Stop();
+		_collectSound?.Stop();
+		_passSound?.Stop();
+		_scoreSound?.Stop();
+		_scoreTickSound?.Stop();
+		// Cancel score ticks as well as their current playback when restarting.
+		for (int seat = 0; seat < PlayerCount; seat++)
+		{
+			PlayerInfo player = GetPlayerInfo(seat);
+			if (player is not null && IsInstanceValid(player))
+				player.SetRoundScore(player.RoundScore);
+		}
 		_mainHandLayout.ClearCards();
 		foreach (OtherHandLayout hand in _opponentHands)
 			hand.ClearCards();
@@ -1859,7 +1920,7 @@ public partial class Table : Control
 		CardData cardData,
 		Action<CardControl> completed = null)
 	{
-		return hand is not null &&
+		bool started = hand is not null &&
 			IsInstanceValid(hand) &&
 				hand.TryPlayCard(
 				cardIndex,
@@ -1870,6 +1931,9 @@ public partial class Table : Control
 					completed?.Invoke(playedCard);
 				}
 			);
+		if (started)
+			_playSound?.Play();
+		return started;
 	}
 
 	private void HandleOpponentPlayCompleted(int playerIndex, CardControl playedCard)

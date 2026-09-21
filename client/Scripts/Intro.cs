@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HeartsAlter.Scripts.Generated;
+using HeartsAlter.Scripts.Tutorial;
 using HeartsAlter.Scripts.UI;
 
 namespace HeartsAlter.Scripts;
@@ -12,10 +13,14 @@ namespace HeartsAlter.Scripts;
 /// <summary>Binds the imported Intro artwork to the server-owned lobby and profile.</summary>
 public partial class Intro : Node
 {
+	[Export] public AudioStream ButtonClickSound { get; set; }
+
 	private ColyseusLobbyAdapter _adapter;
 	private Control _createPage;
 	private Control _joinPage;
 	private Control _historyPage;
+	private Control _tutorialPage;
+	private readonly List<Button> _tutorialButtons = new();
 	private SidebarPanel _sidebar;
 	private Control _roomTemplate;
 	private VBoxContainer _roomList;
@@ -28,6 +33,8 @@ public partial class Intro : Node
 	private Button _cancelNameButton;
 	private Label _playerChips;
 	private TextureRect _avatar;
+	private Button _editAvatarButton;
+	private ChangeAvatarWindow _avatarWindow;
 	private LineEdit _roomName;
 	private Button _createButton;
 	private Button _backButton;
@@ -42,9 +49,12 @@ public partial class Intro : Node
 
 	public override void _Ready()
 	{
+		BindButtonSounds(GetParent());
 		_createPage = GetNode<Control>("%CreatePage");
 		_joinPage = GetNode<Control>("%JoinPage");
 		_historyPage = GetNode<Control>("%HistoryPage");
+		_tutorialPage = GetNode<Control>("%TutorialPage");
+		BuildTutorialList();
 		_roomTemplate = GetNode<Control>("%RoomRowTemplate");
 		_roomList = GetNode<VBoxContainer>("%RoomList");
 		_emptyRooms = GetNode<Label>("%EmptyRooms");
@@ -55,7 +65,21 @@ public partial class Intro : Node
 		_saveNameButton = GetNode<Button>("%SavePlayerName");
 		_cancelNameButton = GetNode<Button>("%CancelPlayerName");
 		_playerChips = GetNode<Label>("%PlayerChips");
-		_avatar = GetNode<TextureRect>("%PlayerAvatar");
+		_avatar = GetNode<TextureRect>("%AvatarTexture");
+		_editAvatarButton = GetNode<Button>("%EditPlayerAvatar");
+		_avatarWindow = GetNode<ChangeAvatarWindow>("%ChangeAvatarWindow/Controller");
+		_editAvatarButton.Pressed += () =>
+		{
+			if (_editAvatarButton.Disabled) return;
+			_avatarWindow.Open(_adapter.Profile.AvatarId);
+			RefreshActions();
+		};
+		_avatarWindow.ConfirmRequested += avatarId => _ = SaveAvatarAsync(avatarId);
+		_avatarWindow.Closed += () =>
+		{
+			RefreshActions();
+			if (!_editAvatarButton.Disabled) _editAvatarButton.GrabFocus();
+		};
 		_roomName = GetNode<LineEdit>("%RoomNameInput");
 		_createButton = GetNode<Button>("%CreateRoomButton");
 		_backButton = GetNode<Button>("%BackToConnection");
@@ -77,6 +101,11 @@ public partial class Intro : Node
 				_playerNameInput.AcceptEvent();
 			}
 		};
+		if (GameSession.ShowTutorialPage)
+		{
+			_sidebar.SelectTab("TutorialTab");
+			GameSession.ShowTutorialPage = false;
+		}
 		ShowPage(_sidebar.SelectedTab);
 		_adapter = GameSession.LobbyAdapter ?? new ColyseusLobbyAdapter();
 		GameSession.LobbyAdapter = _adapter;
@@ -114,10 +143,33 @@ public partial class Intro : Node
 		_ = _adapter.DisconnectAsync();
 	}
 
+	private void BindButtonSounds(Node node)
+	{
+		if (node is BaseButton button)
+		{
+			var play = Callable.From(PlayButtonClickSound);
+			// Duplicated room/tutorial rows may already carry the template's connection.
+			if (!button.IsConnected(BaseButton.SignalName.Pressed, play))
+				button.Connect(BaseButton.SignalName.Pressed, play);
+		}
+		foreach (Node child in node.GetChildren()) BindButtonSounds(child);
+	}
+
+	private void PlayButtonClickSound()
+	{
+		if (ButtonClickSound == null) return;
+		var player = new AudioStreamPlayer { Stream = ButtonClickSound };
+		// Keep the click audible when its action immediately changes the scene.
+		GetTree().Root.AddChild(player);
+		player.Finished += player.QueueFree;
+		player.Play();
+	}
+
 	private async Task ReconnectAsync()
 	{
 		_status.Text = "正在连接大厅并同步玩家信息…";
 		_backButton.Disabled = true;
+		RefreshActions();
 		bool connected = await _adapter.ConnectAsync(GameSession.ServerEndpoint);
 		if (!IsInstanceValid(this) || !IsInsideTree())
 		{
@@ -142,6 +194,41 @@ public partial class Intro : Node
 		_createPage.Visible = selectedTab == "CreateTab";
 		_joinPage.Visible = selectedTab == "JoinTab";
 		_historyPage.Visible = selectedTab == "HistoryTab";
+		_tutorialPage.Visible = selectedTab == "TutorialTab";
+	}
+
+	private void BuildTutorialList()
+	{
+		var template = GetNode<Control>("%TutorialRowTemplate");
+		var list = GetNode<VBoxContainer>("%TutorialList");
+		template.Hide();
+		for (int index = 0; index < TutorialCatalog.Lessons.Length; index++)
+		{
+			int lessonIndex = index;
+			TutorialLesson lesson = TutorialCatalog.Lessons[index];
+			var row = (Control)template.Duplicate();
+			row.UniqueNameInOwner = false;
+			row.Name = $"TutorialLesson{index}";
+			Find<Label>(row, "LessonTitle").Text = $"第 {index + 1} 关 · {lesson.Title}";
+			Find<Label>(row, "LessonDescription").Text = lesson.Description;
+			var button = Find<Button>(row, "StartTutorial");
+			BindButtonSounds(button);
+			button.Pressed += () => StartTutorial(lessonIndex);
+			_tutorialButtons.Add(button);
+			list.AddChild(row);
+			row.Show();
+		}
+		GetNode<Label>("%TutorialCount").Text = $"共 {TutorialCatalog.Lessons.Length} 关";
+	}
+
+	private void StartTutorial(int lessonIndex)
+	{
+		if (_requestPending || _transitioning || _editingName || _savingName || _backButton.Disabled) return;
+		_transitioning = true;
+		GameSession.PendingTutorialLesson = lessonIndex;
+		_backButton.Disabled = true;
+		RefreshActions();
+		_ = ChangeSceneAsync("res://scenes/Tutorial.tscn");
 	}
 
 	private void HandleProfile(PlayerProfile profile)
@@ -169,6 +256,7 @@ public partial class Intro : Node
 				var view = (Control)_roomTemplate.Duplicate();
 				view.UniqueNameInOwner = false;
 				view.Name = $"Room_{key}";
+				BindButtonSounds(view);
 				_roomList.AddChild(view);
 				view.Show();
 				row = new RoomRow(view);
@@ -196,8 +284,9 @@ public partial class Intro : Node
 
 	private void RefreshActions()
 	{
-		bool available = _adapter?.IsConnected == true && !_requestPending && !_transitioning && !_savingName;
+		bool available = _adapter?.IsConnected == true && !_requestPending && !_transitioning && !_savingName && !_avatarWindow.IsOpen;
 		bool enabled = available && !_editingName;
+		_editAvatarButton.Disabled = !enabled;
 		_playerName.Visible = !_editingName;
 		_editNameButton.Visible = !_editingName;
 		_editNameButton.Disabled = !available;
@@ -209,6 +298,8 @@ public partial class Intro : Node
 		_cancelNameButton.Disabled = _savingName || _transitioning;
 		_createButton.Disabled = !enabled;
 		_roomName.Editable = enabled;
+		foreach (Button button in _tutorialButtons)
+			button.Disabled = _requestPending || _transitioning || _editingName || _savingName || _avatarWindow.IsOpen || _backButton.Disabled;
 		foreach (RoomRow row in _rows.Values)
 		{
 			row.Join.Disabled = !enabled || !row.CanJoin;
@@ -270,6 +361,32 @@ public partial class Intro : Node
 		}
 	}
 
+	private async Task SaveAvatarAsync(int avatarId)
+	{
+		if (_adapter.Profile?.AvatarId == avatarId)
+		{
+			_avatarWindow.Close();
+			return;
+		}
+		_avatarWindow.SetSaving(true);
+		try
+		{
+			await _adapter.UpdatePlayerAvatarAsync(avatarId);
+			if (!IsInstanceValid(this) || !IsInsideTree() || _transitioning) return;
+			_avatarWindow.SetSaving(false);
+			_avatarWindow.Close();
+			_status.Text = "头像已保存";
+		}
+		catch (Exception exception)
+		{
+			if (!IsInstanceValid(this) || !IsInsideTree() || _transitioning) return;
+			_avatarWindow.SetSaving(false);
+			_avatarWindow.ShowError(exception is TimeoutException
+				? "保存头像超时，请重试或重新连接确认"
+				: $"头像保存失败：{exception.Message}");
+		}
+	}
+
 	private void CreateRoom()
 	{
 		if (_createButton.Disabled) return;
@@ -285,7 +402,7 @@ public partial class Intro : Node
 
 	private void JoinRoom(string roomId)
 	{
-		if (_adapter?.IsConnected != true || _requestPending || _transitioning || _editingName || _savingName) return;
+		if (_adapter?.IsConnected != true || _requestPending || _transitioning || _editingName || _savingName || _avatarWindow.IsOpen) return;
 		_ = RequestRoomAsync(() => _adapter.JoinRoomAsync(roomId), "正在加入房间…");
 	}
 
@@ -358,6 +475,7 @@ public partial class Intro : Node
 		Error error = SceneNavigation.Change(this, path);
 		if (error == Error.Ok) return;
 		GameSession.PendingReservation = null;
+		GameSession.PendingTutorialLesson = null;
 		_transitioning = false;
 		_backButton.Disabled = false;
 		HandleError($"无法切换场景：{error}，请返回标题页面重试");

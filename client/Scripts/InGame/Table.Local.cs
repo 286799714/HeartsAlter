@@ -117,6 +117,8 @@ public partial class Table
 				card => CompleteLocalPassFlight(card, flight.Destination, generation)))
 				CompleteLocalPassFlight(flight.Card, flight.Destination, generation);
 		}
+		if (IsLocalPassing)
+			_passSound?.Play();
 		return true;
 	}
 

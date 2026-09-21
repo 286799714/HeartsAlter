@@ -11,6 +11,8 @@ public static class GameSession
 	public static ColyseusClientAdapter GameAdapter { get; set; }
 	public static string ServerEndpoint { get; set; } = string.Empty;
 	public static PlayerProfile Profile { get; set; }
+	public static int? PendingTutorialLesson { get; set; }
+	public static bool ShowTutorialPage { get; set; }
 
 	public static void Clear()
 	{
@@ -19,6 +21,8 @@ public static class GameSession
 		GameAdapter = null;
 		ServerEndpoint = string.Empty;
 		Profile = null;
+		PendingTutorialLesson = null;
+		ShowTutorialPage = false;
 	}
 }
 

@@ -197,7 +197,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
         this.sendError(client, "只有房主可以解散房间");
         return;
       }
-      void this.disconnect().catch(() => {});
+      this.disbandRoom();
     },
 
     /** Start only after every occupied seat is ready. */
@@ -420,7 +420,7 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
       return;
     }
     if (code === CloseCode.CONSENTED && this.state.phase !== "waiting" && player.isHost) {
-      void this.disconnect().catch(() => {});
+      this.disbandRoom();
       return;
     }
     this.departedPlayers.add(client.sessionId);
@@ -507,6 +507,12 @@ export class MyRoom extends Room<{ state: MyRoomState; metadata: MyRoomMetadata 
     player.connected = true;
     this.state.message = `${player.name} 已重新连接`;
     this.sendHand(client.sessionId);
+  }
+
+  private disbandRoom() {
+    if (this.disbanding) return;
+    this.broadcast("room_disbanded", {});
+    void this.disconnect().catch(() => {});
   }
 
   override disconnect(closeCode: CloseCode = CloseCode.CONSENTED) {

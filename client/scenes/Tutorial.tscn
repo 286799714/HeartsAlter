@@ -4,6 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://c2hddsv6ha3gi" path="res://scenes/in_game/Table.tscn" id="2_table"]
 [ext_resource type="Script" uid="uid://j0r005sqiluw" path="res://Scripts/Tutorial/TutorialSpotlight.cs" id="3_spotlight"]
 [ext_resource type="Shader" uid="uid://cxlru6fk3l7om" path="res://assets/shaders/TutorialSpotlight.gdshader" id="4_shade"]
+[ext_resource type="Texture2D" uid="uid://ndt7c2ea8cvn" path="res://assets/textures/ui/intro/generated/rgba-599x181-b1ff0107c64a1238.png" id="5_288ch"]
+[ext_resource type="Texture2D" uid="uid://cyc5mt6c0thp8" path="res://assets/textures/ui/in_game/mmexport1790003873791_[B@353eb4.png" id="6_u5f0c"]
+[ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="7_0g6v0"]
+[ext_resource type="Texture2D" uid="uid://c33t0sjq8fu1y" path="res://assets/textures/ui/in_game/mmexport1790003875406_[B@14d8a08.png" id="8_hvqni"]
+[ext_resource type="Script" path="res://Scripts/UI/ButtonSounds.cs" id="script_button_sounds"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="sound_button_click"]
 
 [sub_resource type="StyleBoxFlat" id="Style_focus"]
 bg_color = Color(0, 0, 0, 0)
@@ -63,8 +69,8 @@ Button/styles/hover = SubResource("Style_hover")
 Button/styles/normal = SubResource("Style_button")
 Button/styles/pressed = SubResource("Style_hover")
 Label/colors/font_color = Color(0.965, 0.92, 0.85, 1)
-RichTextLabel/colors/default_color = Color(0.965, 0.92, 0.85, 1)
 PanelContainer/styles/panel = SubResource("Style_panel")
+RichTextLabel/colors/default_color = Color(0.965, 0.92, 0.85, 1)
 
 [sub_resource type="ShaderMaterial" id="Material_spotlight"]
 resource_local_to_scene = true
@@ -76,6 +82,8 @@ shader_parameter/focus_rects = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 shader_parameter/focus_count = 0
 shader_parameter/outline_width = 3.0
 shader_parameter/corner_radius = 6.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aoag1"]
 
 [node name="Tutorial" type="Control" unique_id=653487791]
 layout_mode = 3
@@ -101,16 +109,14 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 1
 UseNetworkSession = false
-DealInterval = 0.025
-ArrangeDelay = 0.05
 TrickCollectDelay = 0.25
 
-[node name="InterfaceLayer" type="CanvasLayer" parent="."]
+[node name="InterfaceLayer" type="CanvasLayer" parent="." unique_id=1047083289]
 layer = 20
 
 [node name="Overlay" type="Control" parent="InterfaceLayer" unique_id=1342063206]
 unique_name_in_owner = true
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -119,68 +125,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme = SubResource("Theme_tutorial")
 
-[node name="Navigation" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1073342314]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -217.0
-offset_top = 12.0
-offset_right = -25.0
-offset_bottom = 195.0
-grow_horizontal = 0
-
-[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/Navigation" unique_id=1552269115]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Heading" type="Label" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=1556266255]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-text = "第 1 关 · 新手教程"
-autowrap_mode = 3
-
-[node name="LessonMenu" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=1421688818]
-unique_name_in_owner = true
-layout_mode = 2
-text = "返回教程"
-
-[node name="Retry" type="Button" parent="InterfaceLayer/Overlay/Navigation/Column" unique_id=568205210]
-unique_name_in_owner = true
-layout_mode = 2
-text = "重看本节"
-
-[node name="StepPanel" type="PanelContainer" parent="InterfaceLayer/Overlay" unique_id=1593141162]
-layout_mode = 1
-offset_left = 25.0
-offset_top = 12.0
-offset_right = 217.0
-offset_bottom = 195.0
-
-[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/StepPanel" unique_id=1932273021]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="StepTitle" type="Label" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=48022527]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 20
-text = "1 / 5  游戏目标"
-autowrap_mode = 3
-
-[node name="Status" type="Label" parent="InterfaceLayer/Overlay/StepPanel/Column" unique_id=371661190]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
-theme_override_font_sizes/font_size = 16
-text = "轮到你"
-autowrap_mode = 3
-
 [node name="GuideOverlay" type="Control" parent="InterfaceLayer/Overlay" unique_id=1423013242]
 unique_name_in_owner = true
-visible = false
 z_index = 20
 layout_mode = 1
 anchors_preset = 15
@@ -188,6 +134,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("3_spotlight")
 
 [node name="Shade" type="ColorRect" parent="InterfaceLayer/Overlay/GuideOverlay" unique_id=761007604]
@@ -198,6 +145,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TopSlot" type="Control" parent="InterfaceLayer/Overlay/GuideOverlay" unique_id=2135501615]
 layout_mode = 1
@@ -213,7 +161,6 @@ mouse_filter = 2
 
 [node name="InstructionPanel" type="PanelContainer" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot" unique_id=1220390374]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -221,16 +168,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_aoag1")
+
+[node name="TextureRect" type="TextureRect" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel" unique_id=1223093613]
+layout_mode = 2
+texture = ExtResource("5_288ch")
 
 [node name="Column" type="VBoxContainer" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel" unique_id=2103409751]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.87, 0.87)
 mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="GuideProgress" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=576994839]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_colors/font_color = Color(0.50956637, 0.27746394, 0, 1)
+theme_override_font_sizes/font_size = 25
 text = "讲解 1 / 3"
 
 [node name="Instruction" type="RichTextLabel" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1105584774]
@@ -238,16 +192,16 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_colors/default_color = Color(0.00017113712, 0.00010372159, 2.9362578e-05, 1)
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-text = "有[color=#FFD987]领出花色[/color]，就必须跟牌。"
+text = "有[color=#8A5A00]领出花色[/color]，就必须跟牌。"
 fit_content = true
 scroll_active = false
-autowrap_mode = 3
 
 [node name="GuideContinue" type="Label" parent="InterfaceLayer/Overlay/GuideOverlay/TopSlot/InstructionPanel/Column" unique_id=1485989249]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.82, 0.82, 0.82, 1)
+theme_override_colors/font_color = Color(0.3478175, 0.34781674, 0.34781688, 1)
 theme_override_font_sizes/font_size = 17
 text = "点击屏幕，继续讲解"
 horizontal_alignment = 2
@@ -267,98 +221,90 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Menu" type="Control" parent="InterfaceLayer" unique_id=1269254852]
-unique_name_in_owner = true
-visible = false
+[node name="LastSec" type="Control" parent="InterfaceLayer/Overlay" unique_id=563802070]
+z_index = 21
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_tutorial")
+offset_left = -86.0
+offset_top = 17.0
+offset_right = -15.535156
+offset_bottom = 114.45126
+grow_horizontal = 0
+scale = Vector2(0.667, 0.667)
 
-[node name="Background" type="ColorRect" parent="InterfaceLayer/Menu" unique_id=316675266]
+[node name="LastSecButton" type="TextureButton" parent="InterfaceLayer/Overlay/LastSec" unique_id=830861823]
+unique_name_in_owner = true
+texture_filter = 4
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
 grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.11, 0.067, 0.11, 1)
+tooltip_text = "返回上节"
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("6_u5f0c")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="Margin" type="MarginContainer" parent="InterfaceLayer/Menu" unique_id=681377673]
+[node name="Label" type="Label" parent="InterfaceLayer/Overlay/LastSec" unique_id=1313873242]
+layout_mode = 0
+offset_left = -2.9986
+offset_top = 74.96252
+offset_right = 76.0014
+offset_bottom = 102.96252
+theme_override_fonts/font = ExtResource("7_0g6v0")
+theme_override_font_sizes/font_size = 20
+text = "返回上节"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Retry" type="Control" parent="InterfaceLayer/Overlay" unique_id=964740907]
+z_index = 21
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = -153.0
+offset_top = 17.0
+offset_right = -82.53516
+offset_bottom = 114.45126
+grow_horizontal = 0
+scale = Vector2(0.667, 0.667)
+
+[node name="RetryButton" type="TextureButton" parent="InterfaceLayer/Overlay/Retry" unique_id=1884921200]
+unique_name_in_owner = true
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 48
-theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 48
-theme_override_constants/margin_bottom = 36
+tooltip_text = "重玩本节"
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_hvqni")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="Scroll" type="ScrollContainer" parent="InterfaceLayer/Menu/Margin" unique_id=1844747521]
-layout_mode = 2
-horizontal_scroll_mode = 0
+[node name="Label" type="Label" parent="InterfaceLayer/Overlay/Retry" unique_id=539404847]
+layout_mode = 0
+offset_left = -2.9986
+offset_top = 74.96252
+offset_right = 76.0014
+offset_bottom = 102.96252
+theme_override_fonts/font = ExtResource("7_0g6v0")
+theme_override_font_sizes/font_size = 20
+text = "重玩本节"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Column" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll" unique_id=1016244910]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 18
-
-[node name="Title" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1101303402]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "新手教程"
-
-[node name="Description" type="RichTextLabel" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=849872184]
-layout_mode = 2
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
-text = "从游戏目标开始，动手练习出牌和得分，再学习传牌与小技巧。"
-fit_content = true
-scroll_active = false
-autowrap_mode = 3
-
-[node name="LessonCard0" type="PanelContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=544285533]
-custom_minimum_size = Vector2(0, 116)
-layout_mode = 2
-
-[node name="Row" type="HBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0" unique_id=959411875]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Text" type="VBoxContainer" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=1183380177]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="LessonTitle0" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=1543725935]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "01  新手教程"
-autowrap_mode = 3
-
-[node name="LessonDescription0" type="Label" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row/Text" unique_id=480070615]
-unique_name_in_owner = true
-layout_mode = 2
-text = "游戏目标 → 出牌规则 → 得分牌与实战 → 传牌与小技巧"
-autowrap_mode = 3
-
-[node name="Lesson0" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column/LessonCard0/Row" unique_id=96371672]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(190, 64)
-layout_mode = 2
-size_flags_vertical = 4
-text = "开始教程"
-
-[node name="BackToLobby" type="Button" parent="InterfaceLayer/Menu/Margin/Scroll/Column" unique_id=1547710830]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "返回主界面"
+[node name="ButtonSounds" type="Node" parent="InterfaceLayer/Overlay"]
+script = ExtResource("script_button_sounds")
+ClickSound = ExtResource("sound_button_click")

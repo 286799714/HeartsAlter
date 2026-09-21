@@ -33,6 +33,16 @@ export class LobbyRoom extends Room<{ state: LobbyState }> {
           error: error instanceof Error ? error.message : String(error) });
       }
     },
+    update_player_avatar: (client: Client, payload: { avatarId?: unknown; requestId?: unknown } | undefined) => {
+      const requestId = typeof payload?.requestId === "string" ? payload.requestId.slice(0, 64) : "";
+      try {
+        const profile = getPlayerProfileStore().updateAvatar(this.getDevice(client), payload?.avatarId);
+        client.send("player_avatar_updated", { ...profile, requestId });
+      } catch (error) {
+        client.send("player_avatar_updated", { requestId,
+          error: error instanceof Error ? error.message : String(error) });
+      }
+    },
     refresh: async () => {
       await this.syncRooms();
     },

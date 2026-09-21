@@ -1,8 +1,95 @@
 [gd_scene format=3 uid="uid://blcy2b72vbgbe"]
 
 [ext_resource type="Script" uid="uid://38e2qhwi5xxu" path="res://Scripts/Lobby.cs" id="1_lobby"]
-[ext_resource type="Texture2D" uid="uid://crgy31v33wab4" path="res://assets/textures/ui/banner.png" id="2_banner"]
+[ext_resource type="Texture2D" uid="uid://0dj0068nmkjv" path="res://assets/textures/ui/d3ec23606c3fa8e70a8a9993419ddcdb5f0437cd_09582cc9ecbfdd33.png" id="2_cdhm0"]
 [ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="3_font"]
+[ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="4_kayix"]
+[ext_resource type="Shader" uid="uid://qg3n2qlg5p3m" path="res://addons/figma_importer/shader/vertex_apply_shader.gdshader" id="5_l31xl"]
+[ext_resource type="Texture2D" uid="uid://c6qd4h7pct1kr" path="res://assets/textures/ui/in_game/generated/rgba-476x108-84e04563a27e4808.png" id="6_wuide"]
+[ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="7_h77bf"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="8_4hpk5"]
+[ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="9_yyg1t"]
+[ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="10_o6r7d"]
+[ext_resource type="Script" uid="uid://c686puia07xdp" path="res://Scripts/UI/ButtonSounds.cs" id="script_button_sounds"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="sound_button_click"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ug4sb"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5av17"]
+shader = ExtResource("5_l31xl")
+shader_parameter/image_texture = ExtResource("6_wuide")
+shader_parameter/use_gradient = false
+shader_parameter/use_image = true
+shader_parameter/use_solid = false
+shader_parameter/gradient_behind = false
+shader_parameter/target_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/tolerance = 0.001
+shader_parameter/new_bg_color = Color(0, 0, 0, 0)
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/node_size = Vector2(476, 108)
+shader_parameter/texture_size = Vector2(476, 108)
+shader_parameter/texture_scale = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/keep_aspect = false
+shader_parameter/fill_rect = false
+shader_parameter/tile_texture = false
+shader_parameter/manual_scale = false
+shader_parameter/vert_offset = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yy2xu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ojke4"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_rv886"]
+colors = PackedColorArray(0.16824195, 0.083288096, 0, 1, 0.42610902, 0.2280349, 0.02996079, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n7xlk"]
+gradient = SubResource("Gradient_rv886")
+fill_from = Vector2(0.5, 0.8536585)
+fill_to = Vector2(0.5, 0.15853655)
+script = ExtResource("9_yyg1t")
+figma_transform = Transform2D(1.0387267e-13, 1.4385965, -1.4385965, 1.2884477e-14, 1.2280701, -0.21929824)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qxb4a"]
+shader = ExtResource("8_4hpk5")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_n7xlk")
+shader_parameter/label_size = Vector2(237, 82)
+
+[sub_resource type="FontVariation" id="FontVariation_m46g0"]
+base_font = ExtResource("10_o6r7d")
+spacing_bottom = -1
+
+[sub_resource type="LabelSettings" id="LabelSettings_1aga1"]
+line_spacing = 0.0
+font = SubResource("FontVariation_m46g0")
+font_size = 60
+
+[sub_resource type="StyleBoxEmpty" id="Style_invisible"]
+
+[sub_resource type="StyleBoxFlat" id="Style_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.74, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="Style_pressed"]
 content_margin_left = 20.0
@@ -13,18 +100,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.96, 0.71, 0.36, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="Style_focus"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 0.74, 0.3, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -139,11 +214,113 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("2_banner")
+texture = ExtResource("2_cdhm0")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="进入游戏按钮" type="ScrollContainer" parent="." unique_id=652260805]
+custom_minimum_size = Vector2(476, 108)
+clip_contents = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.50390625
+anchor_top = 0.875
+anchor_right = 0.50390625
+anchor_bottom = 0.875
+offset_left = -238.0
+offset_top = -108.0
+offset_right = 238.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ug4sb")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_kayix")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(476, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+metadata/_edit_use_anchors_ = true
+
+[node name="InnerContainer" type="Control" parent="进入游戏按钮" unique_id=1670459106]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="按钮样式 xIDxI81_8489;70_596x" type="Panel" parent="进入游戏按钮/InnerContainer" unique_id=113881716]
+material = SubResource("ShaderMaterial_5av17")
+custom_minimum_size = Vector2(476, 108)
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yy2xu")
+script = ExtResource("7_h77bf")
+minSize = Vector2(476, 108)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+fill_texture = ExtResource("6_wuide")
+textureSizeMode = "Stretch"
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+metadata/figma_slice_children = PackedStringArray("I81:8489;70:596;70:553", "I81:8489;70:596;70:554", "I81:8489;70:596;70:555")
+
+[node name="Frame 35 xIDxI81_8489;70_597x" type="ScrollContainer" parent="进入游戏按钮/InnerContainer" unique_id=1144346708]
+clip_contents = false
+layout_mode = 0
+offset_left = 83.5
+offset_top = 13.0
+offset_right = 392.5
+offset_bottom = 95.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ojke4")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("4_kayix")
+inner_container = NodePath("InnerContainer")
+minSize = Vector2(0, 0)
+maxSize = Vector2(100000, 100000)
+fill_color = Color(0, 0, 0, 0)
+corner_radius = [0.0, 0.0, 0.0, 0.0]
+padding = [0, 0, 0, 0]
+
+[node name="InnerContainer" type="Control" parent="进入游戏按钮/InnerContainer/Frame 35 xIDxI81_8489;70_597x" unique_id=1819180163]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="开始游戏" type="Label" parent="进入游戏按钮/InnerContainer/Frame 35 xIDxI81_8489;70_597x/InnerContainer" unique_id=1223363009]
+material = SubResource("ShaderMaterial_qxb4a")
+layout_mode = 0
+offset_left = 37.5
+offset_top = 2.0
+offset_right = 274.5
+offset_bottom = 84.0
+text = "进入游戏"
+label_settings = SubResource("LabelSettings_1aga1")
+horizontal_alignment = 1
+clip_text = true
+
+[node name="EnterGameButton" type="Button" parent="进入游戏按钮/InnerContainer" unique_id=1258617173]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 108.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_invisible")
+theme_override_styles/pressed = SubResource("Style_invisible")
+theme_override_styles/hover = SubResource("Style_invisible")
+theme_override_styles/disabled = SubResource("Style_invisible")
+theme_override_styles/focus = SubResource("Style_focus")
+
 [node name="ConnectionPanel" type="PanelContainer" parent="." unique_id=371604947]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -199,28 +376,52 @@ popup/item_0/id = 0
 popup/item_1/text = "127.0.0.1:2567"
 popup/item_1/id = 1
 
-[node name="Actions" type="HBoxContainer" parent="ConnectionPanel/Content" unique_id=795191127]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 12
-
-[node name="ConnectButton" type="Button" parent="ConnectionPanel/Content/Actions" unique_id=689255002]
+[node name="HidePanelButton" type="Button" parent="ConnectionPanel/Content" unique_id=700322121]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "连接大厅"
+text = "隐藏面板"
 
-[node name="TutorialButton" type="Button" parent="ConnectionPanel/Content" unique_id=700322121]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "教学关"
-
-[node name="ConnectionStatus" type="Label" parent="ConnectionPanel/Content" unique_id=601418795]
+[node name="ConnectionStatus" type="Label" parent="." unique_id=601418795]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -64.0
+offset_right = 420.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_connection")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="ConnectionPanelUnlock" type="Button" parent="." unique_id=1968357763]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -96.0
+offset_bottom = 96.0
+grow_horizontal = 0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_invisible")
+theme_override_styles/pressed = SubResource("Style_invisible")
+theme_override_styles/hover = SubResource("Style_invisible")
+theme_override_styles/disabled = SubResource("Style_invisible")
+theme_override_styles/focus = SubResource("Style_invisible")
+
+[node name="ButtonSounds" type="Node" parent="." unique_id=157971421]
+script = ExtResource("script_button_sounds")
+ClickSound = ExtResource("sound_button_click")

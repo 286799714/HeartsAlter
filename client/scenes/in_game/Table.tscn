@@ -9,16 +9,16 @@
 [ext_resource type="PackedScene" uid="uid://bwmamljc0p248" path="res://scenes/in_game/OtherHandLayout.tscn" id="4_mshro"]
 [ext_resource type="Texture2D" uid="uid://cimifv107ao3n" path="res://assets/textures/ui/in_game/2c6fd36888779fb74a4c7ac84488f3bf1d5e7920100f7a349f4c29020893ed8c.png" id="4_owo3o"]
 [ext_resource type="PackedScene" uid="uid://dfyheemovxqsq" path="res://scenes/in_game/PlayerInfo.tscn" id="5_g6j7s"]
-[ext_resource type="Texture2D" uid="uid://ct4p86ro65sso" path="res://assets/textures/ui/in_game/7ef2541087f6e0b285cae2a1f42b26b535933d4f76ec98e11f5e1b11d12dcc18.png" id="5_lkouh"]
 [ext_resource type="Texture2D" uid="uid://dlst72bwi4n0v" path="res://assets/textures/ui/in_game/2f4cf8ee6280d96afc522b005367a74cb0648a4d_795af5083afabc4e.png" id="5_o27b6"]
 [ext_resource type="Script" uid="uid://b04450xd5ycoa" path="res://addons/figma_importer/designer_image_panel.gd" id="6_1gv78"]
+[ext_resource type="Texture2D" uid="uid://1gs7slna54jk" path="res://assets/textures/ui/in_game/Frame 21.png" id="6_k16kl"]
 [ext_resource type="Script" uid="uid://may8jitc62b3" path="res://addons/figma_importer/designer_frame.gd" id="7_g0t0d"]
 [ext_resource type="PackedScene" uid="uid://cubo7i4op1dv" path="res://scenes/in_game/PlayArea.tscn" id="7_play_area"]
 [ext_resource type="Texture2D" uid="uid://d08q1lr83nosn" path="res://assets/textures/ui/in_game/generated/rgba-296x4-f070292e5c28f2f8.png" id="8_ntaes"]
 [ext_resource type="Texture2D" uid="uid://bjiw4ci20mioy" path="res://assets/textures/ui/in_game/generated/rgba-24x24-fc5d881768f2f210.png" id="9_owo3o"]
 [ext_resource type="PackedScene" uid="uid://cmgyniaqt02p4" path="res://scenes/in_game/Settlement.tscn" id="9_settlement"]
 [ext_resource type="FontFile" uid="uid://dx5ij4muhw2ip" path="res://assets/fonts/AlibabaPuHuiTi_Medium.ttf" id="11_aagb7"]
-[ext_resource type="Shader" uid="uid://csnaib47hn0ju" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="13_bo5dh"]
+[ext_resource type="Shader" uid="uid://cqck5s3thl0lb" path="res://addons/figma_importer/shader/text_gradient.gdshader" id="13_bo5dh"]
 [ext_resource type="Script" uid="uid://dkp20g3uno70t" path="res://addons/figma_importer/figma_gradient.gd" id="14_0cgkh"]
 [ext_resource type="Texture2D" uid="uid://c6qd4h7pct1kr" path="res://assets/textures/ui/in_game/generated/rgba-476x108-84e04563a27e4808.png" id="15_875fr"]
 [ext_resource type="FontFile" uid="uid://dm44502lsltcr" path="res://assets/fonts/AlibabaPuHuiTi_Bold.ttf" id="19_wgpfo"]
@@ -34,6 +34,18 @@
 [ext_resource type="Texture2D" uid="uid://dhxg0invavf4f" path="res://assets/textures/ui/in_game/7d59e39e3cb4b227b53095d5311ef60eb56525a3.png" id="31_72oqo"]
 [ext_resource type="Texture2D" uid="uid://c0ho3t5wydxki" path="res://assets/textures/ui/in_game/d52f13774127a0ce78e08547e3dec931cf963f60.png" id="32_0676t"]
 [ext_resource type="FontVariation" uid="uid://jw46yql2w7ym" path="res://assets/fonts/NotoSansCombine.tres" id="33_8cjyu"]
+[ext_resource type="Script" uid="uid://c8vcdh30x044b" path="res://Scripts/InGame/DealSoundPlayer.cs" id="script_deal_sound"]
+[ext_resource type="AudioStream" uid="uid://cd5tipd76881" path="res://assets/sounds/发牌_短.wav" id="sound_deal"]
+[ext_resource type="AudioStream" uid="uid://b8yaq042uvy0v" path="res://assets/sounds/出牌.mp3" id="sound_play"]
+[ext_resource type="AudioStream" uid="uid://ckevjc7s66nu5" path="res://assets/sounds/playing-cards-shuffling.mp3" id="sound_collect"]
+[ext_resource type="AudioStream" uid="uid://bbvsy0gferj5k" path="res://assets/sounds/得分.mp3" id="sound_score"]
+[ext_resource type="AudioStream" uid="uid://jpdtrlk16mye" path="res://assets/sounds/对局进行时bgm-edit.mp3" id="sound_bgm"]
+[ext_resource type="Script" path="res://Scripts/UI/ButtonSounds.cs" id="script_button_sounds"]
+[ext_resource type="AudioStream" uid="uid://klj8diay2sc7" path="res://assets/sounds/cartoon-button-click-sound.mp3" id="sound_button_click"]
+[ext_resource type="Script" path="res://Scripts/UI/MuteButton.cs" id="script_mute_button"]
+[ext_resource type="Texture2D" uid="uid://bs2bsrfnlrpfg" path="res://assets/textures/ui/in_game/mmexport1790002884701-no-bg.png" id="texture_muted"]
+[ext_resource type="PackedScene" path="res://scenes/ui/QuitRoomWindow.tscn" id="scene_quit_room"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ReleaseRoomWindow.tscn" id="scene_release_room"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r0ebq"]
 shader = ExtResource("4_gck3u")
@@ -289,7 +301,7 @@ bg_color = Color(0, 0, 0, 0)
 [sub_resource type="Gradient" id="Gradient_vpeq6"]
 colors = PackedColorArray(0.16824195, 0.083288096, 0, 1, 0.42610902, 0.2280349, 0.02996079, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_n7xlk"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k16kl"]
 gradient = SubResource("Gradient_vpeq6")
 fill_from = Vector2(0.5, 0.8536585)
 fill_to = Vector2(0.5, 0.15853655)
@@ -298,16 +310,16 @@ figma_transform = Transform2D(1.0387267e-13, 1.4385965, -1.4385965, 1.2884477e-1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bhrup"]
 shader = ExtResource("13_bo5dh")
-shader_parameter/gradient_texture = SubResource("GradientTexture2D_n7xlk")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_k16kl")
 shader_parameter/label_size = Vector2(237, 82)
 
-[sub_resource type="FontVariation" id="FontVariation_m46g0"]
+[sub_resource type="FontVariation" id="FontVariation_8kj6c"]
 base_font = ExtResource("19_wgpfo")
 spacing_bottom = -1
 
 [sub_resource type="LabelSettings" id="LabelSettings_fs2xw"]
 line_spacing = 0.0
-font = SubResource("FontVariation_m46g0")
+font = SubResource("FontVariation_8kj6c")
 font_size = 60
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_owo3o"]
@@ -1060,6 +1072,8 @@ _mainPlayerInfo = NodePath("MainPlayerInfo")
 _nextPlayerInfo = NodePath("PlayerInfo")
 _oppositePlayerInfo = NodePath("PlayerInfo2")
 _previousPlayerInfo = NodePath("PlayerInfo3")
+DealInterval = 0.025
+ArrangeDelay = 0.05
 
 [node name="Background" type="TextureRect" parent="." unique_id=545593695]
 layout_mode = 1
@@ -1146,22 +1160,61 @@ texture_normal = ExtResource("4_owo3o")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="TextureRect" type="TextureRect" parent="TableActions/Quit" unique_id=415107490]
+[node name="Label" type="Label" parent="TableActions/Quit" unique_id=285292939]
+layout_mode = 0
+offset_left = 16.491756
+offset_top = 74.96252
+offset_right = 56.491756
+offset_bottom = 102.96252
+theme_override_fonts/font = ExtResource("19_wgpfo")
+theme_override_font_sizes/font_size = 20
+text = "退出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mute" type="Control" parent="TableActions" unique_id=2098834079]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 107.0
+offset_top = 17.0
+offset_right = 177.46478
+offset_bottom = 114.45126
+scale = Vector2(0.667, 0.667)
+
+[node name="MuteButton" type="TextureButton" parent="TableActions/Mute" unique_id=1567095981]
 texture_filter = 4
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -22.912651
-offset_top = -23.988037
-offset_right = 22.912651
+offset_left = -35.232388
+offset_right = 34.767612
+offset_bottom = 70.0
 grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-texture = ExtResource("5_lkouh")
-expand_mode = 1
+tooltip_text = "静音"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("6_k16kl")
+texture_pressed = ExtResource("texture_muted")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("script_mute_button")
+
+[node name="Label" type="Label" parent="TableActions/Mute" unique_id=1770749092]
+layout_mode = 0
+offset_left = 16.491756
+offset_top = 74.96252
+offset_right = 56.491756
+offset_bottom = 102.96252
+theme_override_fonts/font = ExtResource("19_wgpfo")
+theme_override_font_sizes/font_size = 20
+text = "声音"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonSounds" type="Node" parent="TableActions"]
+script = ExtResource("script_button_sounds")
+ClickSound = ExtResource("sound_button_click")
 
 [node name="Waiting" type="CanvasLayer" parent="." unique_id=1706886494]
 
@@ -2485,15 +2538,45 @@ padding = [0, 0, 0, 0]
 [node name="InnerContainer" type="Control" parent="InGame/对局中状态/InnerContainer/Frame 73 xIDx81_8630x/InnerContainer/Frame 67 xIDx81_8632x/InnerContainer/Frame xIDx81_8634x" unique_id=1864597171]
 layout_mode = 2
 
+[node name="Sounds" type="Node" parent="." unique_id=252779936]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("sound_bgm")
+autoplay = true
+
+[node name="Deal" type="AudioStreamPlayer" parent="Sounds" unique_id=523428963]
+stream = ExtResource("sound_deal")
+max_polyphony = 3
+script = ExtResource("script_deal_sound")
+
+[node name="Play" type="AudioStreamPlayer" parent="Sounds" unique_id=1145819652]
+stream = ExtResource("sound_play")
+max_polyphony = 4
+
+[node name="Collect" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("sound_collect")
+
+[node name="Pass" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("sound_collect")
+
+[node name="Score" type="AudioStreamPlayer" parent="Sounds" unique_id=1935863671]
+stream = ExtResource("sound_score")
+max_polyphony = 32
+
+[node name="ScoreTicks" type="AudioStreamPlayer" parent="Sounds" unique_id=1429752446]
+stream = ExtResource("sound_score")
+volume_db = -8.0
+max_polyphony = 32
+
 [node name="SettlementLayer" type="CanvasLayer" parent="." unique_id=1142712030]
 layer = 10
 
 [node name="Settlement" parent="SettlementLayer" unique_id=1489246341 instance=ExtResource("9_settlement")]
 visible = false
 
-[node name="ExitConfirmation" type="ConfirmationDialog" parent="." unique_id=1598924062]
-title = "退出房间"
-size = Vector2i(520, 180)
-ok_button_text = "确认退出"
-dialog_autowrap = true
-cancel_button_text = "继续游戏"
+[node name="RoomDialogs" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="QuitRoomWindow" parent="RoomDialogs" instance=ExtResource("scene_quit_room")]
+
+[node name="ReleaseRoomWindow" parent="RoomDialogs" instance=ExtResource("scene_release_room")]

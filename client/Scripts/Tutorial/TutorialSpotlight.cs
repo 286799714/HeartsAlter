@@ -14,6 +14,7 @@ public partial class TutorialSpotlight : Control
 	private ColorRect _shade;
 	private ShaderMaterial _material;
 	private Control _panel, _topSlot, _bottomSlot;
+	public IReadOnlyList<BaseButton> ActionButtons { get; set; } = Array.Empty<BaseButton>();
 	private RichTextLabel _text;
 	private Label _progress, _continue;
 	private Control[] _targets = Array.Empty<Control>();
@@ -118,6 +119,15 @@ public partial class TutorialSpotlight : Control
 	public override void _Input(InputEvent @event)
 	{
 		if (!Visible) return;
+		// Keep the four scene-authored actions usable without advancing the guide.
+		Control focused = GetViewport().GuiGetFocusOwner();
+		if (ActionButtons.Any(button => button.IsVisibleInTree() && (@event switch
+		{
+			InputEventMouse mouse => new Rect2(Vector2.Zero, button.Size).HasPoint(button.GetGlobalTransformWithCanvas().AffineInverse() * mouse.Position),
+			InputEventScreenTouch touch => new Rect2(Vector2.Zero, button.Size).HasPoint(button.GetGlobalTransformWithCanvas().AffineInverse() * touch.Position),
+			InputEventKey => focused == button,
+			_ => false
+		}))) return;
 		bool advance = @event switch
 		{
 			InputEventMouseButton mouse => mouse.Device != -1 && mouse.ButtonIndex == MouseButton.Left && !mouse.Pressed,

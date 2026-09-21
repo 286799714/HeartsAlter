@@ -18,9 +18,11 @@ describe("SQLite player saves", () => {
       store.claimSeat(profile.playerId, "seat-a");
       store.saveBalances([{ playerId: profile.playerId, chips: 875, owner: "seat-a" }]);
       assert.deepEqual(store.updateName("device-a", " 新昵称 ' "), { ...profile, name: "新昵称 '", chips: 875 });
+      const avatarId = profile.avatarId % 4 + 1;
+      assert.deepEqual(store.updateAvatar("device-a", avatarId), { ...profile, name: "新昵称 '", chips: 875, avatarId });
       store.close();
       store = new PlayerProfileStore(path);
-      assert.deepEqual(store.getOrCreate("device-a", "overwrite"), { ...profile, name: "新昵称 '", chips: 875 });
+      assert.deepEqual(store.getOrCreate("device-a", "overwrite"), { ...profile, name: "新昵称 '", chips: 875, avatarId });
       assert.deepEqual(store.getByDevice("device-b"), other);
     } finally {
       store.close();
@@ -39,6 +41,21 @@ describe("SQLite player saves", () => {
       const name = "😀".repeat(24);
       assert.equal(store.updateName("rename-device", name).name, name);
       assert.throws(() => store.updateName("missing-device", "昵称"), /存档不存在/);
+    } finally { store.close(); }
+  });
+
+  it("rejects invalid avatars without changing the save and accepts all bundled avatars", () => {
+    const store = new PlayerProfileStore(":memory:");
+    try {
+      const profile = store.getOrCreate("avatar-device");
+      for (const avatar of [undefined, null, "1", true, {}, 0, -1, 5, 1.5, NaN, Infinity]) {
+        assert.throws(() => store.updateAvatar("avatar-device", avatar), /头像/);
+        assert.deepEqual(store.getByDevice("avatar-device"), profile);
+      }
+      for (const avatarId of [1, 2, 3, 4]) {
+        assert.deepEqual(store.updateAvatar("avatar-device", avatarId), { ...profile, avatarId });
+      }
+      assert.throws(() => store.updateAvatar("missing-device", 1), /存档不存在/);
     } finally { store.close(); }
   });
 

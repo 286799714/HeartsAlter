@@ -8,7 +8,7 @@ using HeartsAlter.Scripts.InGame.Card;
 
 namespace HeartsAlter.Scripts.Tutorial;
 
-public enum TutorialPhase { Menu, Animating, Guiding, Play, Pass, Complete, Error }
+public enum TutorialPhase { Animating, Guiding, Play, Pass, Complete, Exiting, Error }
 
 /// <summary>Drives the real table locally with authored hands and cancellable lesson steps.</summary>
 public partial class TutorialController : Control
@@ -16,19 +16,19 @@ public partial class TutorialController : Control
 	private const string ProgressPath = "user://tutorial_progress.cfg";
 	private const string ProgressSection = "beginner_document_v1";
 	private readonly ConfigFile _progress = new();
-	private Control _menu;
 	private Control _game;
 	private Control _overlay;
+	private CanvasLayer _tableActions;
 	private Table _table;
 	private TutorialSpotlight _guide;
 	private IReadOnlyList<TutorialGuidePage> _guidePages = Array.Empty<TutorialGuidePage>();
-	private Label _heading, _title, _status;
 	private TutorialPhase _resumePhase;
-	private Button _retry;
+	private BaseButton _retry;
+	private BaseButton _lastSec;
 	private int _generation;
 	public int GuidePageIndex { get; private set; }
 	public int GuidePageCount => _guidePages.Count;
-	public TutorialPhase Phase { get; private set; } = TutorialPhase.Menu;
+	public TutorialPhase Phase { get; private set; } = TutorialPhase.Animating;
 	public int LessonIndex { get; private set; }
 	public int StepIndex { get; private set; }
 	public Table ActiveTable { get; private set; }
@@ -41,7 +41,9 @@ public partial class TutorialController : Control
 	{
 		_progress.Load(ProgressPath);
 		BindScene();
-		ShowMenu();
+		int lesson = GameSession.PendingTutorialLesson ?? 0;
+		GameSession.PendingTutorialLesson = null;
+		_ = RunSafely(() => StartLessonAsync(lesson));
 	}
 
 	public override void _ExitTree()
@@ -55,21 +57,25 @@ public partial class TutorialController : Control
 		}
 	}
 
-	public void ShowMenu()
+	public void ReturnToIntro()
 	{
+		if (Phase == TutorialPhase.Exiting) return;
 		_generation++;
 		ResetTable();
 		Round = null;
-		Phase = TutorialPhase.Menu;
+		Phase = TutorialPhase.Exiting;
+		GameSession.ShowTutorialPage = true;
+		if (SceneNavigation.Change(this, "res://scenes/Intro.tscn") != Error.Ok)
+		{
+			GameSession.ShowTutorialPage = false;
+			Phase = TutorialPhase.Error;
+			_guide.ShowPage("无法返回主页，请再次点击退出，或重玩本节。", 0, 1,
+				Array.Empty<Control>(), true, allowEmptyTargets: true);
+			return;
+		}
 		_game.Hide();
 		_overlay.Hide();
-		_menu.Show();
-		for (int index = 0; index < TutorialCatalog.Lessons.Length; index++)
-		{
-			var button = _menu.FindChild($"Lesson{index}", true, false) as Button;
-			bool completed = _progress.GetValue(ProgressSection, index.ToString(), false).AsBool();
-			if (button is not null) button.Text = completed ? "已完成 · 再看一次" : "开始教程";
-		}
+		_tableActions.Hide();
 	}
 
 	public async Task StartLessonAsync(int lessonIndex, int stepIndex = 0)
@@ -82,16 +88,12 @@ public partial class TutorialController : Control
 		ResetTable(preserveGuide: _guide.Visible && !needsDeal);
 		LessonIndex = lessonIndex;
 		StepIndex = stepIndex;
+		_lastSec.Disabled = stepIndex == 0;
 		Phase = TutorialPhase.Animating;
-		_menu.Hide();
 		_game.Show();
 		_overlay.Show();
+		_tableActions.Show();
 
-		_heading.Text = $"第 {lessonIndex + 1} 关 · {TutorialCatalog.Lessons[lessonIndex].Title}";
-		_title.Text = $"{stepIndex + 1} / {TutorialCatalog.Lessons[lessonIndex].Steps.Length}  {Step.Title}";
-		_title.TooltipText = Step.Title;
-
-		_status.Text = "跟随讲解，了解玩法";
 		ActiveTable = _table;
 		ActiveTable.InitializePlayerInfo("你", null, 900, "小岚 · 下家", null, 900,
 			"阿澈 · 对家", null, 900, "小满 · 上家", null, 900);
@@ -107,10 +109,7 @@ public partial class TutorialController : Control
 		if (Step.Kind == TutorialKind.Pass)
 		{
 			ActiveTable.SetLocalPassingEnabled(true);
-
 			BeginGuide(TutorialPhase.Pass, TutorialGuides.Introduction(Step));
-
-			_status.Text = "请选择 3 张牌，再点击传牌箭头";
 		}
 		else BeginGuide(Step.Kind == TutorialKind.Play ? TutorialPhase.Animating : TutorialPhase.Complete,
 			TutorialGuides.Introduction(Step));
@@ -160,12 +159,10 @@ public partial class TutorialController : Control
 		Round.Pass(cards);
 		Phase = TutorialPhase.Animating;
 
-		_status.Text = "正在换牌";
 		int generation = _generation;
 		_ = RunSafely(async () =>
 		{
 			if (!await WaitTableAsync(generation)) return;
-			_status.Text = "";
 			CompleteStep();
 		});
 		return true;
@@ -178,7 +175,6 @@ public partial class TutorialController : Control
 		ActiveTable.SetLocalPlayableCards(Array.Empty<CardData>(), "", false);
 		while (!Round.Complete && Round.CurrentSeat != 0)
 		{
-			_status.Text = $"{TutorialCatalog.SeatNames[Round.CurrentSeat]}正在出牌";
 			await ToSignal(GetTree().CreateTimer(0.45), SceneTreeTimer.SignalName.Timeout);
 			if (!Current(generation)) return;
 			int seat = Round.CurrentSeat;
@@ -195,11 +191,8 @@ public partial class TutorialController : Control
 		if (!Round.Complete)
 		{
 			BeginGuide(TutorialPhase.Play, TutorialGuides.BeforeAction(Step, Round));
-
-			_status.Text = "轮到你";
 			return;
 		}
-		_status.Text = "";
 		await ToSignal(GetTree().CreateTimer(0.65), SceneTreeTimer.SignalName.Timeout);
 		if (!Current(generation)) return;
 		if (!ActiveTable.CollectTrick(Round.Winner, Round.TrickPoints))
@@ -214,7 +207,6 @@ public partial class TutorialController : Control
 	{
 		var pages = TutorialGuides.AfterPlay(Step, Round);
 		if (pages.Count == 0) return false;
-		_status.Text = "";
 		// The played card has landed. End this drive before scheduling another
 		// player; dismissing the guide resumes from Round.CurrentSeat.
 		BeginGuide(TutorialPhase.Animating, pages);
@@ -284,12 +276,10 @@ public partial class TutorialController : Control
 			case TutorialPhase.Play:
 				_guide.HideGuide();
 				ActiveTable.SetLocalPlayableCards(Round.LegalCards(), "点一下选牌，再点同一张打出");
-				_status.Text = "轮到你";
 				break;
 			case TutorialPhase.Pass:
 				_guide.HideGuide();
 				ActiveTable.SetLocalInteractionEnabled(true);
-				_status.Text = "选择3张牌，点击传牌箭头";
 				break;
 			case TutorialPhase.Complete:
 				bool last = StepIndex == TutorialCatalog.Lessons[LessonIndex].Steps.Length - 1;
@@ -312,7 +302,7 @@ public partial class TutorialController : Control
 			await StartLessonAsync(LessonIndex, StepIndex + 1);
 		else if (LessonIndex + 1 < TutorialCatalog.Lessons.Length)
 			await StartLessonAsync(LessonIndex + 1);
-		else ShowMenu();
+		else ReturnToIntro();
 	}
 
 	private bool Current(int generation) => generation == _generation && IsInsideTree();
@@ -339,10 +329,9 @@ public partial class TutorialController : Control
 		catch (Exception exception)
 		{
 			if (!Current(generation)) return;
-			_guide.HideGuide();
 			Phase = TutorialPhase.Error;
-			_status.Text = "本节暂时无法继续，请点击“重看本节”";
-			SetFeedback(exception.Message);
+			_guide.ShowPage("本节暂时无法继续，请点击右上角“重玩本节”。", 0, 1,
+				Array.Empty<Control>(), true, allowEmptyTargets: true);
 			GD.PushError(exception.ToString());
 		}
 	}
@@ -359,36 +348,30 @@ public partial class TutorialController : Control
 	{
 		if (Phase is TutorialPhase.Play or TutorialPhase.Pass)
 			BeginGuide(Phase, new[] { new TutorialGuidePage(message, TutorialFocus.Hand) });
-		else _status.Text = message;
 	}
 	/// <summary>Only bind authored nodes and actions; all geometry and styling live in Tutorial.tscn.</summary>
 	private void BindScene()
 	{
-		_menu = GetNode<Control>("%Menu");
 		_game = GetNode<Control>("%Game");
 		_overlay = GetNode<Control>("%Overlay");
 		_table = GetNode<Table>("%Table");
 		_guide = GetNode<TutorialSpotlight>("%GuideOverlay");
 		_guide.AdvanceRequested += AdvanceGuide;
-		_heading = GetNode<Label>("%Heading");
-		_title = GetNode<Label>("%StepTitle");
-
-		_status = GetNode<Label>("%Status");
-
-		_retry = GetNode<Button>("%Retry");
+		_retry = GetNode<BaseButton>("%RetryButton");
+		_lastSec = GetNode<BaseButton>("%LastSecButton");
+		_tableActions = _table.GetNode<CanvasLayer>("TableActions");
+		_tableActions.Layer = GetNode<CanvasLayer>("InterfaceLayer").Layer + 1;
+		var exit = _table.GetNode<BaseButton>("TableActions/Quit/ReturnToLobbyButton");
+		var mute = _table.GetNode<BaseButton>("TableActions/Mute/MuteButton");
+		_guide.ActionButtons = new[] { _retry, _lastSec, exit, mute };
 
 		_table.MainPlayerCardPlayRequested += HandlePlay;
 		_table.MainPlayerPassCardsRequested += HandlePass;
-		for (int index = 0; index < TutorialCatalog.Lessons.Length; index++)
-		{
-			int lesson = index;
-			GetNode<Label>($"%LessonTitle{index}").Text = $"0{index + 1}  {TutorialCatalog.Lessons[index].Title}";
-			GetNode<Label>($"%LessonDescription{index}").Text = TutorialCatalog.Lessons[index].Description;
-			GetNode<Button>($"%Lesson{index}").Pressed += () => _ = RunSafely(() => StartLessonAsync(lesson));
-		}
-		GetNode<Button>("%BackToLobby").Pressed += () => SceneNavigation.Change(this, "res://scenes/Lobby.tscn");
-		GetNode<Button>("%LessonMenu").Pressed += ShowMenu;
+		exit.Pressed += ReturnToIntro;
 		_retry.Pressed += () => _ = RunSafely(() => StartLessonAsync(LessonIndex, StepIndex));
-
+		_lastSec.Pressed += () =>
+		{
+			if (StepIndex > 0) _ = RunSafely(() => StartLessonAsync(LessonIndex, StepIndex - 1));
+		};
 	}
 }
